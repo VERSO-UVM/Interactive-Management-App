@@ -6,6 +6,9 @@ The objective of this project is to design and build an open source browser-base
 ## Research 
 Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
 
+## Reference App
+We only have the EXE file, it will only work on windows and requires Java Runtime 1.6
+
 ## other projects out there
 * [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
 * [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
