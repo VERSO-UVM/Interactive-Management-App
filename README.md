@@ -35,6 +35,9 @@ Structring has variety of UX elements for building relational structures between
 In the top bar menu there is a Tools section that allows one to import or export both ideas and participant lists (unsure of specs for those files)
 ![Tools](https://github.com/VERSO-UVM/interactive-management-app/blob/main/references/tools.png)
 
+#### Saving
+Files can be saved as *.ism, ISM files are InstallShield Project files (which are structurely very similar to . msi files)
+
 ## other projects out there
 * [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
 * [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
