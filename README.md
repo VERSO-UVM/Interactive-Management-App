@@ -8,6 +8,8 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 
 ## Reference App
 We only have the EXE file, it will only work on windows and requires Java Runtime 1.6 but will run on more modern version of Java ([Download Java](https://www.java.com/download/ie_manual.jsp))
+
+
 [Video Walkthrough](https://www.youtube.com/watch?v=Zm2j6fzIffA)
 
 ### Screenshots of the Reference App
