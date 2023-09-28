@@ -46,6 +46,8 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 - Visually display the factors in sequential order to the user
 
 ## Core Actions
+![Core Actions](https://github.com/VERSO-UVM/interactive-management-app/blob/main/ISM_Breakdown.png)
+
 
 ### I want to load factors I have selected for exploration
 Factors are the text descriptions of things that we think are important. These factors are likely structured as a csv, but can include manual entry of factors individually. The csv may be already in order, or it may not. Some files may also have a column with a numberic value that may be used to order them, in some cases it may be as simple as 1, 2, 3 or it may be a count value like 300 votes. This means some times if there is numeric information it may need to be in ascending or descending order. 
