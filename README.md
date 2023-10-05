@@ -30,6 +30,13 @@ Here are some of the limitations of ISM:
 ## Research 
 Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
 
+## Fall 2023 Spring Sprint Schedule
+- Sprint 1 - Sept 25-Sept 29
+- Sprint 2 - Oct 2- Oct 13
+- Sprint 3 - Oct 16- Oct 27
+- Sprint 4 - Oct 30 - Nov 10
+- Sprint 5 Nov 13 - Dec 1 (Thanksgiving Week  Nov 20-24 is a Holiday)
+
 ## Requirements
 1. Tool must perform Steps 2-4 of the ISM process: (2) manual ranking by the researcher, (3) determining factor relationship, and (4) constructing the flowchart
 2. Ability to add factors
