@@ -6,6 +6,13 @@ import unittest
 # https://github.com/VERSO-UVM/interactive-management-app/issues/17
 
 class TestCSVMethods(unittest.TestCase):
+    """
+    Alyssa Maguire
+
+    INSTRUCTIONS
+    Modify import to acquire issue 17/issue 13
+    Modify test data file paths if necessary
+    """
 
     def test_open(self):
         pass
