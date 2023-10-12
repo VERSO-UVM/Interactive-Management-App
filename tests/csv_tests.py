@@ -5,6 +5,7 @@ from unittest.mock import patch
 from unittest import TestCase
 from unittest import main as test
 
+print(os.getcwd())
 
 # Alyssa Maguire
 
@@ -25,9 +26,11 @@ class TestCSVMethods(TestCase):
 
     __TEST_DATA_FILE: str = "test_data/set1.csv"
 
-    @patch('Issues.Issue17_13.csvImport', return_value=__TEST_DATA_FILE)
-    def test_open(self, input):
-        self.assertEqual(csvImport(), True)
+class TestGetAnswer(TestCase):
+    @patch('builtins.input', side_effect=["tests/test_data/set1.csv"])
+    def test_get_answer_yes(self, mock_input):
+        result = csvImport()
+        self.assertTrue(result)
 
     def test_missing_file(self):
         pass
