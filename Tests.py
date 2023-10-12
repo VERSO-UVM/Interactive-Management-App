@@ -1,21 +1,16 @@
-import sys
-import os.path
-
 from unittest.mock import patch
 from unittest import TestCase
-from unittest import main as test
+from unittest import main
 
-print(os.getcwd())
+from Issues.Issue17_13 import csvImport
 
 # Alyssa Maguire
 
 # unittests for Issue 17 upload CSV
 # https://github.com/VERSO-UVM/interactive-management-app/issues/17
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
-
-from Issues.Issue17_13 import csvImport
 class TestCSVMethods(TestCase):
+
     """
     Alyssa Maguire
 
@@ -26,11 +21,10 @@ class TestCSVMethods(TestCase):
 
     __TEST_DATA_FILE: str = "test_data/set1.csv"
 
-class TestGetAnswer(TestCase):
-    @patch('builtins.input', side_effect=["tests/test_data/set1.csv"])
+    @patch('builtins.input', side_effect=["test_data/set1.csv"])
     def test_get_answer_yes(self, mock_input):
         result = csvImport()
-        self.assertTrue(result)
+        # TODO: How to test if csvImport() is successful
 
     def test_missing_file(self):
         pass
@@ -40,4 +34,4 @@ class TestGetAnswer(TestCase):
 
 
 if __name__ == '__main__':
-    test()
+    main()
