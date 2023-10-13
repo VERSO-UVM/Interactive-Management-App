@@ -26,4 +26,5 @@ def csvImport():
 def main():
     csvImport()
 
-main()
+if __name__ == '__main__':
+    main()
