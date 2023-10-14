@@ -1,3 +1,7 @@
+'''
+Python function that reads in a dataframe and prompts for user input
+to organize data based on column names and desired sort.
+'''
 import pandas as pd
 
 #funtion name to organize data
