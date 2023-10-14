@@ -26,6 +26,7 @@ This document was made with guidance from [Contributing.md](https://contributing
             - ```[your_netID]_some_function()```
         - Folder/directory tree?
         - Including license?
+    - Testing
 4. Git
     - Protect main - merging/pull requests?
         - Has a time cost, but results in fewer bugs/issues and keeps everyone familiar with everyone else's work
