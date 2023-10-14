@@ -1,10 +1,19 @@
 #!/bin/bash
 
-# For MacOS and Linux; you can use this shellscript to help setup the development
+# FOR MACOS AND LINUX; you can use this shellscript to help setup the development
 # environment for the ORCA ism-app project
 
-# You should only need to run it once, when you are first using your workspace.
+# FOR WINDOWS; you can also use this shellscript, but you need to use the
+# Windows Subsystem for Linux. To install it:
+# 1. Open PowerShell or Command Prompt **as an administrator**
+# 2. Run this command: wsl --install
+
+# https://learn.microsoft.com/en-us/windows/wsl/install
+
+
+# You should only need to run this script once, when you are first using your workspace.
 # You might need to run it again if new packages are added to requirements.txt
+
 
 clear
 
