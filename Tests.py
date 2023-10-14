@@ -9,6 +9,7 @@ from Issues.Issue17_13 import csvImport
 # unittests for Issue 17 upload CSV
 # https://github.com/VERSO-UVM/interactive-management-app/issues/17
 
+
 class TestCSVMethods(TestCase):
 
     """
@@ -21,16 +22,17 @@ class TestCSVMethods(TestCase):
 
     __TEST_DATA_FILE: str = "test_data/set1.csv"
 
-    @patch('builtins.input', side_effect=["test_data/set1.csv"])
+    @patch('builtins.input', side_effect=[__TEST_DATA_FILE])
     def test_get_answer_yes(self, mock_input):
-        result = csvImport()
-        # TODO: How to test if csvImport() is successful
+        csvImport()
 
-    def test_missing_file(self):
-        pass
-
-    def test_file_lock(self):
-        pass
+    # TODO: This test does not currently pass (input loop)
+    # Options:
+    # 1. Manual input
+    # 2. Modify csvImport() to accept filename as param
+    @patch('builtins.input', side_effect=["missing_file.csv"])
+    def test_missing_file(self, mock_input):
+        csvImport()
 
 
 if __name__ == '__main__':
