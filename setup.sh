@@ -35,9 +35,9 @@ pip install -r requirements.txt
 
 clear
 
-# Finished - instructions below are to setup Flake8 linter w/ longer line limit
+# Finished - instructions below are to setup (currently optional) Flake8 linter w/ longer line limit
 echo 'Finished setting up the Python virtual environment'
-echo 'To setup the Flake8 Linter (VSCode only):'
+echo 'OPTIONALLY setup the Flake8 Linter (VSCode only):'
 echo '1. Search for and install the extension: "Flake8"'
 echo '2. Open the Flake8 Extension settings'
 echo '3. For the first option, "Flake8: Args", increase the line length limit by adding this item:'
