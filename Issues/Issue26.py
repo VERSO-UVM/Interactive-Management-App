@@ -1,4 +1,6 @@
-'''Function to store relationship data and weights to seperate csv file'''
+'''
+Function to store relationship data and weights to seperate csv file- Grace Kinney
+'''
 import csv
 
 # Initialize empty list to store field names
@@ -14,25 +16,41 @@ test_Data = {
     'Relationship A-C' : 6
 }
 
-# Function to read through relationship data and 
+# Function to read through and store relationship data in seperate csv file
 def storeWeights():
 
-    with open(file_name, 'w', newline='') as csvfile:
-        # Get user input for file name
-        file_name = input("Please enter the name you would like to call your file: ")
+    # Get user input for file name
+    file_name = input("Please enter the name you would like to call your file: ")
 
-        # Add csv extension to selected file name
-        file_name += ".csv"
+    # Add csv extension to selected file name
+    file_name += ".csv"
+
+    # Test print to console
+    print("File name:", file_name)
+
+    # Creating new csv file
+    with open(file_name, 'w', newline='') as csvfile:
+
 
         # For loop to iterate through relationship data to collect list of field names
-        for key in test_Data:
+        for key in test_Data.keys():
             field_names.append(key)
 
-        # Create csv writer object, passes csv file object and list of field names
-        writer = csv.DictWriter(csvfile, field_names = field_names)
+        # test print to console make sure field names are correctly entered in variable
+        print("Field names:", field_names)
 
-        # Write header to csv file
+        # Create csv writer object, passes csv file object and list of field names
+        writer = csv.DictWriter(csvfile, fieldnames = field_names)
+
+        # Write header to csv file (field names)
         writer.writeheader()
 
-        # Write data to csv file
+        # Write data to csv file (weights)
         writer.writerow(test_Data)
+
+# Testing
+def main():
+    storeWeights()
+
+if __name__ == '__main__':
+    main()
