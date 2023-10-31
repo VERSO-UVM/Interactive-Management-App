@@ -41,3 +41,11 @@ This document was made with guidance from [Contributing.md](https://contributing
     - Modifying other's code/issues
         - How to handle with git?
         - Distribution of work items
+
+6. Working together
+    - Pair work
+    - Getting help
+
+7. Divide and conquer
+    - Are you working on what you want to be working on?
+    - Are you getting what you want out of this project so far?
