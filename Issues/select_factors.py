@@ -2,6 +2,7 @@
 
 """
 Select from a list of factors
+https://github.com/VERSO-UVM/interactive-management-app/issues/21
 """
 
 from typing import List as _List
