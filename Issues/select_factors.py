@@ -1,4 +1,4 @@
-## @author alyssa   # noqa: E266
+# @author alyssa   # noqa: E266
 
 """
 Select from a list of factors
