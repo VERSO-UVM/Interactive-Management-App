@@ -1,6 +1,10 @@
 import argparse
 from app import app
 
+## @author Alyssa
+# These are the CLI arguments that the ISM application accepts.
+# Example:
+# python wsgi.py --port=5001 --host=localhost --debug
 parser = argparse.ArgumentParser(description='Start the ORCA ISM application')
 parser.add_argument('--debug', dest='debug', action='store_const', const=True, default=False, help='Start in debug mode')
 parser.add_argument('--port', dest='port', action='store', type=int, default=5000, help='Specify host port')

@@ -3,6 +3,7 @@ from wtforms import Field
 from wtforms.validators import ValidationError
 
 
+## @author Alyssa
 class GenericTextValidator(object):
 
     def __init__(self, message=None):
@@ -18,6 +19,7 @@ class GenericTextValidator(object):
             raise ValidationError(self.message)
 
 
+## @author Alyssa
 class BooleanValidator(object):
     def __init__(self, message=None):
         if not message:
