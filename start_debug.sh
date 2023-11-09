@@ -14,10 +14,10 @@
 clear
 
 # If you are using Pyenv, uncomment the below lines to use pyenv.
-# export PYENV_ROOT="$HOME/.pyenv"
-# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-# eval "$(pyenv init -)"
-# pyenv shell 3.10.12
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+pyenv shell 3.10.12
 
 # If you are using a venv, uncomment the line below.
 # source venv/bin/activate
