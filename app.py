@@ -1,11 +1,12 @@
 from flask_app.config import configure_flask_application
+from flask import render_template
 
 app = configure_flask_application()
 
 
 @app.route("/")
-def hello():
-    return "<h1 style='color:blue'>Hello There!</h1>"
+def index():
+    return render_template('index.html')
 
 
 if __name__ == "__main__":

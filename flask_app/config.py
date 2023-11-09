@@ -18,5 +18,6 @@ def configure_flask_application() -> Flask:
     app = Flask(__name__)
     Bootstrap(app)
     app.config['SECRET_KEY'] = __secret_form_key_gen()
+    app.config['APPLICATION_ROOT'] = os.path.dirname(os.path.abspath(__file__))
 
     return app
