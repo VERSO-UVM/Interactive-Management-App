@@ -1,12 +1,17 @@
 from flask_app.config import configure_flask_application
 from flask import render_template
 
+from flask_app.forms.IndexForm import IndexForm
+
 app = configure_flask_application()
 
 
-@app.route("/")
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+
+    form: IndexForm = IndexForm()
+    message = ''
+    return render_template('index.html', form=form, message=message)
 
 
 if __name__ == "__main__":
