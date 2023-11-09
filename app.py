@@ -1,5 +1,6 @@
-from flask import Flask
-app = Flask(__name__)
+from flask_app.config import configure_flask_application
+
+app = configure_flask_application()
 
 
 @app.route("/")

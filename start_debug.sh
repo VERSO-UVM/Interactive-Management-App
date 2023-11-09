@@ -18,4 +18,4 @@ command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 pyenv shell 3.10.12
 
-flask run -h localhost -p 5000 --debug
+python wsgi.py --port=5001 --host=localhost --debug
