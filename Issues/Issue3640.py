@@ -1,13 +1,11 @@
 
 ##Participant class
 class Participant:
-    ##Constructor
-    name="None"
-    haveVoted=[]
-    willVote=[]
     
     def __init__(self,name):
         self.name=name
+        self.haveVoted=[]
+        self.willVote=[]
         
 
  ##Methods to get the person's name or the list of factors that have or will vote
@@ -27,6 +25,8 @@ class Participant:
     def getName(self):
         return self.willVote
     
+    def __repr__(self):
+        return self.name +self.willVote+self.haveVoted+ ""
 
 
 ##Class for an idea
