@@ -15,10 +15,13 @@ def csvImport(filename: str) -> pd.DataFrame:
     # Catches different types of errors
     except FileNotFoundError:
         print("Could not find file.\nMake sure the file name is correct and it is in the same folder as this program")
+        return None
     except pd.errors.EmptyDataError:
         print("CSV file is empty.Please try again")
+        return None
     except Exception:
         print("An error occured.Please try again")
+        return None
 
 
 def __test():
