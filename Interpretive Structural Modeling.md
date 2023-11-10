@@ -23,3 +23,12 @@ Here are some of the limitations of ISM:
 - It is a subjective method that depends on the judgment of the people involved in the modeling process.
 - It can be time-consuming and labor-intensive to develop an ISM model.
 - It can be difficult to validate the results of an ISM model.
+
+- ## Research 
+Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
+
+## other projects out there
+* [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
+* [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
+* [https://github.com/cran/ISM](https://github.com/cran/ISM)
+* [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
