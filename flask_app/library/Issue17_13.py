@@ -2,32 +2,28 @@
 import pandas as pd
 
 
-def csvImport():
-    keepRunning = True
-    while (keepRunning == True):
-        # Getting user's input for filename
-        fileName = input("Please enter file name:\n")
+# @author Fernanda
+# @see https://github.com/VERSO-UVM/Interactive-Management-App/issues/17
+def csvImport(filename: str) -> pd.DataFrame:
 
-        # Error handeling for opening file
-        try:
-            # Reads file and turns it into a data frame
-            fileInfo = pd.read_csv(fileName)
-            keepRunning = False
+    # Error handeling for opening file
+    try:
 
-        # Catches different types of errors
-        except FileNotFoundError:
-            print("Could not find file.\nMake sure the file name is correct and it is in the same folder as this program")
-        except pd.errors.EmptyDataError:
-            print("CSV file is empty.Please try again")
-        except Exception:
-            print("An error occured.Please try again")
+        # Reads file and turns it into a data frame
+        return pd.read_csv(filename)
 
-# Testing purposes
+    # Catches different types of errors
+    except FileNotFoundError:
+        print("Could not find file.\nMake sure the file name is correct and it is in the same folder as this program")
+    except pd.errors.EmptyDataError:
+        print("CSV file is empty.Please try again")
+    except Exception:
+        print("An error occured.Please try again")
 
 
-def main():
+def __test():
     csvImport()
 
 
 if __name__ == '__main__':
-    main()
+    __test()
