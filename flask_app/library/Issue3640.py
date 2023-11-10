@@ -1,55 +1,48 @@
 
-##Participant class
-class Participant:
-    
-    def __init__(self,name):
-        self.name=name
-        self.haveVoted=[]
-        self.willVote=[]
-        
+# Participant class
 
- ##Methods to get the person's name or the list of factors that have or will vote
-    def addHaveVoted(self,newItem):
+# @author Fernanda
+class Participant:
+
+    def __init__(self, name):
+        self.name = name
+        self.haveVoted = []
+        self.willVote = []
+
+# Methods to get the person's name or the list of factors that have or will vote
+    def addHaveVoted(self, newItem):
         self.haveVoted.append(newItem)
 
-
-    def addWillVoted(self,newItem):
+    def addWillVoted(self, newItem):
         self.willVote.append(newItem)
 
     def getName(self):
         return self.name
-    
+
     def getVoted(self):
         return self.haveVoted
-    
-    def getName(self):
-        return self.willVote
-    
+
     def __repr__(self):
-        return self.name +self.willVote+self.haveVoted+ ""
+        return self.name + self.willVote + self.haveVoted + ""
 
 
-##Class for an idea
+# Class for an idea
 class Idea:
-    name="None"
-    purpose="Main Purpose"
+    name = "None"
+    purpose = "Main Purpose"
 
-    def __init__(self,name,purpose):
-        self.name=name
-        self.purpose=purpose
+    def __init__(self, name, purpose):
+        self.name = name
+        self.purpose = purpose
 
+    def chnageName(self, name):
+        self.name = name
 
-    def chnageName(self,name):
-        self.name=name   
-
-    def chnagePurpose(self,purpose):
-        self.purpose=purpose
-
+    def chnagePurpose(self, purpose):
+        self.purpose = purpose
 
     def getPurpose(self):
-        return self.purpose 
-    
+        return self.purpose
+
     def getName(self):
         return self.name
-    
-    

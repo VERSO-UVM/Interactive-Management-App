@@ -1,17 +1,12 @@
-# @author alyssa   # noqa: E266
-
-"""
-Select from a list of factors
-https://github.com/VERSO-UVM/interactive-management-app/issues/21
-"""
-
 from typing import List as _List
 
 
+## @author alyssa   # noqa: E266
+## @see https://github.com/VERSO-UVM/interactive-management-app/issues/21
 def select_factors(factors: _List[str]) -> _List[str]:
     """
-    User manually prunes a large list of factors to a list of factors they want
-    For use with CLI
+    Select from a list of factors
+    Use with CLI only
     """
 
     option: str = '0'
