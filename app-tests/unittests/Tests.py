@@ -4,12 +4,10 @@ from unittest import main
 
 from flask_app.library.csvFuncs import csvImport
 
-# Alyssa Maguire
 
+## @author Alyssa
+## @see https://github.com/VERSO-UVM/interactive-management-app/issues/17
 # unittests for Issue 17 upload CSV
-# https://github.com/VERSO-UVM/interactive-management-app/issues/17
-
-
 class TestCSVMethods(TestCase):
 
     """
