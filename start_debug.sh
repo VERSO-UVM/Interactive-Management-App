@@ -16,6 +16,8 @@
 # Clear the terminal screen.
 clear
 
+# pyenv will require python-devl packages. Offer to install with 
+
 # Check if Homebrew is installed; if not, prompt the user to install Homebrew or quit.
 if ! command -v brew &> /dev/null; then
     read -p "Homebrew is not installed. Enter y to install Homebrew, n to cancel. [y/n]: " yn
@@ -47,7 +49,13 @@ if ! command -v pyenv &> /dev/null; then
     read -p "pyenv is not installed. Enter y to install pyenv with Homebrew, n to cancel. [y/n]: " yn
     case $yn in
         y | yes ) echo "Installing pyenv"
-                  brew install pyenv;;
+                  # PYTHON-DEVL dependencies for pyenv
+                  brew install pyenv;
+                  brew install libxml2
+                  brew install libxslt
+                  brew link libxml2 --force
+                  brew link libxslt --force
+                  brew install openssl;;
         n | no ) echo "pyenv is required. Exiting..."
                  exit;;
         * ) echo "Invalid response"
