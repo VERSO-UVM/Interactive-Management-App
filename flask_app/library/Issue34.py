@@ -1,15 +1,11 @@
+## @author gracekinney
 ##Idea Voting Class
 class IdeaVoting:
-    # default values
-    title = "None"
-    category = "None"
-    numVotes = 0
-    percentVotes = 0
 
-    # OR DO WE WANT A DEFAULT CONSTRUCTOR
+    #TODO waiting for category function from another card
 
     # custom constructor for IdeaVoting class
-    def __init__(self, title, category, numVotes, percentVotes):
+    def __init__(self, title, category, numVotes = 0, percentVotes = 0):
         # setting private fields
         self.__title = title
         self.__category = category
@@ -33,8 +29,8 @@ class IdeaVoting:
     def setTitle(self, newTitle):
         self.__title = newTitle
 
-    def setCategory(self, newCat):
-        self.__category = newCat
+    def setCategory(self, newCatategory):
+        self.__category = newCatategory
 
     def setNumVotes(self, newNumVotes):
         self.__numVotes = newNumVotes
