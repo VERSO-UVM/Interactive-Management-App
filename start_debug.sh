@@ -8,6 +8,10 @@
 # 1. Open PowerShell or Command Prompt **as an administrator**
 # 2. Run this command: wsl --install
 # https://learn.microsoft.com/en-us/windows/wsl/install
+# run with: wsl -e ./script.sh
+
+# If you get a "bad interpreter error", the line endings may be incompatible.
+# Fix by running: sed -i -e 's/\r$//' [name_of_script]
 
 # Clear the terminal screen.
 clear
