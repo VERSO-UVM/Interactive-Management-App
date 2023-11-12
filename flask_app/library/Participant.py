@@ -1,6 +1,13 @@
 
 # Participant class
-
+'''
+The Python script defines two classes: Participant and Idea. 
+The Participant class represents individuals involved in a voting process, initializing with a name and two lists, haveVoted and willVote, to track their voting history and intended votes. 
+The class includes methods to add items to these lists and retrieve the participant's name or voting records. 
+The __repr__ method outputs a string representation of the participant, including their name and voting information.
+ The Idea class models ideas, initializing with a name and purpose. 
+ It offers methods to change the idea's name or purpose and retrieve these attributes.
+ '''
 # @author Fernanda
 class Participant:
 

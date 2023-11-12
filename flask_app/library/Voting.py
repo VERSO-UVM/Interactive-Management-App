@@ -1,5 +1,10 @@
 ## @author gracekinney
 ## Idea Voting Class
+
+'''
+The IdeaVoting class encapsulates information about an idea, allowing retrieval and modification of its title, category, number of votes, and percentage of votes. 
+The __repr__ method provides a formatted string representation.
+"'''
 class IdeaVoting:
 
     # TODO waiting for category function from another card
