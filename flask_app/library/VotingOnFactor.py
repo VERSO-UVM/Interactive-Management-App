@@ -2,9 +2,9 @@
 import pandas as pd
 
 
+## @author Fernanda
 def votingFactor(factorList):
     "Column Name"
-    columnName = ['From', 'To', 'Rating']
     "Lists to insert into the dataframe"
     listFrom = []
     listTo = []
@@ -18,7 +18,7 @@ def votingFactor(factorList):
                 userRating = input(
                     f'Enter rating for factor:{i}\'s influence on factor:{j} :')
                 '''Input validation'''
-                while (keepGoing == True):
+                while (keepGoing):
                     try:
                         value = int(userRating)
                         if (0 <= value <= 10):
@@ -29,7 +29,7 @@ def votingFactor(factorList):
                         else:
                             userRating = input(
                                 f'Enter rating for factor:{i}\'s influence on factor:{j} :')
-                    except:
+                    except:  # noqa: E722
                         userRating = input(
                             f'Enter rating for factor:{i}\'s influence on factor:{j} :')
 
