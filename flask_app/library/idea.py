@@ -1,9 +1,9 @@
 # @author James Catanzaro
-# TODO: add proposer variable when completed
+
 """
 idea.py
 
-This Python script defines a simple class 'Idea' representing an idea with a title and a vote count. 
+This Python script defines a simple class 'Idea' representing an idea with a title and a vote count.
 The class includes an initializer (__init__) and a representation method (__repr__) for easy display and debugging.
 
 @author: James Catanzaro
@@ -31,6 +31,9 @@ Usage:
     To use this script, import the 'Idea' class into your Python code and create instances of the 'Idea' class as needed.
 
 """
+
+
+# TODO: add proposer variable when completed
 class idea ():
     def __init__(self, title: str, votes: int):
         self.title = title

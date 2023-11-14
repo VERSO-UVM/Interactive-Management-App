@@ -1,7 +1,8 @@
 """
 csv_importer.py
 
-This Python script defines a function for importing a CSV file using the pandas library. The function takes a filename as input and performs error handling to manage potential issues during the file import process.
+This Python script defines a function for importing a CSV file using the pandas library. The function takes a filename
+as input and performs error handling to manage potential issues during the file import process.
 
 @author: Fernanda
 @see: https://github.com/VERSO-UVM/Interactive-Management-App/issues/17
@@ -9,12 +10,13 @@ This Python script defines a function for importing a CSV file using the pandas 
 Functions:
     csvImport(filename: str) -> pd.DataFrame:
         Takes a filename as input and attempts to read the CSV file using pandas.
-        
+
         Parameters:
             filename (str): The name of the CSV file to be imported.
-            
+
         Returns:
-            pd.DataFrame or None: If the file is successfully read, a pandas DataFrame is returned. If an error occurs during the import process, an appropriate error message is printed, and None is returned.
+            pd.DataFrame or None: If the file is successfully read, a pandas DataFrame is returned. If an error occurs during the import process,
+            an appropriate error message is printed, and None is returned.
 
     __test():
         A private test function that calls the csvImport function without any arguments.
@@ -24,11 +26,11 @@ Usage:
 
 Example:
     import csv_importer
-    
+
     # Example 1: Successful file import
     data_frame = csv_importer.csvImport('example.csv')
     print(data_frame)
-    
+
     # Example 2: Error handling for file not found
     data_frame = csv_importer.csvImport('nonexistent_file.csv')
     if data_frame is None:
@@ -38,16 +40,26 @@ Example:
 import pandas as pd
 
 
+# @author Fernanda
+# @see https://github.com/VERSO-UVM/Interactive-Management-App/issues/17
 def csvImport(filename: str) -> pd.DataFrame:
+
+    # Error handeling for opening file
     try:
+
+        # Reads file and turns it into a data frame
         return pd.read_csv(filename)
+
+    # Catches different types of errors
     except FileNotFoundError:
         print("Could not find file.\nMake sure the file name is correct and it is in the same folder as this program")
         return None
     except pd.errors.EmptyDataError:
+        print("CSV file is empty.Please try again")
         print("CSV file is empty. Please try again.")
         return None
     except Exception:
+        print("An error occured.Please try again")
         print("An error occurred. Please try again.")
         return None
 
@@ -57,7 +69,3 @@ def __test():
     A private test function that calls the csvImport function without any arguments.
     """
     csvImport()
-
-
-if __name__ == '__main__':
-    __test()

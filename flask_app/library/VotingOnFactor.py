@@ -2,7 +2,7 @@
 import pandas as pd
 
 
-## @author Fernanda
+# @author Fernanda
 def votingFactor(factorList):
     "Column Name"
     "Lists to insert into the dataframe"
