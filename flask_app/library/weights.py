@@ -3,39 +3,18 @@ Function to store relationship data and weights to seperate csv file- Grace Kinn
 '''
 import csv
 
-# Initialize empty list to store field names
-field_names = []
 
-# Test data to make sure relationship data is stored in csv file correctly
-test_Data = {
-    'Relationship A-B': 1,
-    'Relationship B-A': 2,
-    'Relationship B-C': 3,
-    'Relationship C-B': 4,
-    'Relationship C-A': 5,
-    'Relationship A-C': 6
-}
-
+# @author Grace
 # Function to read through and store relationship data in seperate csv file
+def storeWeights(file_name: str, data: dict = None):
 
-
-def storeWeights():
-
-    # Get user input for file name
-    file_name = input(
-        "Please enter the name you would like to call your file: ")
-
-    # Add csv extension to selected file name
-    file_name += ".csv"
-
-    # Test print to console
-    print("File name:", file_name)
+    field_names = []
 
     # Creating new csv file
     with open(file_name, 'w', newline='') as csvfile:
 
         # For loop to iterate through relationship data to collect list of field names
-        for key in test_Data.keys():
+        for key in data.keys():
             field_names.append(key)
 
         # test print to console make sure field names are correctly entered in variable
@@ -48,14 +27,24 @@ def storeWeights():
         writer.writeheader()
 
         # Write data to csv file (weights)
-        writer.writerow(test_Data)
-
-# Testing
+        writer.writerow(data)
 
 
-def main():
-    storeWeights()
+# Test data to make sure relationship data is stored in csv file correctly
+def __test():
+
+    # Initialize empty list to store field names
+    test_Data = {
+        'Relationship A-B': 1,
+        'Relationship B-A': 2,
+        'Relationship B-C': 3,
+        'Relationship C-B': 4,
+        'Relationship C-A': 5,
+        'Relationship A-C': 6
+    }
+    storeWeights(file_name="../../app-tests/test-data/set1.csv",
+                 data=test_Data)
 
 
 if __name__ == '__main__':
-    main()
+    __test()

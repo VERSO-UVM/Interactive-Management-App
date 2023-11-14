@@ -1,12 +1,18 @@
 '''
 Python function that reads in a dataframe and prompts for user input
 to organize data based on column names and desired sort.
+
+This Python script defines a function called organize_Data() that reads a DataFrame from a CSV file, prompts the user
+for input to organize the data based on column names and desired sort order (ascending or descending).
+The script then prints the sorted DataFrame based on user input.
 '''
 import pandas as pd
 
 # funtion name to organize data
 
 
+# @author grace
+# @see https://github.com/orgs/VERSO-UVM/projects/1?pane=issue&itemId=40525023
 def organize_Data():
     # read dataframe (using testing csv)
     df = pd.read_csv('test_data/set3.csv')
@@ -57,5 +63,5 @@ def main():
 
 if __name__ == '__main__':
     main()
- name = "input"
- name.capitalize
+    name = "input"
+    name.capitalize
