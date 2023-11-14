@@ -1,4 +1,4 @@
-
+# @author tasthana
 
 # List of Factor Permutations
 factor_permutations = [
@@ -20,7 +20,8 @@ factor_weights = {
 average_factor_weights = {}
 for permutation, weight in factor_weights.items():
     factors = permutation
-    average_weight = weight / len(factor_permutations)  # Assuming equal weightage for each permutation
+    # Assuming equal weightage for each permutation
+    average_weight = weight / len(factor_permutations)
     average_factor_weights[factors] = average_weight
 
 # Print the data structures
