@@ -1,7 +1,6 @@
-from sqlalchemy import create_engine, Column, String, Integer, BOOLEAN, TIMESTAMP, ForeignKey
+from sqlalchemy import create_engine, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.sql.functions import current_timestamp
 
 # Basic overview from https://www.youtube.com/watch?v=AKQ3XEDI9Mw,
 # https://docs.sqlalchemy.org/en/20/tutorial/index.html#unified-tutorial,
