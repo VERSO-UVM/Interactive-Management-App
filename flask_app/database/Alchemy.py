@@ -48,6 +48,7 @@ def initialize_database_connection() -> Session:
     """
 
     DATABASE_LOCATION: str = "/database/data.sqlite3"
+
     # Connects to the database file: toggle echo to see activity in console
     engine = create_engine("sqlite://" + DATABASE_LOCATION, echo=False)
 
