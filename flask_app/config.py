@@ -5,6 +5,8 @@ from flask import Flask as _Flask
 from flask_bootstrap import Bootstrap as _Bootstrap
 from flask_wtf import CSRFProtect as _CSRFProtect
 
+APP_CSRF: str
+
 
 def __secret_form_key_gen() -> str:
     """
@@ -16,7 +18,7 @@ def __secret_form_key_gen() -> str:
 
 
 def __app_csrf_init(app: _Flask) -> _Flask:
-    app.config.update(SECRET_KEY=__secret_form_key_gen())
+    app.config.update(SECRET_KEY=APP_CSRF)
     _CSRFProtect().init_app(app)
 
     return app
@@ -33,4 +35,8 @@ def configure_flask_application() -> _Flask:
     __app_csrf_init(app)
     _Bootstrap(app)
 
+    app.config['WTF_CSRF_ENABLED'] = False
     return app
+
+
+APP_CSRF = __secret_form_key_gen()

@@ -19,27 +19,30 @@ class ParticipantTBL(Base):
     __tablename__ = 'participants'
 
     # columns
-    username = Column('username', String, primary_key=True)
+    id = Column('id', String, primary_key=True)
+    u_name = Column('u_name', String, nullable=False)
     password = Column('password', String, nullable=False)
-    first_name = Column('first_name', String, nullable=False)
-    last_name = Column('last_name', String, nullable=False)
+    f_name = Column('f_name', String, nullable=False)
+    l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
 
     def __init__(self,
-                 username: str,
+                 id: str,
+                 u_name: str,
                  password: str,
-                 first_name: str,
-                 last_name: str,
+                 f_name: str,
+                 l_name: str,
                  email: str):
 
-        self.username = username
+        self.id = id
+        self.u_name = u_name
         self.password = password
-        self.first_name = first_name
-        self.last_name = last_name
+        self.f_name = f_name
+        self.l_name = l_name
         self.email = email
 
     def __repr__(self):  # string representation
-        return f'{self.username} => name: {self.first_name} {self.last_name}, email: {self.email}'
+        return f'{self.u_name} => name: {self.f_name} {self.l_name}, email: {self.email}'
 
 
 class CategoryTBL(Base):
@@ -107,7 +110,7 @@ def initialize_database_connection() -> Session:
     :rtype: Session
     """
 
-    DATABASE_LOCATION: str = "/database/data.sqlite3"
+    DATABASE_LOCATION: str = "/flask_app/database/data.sqlite3"
 
     # Connects to the database file: toggle echo to see activity in console
     engine = create_engine("sqlite://" + DATABASE_LOCATION, echo=False)

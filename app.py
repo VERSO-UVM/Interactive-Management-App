@@ -4,10 +4,7 @@ from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
 from flask_app.forms.LoginForm import LoginForm
 from flask_app.forms.RegisterForm import RegisterForm
-from flask_app.app.dispatch import insert_factor
-from flask_app.app.dispatch import update_factor
-from flask_app.app.dispatch import delete_factor
-from flask_app.app.dispatch import login as user_login
+import flask_app.app.dispatch as dispatch
 
 app = configure_flask_application()
 login_manager = LoginManager()
@@ -16,7 +13,8 @@ login_manager.init_app(app)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.get_id(user_id)
+
 
 # @author alyssa
 @app.route('/', methods=['GET', 'POST'])
@@ -37,7 +35,7 @@ def login():
 
     if form.validate_on_submit():
         print("VALID")
-        if user_login(form.name.data):
+        if dispatch.login(form.name.data):
             return redirect(url_for('index'))
         return redirect(url_for('two_factor_registration'))
 
@@ -46,7 +44,11 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html', message=message)
+    form: RegisterForm = RegisterForm()
+
+    if form.validate_on_submit():
+        dispatch.register_user(form.to_dict())
+    return render_template('register.html', form=form)
 
 
 @app.route('/add_factor', methods=['GET', 'POST'])

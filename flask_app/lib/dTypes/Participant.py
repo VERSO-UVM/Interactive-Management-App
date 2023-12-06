@@ -1,3 +1,4 @@
+import uuid
 
 # Participant class
 '''
@@ -14,8 +15,19 @@ The __repr__ method outputs a string representation of the participant, includin
 
 class Participant:
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self,
+                 u_name: str,
+                 f_name: str,
+                 l_name: str,
+                 email: str,
+                 ):
+
+        self.id = str(uuid.uuid4())
+        self.u_name = u_name
+        self.f_name = f_name
+        self.l_name = l_name
+        self.email = email
+
         self.haveVoted = []
         self.willVote = []
 
@@ -27,10 +39,10 @@ class Participant:
         self.willVote.append(newItem)
 
     def getName(self):
-        return self.name
+        return self.u_name
 
     def getVoted(self):
         return self.haveVoted
 
     def __repr__(self):
-        return self.name + self.willVote + self.haveVoted + ""
+        return self.u_name + self.willVote + self.haveVoted + ""
