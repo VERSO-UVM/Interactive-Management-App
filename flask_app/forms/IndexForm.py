@@ -13,8 +13,3 @@ class IndexForm(FlaskForm):
 
     name = StringField('Username: ', validators=[DataRequired()])
     submit = SubmitField('Login!')
-    idea = StringField('Idea')
-    clarification = TextAreaField('Clarification')
-    label = StringField('Label')
-    category = StringField('Category')
-    reason = TextAreaField('Reason for Relationship')

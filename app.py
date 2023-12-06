@@ -1,20 +1,32 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, session
 
 from flask_app.forms.IndexForm import IndexForm
 from flask_app.config import configure_flask_application
 from flask_app.app.dispatch import insert_factor
 from flask_app.app.dispatch import update_factor
 from flask_app.app.dispatch import delete_factor
+from flask_app.app.dispatch import login as user_login
+
 
 app = configure_flask_application()
+
 
 # @author alyssa
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
-    form: IndexForm = IndexForm()
-    message = ''
-    return render_template('index.html', form=form, message=message)
+    message: str
+    if 'username' in session:
+        message = f'Welcome {session["username"]}!'
+    else:
+        message = 'Welcome! Login or sign up to get started.'
+
+    return render_template('index.html', message=message)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    pass
 
 
 @app.route('/add_factor', methods=['GET', 'POST'])
