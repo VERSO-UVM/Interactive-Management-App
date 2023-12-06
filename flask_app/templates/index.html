@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
+    <title>Factor App</title>
+</head>
+<body>
+
 {% block styles %}
 {{ super() }}
 {% endblock %}
@@ -19,3 +30,38 @@ Login
   </div>
 </div>
 {% endblock %}
+
+{% block content %}
+    <h1>Factor List</h1>
+
+    <ul>
+        {% for factor in factors %}
+            <li>
+                <strong>Idea:</strong> {{ factor.idea }} |
+                <strong>Label:</strong> {{ factor.label }} |
+                <strong>Category:</strong> {{ factor.category }} |
+                <a href="{{ url_for('edit_factor', id=factor.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_factor', id=factor.id) }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add Factor</h2>
+    <form action="{{ url_for('add_factor') }}" method="post">
+        <label for="idea">Idea:</label>
+        <input type="text" name="idea" required><br>
+
+        <label for="clarification">Clarification:</label>
+        <textarea name="clarification"></textarea><br>
+
+        <label for="label">Label:</label>
+        <input type="text" name="label" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" name="category" required><br>
+
+        <button type="submit">Add Factor</button>
+    </form>
+{% endblock %}
+</body>
+</html>
