@@ -1,5 +1,5 @@
 from flask_app.config import configure_flask_application
-from flask import Flask, render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for
 import uuid
 from datetime import datetime
 
@@ -8,18 +8,19 @@ from flask_app.forms.IndexForm import IndexForm
 app = configure_flask_application()
 
 
-## @author alyssa
+# @author alyssa
 @app.route('/', methods=['GET', 'POST'])
 def index():
 
     form: IndexForm = IndexForm()
     message = ''
     return render_template('index.html', form=form, message=message)
-    return render_template('index.html', factors=factors, categories=categories)
 
-## author tushar
+
+# author tushar
 factors = []
 categories = []
+
 
 class Factor:
     def __init__(self, idea, clarification, label, category):
@@ -30,6 +31,7 @@ class Factor:
         self.category = category
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
+
 
 class Category:
     def __init__(self, name):
@@ -47,9 +49,9 @@ def add_factor():
         clarification = request.form['clarification']
         label = request.form['label']
         category = request.form['category']
-        reason = request.form['reason']
 
-        new_factor = Factor(idea=idea, clarification=clarification, label=label, category=category)
+        new_factor = Factor(
+            idea=idea, clarification=clarification, label=label, category=category)
         factors.append(new_factor)
 
     return redirect(url_for('index'))
@@ -72,11 +74,13 @@ def edit_factor(id):
 
     return render_template('edit_factor.html', factor=factor, categories=categories)
 
+
 @app.route('/delete_factor/<id>')
 def delete_factor(id):
     global factors
     factors = [f for f in factors if f.id != id]
     return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -87,6 +91,3 @@ if __name__ == '__main__':
 # It should be run through wsgi.py gateway otherwise
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
-
-
-
