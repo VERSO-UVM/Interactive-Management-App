@@ -77,23 +77,23 @@ class FactorTBL(Base):
     id = Column('id', String, primary_key=True)
     idea = Column('parent_idea', String, nullable=False)
     t_created = Column('created_at', TIMESTAMP, nullable=False)
+    label = Column('label', String, nullable=False)
     description = Column('description', String, nullable=True)
-    label = Column('label', String, nullable=True)
     t_updated = Column('last_updated', TIMESTAMP, nullable=True)
 
     def __init__(self,
                  id: str,
                  idea: str,
                  t_created: datetime,
+                 label: str,
                  description: str = None,
-                 label: str = None,
                  t_updated: datetime = None):
 
         self.id = id
         self.idea = idea
         self.t_created = t_created
-        self.description = description
         self.label = label
+        self.description = description
         self.t_updated = t_updated
 
     def __repr__(self):
