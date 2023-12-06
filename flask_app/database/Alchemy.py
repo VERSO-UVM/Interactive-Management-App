@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker, Session
 Base = declarative_base()
 
 
-class Participant(Base):
+class ParticipantTBL(Base):
 
     # tablename
     __tablename__ = 'participants'
@@ -42,7 +42,7 @@ class Participant(Base):
         return f'{self.username} => name: {self.first_name} {self.last_name}, email: {self.email}'
 
 
-class Category(Base):
+class CategoryTBL(Base):
 
     __tablename__ = 'categories'
 
@@ -52,7 +52,7 @@ class Category(Base):
     t_updated = Column('last_updated', TIMESTAMP, nullable=True)
 
 
-class Idea(Base):
+class IdeaTBL(Base):
 
     __tablename__ = 'ideas'
 
@@ -70,7 +70,7 @@ class Idea(Base):
         return f'{self.title}: {self.votes} votes'
 
 
-class Factor(Base):
+class FactorTBL(Base):
 
     __tablename__ = 'factors'
 
