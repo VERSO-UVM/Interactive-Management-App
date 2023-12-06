@@ -33,7 +33,7 @@ Usage:
 """
 
 
-class idea ():
+class Idea():
     def __init__(self,
                  title: str,
                  votes: int):

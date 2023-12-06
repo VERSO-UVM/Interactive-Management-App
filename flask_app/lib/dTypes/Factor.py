@@ -1,18 +1,15 @@
-from datetime import datetime
 import uuid
+from flask_app.lib.dTypes.Idea import Idea as _Idea
 
 
 # @author tasthana
 class Factor:
     def __init__(self,
-                 idea,
-                 clarification,
-                 label,
-                 category):
+                 idea: _Idea,
+                 description: str = None,
+                 label: str = None):
+
         self.id = str(uuid.uuid4())
         self.idea = idea
-        self.clarification = clarification
+        self.description = description
         self.label = label
-        self.category = category
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
