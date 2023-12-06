@@ -21,6 +21,10 @@ def load_user(user_id):
 def index():
 
     message: str
+
+    for i in session.items():
+        print("HENYO!" + i)
+
     if 'username' in session:
         message = f'Welcome {session["username"]}!'
     else:
@@ -47,7 +51,10 @@ def register():
     form: RegisterForm = RegisterForm()
 
     if form.validate_on_submit():
-        dispatch.register_user(form.to_dict())
+        if dispatch.register_user(form.to_dict()):
+            session.modified = True
+            return redirect(url_for('index'))
+
     return render_template('register.html', form=form)
 
 

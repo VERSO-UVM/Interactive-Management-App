@@ -1,4 +1,5 @@
-from flask import request as __request
+from flask import session
+from flask import request as _request
 from flask_app.lib.dTypes.Participant import Participant as _Participant
 import flask_app.database.database_access as _db_task
 
@@ -26,15 +27,18 @@ def register_user(data: dict) -> bool:
         print(f'{e.with_traceback()}')
         return False
 
-    return _db_task.insert_participant(id=p.id,
-                                       u_name=p.u_name,
-                                       f_name=p.f_name,
-                                       l_name=p.l_name,
-                                       email=p.email,
-                                       pw=pw)
+    if _db_task.insert_participant(id=p.id,
+                                   u_name=p.u_name,
+                                   f_name=p.f_name,
+                                   l_name=p.l_name,
+                                   email=p.email,
+                                   pw=pw):
+
+        session['username'] = p.u_name
+        return True
 
 
-def insert_factor(r: __request) -> None:
+def insert_factor(r: _request) -> None:
     pass
 
 
