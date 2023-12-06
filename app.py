@@ -15,6 +15,7 @@ def index():
     form: IndexForm = IndexForm()
     message = ''
     return render_template('index.html', form=form, message=message)
+    return render_template('index.html', factors=factors, categories=categories)
 
 ## author tushar
 factors = []
@@ -37,22 +38,22 @@ class Category:
         self.created_at = datetime.utcnow()
         self.updated_at = datetime.utcnow()
 
-@app.route('/')
-def index():
-    return render_template('index.html', factors=factors, categories=categories)
 
 @app.route('/add_factor', methods=['POST'])
 def add_factor():
+
     if request.method == 'POST':
         idea = request.form['idea']
         clarification = request.form['clarification']
         label = request.form['label']
         category = request.form['category']
+        reason = request.form['reason']
 
         new_factor = Factor(idea=idea, clarification=clarification, label=label, category=category)
         factors.append(new_factor)
 
     return redirect(url_for('index'))
+
 
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
