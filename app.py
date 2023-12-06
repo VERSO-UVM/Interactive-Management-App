@@ -1,12 +1,12 @@
-from flask_app.config import configure_flask_application
 from flask import render_template, request, redirect, url_for
-import uuid
-from datetime import datetime
 
 from flask_app.forms.IndexForm import IndexForm
+from flask_app.config import configure_flask_application
+from flask_app.app.dispatch import insert_factor
+from flask_app.app.dispatch import update_factor
+from flask_app.app.dispatch import delete_factor
 
 app = configure_flask_application()
-
 
 # @author alyssa
 @app.route('/', methods=['GET', 'POST'])
@@ -17,68 +17,22 @@ def index():
     return render_template('index.html', form=form, message=message)
 
 
-# author tushar
-factors = []
-categories = []
-
-
-class Factor:
-    def __init__(self, idea, clarification, label, category):
-        self.id = str(uuid.uuid4())
-        self.idea = idea
-        self.clarification = clarification
-        self.label = label
-        self.category = category
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
-
-
-class Category:
-    def __init__(self, name):
-        self.id = str(uuid.uuid4())
-        self.name = name
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
-
-
-@app.route('/add_factor', methods=['POST'])
+@app.route('/add_factor', methods=['GET', 'POST'])
 def add_factor():
 
     if request.method == 'POST':
-        idea = request.form['idea']
-        clarification = request.form['clarification']
-        label = request.form['label']
-        category = request.form['category']
-
-        new_factor = Factor(
-            idea=idea, clarification=clarification, label=label, category=category)
-        factors.append(new_factor)
+        pass
 
     return redirect(url_for('index'))
 
 
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
-    factor = next((f for f in factors if f.id == id), None)
-    if factor is None:
-        return "Factor not found", 404
-
-    if request.method == 'POST':
-        factor.idea = request.form['idea']
-        factor.clarification = request.form['clarification']
-        factor.label = request.form['label']
-        factor.category = request.form['category']
-        factor.updated_at = datetime.utcnow()
-
-        return redirect(url_for('index'))
-
-    return render_template('edit_factor.html', factor=factor, categories=categories)
+    return redirect(url_for('index'))
 
 
 @app.route('/delete_factor/<id>')
-def delete_factor(id):
-    global factors
-    factors = [f for f in factors if f.id != id]
+def remove_factor(id):
     return redirect(url_for('index'))
 
 

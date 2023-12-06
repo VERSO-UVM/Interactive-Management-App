@@ -33,9 +33,11 @@ Usage:
 """
 
 
-# TODO: add proposer variable when completed
 class idea ():
-    def __init__(self, title: str, votes: int):
+    def __init__(self,
+                 title: str,
+                 votes: int):
+
         self.title = title
         self.votes = votes
 
