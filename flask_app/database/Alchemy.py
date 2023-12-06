@@ -1,4 +1,6 @@
-from sqlalchemy import create_engine, Column, String
+from datetime import datetime
+
+from sqlalchemy import create_engine, Column, String, Integer, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -38,6 +40,46 @@ class Participant(Base):
 
     def __repr__(self):  # string representation
         return f'{self.username} => name: {self.first_name} {self.last_name}, email: {self.email}'
+    
+class Idea(Base):
+
+    __tablename__ = 'ideas'
+
+    title = Column('title', String, primary_key=True)
+    votes = Column('votes', Integer, nullable=True)
+
+    def __init__(self,
+                 title: str,
+                 votes: int):
+        
+        self.title = title
+        self.votes = votes
+    
+    def __repr__(self):
+        return f'{self.title}: {self.votes} votes'
+    
+
+class Factor(Base):
+
+    __tablename__ = 'factors'
+
+    id = Column('id', Integer, primary_key=True)
+    idea = Column('parent_idea', String, nullable=False)
+    t_created = Column('created_at', TIMESTAMP, nullable=False)
+    description = Column('description', String, nullable=True)
+    label = Column('label', String, nullable=True)
+    t_updated = Column('last_updated', TIMESTAMP, nullable=True)
+
+    def __init__(self,
+                 id: int,
+                 idea: str,
+                 t_created: datetime,
+                 description: str = None,
+                 label: str = None,
+                 t_updated: datetime = None):
+
+
+
 
 
 def initialize_database_connection() -> Session:
