@@ -35,16 +35,25 @@
 {% endblock %}
 
 {% block factor_content %}
-    <h1>Factor List</h1>
+    <h1>Participant List</h1>
 
     <ul>
-        {% for factor in factors %}
+        {% for people in participant %}
             <li>
-                <strong>Idea:</strong> {{ factor.idea }} |
-                <strong>Label:</strong> {{ factor.label }} |
-                <strong>Category:</strong> {{ factor.category }} |
-                <a href="{{ url_for('edit_factor', id=factor.id) }}">Edit</a> |
-                <a href="{{ url_for('delete_factor', id=factor.id) }}">Delete</a>
+                <strong>Username:</strong> {{ people.userName}} |
+                <strong>Email:</strong> {{ people.email }} |
+                <strong>First Name:</strong> {{ people.firstName }} |
+                <strong>Last Name:</strong> {{ people.lastName }} |
+                <strong>Job title:</strong> {{ people.jobTitle }} |
+                <strong>Address:</strong> {{ people.address }} |
+                <strong>State:</strong> {{ people.state }} |
+                <strong>City:</strong> {{ people.city }} |
+                <strong>Zip Code:</strong> {{ people.zipCode }} |
+                <strong>Country:</strong> {{ people.country }} |
+                <strong>Type:</strong> {{ people.type }} |
+                <strong>Telephone:</strong> {{ people.telephone }} |
+                <a href="{{ url_for('edit_participant', id=factor.userName) }}">Edit</a> |
+                <a href="{{ url_for('delete_participant', id=factor.userName) }}">Delete</a>
             </li>
         {% endfor %}
     </ul>
