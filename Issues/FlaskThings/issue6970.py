@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from flask import Flask,redirect,url_for,render_template,request
-from flask_sqlalchemy import SQLAlchemy
+import sqlalchemy
 from datetime import datetime
 from sqlalchemy import or_
 

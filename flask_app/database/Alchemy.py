@@ -25,6 +25,14 @@ class ParticipantTBL(Base):
     f_name = Column('f_name', String, nullable=False)
     l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
+    job_title = Column('job_title', String, nullable=True)
+    address = Column('address', String, nullable=True)
+    state = Column('state', String, nullable=True)
+    city = Column('city', String, nullable=True)
+    zip_code = Column('zip_code', String, nullable=True)
+    country = Column('country', String, nullable=True)
+    p_type = Column('p_type', String, nullable=True)
+    telephone = Column('telephone', String, nullable=True)
 
     def __init__(self,
                  id: str,
@@ -32,7 +40,15 @@ class ParticipantTBL(Base):
                  password: str,
                  f_name: str,
                  l_name: str,
-                 email: str):
+                 email: str,
+                 job_title: str = None,
+                 address: str = None,
+                 state: str = None,
+                 city: str = None,
+                 zip_code: str = None,
+                 country: str = None,
+                 p_type: str = None,
+                 telephone: str = None):
 
         self.id = id
         self.u_name = u_name
@@ -40,6 +56,14 @@ class ParticipantTBL(Base):
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
+        job_title = job_title
+        address = address
+        state = state
+        city = city
+        zip_code = zip_code
+        country = country
+        p_type = p_type
+        telephone = telephone
 
     def __repr__(self):  # string representation
         return f'{self.u_name} => name: {self.f_name} {self.l_name}, email: {self.email}'

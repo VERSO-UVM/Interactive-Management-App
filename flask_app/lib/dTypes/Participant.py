@@ -20,13 +20,28 @@ class Participant:
                  f_name: str,
                  l_name: str,
                  email: str,
-                 ):
+                 job_title: str = None,
+                 address: str = None,
+                 state: str = None,
+                 city: str = None,
+                 zip_code: str = None,
+                 country: str = None,
+                 p_type: str = None,
+                 telephone: str = None):
 
         self.id = str(uuid.uuid4())
         self.u_name = u_name
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
+        self.job_title = job_title
+        self.address = address
+        self.state = state
+        self.city = city
+        self.zip_code = zip_code
+        self.country = country
+        self.p_type = p_type
+        self.telephone = telephone
 
         self.haveVoted = []
         self.willVote = []

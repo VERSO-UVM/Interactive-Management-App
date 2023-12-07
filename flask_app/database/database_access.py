@@ -56,7 +56,15 @@ def insert_participant(id: str,
                        f_name: str,
                        l_name: str,
                        email: str,
-                       pw: str) -> bool:
+                       pw: str,
+                       job_title: str,
+                       address: str,
+                       state: str,
+                       city: str,
+                       zip_code: str,
+                       country: str,
+                       p_type: str,
+                       telephone: str) -> bool:
 
     insert: _ParticipantTBL
 
@@ -66,7 +74,15 @@ def insert_participant(id: str,
                                  f_name=f_name,
                                  l_name=l_name,
                                  email=email,
-                                 password=pw)
+                                 password=pw,
+                                 job_title=job_title,
+                                 address=address,
+                                 state=state,
+                                 city=city,
+                                 zip_code=zip_code,
+                                 country=country,
+                                 p_type=p_type,
+                                 telephone=telephone)
 
     except AttributeError:
         print('ERROR: attempting to insert Participant, but data is invalid or missing')

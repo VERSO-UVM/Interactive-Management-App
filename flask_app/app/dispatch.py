@@ -17,7 +17,15 @@ def register_user(data: dict) -> bool:
         p = _Participant(u_name=data['u_name'],
                          f_name=data['f_name'],
                          l_name=data['l_name'],
-                         email=data['email'])
+                         email=data['email'],
+                         job_title=data['job_title'],
+                         address=data['address'],
+                         state=data['state'],
+                         city=data['city'],
+                         zip_code=data['zip_code'],
+                         country=data['country'],
+                         p_type=data['p_type'],
+                         telephone=data['telephone'])
 
         pw = data['password']
 
@@ -32,7 +40,15 @@ def register_user(data: dict) -> bool:
                                    f_name=p.f_name,
                                    l_name=p.l_name,
                                    email=p.email,
-                                   pw=pw):
+                                   pw=pw,
+                                   job_title=p.job_title,
+                                   address=p.address,
+                                   state=p.state,
+                                   city=p.city,
+                                   zip_code=p.zip_code,
+                                   country=p.country,
+                                   p_type=p.p_type,
+                                   telephone=p.telephone):
 
         session['username'] = p.u_name
         return True
