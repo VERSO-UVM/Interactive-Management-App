@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from flask import Flask,redirect,url_for,render_template,request
-from flask_sqlalchemy import SQLAlchemy
+
 from datetime import datetime
 from sqlalchemy import or_
 
@@ -62,7 +62,7 @@ def all_participants():
 
 
 ##Removing Participant
-@app.route("/delete_participants/<userName>")
+@app.route("/delete_participants/<userName>", methods=['POST','GET'])
 def delete_participants(userName):
     dParticipant = Participant.query.get_or_404(userName)
     try:
@@ -75,23 +75,23 @@ def delete_participants(userName):
 
 
 ##Editing Participant
-@app.route("/edit_participant/<userName>")
-def edit_participant(userName):
-    editPart = Participant.query.get_or_404(userName)
+@app.route("/edit_participant/<userName>", methods=['POST','GET'])
+def edit_participant(username):
+    editPart = Participant.query.get_or_404(username)
 
     #Gets the info from the selected participant
     if request.method == 'POST':
 
         Participant.username=request.form["userName"]
-        Participant.firstName=request.form["firstName"]
-        Participant.lastName=request.form["lastName"] 
-        Participant.jobTitle=request.form["jobTitle"] 
+        Participant.f_name=request.form["f_name"]
+        Participant.l_name=request.form["l_name"] 
+        Participant.job_title=request.form["job_title"] 
         Participant.address=request.form["address"]
         Participant.state=request.form["state"]
         Participant.city=request.form["city"]
-        Participant.zipCode=request.form["zipCode"]
+        Participant.zip_code=request.form["zip_code"]
         Participant.country=request.form["country"]
-        Participant.type=request.form["type"]
+        Participant.p_type=request.form["p_type"]
         Participant.telephone=request.form["telephone"]
 
         try:
@@ -115,31 +115,32 @@ def add_participant():
         
         ##Get from the form
         username=request.form["userName"]
+        password=request.form["password"]
         email=request.form["email"]
-        firstName=request.form["firstName"]
-        lastName=request.form["lastName"] 
-        jobTitle=request.form["jobTitle"] 
+        f_name=request.form["f_name"]
+        l_name=request.form["l_name"] 
+        job_title=request.form["job_title"] 
         address=request.form["address"]
         state=request.form["state"]
         city=request.form["city"]
-        zipCode=request.form["zipCode"]
+        zip_code=request.form["zip_code"]
         country=request.form["country"]
-        type=request.form["type"]
+        p_type=request.form["p_type"]
         telephone=request.form["telephone"]
 
 
         ##Adds to the database 
         newPart=Participant(username=username,
                             email=email,
-                            first_name=firstName,
-                            last_name=lastName,
-                            jobTitle=jobTitle,
+                            f_name=f_name,
+                            l_name=l_name,
+                            job_title=job_title,
                             address=address,
                             state=state,
                             city=city,
-                            zipCode=zipCode,
+                            zip_code=zip_code,
                             country=country,
-                            type=type,
+                            p_type=p_type,
                             telephone=telephone)
         
         db.session.add(newPart)
@@ -155,7 +156,7 @@ def add_participant():
 def search_participants():
     if request.method=='POST':
         word=request.form("search")
-        participant = Participant.query.filter(or_(Participant.username.like(f"%{word}%"), Participant.first_name.like(f"%{word}%"), Participant.last_name.like(f"%{word}%"), Participant.jobTitle.like(f"%{word}%"), Participant.username.like(f"%{word}%"))).all()
+        participant = Participant.query.filter(or_(Participant.username.like(f"%{word}%"), Participant.first_name.like(f"%{word}%"), Participant.last_name.like(f"%{word}%"), Participant.job_title.like(f"%{word}%"), Participant.username.like(f"%{word}%"))).all()
     else:    
         participant=participant.query.all()
     return render_template('participant.html', participant=participant)

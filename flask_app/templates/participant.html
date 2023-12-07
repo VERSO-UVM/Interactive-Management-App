@@ -34,49 +34,38 @@
     </div>
 {% endblock %}
 
-{% block factor_content %}
+{% block Participant_content %}
     <h1>Participant List</h1>
+
+    <form action="{{ url_for('search_participants') }}" method="post">
+
+        <label for="search">Search</label>
+        <input type="text" name="search" ><br>
+        <button type="submit">Save</button>
+    </form>
 
     <ul>
         {% for people in participant %}
             <li>
-                <strong>Username:</strong> {{ people.userName}} |
-                <strong>Email:</strong> {{ people.email }} |
-                <strong>First Name:</strong> {{ people.firstName }} |
-                <strong>Last Name:</strong> {{ people.lastName }} |
-                <strong>Job title:</strong> {{ people.jobTitle }} |
+                <strong>Username:</strong> {{ people.username}} |
+                <strong>First Name:</strong> {{ people.f_name }} |
+                <strong>Last Name:</strong> {{ people.l_name }} |
+                <strong>Job title:</strong> {{ people.job_title }} |
                 <strong>Address:</strong> {{ people.address }} |
                 <strong>State:</strong> {{ people.state }} |
                 <strong>City:</strong> {{ people.city }} |
-                <strong>Zip Code:</strong> {{ people.zipCode }} |
+                <strong>Zip Code:</strong> {{ people.zip_code }} |
                 <strong>Country:</strong> {{ people.country }} |
                 <strong>Type:</strong> {{ people.type }} |
                 <strong>Telephone:</strong> {{ people.telephone }} |
-                <a href="{{ url_for('edit_participant', id=factor.userName) }}">Edit</a> |
-                <a href="{{ url_for('delete_participant', id=factor.userName) }}">Delete</a>
+                <a href="{{ url_for('edit_participant', id=people.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_participant', id=people.id) }}">Delete</a>
             </li>
         {% endfor %}
     </ul>
 
-    <h2>Add Factor</h2>
-<form action="{{ url_for('add_factor') }}" method="post">
-    <label for="idea">Idea:</label>
-    <input type="text" name="idea" required><br>
+    <!-- <p><a href="register">Register here</button></a></p> -->
 
-    <label for="clarification">Clarification:</label>
-    <textarea name="clarification"></textarea><br>
-
-    <label for="label">Label:</label>
-    <input type="text" name="label" required><br>
-
-    <label for="category">Category:</label>
-    <input type="text" name="category" required><br>
-
-    <label for="reason">Reason for Relationship:</label>
-    <textarea name="reason"></textarea><br>
-
-    <button type="submit">Add Factor</button>
-</form>
 {% endblock %}
 </body>
 
