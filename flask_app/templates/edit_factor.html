@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Factor</title>
+</head>
+<body>
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Edit Factor</h1>
+
+    <form action="{{ url_for('edit_factor', id=factor.id) }}" method="post">
+        <label for="idea">Idea:</label>
+        <input type="text" name="idea" value="{{ factor.idea }}" required><br>
+
+        <label for="clarification">Clarification:</label>
+        <textarea name="clarification">{{ factor.clarification }}</textarea><br>
+
+        <label for="label">Label:</label>
+        <input type="text" name="label" value="{{ factor.label }}" required><br>
+
+        <label for="category">Category:</label>
+        <input type="text" name="category" value="{{ factor.category }}" required><br>
+
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <p><a href="{{ url_for('index') }}">Back to Factor List</a></p>
+{% endblock %}
+</body>
+</html>
