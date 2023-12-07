@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
+    <title>Factor App</title>
+</head>
+
+<body>
+
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+                <h1 class="pt-5 pb-2">Dashboard</h1>
+                <p class="lead">Welcome back</p>
+                {{ wtf.quick_form(form) }}
+                <p class="pt-5"><strong>{{ message }}</strong></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block factor_content %}
+    <h1>Participant List</h1>
+
+    <ul>
+        {% for people in participant %}
+            <li>
+                <strong>Username:</strong> {{ people.userName}} |
+                <strong>Email:</strong> {{ people.email }} |
+                <strong>First Name:</strong> {{ people.firstName }} |
+                <strong>Last Name:</strong> {{ people.lastName }} |
+                <strong>Job title:</strong> {{ people.jobTitle }} |
+                <strong>Address:</strong> {{ people.address }} |
+                <strong>State:</strong> {{ people.state }} |
+                <strong>City:</strong> {{ people.city }} |
+                <strong>Zip Code:</strong> {{ people.zipCode }} |
+                <strong>Country:</strong> {{ people.country }} |
+                <strong>Type:</strong> {{ people.type }} |
+                <strong>Telephone:</strong> {{ people.telephone }} |
+                <a href="{{ url_for('edit_participant', id=factor.userName) }}">Edit</a> |
+                <a href="{{ url_for('delete_participant', id=factor.userName) }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Add Factor</h2>
+<form action="{{ url_for('add_factor') }}" method="post">
+    <label for="idea">Idea:</label>
+    <input type="text" name="idea" required><br>
+
+    <label for="clarification">Clarification:</label>
+    <textarea name="clarification"></textarea><br>
+
+    <label for="label">Label:</label>
+    <input type="text" name="label" required><br>
+
+    <label for="category">Category:</label>
+    <input type="text" name="category" required><br>
+
+    <label for="reason">Reason for Relationship:</label>
+    <textarea name="reason"></textarea><br>
+
+    <button type="submit">Add Factor</button>
+</form>
+{% endblock %}
+</body>
+
+</html>
