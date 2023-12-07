@@ -82,8 +82,8 @@ def remove_factor(id):
 def search_participants():
     if request.method == 'POST':
         word = request.form("search")
-        participant = Participant.query.filter(or_(Participant.username.like(f"%{word}%"), Participant.first_name.like(
-            f"%{word}%"), Participant.last_name.like(f"%{word}%"), Participant.jobTitle.like(f"%{word}%"), Participant.username.like(f"%{word}%"))).all()
+        participant = ParticipantTBL.query.filter(or_(ParticipantTBL.username.like(f"%{word}%"), ParticipantTBL.f_name.like(
+            f"%{word}%"), ParticipantTBL.l_name.like(f"%{word}%"), ParticipantTBL.job_title.like(f"%{word}%"), ParticipantTBL.username.like(f"%{word}%"))).all()
     else:
         participant = participant.query.all()
     return render_template('participant.html', participant=participant)

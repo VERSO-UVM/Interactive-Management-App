@@ -50,23 +50,23 @@
         {% for people in participant %}
             <li>
                 <strong>Username:</strong> {{ people.username}} |
-                <strong>First Name:</strong> {{ people.firstName }} |
-                <strong>Last Name:</strong> {{ people.lastName }} |
-                <strong>Job title:</strong> {{ people.jobTitle }} |
+                <strong>First Name:</strong> {{ people.f_name }} |
+                <strong>Last Name:</strong> {{ people.l_name }} |
+                <strong>Job title:</strong> {{ people.job_title }} |
                 <strong>Address:</strong> {{ people.address }} |
                 <strong>State:</strong> {{ people.state }} |
                 <strong>City:</strong> {{ people.city }} |
-                <strong>Zip Code:</strong> {{ people.zipCode }} |
+                <strong>Zip Code:</strong> {{ people.zip_code }} |
                 <strong>Country:</strong> {{ people.country }} |
                 <strong>Type:</strong> {{ people.type }} |
                 <strong>Telephone:</strong> {{ people.telephone }} |
-                <a href="{{ url_for('edit_participant', id=factor.id) }}">Edit</a> |
-                <a href="{{ url_for('delete_participant', id=factor.id) }}">Delete</a>
+                <a href="{{ url_for('edit_participant', id=people.id) }}">Edit</a> |
+                <a href="{{ url_for('delete_participant', id=people.id) }}">Delete</a>
             </li>
         {% endfor %}
     </ul>
 
-    <p><a href="register">Register here</button></a></p>
+    <!-- <p><a href="register">Register here</button></a></p> -->
 
 {% endblock %}
 </body>
