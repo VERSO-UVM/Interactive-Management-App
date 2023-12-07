@@ -77,6 +77,18 @@ def remove_factor(id):
     return redirect(url_for('index'))
 
 
+# Search Participants
+@app.route("/search_participants", methods=['POST', 'GET'])
+def search_participants():
+    if request.method == 'POST':
+        word = request.form("search")
+        participant = Participant.query.filter(or_(Participant.username.like(f"%{word}%"), Participant.first_name.like(
+            f"%{word}%"), Participant.last_name.like(f"%{word}%"), Participant.jobTitle.like(f"%{word}%"), Participant.username.like(f"%{word}%"))).all()
+    else:
+        participant = participant.query.all()
+    return render_template('participant.html', participant=participant)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
 
