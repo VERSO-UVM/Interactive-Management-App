@@ -6,7 +6,7 @@ from flask_app.forms.FormValidators import GenericTextValidator
 
 
 # @author Alyssa
-# @author Grace 
+# @author grace 
 class WorkshopForm(FlaskForm):
 
     Basic_Requirements = GenericTextValidator
