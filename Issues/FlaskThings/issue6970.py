@@ -62,7 +62,7 @@ def all_participants():
 
 
 ##Removing Participant
-@app.route("/delete_participants/<userName>")
+@app.route("/delete_participants/<userName>", methods=['POST','GET'])
 def delete_participants(userName):
     dParticipant = Participant.query.get_or_404(userName)
     try:
@@ -75,7 +75,7 @@ def delete_participants(userName):
 
 
 ##Editing Participant
-@app.route("/edit_participant/<userName>")
+@app.route("/edit_participant/<userName>", methods=['POST','GET'])
 def edit_participant(userName):
     editPart = Participant.query.get_or_404(userName)
 
