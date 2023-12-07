@@ -1,3 +1,4 @@
+            exit 1
 #!/bin/bash
 
 # FOR MACOS AND LINUX; you can use this shell script to help set up the development
