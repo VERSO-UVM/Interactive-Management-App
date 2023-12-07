@@ -37,14 +37,12 @@
 {% block Participant_content %}
     <h1>Participant List</h1>
 
-    <div class="content">
-        <div class="form">
-            <form action="/search_participant" method="POST">
-                <input type="text" name="search" id="search">
-                <input type="submit" value="Update">
-            </form>
-        </div>
-    </div>
+    <form action="{{ url_for('search_participants') }}" method="post">
+
+        <label for="search">Search</label>
+        <input type="text" name="search" ><br>
+        <button type="submit">Save</button>
+    </form>
 
     <ul>
         {% for people in participant %}

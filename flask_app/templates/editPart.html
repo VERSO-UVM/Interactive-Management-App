@@ -37,27 +37,46 @@
 {% block Participant_content %}
     <h1>Edit Participant</h1>
 
-    <ul>
-        <div class="content">
-            <div class="form">
-                <form action="/edit_participant/{{editPart.username}}" method="POST">
-                    <input type="text" name="email" id="email" value="{{editPart.email}}">
-                    <input type="text" name="f_name" id="f_name" value="{{editPart.f_name}}">
-                    <input type="text" name="l_name" id="l_name" value="{{editPart.l_name}}">
-                    <input type="text" name="job_title" id="job_title" value="{{editPart.job_title}}">
-                    <input type="text" name="address" id="address" value="{{editPart.address}}">
-                    <input type="text" name="state" id="state" value="{{editPart.state}}">
-                    <input type="text" name="city" id="city" value="{{editPart.city}}">
-                    <input type="text" name="zip_code" id="zip_code" value="{{editPart.zip_code}}">
-                    <input type="text" name="country" id="country" value="{{editPart.country}}">
-                    <input type="text" name="p_type" id="p_type" value="{{editPart.p_type}}">
-                    <input type="text" name="telephone" id="telephone" value="{{editPart.telephone}}">
-                    <input type="submit" value="Update">
-                </form>
-            </div>
-        </div>
-        {% endfor %}
-    </ul>
+    <form action="{{ url_for('edit_participant'), username=editPart.username }}" method="post">
+
+        <label for="username">Username</label>
+        <input type="text" name="username" value="{editPart.username}"><br>
+
+        <label for="password">Password</label>
+        <input type="text" name="password" value="{editPart.password}"><br>
+
+        <label for="f_name">First Name</label>
+        <input type="text" name="f_name" value="{editPart.f_name}"><br>
+
+        <label for="l_name">Last Name</label>
+        <input type="text" name="l_name" value="{editPart.l_name}"><br>
+
+        <label for="job_title">Job Title</label>
+        <input type="text" name="job_title" value="{editPart.job_title}""><br>
+
+        <label for="address">Address</label>
+        <input type="text" name="address" value="{editPart.adddress}"><br>
+
+        <label for="state">State</label>
+        <input type="text" name="state" value="{editPart.state}"><br>
+
+        <label for="city">City</label>
+        <input type="text" name="city" value="{editPart.city}"><br>
+
+        <label for="zip_code">Zip Code </label>
+        <input type="text" name="zip_code" value="{editPart.zip_code}"><br>
+
+        <label for="country">Country </label>
+        <input type="text" name="country" value="{editPart.country}"><br>
+
+        <label for="p_type">Type</label>
+        <input type="text" name="p_type" value="{editPart.p_type}"><br>
+
+        <label for="telephone">telephone</label>
+        <input type="text" name="telephone" value="{editPart.telephone}"><br>
+
+        <button type="submit">Save</button>
+    </form>
 
 {% endblock %}
 </body>

@@ -76,8 +76,8 @@ def delete_participants(userName):
 
 ##Editing Participant
 @app.route("/edit_participant/<userName>", methods=['POST','GET'])
-def edit_participant(userName):
-    editPart = Participant.query.get_or_404(userName)
+def edit_participant(username):
+    editPart = Participant.query.get_or_404(username)
 
     #Gets the info from the selected participant
     if request.method == 'POST':
@@ -115,6 +115,7 @@ def add_participant():
         
         ##Get from the form
         username=request.form["userName"]
+        password=request.form["password"]
         email=request.form["email"]
         f_name=request.form["f_name"]
         l_name=request.form["l_name"] 
@@ -131,8 +132,8 @@ def add_participant():
         ##Adds to the database 
         newPart=Participant(username=username,
                             email=email,
-                            first_name=f_name,
-                            last_name=l_name,
+                            f_name=f_name,
+                            l_name=l_name,
                             job_title=job_title,
                             address=address,
                             state=state,
