@@ -93,7 +93,7 @@ def search_participants():
 if __name__ == '__main__':
     app.run(debug=True)
 
-
+# @author grace
 @app.route('/workshop', methods=['GET', 'POST'])
 def workshop():
 
@@ -103,7 +103,13 @@ def workshop():
         print("VALID")
 
         data = {'trigger_question': form.trigger_field.data,
-                'date': form.date.data}
+                'context_statement': form.context_statement.data,
+                'title': form.title.data,
+                'date': form.date.data,
+                'host_organization': form.host_organization.data,
+                'location': form.location.data,
+                'objectives': form.objectives.data
+                }
         print(data)
 
     message = ''
