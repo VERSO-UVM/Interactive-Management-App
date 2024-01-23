@@ -1,5 +1,5 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,35 +7,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
-    <title>Factor App</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">  {# Links to a custom CSS file #}
+    <title>Factor App</title>  {# Sets the title of the page to "Factor App" #}
 </head>
 
 <body>
 
 {% block styles %}
-    {{ super() }}
+    {{ super() }}  {# Includes any styles defined in the parent template ('base.html') #}
 {% endblock %}
 
 {% block title %}
-    Login
+    Login  {# Sets the title of the page to "Login" #}
 {% endblock %}
 
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-                <h1 class="pt-5 pb-2">Dashboard</h1>
-                <p class="lead">Welcome back</p>
-                {{ wtf.quick_form(form) }}
-                <p class="pt-5"><strong>{{ message }}</strong></p>
+                <h1 class="pt-5 pb-2">Dashboard</h1>  {# Heading for the dashboard #}
+                <p class="lead">Welcome back</p>  {# Lead paragraph #}
+                {{ wtf.quick_form(form) }}  {# Renders a quick form using the 'wtf' alias #}
+                <p class="pt-5"><strong>{{ message }}</strong></p>  {# Paragraph with a strong message variable #}
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block Participant_content %}
-    <h1>Participant List</h1>
+    <h1>Participant List</h1>  {# Heading for the participant list #}
 
     <form action="{{ url_for('search_participants') }}" method="post">
 

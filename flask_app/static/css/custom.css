@@ -6,6 +6,7 @@ body {
     padding: 0;
     background-color: wheat;
     color: blue;
+    text-align: center;
 }
 
 nav {
@@ -31,6 +32,9 @@ nav a:hover {
     padding: 16px;
 }
 
-
-
+h1{
+    text-align: center;
+    text-transform: capitalize;
+    color: bisque;
+}
 
