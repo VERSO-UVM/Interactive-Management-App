@@ -1,20 +1,24 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block styles %}
-{{ super() }}
+  {{ super() }}  {# Includes any styles defined in the parent template ('base.html') #}
 {% endblock %}
+
 {% block title %}
-ISM Home
+  ISM Home  {# Sets the title of the page to "ISM Home" #}
 {% endblock %}
+
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-      <h1 class="pt-5 pb-2">ISM Home</h1>
-      <p class="pt-5"><strong>{{ message }}</strong></p>
-      <p><a href="register">Register here</button></a></p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+        <h1 class="pt-5 pb-2">ISM Home</h1>  {# Heading for the page #}
+        <p class="pt-5"><strong>{{ message }}</strong></p>  {# Paragraph with a strong message variable #}
+        <p class="pt-5"> Welome to the ISM app. Hit register to start solving your business problems today or log back in to pick up where you left off. </p>
+        <p><a href="login">Login here</a></p>  {# Link to register with a text 'Register here' #}
+        <p><a href="register">Register here</a></p>  {# Link to register with a text 'Register here' #}
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}
