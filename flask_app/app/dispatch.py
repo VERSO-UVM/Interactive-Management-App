@@ -7,7 +7,7 @@ import flask_app.database.database_access as _db_task
 def login(username: str) -> None:
     pass
 
-
+# define register user function
 def register_user(data: dict) -> bool:
 
     p: _Participant
