@@ -34,12 +34,16 @@
     {%- endblock scripts %}
     {%- endblock body %}
 
-    <nav>
+    <nav style="color:blue;text-align:center;"></nav>>
       <!-- navbar content -->
-      <a href="{{ url_for('index') }}">Home</a>
-      <a href="{{ url_for('add_factor') }}">Add Factor</a>
-      <a href="{{ url_for('workshop') }}">Workshop</a>
+      <a href="{{ url_for('index') }}">Home Page</a>
+      <a href="{{ url_for('factor') }}">Factor Page</a>
+      <a href="{{ url_for('participant') }}">Participant Page</a>
+      <a href="{{ url_for('rating') }}">Ratings Page</a>
+      <a href="{{ url_for('result') }}">Results Page</a>
+
     </nav>  {# Navigation links outside the main content block #}
+
     </body>
     {%- endblock html %}
 
