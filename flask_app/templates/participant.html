@@ -7,11 +7,47 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
 
 
 {% block content %}
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
             <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
             <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
+              <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+            <th>ID</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+        </tr>
+        <!-- Example placeholder until can connect toable 
+             to a database to display real-time information-->
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+      </table>
         </div>
     </div>
 </div>
