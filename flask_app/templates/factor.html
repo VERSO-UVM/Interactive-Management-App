@@ -6,11 +6,53 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
 {% block content %}
+<style>
+  table, th, td {
+    border:1px solid black;
+  }
+  </style>
+
 <div class="container">
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
       <h1 class="pt-5 pb-2">Factor Page</h1>  {# Heading for the factor page #}
       <p>{{ message }}</p>  {# Display the message passed from the route #}
+      <h2>Factors</h2>
+
+      <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+            <th>ID</th>
+            <th>Order</th>
+            <th>Factor</th>
+            <th></th>
+        </tr>
+        <!-- Example placeholder until can connect toable 
+             to a database to display real-time information-->
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+      </table>
+      
+      <h4> Add a New Factor</h4>
+        <!-- Textbox to add order of factor -->
+        <label for="orderFactor"></label>
+        <input type="text" id="orderFactor" name="orderFactor" placeholder="Order">
+        <!-- Textbox to add factor -->
+        <label for="factor"></label>
+        <input type="text" id="factor" name="factor" placeholder="Factor">
+        <!-- Button to submit -->
+        <button type="button">Submit</button>
     </div>
   </div>
 </div>

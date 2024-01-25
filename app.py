@@ -10,11 +10,11 @@ from flask_app.forms.WorkshopForm import WorkshopForm
 
 # Configure Flask application
 app = configure_flask_application()
-login_manager = LoginManager()
-login_manager.init_app(app)
+# login_manager = LoginManager()
+# login_manager.init_app(app)
 
 # Define a user loader function for login management
-@login_manager.user_loader
+# @login_manager.user_loader
 def load_user(user_id):
     return User.get_id(user_id)
 
