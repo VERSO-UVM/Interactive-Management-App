@@ -107,8 +107,8 @@ class RatingsTBL(Base):
     __tablename__ = 'ratings'
 
     id = Column('id', String, primary_key=True)
-    factor_id_leading = Column('factor_id', String, nullable=False)
-    factor_id_following = Column('factor_id', String, nullable=False)
+    factor_id_leading = Column('factor_id_leading', String, nullable=False)
+    factor_id_following = Column('factor_id_following', String, nullable=False)
     rating = Column('rating', Integer, nullable=False)
     participant_id = Column('participant_id', String, nullable=False)
 
@@ -130,11 +130,11 @@ class RatingsTBL(Base):
 
 class ResultsTBL(Base):
 
-    __tablename__ = 'ratings'
+    __tablename__ = 'results'
 
     id = Column('id', String, primary_key=True)
-    factor_id_leading = Column('factor_id', String, nullable=False)
-    factor_id_following = Column('factor_id', String, nullable=False)
+    factor_id_leading = Column('factor_id_leading', String, nullable=False)
+    factor_id_following = Column('factor_id_following', String, nullable=False)
     rating = Column('rating', Integer, nullable=False)
     participant_id = Column('participant_id', String, nullable=False)
 
