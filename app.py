@@ -28,7 +28,7 @@ def index():
     if 'username' in session:
         message = f'Welcome {session["username"]}!'
     else:
-        message = 'Welcome! Login or sign up to get started.'
+        message = 'Welcome! Register to get started.'
 
     return render_template('index.html', message=message)
 
