@@ -4,6 +4,7 @@ from sqlalchemy import create_engine, Column, String, Integer, TIMESTAMP
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
+
 # @author alyssa
 
 # Basic overview from https://www.youtube.com/watch?v=AKQ3XEDI9Mw,
@@ -69,62 +70,89 @@ class ParticipantTBL(Base):
         return f'{self.u_name} => name: {self.f_name} {self.l_name}, email: {self.email}'
 
 
-class CategoryTBL(Base):
-
-    __tablename__ = 'categories'
-
-    id = Column('id', String, primary_key=True)
-    name = Column('name', String, nullable=False)
-    t_created = Column('created_at', TIMESTAMP, nullable=False)
-    t_updated = Column('last_updated', TIMESTAMP, nullable=True)
-
-
-class IdeaTBL(Base):
-
-    __tablename__ = 'ideas'
-
-    title = Column('title', String, primary_key=True)
-    votes = Column('votes', Integer, nullable=True)
-
-    def __init__(self,
-                 title: str,
-                 votes: int):
-
-        self.title = title
-        self.votes = votes
-
-    def __repr__(self):
-        return f'{self.title}: {self.votes} votes'
-
-
 class FactorTBL(Base):
 
     __tablename__ = 'factors'
 
     id = Column('id', String, primary_key=True)
-    idea = Column('parent_idea', String, nullable=False)
+    title = Column('parent_idea', String, nullable=False)
     t_created = Column('created_at', TIMESTAMP, nullable=False)
     label = Column('label', String, nullable=False)
     description = Column('description', String, nullable=True)
     t_updated = Column('last_updated', TIMESTAMP, nullable=True)
+    votes = Column('votes', Integer, nullable=False)
 
     def __init__(self,
                  id: str,
-                 idea: str,
+                 title: str,
                  t_created: datetime,
                  label: str,
                  description: str = None,
-                 t_updated: datetime = None):
+                 t_updated: datetime = None,
+                 votes: int = 0):
 
         self.id = id
-        self.idea = idea
+        self.title = title
         self.t_created = t_created
         self.label = label
         self.description = description
         self.t_updated = t_updated
+        self.votes = votes
 
     def __repr__(self):
         return f'Factor #{self.id} "{self.label}" >> Idea = {self.idea} >> created at {self.t_created}'
+
+class RatingsTBL(Base):
+
+    __tablename__ = 'ratings'
+
+    id = Column('id', String, primary_key=True)
+    factor_id_leading = Column('factor_id', String, nullable=False)
+    factor_id_following = Column('factor_id', String, nullable=False)
+    rating = Column('rating', Integer, nullable=False)
+    participant_id = Column('participant_id', String, nullable=False)
+
+    def __init__(self,
+                    id: str,
+                    factor_id_leading: str,
+                    factor_id_following: str,
+                    rating: int,
+                    participant_id: str):
+    
+            self.id = id
+            self.factor_id_leading = factor_id_leading
+            self.factor_id_following = factor_id_following
+            self.rating = rating
+            self.participant_id = participant_id
+    
+    def __repr__(self):
+        return f'factor_id_leading: {self.factor_id_leading}, factor_id_following: {self.factor_id_following}, rating: {self.rating}, participant_id: {self.participant_id}'
+
+class ResultsTBL(Base):
+
+    __tablename__ = 'ratings'
+
+    id = Column('id', String, primary_key=True)
+    factor_id_leading = Column('factor_id', String, nullable=False)
+    factor_id_following = Column('factor_id', String, nullable=False)
+    rating = Column('rating', Integer, nullable=False)
+    participant_id = Column('participant_id', String, nullable=False)
+
+    def __init__(self,
+                    id: str,
+                    factor_id_leading: str,
+                    factor_id_following: str,
+                    rating: int,
+                    participant_id: str):
+    
+            self.id = id
+            self.factor_id_leading = factor_id_leading
+            self.factor_id_following = factor_id_following
+            self.rating = rating
+            self.participant_id = participant_id
+    
+    def __repr__(self):
+        return f'factor_id_leading: {self.factor_id_leading}, factor_id_following: {self.factor_id_following}, rating: {self.rating}, participant_id: {self.participant_id}'
 
 
 def initialize_database_connection() -> Session:

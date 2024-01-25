@@ -1,23 +1,24 @@
 import sqlite3
 import datetime
+import uuid
 
-from flask_app.database.Alchemy import initialize_database_connection as _db_init   # database connector
-from flask_app.database.Alchemy import ParticipantTBL as _ParticipantTBL
-from flask_app.database.Alchemy import FactorTBL as _FactorTBL
-from flask_app.database.Alchemy import IdeaTBL as _IdeaTBL
-from flask_app.database.Alchemy import CategoryTBL as _CategoryTBL
-from flask_app.lib.dTypes.Factor import Factor as _Factor
-from flask_app.lib.dTypes.Participant import Participant as _Participant
+from flask_app.database.Alchemy import initialize_database_connection    # database connector
+from flask_app.database.Alchemy import ParticipantTBL 
+from flask_app.database.Alchemy import FactorTBL 
+from flask_app.database.Alchemy import RatingsTBL
+from flask_app.database.Alchemy import ResultsTBL
+from flask_app.lib.dTypes.Factor import Factor
+from flask_app.lib.dTypes.Participant import Participant 
+__DATABASE_CONNECTION = initialize_database_connection()
 
-__DATABASE_CONNECTION = _db_init()
 
+def insert_factor(f: Factor) -> bool:
 
-def insert_factor(f: _Factor) -> bool:
-    insert: _FactorTBL
+    insert: FactorTBL
 
     try:
-        insert = _FactorTBL(id=f.id,
-                            idea=f.idea.title,
+        insert = FactorTBL(id=f.id,
+                            idea=f.title,
                             t_created=datetime.datetime.now(),
                             description=f.description,
                             label=f.label)
@@ -51,42 +52,28 @@ def insert_factor(f: _Factor) -> bool:
     return False
 
 
-def insert_participant(id: str,
-                       u_name: str,
-                       f_name: str,
-                       l_name: str,
-                       email: str,
-                       pw: str,
-                       job_title: str,
-                       address: str,
-                       state: str,
-                       city: str,
-                       zip_code: str,
-                       country: str,
-                       p_type: str,
-                       telephone: str) -> bool:
+def insert_participant(p : Participant) -> bool:
 
-    insert: _ParticipantTBL
+    insert: ParticipantTBL
 
     try:
-        insert = _ParticipantTBL(id=id,
-                                 u_name=u_name,
-                                 f_name=f_name,
-                                 l_name=l_name,
-                                 email=email,
-                                 password=pw,
-                                 job_title=job_title,
-                                 address=address,
-                                 state=state,
-                                 city=city,
-                                 zip_code=zip_code,
-                                 country=country,
-                                 p_type=p_type,
-                                 telephone=telephone)
+        insert = ParticipantTBL(id=p.id,
+                                 u_name=p.u_name,
+                                 f_name=p.f_name,
+                                 l_name=p.l_name,
+                                 email=p.email,
+                                 job_title=p.job_title,
+                                 address=p.address,
+                                 state=p.state,
+                                 city=p.city,
+                                 zip_code=p.zip_code,
+                                 country=p.country,
+                                 p_type=p.p_type,
+                                 telephone=p.telephone)
 
     except AttributeError:
         print('ERROR: attempting to insert Participant, but data is invalid or missing')
-        print(f'Inserting participant: username={u_name}')
+        print(f'Inserting participant: username={p.u_name}')
         return False
 
     if insert:
@@ -95,21 +82,100 @@ def insert_participant(id: str,
             __DATABASE_CONNECTION.commit()
             return True
         except sqlite3.ProgrammingError as e:
-            print(f"ERROR: non-sqlite3 error inserting participant, username={u_name}")
+            print(f"ERROR: non-sqlite3 error inserting participant, username={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.IntegrityError as e:
-            print(f"ERROR: database integrity violation inserting participant, username={u_name}")
+            print(f"ERROR: database integrity violation inserting participant, username={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.OperationalError as e:
-            print(f"ERROR: database operational error inserting participant, username={u_name}")
+            print(f"ERROR: database operational error inserting participant, username={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
-            print(f"ERROR: database error inserting participant, username={u_name}")
+            print(f"ERROR: database error inserting participant, username={p.u_name}")
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
 
     return False
+
+def insert_rating(factor_leading : Factor, factor_id_following : Factor, rating : float, p : Participant):
+    
+    insert : RatingsTBL
+
+    try:
+        insert = RatingsTBL(id=p.id,
+                            factor_id_leading=factor_leading.id,
+                            factor_id_following=factor_id_following.id,
+                            rating=rating,
+                            participant_id=p.id)
+    except AttributeError:
+        print(f'ERROR: invalid rating insertion for participant={p.u_name}')
+        return False
+    
+    if insert:
+        try:
+            __DATABASE_CONNECTION.add(insert)
+            __DATABASE_CONNECTION.commit()
+            return True
+        except sqlite3.ProgrammingError as e:
+            print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.IntegrityError as e:
+            print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.OperationalError as e:
+            print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.DatabaseError as e:
+            print(f"ERROR: database error inserting rating, participant={p.u_name}")
+            print("is the database file missing?")
+            print(f"{e.with_traceback()}")
+            return False
+        
+    return False
+
+def insert_result(factor_leading : Factor, factor_id_following : Factor, rating : float, p : Participant):
+
+    insert : ResultsTBL
+
+    try:
+        insert = ResultsTBL(id=str(uuid.uuid4()),
+                            factor_id_leading=factor_leading.id,
+                            factor_id_following=factor_id_following.id,
+                            rating=rating,
+                            participant_id=p.id)
+    except AttributeError:
+        print(f'ERROR: invalid result insertion for participant={p.u_name}')
+        return False
+    
+    if insert:
+        try:
+            __DATABASE_CONNECTION.add(insert)
+            __DATABASE_CONNECTION.commit()
+            return True
+        except sqlite3.ProgrammingError as e:
+            print(f"ERROR: non-sqlite3 error inserting result, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.IntegrityError as e:
+            print(f"ERROR: database integrity violation inserting result, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.OperationalError as e:
+            print(f"ERROR: database operational error inserting result, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.DatabaseError as e:
+            print(f"ERROR: database error inserting result, participant={p.u_name}")
+            print("is the database file missing?")
+            print(f"{e.with_traceback()}")
+            return False
+        
+    return False
+        
