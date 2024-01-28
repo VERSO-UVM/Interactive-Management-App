@@ -6,8 +6,12 @@ h1 {
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
+    grid-template-areas:
+      'gettingStarted gettingStarted'
+      'loadContainer exportContainer';
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  font-family: 'Bradley Hand', cursive;
 }
 
 .gettingStarted {
@@ -16,11 +20,37 @@ h1 {
   padding: 5%;
 }
 
+.loadContainer {
+  border-style: solid;
+  border-color: #6707A4;
+  height: 400px;
+  width: 70%;
+  justify-self: center;
+  margin: 0;
+}
+
+.exportContainer {
+  border-style: solid;
+  border-color: #6707A4;
+  height: 400px;
+  width: 70%;
+  justify-self: center;
+  margin: 0;
+}
+
 .shared-style {
-  background-color: #6707A4;
-  color: whitesmoke;
-  max-width: 60%;
-  margin: 5%;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #6707A4;
+  max-width: 100%;
+  margin: 0;
+  height: 10%;
+  padding-top: 15px;
+}
+
+h4 {
+  margin: 0;
 }
 
 .welcome {

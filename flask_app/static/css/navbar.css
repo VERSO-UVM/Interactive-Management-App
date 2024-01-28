@@ -1,6 +1,7 @@
 /* nav css start */
 nav{
     overflow:visible;
+    font-family: 'Bradley Hand', cursive;
 }
 nav a:hover{
     background-color: white;
