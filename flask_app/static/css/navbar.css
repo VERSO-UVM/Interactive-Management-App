@@ -3,25 +3,18 @@ nav{
     overflow:visible;
 }
 nav a:hover{
-    background-color: navajowhite;
-    padding: 0.5%;
-}
-.container{
-    background-color: darkblue;
-    padding: unset;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding-top: 7%;
-    padding-left: 35%;
-    text-align: center;
-    color: #7A5C58;
-    grid-template-rows: auto;
+    background-color: white;
+    padding: 1%;
+    color: darkblue;
+    /* border-radius: 10%; */
+    transition: background-color 0.3s;
+    text-decoration: none;
 }
 
 /* header css start */
 
 header {
-    background-color: lightblue;
+    background-color: darkblue;
     position: fixed;
     top: 0;
     left: 0;
@@ -33,15 +26,9 @@ header {
 }
 header * {
     display: inline;
+    color: whitesmoke;
 }
 
 header li {
     margin: 20px;
 }
-
-header li a {
-    color: palevioletred;
-    text-decoration: none;
-}
-
-/* header css end */
