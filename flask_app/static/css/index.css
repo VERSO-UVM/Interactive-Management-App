@@ -16,12 +16,14 @@ h1 {
 }
 
 .gettingStarted {
+  grid-area: gettingStarted;
   grid-column: 1 / -1; /* Span across all columns */
   text-align: center;
   padding: 5%;
 }
 
 .loadContainer {
+  grid-area: loadContainer;
   border-style: solid;
   border-color: #6707A4;
   height: 400px;
@@ -32,6 +34,7 @@ h1 {
 }
 
 .exportContainer {
+  grid-area: exportContainer;
   border-style: solid;
   border-color: #6707A4;
   height: 400px;
@@ -62,6 +65,7 @@ h4 {
 }
 
 .gTF-Container {
+  grid-area: gTF-Container;
   justify-self: end;
   padding-top: 10%;
   margin-right: 15%;
@@ -70,7 +74,6 @@ h4 {
 .goToFactor {
   background-color: #6707A4;
   color: whitesmoke;
-  font-size: 20px;
   text-align: center;
   text-decoration: none;
   padding-top: 0.5%;
