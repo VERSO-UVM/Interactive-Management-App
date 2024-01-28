@@ -13,12 +13,13 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% block content %}
 
 <div class="container">
+</div>
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
       <h1 class="pt-5 pb-2">Factor Page</h1>  {# Heading for the factor page #}
-      <p>{{ message }}</p>  {# Display the message passed from the route #}
       <h2>Factors</h2>
-
+</div>
+<div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
         <!-- Table row for header-->
@@ -43,7 +44,8 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
           <td>edit</td>
         </tr>
       </table>
-      
+</div> 
+<div class="addFactor">
       <h4> Add a New Factor</h4>
         <!-- Textbox to add order of factor -->
         <label for="orderFactor"></label>
@@ -53,7 +55,5 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
         <input type="text" id="factor" name="factor" placeholder="Factor">
         <!-- Button to submit -->
         <input type="submit" value="Submit">
-    </div>
-  </div>
 </div>
 {% endblock %}
