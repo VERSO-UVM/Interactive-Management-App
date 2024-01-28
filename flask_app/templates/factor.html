@@ -5,12 +5,12 @@
 Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+{% endblock %}
+
 {% block content %}
-<style>
-  table, th, td {
-    border:1px solid black;
-  }
-  </style>
 
 <div class="container">
   <div class="row">

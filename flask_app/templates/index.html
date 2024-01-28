@@ -2,12 +2,15 @@
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block styles %}
-  {{ super() }}  {# Includes any styles defined in the parent template ('base.html') #}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block title %}
   ISM Home  {# Sets the title of the page to "ISM Home" #}
 {% endblock %}
+
+<link rel="stylesheet" href="index.css">
 
 {% block content %}
   <div class="container">

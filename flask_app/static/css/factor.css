@@ -1,0 +1,9 @@
+/* Header */
+h1 {
+    color: blue;
+  }
+
+/* Table*/
+table, th, td {
+    border:1px solid black;
+  }
