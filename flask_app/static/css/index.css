@@ -1,3 +1,37 @@
 h1 {
-    color: blue;
+    color: #6707A4;
+    padding-top: 5%;
+    text-align: center;
   }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+.gettingStarted {
+  grid-column: 1 / -1; /* Span across all columns */
+  text-align: center;
+  padding: 5%;
+}
+
+.shared-style {
+  background-color: #6707A4;
+  color: whitesmoke;
+  max-width: 60%;
+  margin: 5%;
+}
+
+.welcome {
+  text-align: left;
+}
+
+.goToFactor {
+  background-color: #6707A4;
+  color: whitesmoke;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 0.5%;
+  justify-self: end;
+}
