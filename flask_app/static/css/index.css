@@ -8,7 +8,8 @@ h1 {
   display: grid;
     grid-template-areas:
       'gettingStarted gettingStarted'
-      'loadContainer exportContainer';
+      'loadContainer exportContainer'
+      'empty gTF-Container';
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   font-family: 'Bradley Hand', cursive;
@@ -27,6 +28,7 @@ h1 {
   width: 70%;
   justify-self: center;
   margin: 0;
+  background-color: #E0BBF7;
 }
 
 .exportContainer {
@@ -36,30 +38,39 @@ h1 {
   width: 70%;
   justify-self: center;
   margin: 0;
+  background-color: #E0BBF7;
 }
 
 .shared-style {
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
+  text-align: left;
   color: #6707A4;
   max-width: 100%;
   margin: 0;
   height: 10%;
-  padding-top: 15px;
+  padding-top: 30px;
+  padding-left: 60px;
 }
 
 h4 {
   margin: 0;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .welcome {
   text-align: left;
 }
 
+.gTF-Container {
+  justify-self: end;
+  padding-top: 10%;
+  margin-right: 15%;
+}
+
 .goToFactor {
   background-color: #6707A4;
   color: whitesmoke;
+  font-size: 20px;
   text-align: center;
   text-decoration: none;
   padding-top: 0.5%;
