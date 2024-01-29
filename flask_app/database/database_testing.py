@@ -7,7 +7,7 @@ from flask_app.database.Alchemy import ParticipantTBL, FactorTBL, RatingsTBL, Re
 from flask_app.lib.dTypes.Participant import Participant
 from flask_app.lib.dTypes.Factor import Factor
 from flask_app.database.Alchemy import initialize_database_connection
-from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result, fetch    # database connector
+from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result, fetch, calculate_average_rating    # database connector
 
 from sqlalchemy import text, select
 
@@ -23,7 +23,7 @@ second_test_factor = Factor(
     description='second_test_description', 
     label='second_test_label')
 
-test_participant = Participant(
+first_participant = Participant(
     u_name='test_user', 
     f_name='test_first', 
     l_name='test_last', 
@@ -36,6 +36,21 @@ test_participant = Participant(
     country='test_country', 
     p_type='test_p_type', 
     telephone='test_telephone')
+
+second_participant = Participant(
+    u_name='test_user', 
+    f_name='test_first', 
+    l_name='test_last', 
+    email='test_email', 
+    job_title='test_job_title', 
+    address='test_address', 
+    state='test_state', 
+    city='test_city', 
+    zip_code='test_zip_code', 
+    country='test_country', 
+    p_type='test_p_type', 
+    telephone='test_telephone')
+
 
 # drop all tables
 __DATABASE_CONNECTION.execute(text('DROP TABLE IF EXISTS participants'))
@@ -58,9 +73,10 @@ print(insert_factor(first_test_factor))
 print('inserting second test factor')
 print(insert_factor(second_test_factor))
 print('inserting test participant')
-print(insert_participant(test_participant))
-print('inserting test rating')
-print(insert_rating(factor_leading=first_test_factor, factor_following=second_test_factor, rating=3, p=test_participant))
+print(insert_participant(first_participant))
+print('inserting test ratings')
+print(insert_rating(factor_leading=first_test_factor, factor_following=second_test_factor, rating=3, p=first_participant))
+print(insert_rating(factor_leading=first_test_factor, factor_following=second_test_factor, rating=9, p=second_participant))
 print('inserting test result')
 print(insert_result(factor_leading=first_test_factor, factor_following=second_test_factor, rating=1))
 
@@ -70,6 +86,9 @@ print('selecting all participants')
 print(fetch(ParticipantTBL))
 print('selecting all ratings')
 print(fetch(RatingsTBL))
+
+average_ratings = calculate_average_rating()
+
 print('selecting all results')
 print(fetch(ResultsTBL))
 

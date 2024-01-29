@@ -3,6 +3,8 @@ import datetime
 import uuid
 
 from sqlalchemy import select
+from sqlalchemy.sql import func
+
 
 from flask_app.database.Alchemy import initialize_database_connection    # database connector
 from flask_app.database.Alchemy import ParticipantTBL 
@@ -182,4 +184,38 @@ def insert_result(factor_leading : Factor, factor_following : Factor, rating : f
 
 def fetch(tbl):
     return __DATABASE_CONNECTION.execute(select(tbl)).fetchall()
-        
+
+def calculate_average_rating():
+    from sqlalchemy.sql import func
+
+    # Construct the query to calculate average rating
+    average_rating_query = select(
+        RatingsTBL.factor_leading,
+        RatingsTBL.factor_following,
+        func.avg(RatingsTBL.rating).label('average_rating')
+    ).group_by(
+        RatingsTBL.factor_leading,
+        RatingsTBL.factor_following
+    )
+
+    # Execute the query
+    try:
+        results = __DATABASE_CONNECTION.execute(average_rating_query).fetchall()
+        for result in results:
+            # Create a ResultsTBL object
+            result_entry = ResultsTBL(
+                id=str(uuid.uuid4()),
+                factor_leading=result.factor_leading,
+                factor_following=result.factor_following,
+                rating=float(result.average_rating)
+            )
+
+            # Insert the result into the database
+            __DATABASE_CONNECTION.add(result_entry)
+        __DATABASE_CONNECTION.commit()
+        return results
+    except Exception as e:
+        print(f"ERROR: {e}")
+        __DATABASE_CONNECTION.rollback()
+        return None
+
