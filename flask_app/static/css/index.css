@@ -111,6 +111,7 @@ h4 {
 .loadButton {
   background-color: #6707A4;
   color: whitesmoke;
+  font-size: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
@@ -137,6 +138,7 @@ h4 {
 .exportButton {
   background-color: #6707A4;
   color: whitesmoke;
+  font-size: 15px;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
