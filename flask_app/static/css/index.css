@@ -1,9 +1,11 @@
+/* "Getting Started" title */
 h1 {
     color: #6707A4;
     padding-top: 5%;
     text-align: center;
   }
 
+/* Positioning for grid layout */
 .grid-container {
   display: grid;
     grid-template-areas:
@@ -15,6 +17,7 @@ h1 {
   font-family: 'Bradley Hand', cursive;
 }
 
+/* "Getting Started" positioning (topmost box in grid) */
 .gettingStarted {
   grid-area: gettingStarted;
   grid-column: 1 / -1; /* Span across all columns */
@@ -22,6 +25,7 @@ h1 {
   padding: 5%;
 }
 
+/* "Load" container */
 .loadContainer {
   grid-area: loadContainer;
   border-style: solid;
@@ -33,6 +37,7 @@ h1 {
   background-color: #E0BBF7;
 }
 
+/* "Export" container */
 .exportContainer {
   grid-area: exportContainer;
   border-style: solid;
@@ -44,6 +49,7 @@ h1 {
   background-color: #E0BBF7;
 }
 
+/* Positioning for "Load" and "Export" titles */
 .shared-style {
   text-align: left;
   color: #6707A4;
@@ -54,16 +60,19 @@ h1 {
   padding-left: 60px;
 }
 
+/* "Load" and "Export" titles */
 h4 {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
 }
 
+/* Welcome block text */
 .welcome {
   text-align: left;
 }
 
+/* container to position "Go To Facto" button */
 .gTF-Container {
   grid-area: gTF-Container;
   justify-self: end;
@@ -71,6 +80,7 @@ h4 {
   margin-right: 15%;
 }
 
+/* "Go To Factor" button */
 .goToFactor {
   background-color: #6707A4;
   color: whitesmoke;
@@ -81,6 +91,7 @@ h4 {
   font-size: 20px;
 }
 
+/* "Go To About" button */
 .goToAbout {
   background-color: #6707A4;
   color: whitesmoke;
