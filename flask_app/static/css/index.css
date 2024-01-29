@@ -103,6 +103,7 @@ h4 {
 
 .export {
   width: 100%;
+  padding-right: 60px;
 }
 
 .exportButton {
@@ -113,4 +114,6 @@ h4 {
   margin-top: 20px;
   margin-bottom: 20px;
   justify-self: center;
+  width: 100%;
+  box-sizing: border-box;
 }
