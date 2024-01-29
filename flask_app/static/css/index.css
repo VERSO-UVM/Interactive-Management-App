@@ -89,3 +89,17 @@ h4 {
   justify-self: end;
   font-size: 15px;
 }
+
+.export {
+  width: 100%;
+}
+
+.exportButton {
+  background-color: #6707A4;
+  color: whitesmoke;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-self: center;
+}
