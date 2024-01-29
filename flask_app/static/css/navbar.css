@@ -8,7 +8,6 @@ nav a:hover{
     background-color: white;
     padding: 1%;
     color: #480373;
-    /* border-radius: 10%; */
     transition: background-color 0.3s;
     text-decoration: none;
 }
