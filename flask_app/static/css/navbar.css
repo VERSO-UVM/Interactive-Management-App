@@ -3,7 +3,6 @@ nav{
     overflow:visible;
     font-family: 'Bradley Hand', cursive;
     font-size: 20px;
-    font-weight: bold;
 }
 nav a:hover{
     background-color: white;
