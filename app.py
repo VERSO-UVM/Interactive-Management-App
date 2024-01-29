@@ -7,6 +7,8 @@ from flask_app.forms.LoginForm import LoginForm
 from flask_app.forms.RegisterForm import RegisterForm
 import flask_app.app.dispatch as dispatch
 from flask_app.forms.WorkshopForm import WorkshopForm
+import flask_app.database.database_access as database_access
+from flask_app.database.Alchemy import ParticipantTBL as _ParticipantTBL
 
 # Configure Flask application
 app = configure_flask_application()
@@ -99,6 +101,56 @@ def workshop():
     message = ''
     return render_template('workshop.html', form=form, message=message)
 
+
+##Participant 
+###---------------------------------------------------------------------------------#####
+###Table name
+@app.route("/participant",methods=['POST','GET'])
+def participant():
+    
+    if request.method=='POST':
+
+        # ##Get from the form
+        f_name=request.form["f_name"]
+        l_name=request.form["l_name"]
+        email=request.form["email"]
+        telephone=request.form["telephone"]
+        u_name="Guest"
+        password="password"
+        id=(database_access.idSetter())+1
+        
+        database_access.insert_participant(id=id,f_name=f_name,l_name=l_name,email=email,telephone=telephone,u_name=u_name,password=password)
+        return redirect (url_for('participant'))
+    else:
+        part=database_access.search_participant()
+        return render_template("participant.html",part=part)
+    
+
+@app.route("/ParticipantEdit/<id>",methods=['POST','GET'])
+def ParticipantEdit(id):
+    ##Search for participant
+    person = database_access.search_specific(id)
+
+
+    #Gets the info from the selected student
+    if request.method == 'POST':
+        f_name=request.form["f_name"]
+        l_name=request.form["l_name"]
+        email=request.form["email"]
+        telephone=request.form["telephone"]
+        
+        try:
+            
+            database_access.edit_participant(id,f_name,l_name,email,telephone)
+           
+            return redirect(url_for("participant"))
+        
+        except:
+            return 'There was an issue updating the participant information'
+
+    else:
+        return render_template('editPart.html',person=person)
+
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5001)

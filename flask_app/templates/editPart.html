@@ -1,84 +1,38 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">
-    <title>Participant</title>
-</head>
-
-<body>
-
-{% block styles %}
-    {{ super() }}
-{% endblock %}
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block title %}
-    Login
+Participants Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
+
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-                <h1 class="pt-5 pb-2">Dashboard</h1>
-                <p class="lead">Welcome back</p>
-                {{ wtf.quick_form(form) }}
-                <p class="pt-5"><strong>{{ message }}</strong></p>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+            <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
+            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
         </div>
     </div>
-{% endblock %}
+</div>
 
-{% block Participant_content %}
-    <h1>Edit Participant</h1>
+<form action="{{ url_for('ParticipantEdit', id=person.id) }}" method="post">
 
-    <form action="{{ url_for('edit_participant'), username=editPart.username }}" method="post">
+   
+    <label for="f_name">First Name</label>
+    <input type="text" name="f_name" value="{{person.f_name}}"><br>
 
-        <label for="username">Username</label>
-        <input type="text" name="username" value="{editPart.username}"><br>
+    <label for="l_name">Last Name</label>
+    <input type="text" name="l_name" value="{{person.l_name}}"><br>
 
-        <label for="password">Password</label>
-        <input type="text" name="password" value="{editPart.password}"><br>
+    <label for="email">Email</label>
+    <input type="text" name="email" value="{{person.email}}"><br>
 
-        <label for="f_name">First Name</label>
-        <input type="text" name="f_name" value="{editPart.f_name}"><br>
+    <label for="telephone">Telephone</label>
+    <input type="text" name="telephone" value="{{person.telephone}}"><br>
 
-        <label for="l_name">Last Name</label>
-        <input type="text" name="l_name" value="{editPart.l_name}"><br>
+    <button type="submit">Save</button>
+</form>
 
-        <label for="job_title">Job Title</label>
-        <input type="text" name="job_title" value="{editPart.job_title}""><br>
-
-        <label for="address">Address</label>
-        <input type="text" name="address" value="{editPart.adddress}"><br>
-
-        <label for="state">State</label>
-        <input type="text" name="state" value="{editPart.state}"><br>
-
-        <label for="city">City</label>
-        <input type="text" name="city" value="{editPart.city}"><br>
-
-        <label for="zip_code">Zip Code </label>
-        <input type="text" name="zip_code" value="{editPart.zip_code}"><br>
-
-        <label for="country">Country </label>
-        <input type="text" name="country" value="{editPart.country}"><br>
-
-        <label for="p_type">Type</label>
-        <input type="text" name="p_type" value="{editPart.p_type}"><br>
-
-        <label for="telephone">telephone</label>
-        <input type="text" name="telephone" value="{editPart.telephone}"><br>
-
-        <button type="submit">Save</button>
-    </form>
 
 {% endblock %}
-</body>
-
-</html>

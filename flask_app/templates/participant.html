@@ -1,72 +1,60 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">  {# Links to a custom CSS file #}
-    <title>Factor App</title>  {# Sets the title of the page to "Factor App" #}
-</head>
-
-<body>
-
-{% block styles %}
-    {{ super() }}  {# Includes any styles defined in the parent template ('base.html') #}
-{% endblock %}
-
 {% block title %}
-    Login  {# Sets the title of the page to "Login" #}
+Participants Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
+
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-                <h1 class="pt-5 pb-2">Dashboard</h1>  {# Heading for the dashboard #}
-                <p class="lead">Welcome back</p>  {# Lead paragraph #}
-                {{ wtf.quick_form(form) }}  {# Renders a quick form using the 'wtf' alias #}
-                <p class="pt-5"><strong>{{ message }}</strong></p>  {# Paragraph with a strong message variable #}
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+            <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
+            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
         </div>
     </div>
-{% endblock %}
+</div>
 
-{% block Participant_content %}
-    <h1>Participant List</h1>  {# Heading for the participant list #}
+<table>
+    <tr>
+        <th>Current Participants</th>
+    </tr>
+    {% for i in part %}
+        <tr>
 
-    <form action="{{ url_for('search_participants') }}" method="post">
-
-        <label for="search">Search</label>
-        <input type="text" name="search" ><br>
-        <button type="submit">Save</button>
-    </form>
-
-    <ul>
-        {% for people in participant %}
-            <li>
-                <strong>Username:</strong> {{ people.username}} |
-                <strong>First Name:</strong> {{ people.f_name }} |
-                <strong>Last Name:</strong> {{ people.l_name }} |
-                <strong>Job title:</strong> {{ people.job_title }} |
-                <strong>Address:</strong> {{ people.address }} |
-                <strong>State:</strong> {{ people.state }} |
-                <strong>City:</strong> {{ people.city }} |
-                <strong>Zip Code:</strong> {{ people.zip_code }} |
-                <strong>Country:</strong> {{ people.country }} |
-                <strong>Type:</strong> {{ people.type }} |
-                <strong>Telephone:</strong> {{ people.telephone }} |
-                <a href="{{ url_for('edit_participant', id=people.id) }}">Edit</a> |
-                <a href="{{ url_for('delete_participant', id=people.id) }}">Delete</a>
-            </li>
+            <td>{{ i.id }}</td>
+            <td>{{ i.f_name }}</td>
+            <td>{{ i.l_name }}</td>
+            <td>{{ i.email}}</td>
+            <td>{{ i.telephone }}</td>
+            <td>
+                <br>
+               <!-- Send to edit with id -->
+               <td>
+                <br>
+                <a href="{{ url_for('ParticipantEdit',id=i.id) }}">Edit</a>
+            </td>
+            </td>
+        </tr>
         {% endfor %}
-    </ul>
+</table>
 
-    <!-- <p><a href="register">Register here</button></a></p> -->
 
+<form action="{{ url_for('participant') }}" method="post">
+
+    <label for="f_name">First Name</label>
+    <input type="text" name="f_name"><br>
+
+    <label for="l_name">Last Name</label>
+    <input type="text" name="l_name"><br>
+
+    <label for="email">email</label>
+    <input type="text" name="email"><br>
+
+    <label for="telephone">Telephone</label>
+    <input type="text" name="telephone"><br>
+
+    <button type="submit">Save</button>
+</form>
 {% endblock %}
-</body>
-
-</html>

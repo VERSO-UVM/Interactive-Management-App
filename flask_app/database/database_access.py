@@ -56,14 +56,7 @@ def insert_participant(id: str,
                        f_name: str,
                        l_name: str,
                        email: str,
-                       pw: str,
-                       job_title: str,
-                       address: str,
-                       state: str,
-                       city: str,
-                       zip_code: str,
-                       country: str,
-                       p_type: str,
+                       password: str,
                        telephone: str) -> bool:
 
     insert: _ParticipantTBL
@@ -74,14 +67,7 @@ def insert_participant(id: str,
                                  f_name=f_name,
                                  l_name=l_name,
                                  email=email,
-                                 password=pw,
-                                 job_title=job_title,
-                                 address=address,
-                                 state=state,
-                                 city=city,
-                                 zip_code=zip_code,
-                                 country=country,
-                                 p_type=p_type,
+                                 password=password,
                                  telephone=telephone)
 
     except AttributeError:
@@ -113,3 +99,51 @@ def insert_participant(id: str,
             return False
 
     return False
+
+def search_participant():
+    try:
+        participants = __DATABASE_CONNECTION.query(_ParticipantTBL).all()
+        return participants
+    except Exception as e:
+        print(f"Error getting all participants: {e}")
+        return []
+    
+
+def search_specific(id):
+    try:
+       person=__DATABASE_CONNECTION.query(_ParticipantTBL).filter(_ParticipantTBL.id==id).first()
+       return person
+    
+    except Exception as e:
+        print(f"Error getting  participant: {e}")
+        return []
+
+
+def edit_participant(id,fi_name,la_name,p_email,p_telephone):
+    person=__DATABASE_CONNECTION.query(_ParticipantTBL).filter(_ParticipantTBL.id==id).first()
+    try:
+        if person:
+                
+                # Update the job title
+                person.f_name = fi_name
+                person.l_name = la_name
+                person.email = p_email
+                person.telephone = p_telephone
+                person.id=id
+
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                return True
+        else:
+                print(f"No participant found with ID {person.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing participant: {e}")
+        return False
+    
+
+def idSetter():
+        person=__DATABASE_CONNECTION.query(_ParticipantTBL).count()
+        return person
