@@ -15,6 +15,7 @@ h1 {
     grid-template-columns: 1fr 1fr;
     gap: 10px;
   font-family: 'Bradley Hand', cursive;
+  padding-bottom: 3%;
 }
 
 /* "Getting Started" positioning (topmost box in grid) */
@@ -76,7 +77,7 @@ h4 {
 .gTF-Container {
   grid-area: gTF-Container;
   justify-self: end;
-  padding-top: 10%;
+  padding-top: 5%;
   margin-right: 15%;
 }
 
