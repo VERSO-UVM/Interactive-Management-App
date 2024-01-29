@@ -7,8 +7,9 @@ from flask_app.database.Alchemy import ParticipantTBL, FactorTBL, RatingsTBL, Re
 from flask_app.lib.dTypes.Participant import Participant
 from flask_app.lib.dTypes.Factor import Factor
 from flask_app.database.Alchemy import initialize_database_connection
-from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result    # database connector
-from sqlalchemy import text
+from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result, fetch    # database connector
+
+from sqlalchemy import text, select
 
 __DATABASE_CONNECTION = initialize_database_connection()
 
@@ -62,3 +63,14 @@ print('inserting test rating')
 print(insert_rating(factor_leading=first_test_factor, factor_following=second_test_factor, rating=3, p=test_participant))
 print('inserting test result')
 print(insert_result(factor_leading=first_test_factor, factor_following=second_test_factor, rating=1))
+
+print('selecting all factors')
+print(fetch(FactorTBL))
+print('selecting all participants')
+print(fetch(ParticipantTBL))
+print('selecting all ratings')
+print(fetch(RatingsTBL))
+print('selecting all results')
+print(fetch(ResultsTBL))
+
+__DATABASE_CONNECTION.close()

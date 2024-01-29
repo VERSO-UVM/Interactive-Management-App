@@ -89,7 +89,7 @@ class FactorTBL(Base):
         self.votes = votes
 
     def __repr__(self):
-        return f'Factor #{self.id} "{self.label}" >> Idea = {self.idea} >> created at {self.t_created}'
+        return f'Factor #{self.id} "{self.label}"'
 
 class RatingsTBL(Base):
 

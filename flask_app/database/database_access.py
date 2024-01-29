@@ -2,6 +2,8 @@ import sqlite3
 import datetime
 import uuid
 
+from sqlalchemy import select
+
 from flask_app.database.Alchemy import initialize_database_connection    # database connector
 from flask_app.database.Alchemy import ParticipantTBL 
 from flask_app.database.Alchemy import FactorTBL 
@@ -177,4 +179,7 @@ def insert_result(factor_leading : Factor, factor_following : Factor, rating : f
             return False
         
     return False
+
+def fetch(tbl):
+    return __DATABASE_CONNECTION.execute(select(tbl)).fetchall()
         
