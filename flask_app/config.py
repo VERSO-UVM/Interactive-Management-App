@@ -6,6 +6,7 @@ from flask_bootstrap import Bootstrap as _Bootstrap
 from flask_wtf import CSRFProtect as _CSRFProtect
 
 APP_CSRF: str
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 def __secret_form_key_gen() -> str:

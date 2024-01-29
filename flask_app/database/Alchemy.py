@@ -1,6 +1,4 @@
-from datetime import datetime
-
-from sqlalchemy import create_engine, Column, String, Integer, TIMESTAMP
+from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -22,7 +20,6 @@ class ParticipantTBL(Base):
     # columns
     id = Column('id', String, primary_key=True)
     u_name = Column('u_name', String, nullable=False)
-    password = Column('password', String, nullable=False)
     f_name = Column('f_name', String, nullable=False)
     l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
@@ -38,7 +35,6 @@ class ParticipantTBL(Base):
     def __init__(self,
                  id: str,
                  u_name: str,
-                 password: str,
                  f_name: str,
                  l_name: str,
                  email: str,
@@ -53,7 +49,6 @@ class ParticipantTBL(Base):
 
         self.id = id
         self.u_name = u_name
-        self.password = password
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
@@ -75,28 +70,22 @@ class FactorTBL(Base):
     __tablename__ = 'factors'
 
     id = Column('id', String, primary_key=True)
-    title = Column('parent_idea', String, nullable=False)
-    t_created = Column('created_at', TIMESTAMP, nullable=False)
+    title = Column('title', String, nullable=False)
     label = Column('label', String, nullable=False)
     description = Column('description', String, nullable=True)
-    t_updated = Column('last_updated', TIMESTAMP, nullable=True)
     votes = Column('votes', Integer, nullable=False)
 
     def __init__(self,
                  id: str,
                  title: str,
-                 t_created: datetime,
                  label: str,
                  description: str = None,
-                 t_updated: datetime = None,
                  votes: int = 0):
 
         self.id = id
         self.title = title
-        self.t_created = t_created
         self.label = label
         self.description = description
-        self.t_updated = t_updated
         self.votes = votes
 
     def __repr__(self):
@@ -107,52 +96,49 @@ class RatingsTBL(Base):
     __tablename__ = 'ratings'
 
     id = Column('id', String, primary_key=True)
-    factor_id_leading = Column('factor_id_leading', String, nullable=False)
-    factor_id_following = Column('factor_id_following', String, nullable=False)
+    factor_leading = Column('factor_leading', String, nullable=False)
+    factor_following = Column('factor_following', String, nullable=False)
     rating = Column('rating', Integer, nullable=False)
     participant_id = Column('participant_id', String, nullable=False)
 
     def __init__(self,
                     id: str,
-                    factor_id_leading: str,
-                    factor_id_following: str,
+                    factor_leading: str,
+                    factor_following: str,
                     rating: int,
                     participant_id: str):
     
             self.id = id
-            self.factor_id_leading = factor_id_leading
-            self.factor_id_following = factor_id_following
+            self.factor_leading = factor_leading
+            self.factor_following = factor_following
             self.rating = rating
             self.participant_id = participant_id
     
     def __repr__(self):
-        return f'factor_id_leading: {self.factor_id_leading}, factor_id_following: {self.factor_id_following}, rating: {self.rating}, participant_id: {self.participant_id}'
+        return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
 
 class ResultsTBL(Base):
 
     __tablename__ = 'results'
 
     id = Column('id', String, primary_key=True)
-    factor_id_leading = Column('factor_id_leading', String, nullable=False)
-    factor_id_following = Column('factor_id_following', String, nullable=False)
+    factor_leading = Column('factor_leading', String, nullable=False)
+    factor_following = Column('factor_following', String, nullable=False)
     rating = Column('rating', Integer, nullable=False)
-    participant_id = Column('participant_id', String, nullable=False)
 
     def __init__(self,
                     id: str,
-                    factor_id_leading: str,
-                    factor_id_following: str,
-                    rating: int,
-                    participant_id: str):
+                    factor_leading: str,
+                    factor_following: str,
+                    rating: int):
     
             self.id = id
-            self.factor_id_leading = factor_id_leading
-            self.factor_id_following = factor_id_following
+            self.factor_leading = factor_leading
+            self.factor_following = factor_following
             self.rating = rating
-            self.participant_id = participant_id
     
     def __repr__(self):
-        return f'factor_id_leading: {self.factor_id_leading}, factor_id_following: {self.factor_id_following}, rating: {self.rating}, participant_id: {self.participant_id}'
+        return f'factor_id_leading: {self.factor_leading}, factor_following: {self.factor_following}, rating: {self.rating}'
 
 
 def initialize_database_connection() -> Session:

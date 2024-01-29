@@ -12,3 +12,4 @@ class Factor:
         self.title = title
         self.description = description
         self.label = label
+        self.votes = 0

@@ -18,10 +18,10 @@ def insert_factor(f: Factor) -> bool:
 
     try:
         insert = FactorTBL(id=f.id,
-                            idea=f.title,
-                            t_created=datetime.datetime.now(),
+                            title=f.title,
+                            label=f.label,
                             description=f.description,
-                            label=f.label)
+                            votes=f.votes)
     except AttributeError:
         print(f'ERROR: invalid factor insertion for label={f.label}')
         return False
@@ -101,14 +101,14 @@ def insert_participant(p : Participant) -> bool:
 
     return False
 
-def insert_rating(factor_leading : Factor, factor_id_following : Factor, rating : float, p : Participant):
+def insert_rating(factor_leading : Factor, factor_following : Factor, rating : float, p : Participant):
     
     insert : RatingsTBL
 
     try:
-        insert = RatingsTBL(id=p.id,
-                            factor_id_leading=factor_leading.id,
-                            factor_id_following=factor_id_following.id,
+        insert = RatingsTBL(id=str(uuid.uuid4()),
+                            factor_leading=factor_leading.id,
+                            factor_following=factor_following.id,
                             rating=rating,
                             participant_id=p.id)
     except AttributeError:
@@ -140,18 +140,17 @@ def insert_rating(factor_leading : Factor, factor_id_following : Factor, rating 
         
     return False
 
-def insert_result(factor_leading : Factor, factor_id_following : Factor, rating : float, p : Participant):
+def insert_result(factor_leading : Factor, factor_following : Factor, rating : float):
 
     insert : ResultsTBL
 
     try:
         insert = ResultsTBL(id=str(uuid.uuid4()),
-                            factor_id_leading=factor_leading.id,
-                            factor_id_following=factor_id_following.id,
-                            rating=rating,
-                            participant_id=p.id)
+                            factor_leading=factor_leading.id,
+                            factor_following=factor_following.id,
+                            rating=rating)
     except AttributeError:
-        print(f'ERROR: invalid result insertion for participant={p.u_name}')
+        print(f'ERROR: invalid result insertion')
         return False
     
     if insert:
@@ -160,19 +159,19 @@ def insert_result(factor_leading : Factor, factor_id_following : Factor, rating 
             __DATABASE_CONNECTION.commit()
             return True
         except sqlite3.ProgrammingError as e:
-            print(f"ERROR: non-sqlite3 error inserting result, participant={p.u_name}")
+            print(f"ERROR: non-sqlite3 error inserting result")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.IntegrityError as e:
-            print(f"ERROR: database integrity violation inserting result, participant={p.u_name}")
+            print(f"ERROR: database integrity violation inserting result")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.OperationalError as e:
-            print(f"ERROR: database operational error inserting result, participant={p.u_name}")
+            print(f"ERROR: database operational error inserting result")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
-            print(f"ERROR: database error inserting result, participant={p.u_name}")
+            print(f"ERROR: database error inserting result")
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
