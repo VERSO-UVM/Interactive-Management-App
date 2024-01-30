@@ -76,9 +76,9 @@ def factor():
     return render_template('factor.html', message="Hello, World!")
 
 # Define route for the factor page
-@app.route('/participant')
-def participant():
-    return render_template('participant.html', message="Hello, World!")
+# @app.route('/participant')
+# def participant():
+#     return render_template('participant.html', message="Hello, World!")
 
 # Define route for the factor page
 @app.route('/rating')
@@ -92,8 +92,7 @@ def result():
 
 
 ##Participant 
-###---------------------------------------------------------------------------------#####
-###Table name
+
 @app.route("/participant",methods=['POST','GET'])
 def participant():
     
@@ -142,4 +141,4 @@ def ParticipantEdit(id):
 
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=True, host='0.0.0.0', port=5001, threaded=False)

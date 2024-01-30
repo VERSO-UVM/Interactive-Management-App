@@ -58,3 +58,11 @@ header li a {
 }
 
 /* header css end */
+.pTable
+{
+    border: 1px solid black;
+}
+.pTable, .room
+{
+    border: 1px solid black;
+}

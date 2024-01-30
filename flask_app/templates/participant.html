@@ -8,6 +8,7 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
 
 
 {% block content %}
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
@@ -16,23 +17,36 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
         </div>
     </div>
 </div>
+<script>
+    function validateForm() {
+        var emailInput = document.getElementById("email");
+        var emailValue = emailInput.value;
 
-<table>
+        if (!emailValue.includes("@")) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<table class="pTable">
     <tr>
         <th>Current Participants</th>
     </tr>
     {% for i in part %}
         <tr>
 
-            <td>{{ i.id }}</td>
-            <td>{{ i.f_name }}</td>
-            <td>{{ i.l_name }}</td>
-            <td>{{ i.email}}</td>
-            <td>{{ i.telephone }}</td>
+            <td class="room">{{ i.id }}</td>
+            <td class="room">{{ i.f_name }}</td>
+            <td class="room">{{ i.l_name }}</td>
+            <td class="room">{{ i.email}}</td>
+            <td class="room">{{ i.telephone }}</td>
             <td>
                 <br>
                <!-- Send to edit with id -->
-               <td>
+               <td class="room">
                 <br>
                 <a href="{{ url_for('ParticipantEdit',id=i.id) }}">Edit</a>
             </td>
@@ -42,7 +56,7 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
 </table>
 
 
-<form action="{{ url_for('participant') }}" method="post">
+<form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
 
     <label for="f_name">First Name</label>
     <input type="text" name="f_name"><br>
@@ -51,7 +65,7 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
     <input type="text" name="l_name"><br>
 
     <label for="email">email</label>
-    <input type="text" name="email"><br>
+    <input type="text" name="email" id="email"><br>
 
     <label for="telephone">Telephone</label>
     <input type="text" name="telephone"><br>
