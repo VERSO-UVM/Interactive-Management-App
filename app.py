@@ -88,6 +88,12 @@ def rating():
 def result():
     return render_template('result.html', message="Hello, World!")
 
+# Define route for the about page
+@app.route('/about')
+def about():
+    return render_template('about.html', message="Welcome to the About Page. Here is where you can learn more about ISM as well as how to use it.")
+
+
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
