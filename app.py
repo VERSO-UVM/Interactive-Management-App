@@ -30,7 +30,7 @@ def index():
     if 'username' in session:
         message = f'Welcome {session["username"]}!'
     else:
-        message = 'Welcome! Login or sign up to get started.'
+        message = 'Welcome! Register to get started.'
 
     return render_template('index.html', message=message)
 
@@ -59,14 +59,6 @@ def register():
 
     return render_template('register.html', form=form)
 
-# Define route for adding a factor
-@app.route('/add_factor', methods=['GET', 'POST'])
-def add_factor():
-
-    if request.method == 'POST':
-        pass
-
-    return redirect(url_for('index'))
 
 # Define route for editing a factor
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
@@ -78,28 +70,25 @@ def edit_factor(id):
 def remove_factor(id):
     return redirect(url_for('index'))
 
-# Define route for the workshop page
-@app.route('/workshop', methods=['GET', 'POST'])
-def workshop():
+# Define route for the factor page
+@app.route('/factor')
+def factor():
+    return render_template('factor.html', message="Hello, World!")
 
-    form: WorkshopForm = WorkshopForm()
+# Define route for the factor page
+@app.route('/participant')
+def participant():
+    return render_template('participant.html', message="Hello, World!")
 
-    if form.validate_on_submit():
-        print("VALID")
+# Define route for the factor page
+@app.route('/rating')
+def rating():
+    return render_template('rating.html', message="Hello, World!")
 
-        data = {
-            'trigger_question': form.trigger_field.data,
-            'context_statement': form.context_statement.data,
-            'title': form.title.data,
-            'date': form.date.data,
-            'host_organization': form.host_organization.data,
-            'location': form.location.data,
-            'objectives': form.objectives.data
-        }
-        print(data)
-
-    message = ''
-    return render_template('workshop.html', form=form, message=message)
+# Define route for the factor page
+@app.route('/result')
+def result():
+    return render_template('result.html', message="Hello, World!")
 
 
 ##Participant 
