@@ -56,28 +56,26 @@ def insert_factor(f: Factor) -> bool:
     return False
 
 
-def insert_participant(p : Participant) -> bool:
+def insert_participant(id: str,
+                       u_name: str,
+                       f_name: str,
+                       l_name: str,
+                       email: str,
+                       telephone: str) -> bool:
 
     insert: ParticipantTBL
 
     try:
-        insert = ParticipantTBL(id=p.id,
-                                 u_name=p.u_name,
-                                 f_name=p.f_name,
-                                 l_name=p.l_name,
-                                 email=p.email,
-                                 job_title=p.job_title,
-                                 address=p.address,
-                                 state=p.state,
-                                 city=p.city,
-                                 zip_code=p.zip_code,
-                                 country=p.country,
-                                 p_type=p.p_type,
-                                 telephone=p.telephone)
+        insert = ParticipantTBL(id=id,
+                                 u_name=u_name,
+                                 f_name=f_name,
+                                 l_name=l_name,
+                                 email=email,
+                                 telephone=telephone)
 
     except AttributeError:
         print('ERROR: attempting to insert Participant, but data is invalid or missing')
-        print(f'Inserting participant: username={p.u_name}')
+        
         return False
 
     if insert:
@@ -86,19 +84,19 @@ def insert_participant(p : Participant) -> bool:
             __DATABASE_CONNECTION.commit()
             return True
         except sqlite3.ProgrammingError as e:
-            print(f"ERROR: non-sqlite3 error inserting participant, username={p.u_name}")
+           
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.IntegrityError as e:
-            print(f"ERROR: database integrity violation inserting participant, username={p.u_name}")
+            
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.OperationalError as e:
-            print(f"ERROR: database operational error inserting participant, username={p.u_name}")
+          
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
-            print(f"ERROR: database error inserting participant, username={p.u_name}")
+           
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
@@ -218,4 +216,54 @@ def calculate_average_rating():
         print(f"ERROR: {e}")
         __DATABASE_CONNECTION.rollback()
         return None
+    
+
+
+def search_participant():
+    try:
+        participants = __DATABASE_CONNECTION.query(ParticipantTBL).all()
+        return participants
+    except Exception as e:
+        print(f"Error getting all participants: {e}")
+        return []
+    
+
+def search_specific(id):
+    try:
+       person=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
+       return person
+    
+    except Exception as e:
+        print(f"Error getting  participant: {e}")
+        return []
+
+
+def edit_participant(id,fi_name,la_name,p_email,p_telephone):
+    person=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
+    try:
+        if person:
+                
+                # Update the job title
+                person.f_name = fi_name
+                person.l_name = la_name
+                person.email = p_email
+                person.telephone = p_telephone
+                person.id=id
+
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                return True
+        else:
+                print(f"No participant found with ID {person.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing participant: {e}")
+        return False
+    
+
+def idSetter():
+        person=__DATABASE_CONNECTION.query(ParticipantTBL).count()
+        return person
 
