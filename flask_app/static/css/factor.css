@@ -47,17 +47,13 @@ h1 {
   background-color: #ad68d8;
 }
 
-.table ID {
-  color: aqua;
-}
-
 /* Style the form within the .addFactor container */
 .addFactor {
   padding: 5%;
   padding-top: 2%;
   border-style: solid;
   border-color: #6707A4;
-  height: 400px;
+  height: 375px;
   width: 70%;
   justify-self: center;
   margin: 0;
