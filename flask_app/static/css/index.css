@@ -3,17 +3,17 @@ h1 {
     color: #6707A4;
     padding-top: 5%;
     text-align: center;
-  }
+}
 
 /* Positioning for grid layout */
 .grid-container {
   display: grid;
-    grid-template-areas:
-      'gettingStarted gettingStarted'
-      'loadContainer exportContainer'
-      'empty gTF-Container';
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+  grid-template-areas:
+    'gettingStarted gettingStarted'
+    'loadContainer exportContainer'
+    'empty gTF-Container';
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
   font-family: 'Bradley Hand', cursive;
   padding-bottom: 3%;
 }
@@ -36,6 +36,7 @@ h1 {
   justify-self: center;
   margin: 0;
   background-color: #E0BBF7;
+  border-radius: 4px;
 }
 
 /* "Export" container */
@@ -48,6 +49,7 @@ h1 {
   justify-self: center;
   margin: 0;
   background-color: #E0BBF7;
+  border-radius: 4px;
 }
 
 /* Positioning for "Load" and "Export" titles */
@@ -73,12 +75,14 @@ h4 {
   text-align: left;
 }
 
-/* container to position "Go To Facto" button */
+/* container to position "Go To Factor" button */
 .gTF-Container {
   grid-area: gTF-Container;
   justify-self: end;
   padding-top: 5%;
   margin-right: 15%;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 /* "Go To Factor" button */
@@ -90,6 +94,8 @@ h4 {
   padding-top: 0.5%;
   justify-self: end;
   font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 /* "Go To About" button */
@@ -100,6 +106,8 @@ h4 {
   text-decoration: none;
   justify-self: end;
   font-size: 15px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 /* Positioning for "loadButton" */
@@ -120,6 +128,8 @@ h4 {
   justify-self: center;
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 /* Hover styling for "Load" buttons */
@@ -147,6 +157,8 @@ h4 {
   justify-self: center;
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
 /* Hover styling for "Export" buttons */
