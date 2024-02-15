@@ -58,26 +58,82 @@ def register():
 
     return render_template('register.html', form=form)
 
+################Factor Functions######################
 
 # Define route for editing a factor
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
-    return redirect(url_for('index'))
+     ##Search for participant
+    factors = database_access.search_specific_factor(id)
+
+
+    #Gets the info from the selected student
+    if request.method == 'POST':
+        title=request.form["f_title"]
+        label=request.form["f_label"]
+        description=request.form["f_description"]
+        votes=request.form["f_votes"]
+        
+        try:
+            
+            database_access.edit_factors(id,title,label,description,votes)
+           
+            return redirect(url_for("factor"))
+        
+        except:
+            return 'There was an issue updating the factorsn information'
+
+    else:
+        return render_template('edit_factor.html',factors=factors)
+
 
 # Define route for deleting a factor
-@app.route('/delete_factor/<id>')
-def remove_factor(id):
-    return redirect(url_for('index'))
+# @app.route('/delete_factor/<id>',methods=['POST','GET'])
+# def remove_factor(id):
+#     if request.method=='POST':
+#         try:
+#             database_access.delete_factor(id)
+#         except:
+#             return "There was an issue delete this factor"    
+#         return redirect(url_for('factor'))
+#     else:
+#         return render_template('factor.html',factor=factor)
+
 
 # Define route for the factor page
-@app.route('/factor')
+@app.route('/factor',methods=['POST','GET'])
 def factor():
-    return render_template('factor.html', message="Hello, World!")
 
-# Define route for the factor page
-# @app.route('/participant')
-# def participant():
-#     return render_template('participant.html', message="Hello, World!")
+    ##Getting all the current factors
+    factor=database_access.get_all_factors()
+    print(factor)
+    return render_template('factor.html',factor=factor)
+
+
+###Inserting new factors
+@app.route('/insert_factor',methods=['POST','GET'])
+def insert_factor():
+
+     if request.method=='POST':
+
+        # ##Get from the form
+        title=request.form["f_title"]
+        label=request.form["f_label"]
+        description=request.form["f_description"]
+        votes=0
+        
+    
+        ##f_id=(database_access.F_id_SetterSetter())+1
+        id=(database_access.f_id_Setter())+1
+      
+
+        database_access.insert_factor(id=id,title=title,label=label,description=description,votes=votes)
+        return redirect (url_for('factor'))
+     else:
+        return render_template("insert_factor.html")
+    
+
+###################Factor Functions###############################
 
 # Define route for the factor page
 @app.route('/rating')

@@ -10,8 +10,36 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
   <div class="row">
     <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
       <h1 class="pt-5 pb-2">Factor Page</h1>  {# Heading for the factor page #}
-      <p>{{ message }}</p>  {# Display the message passed from the route #}
     </div>
   </div>
 </div>
+
+<table class="fTable">
+  <tr>
+      <th>Current Factor</th>
+  </tr>
+  {% for i in factor %}
+      <tr>
+
+          <td class="f_box">{{ i.id }}</td>
+          <td class="f_box">{{ i.title }}</td>
+          <td class="f_box">{{ i.label }}</td>
+          <td class="f_box">{{ i.description}}</td>
+          <td class="f_box">{{ i.votes}}</td>
+          <td>
+              <br>
+             <!-- Send to edit with id -->
+             <td class="f_box">
+              <br>
+              <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
+             </td>
+      </tr>
+      {% endfor %}
+</table>
+
+<a href="{{ url_for('insert_factor')}}">
+  <button>Add Factors</button>
+</a>
+
+
 {% endblock %}

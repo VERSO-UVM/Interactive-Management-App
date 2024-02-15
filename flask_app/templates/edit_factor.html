@@ -3,7 +3,7 @@
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block title %}
-Participants Page  {# Sets the title of the page to "Participants Page" #}
+Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
 
@@ -17,20 +17,20 @@ Participants Page  {# Sets the title of the page to "Participants Page" #}
     </div>
 </div>
 
-<form action="{{ url_for('ParticipantEdit', id=person.id) }}" method="post">
+<form action="{{ url_for('edit_factor', id=factors.id) }}" method="post">
 
    
-    <label for="f_name">First Name</label>
-    <input type="text" name="f_name" value="{{person.f_name}}"><br>
+    <label for="f_title">Factor Title</label>
+    <input type="text" name="f_title" value="{{factors.title}}"><br>
 
-    <label for="l_name">Last Name</label>
-    <input type="text" name="l_name" value="{{person.l_name}}"><br>
+    <label for="f_label">Label</label>
+    <input type="text" name="f_label" value="{{factors.label}}"><br>
 
-    <label for="email">Email</label>
-    <input type="text" name="email" value="{{person.email}}"><br>
+    <label for="f_description">Description</label>
+    <input type="text" name="f_description" value="{{factors.description}}"><br>
 
-    <label for="telephone">Telephone</label>
-    <input type="text" name="telephone" value="{{person.telephone}}"><br>
+    <label for="f_votes">Votes</label>
+    <input type="text" name="f_votes" value="{{factors.votes}}"><br>
 
     <button type="submit">Save</button>
 </form>
