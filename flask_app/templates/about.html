@@ -1,0 +1,44 @@
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block title %}
+About Page  {# Sets the title of the page to "About Page" #}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+      <h1 class="pt-5 pb-2">About Page</h1>  {# Heading for the about page #}
+      <p>{{ message }}</p>  {# Display the message passed from the route #}
+      <!-- the entire page will instruct the users ( in non technical language) how to use the website. 
+      Overview of all pages and what they do --> 
+      <!--first chunk (Instruct the user on how to use the website) ---> 
+      <h2> Using This page</h2>
+      <p> This website is quite simple to use. Firstly, the user will navigate to the home page where you will asked to upload your dataset from local storage.
+         After that the user can move on towards the factors page. The factors page will have a table holding the data that was imported. The same 
+         table allows the user to edit any of their factors that they choose. After the user is satisfied will the data they may move onto the next page,
+         the participant page. The participant page performs similarly to the factors page. The difference is the addition of a button that sends the user to
+         the rating page for each participant. The user then fills in the necessary information regarding the participants' rating. Once that is finalized, the
+         user can move onto the final results page. The page will present the user's flowchart the algorithm produced. There is an option to download the flowchart
+         allowing the user to do what they please with the chart. 
+        </p>
+      <!-- second chunk (overview of each page & what they do) ---> 
+      <h2> Participant Page </h2>
+      <p> The participant page is where the entire process begins. Users will be asked to enter the participants that they would like to be 
+        considered. A participant is essentially someone who plays a role in the team. </p>
+
+      <h2> Factor Page </h2>
+      <p> The factor page is the second step in utilizing the site. The page is where the user will be asked to enter all 
+        the factors (variables) that they would like to be considered in their flowchart. They will also be asked which factors are and aren't 
+      related to each other. </p>
+      <h2> Ratings Page</h2>
+      <p> The rating page is the third step in the website. This page is where the user can input a participant's rating. A participants rating is the importance that 
+        the participant presents in the team. 
+      </p>
+      <h2> Results page</h2>
+      <p> The results page presents the flowchart that the algorithm produced using all the given information</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
