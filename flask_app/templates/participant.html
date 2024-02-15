@@ -1,13 +1,63 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
-{% block title %}
-Participants Page  {# Sets the title of the page to "Factor Page" #}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/participant.css') }}">
 {% endblock %}
 
+{% block title %}
+Participant Page  {# Sets the title of the page to "Participant Page" #}
+{% endblock %}
+
+<link rel="stylesheet" href="participant.css">
 
 
 {% block content %}
+ grace-dev
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+
+<div class="grid-container">
+    <div class="partPage">
+      <h1 class="pt-5 pb-2">Participants</h1>  {# Heading for the participant page #}
+    </div>
+    <div class="table">
+      <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+            <th>ID</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+        </tr>
+        <!-- Example placeholder until can connect toable 
+        to a database to display real-time information-->
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+      </table>
+    </div>
+=======
 
 <div class="container">
     <div class="row">
@@ -54,7 +104,38 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
         </tr>
         {% endfor %}
 </table>
+ main
 
+    <div class="addPart">
+      <div class="withinAdd">
+          <h4> Add Participant</h4>
+            <!-- Textbox to add first name -->
+            <label for="first"></label>
+            <input type="text" id="first" name="first" placeholder="First Name">
+            <!-- Textbox to add last name -->
+            <label for="last"></label>
+            <input type="text" id="last" name="last" placeholder="Last Name">
+            <!-- Textbox to add email -->
+            <label for="email"></label>
+            <input type="text" id="email" name="email" placeholder="Email">
+            <!-- Textbox to add phone -->
+            <label for="phone"></label>
+            <input type="text" id="phone" name="phone" placeholder="Phone">
+            <!-- Button to submit -->
+            <input type="submit" value="Submit">
+      </div>
+    </div>
+
+ grace-dev
+  <!-- Add to each row of table -->
+  <!--
+    <div class="gTR-Container">
+      <p><a href="rating"><button class="goToRatings">Go To Ratings Page</button></a></p>
+    </div>
+  -->
+
+</div>
+{% endblock %}
 
 <form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
 
@@ -74,3 +155,4 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
 </form>
 {% endblock %}
 
+ main

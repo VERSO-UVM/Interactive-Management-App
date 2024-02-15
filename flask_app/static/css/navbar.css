@@ -1,0 +1,34 @@
+/* nav css start */
+nav{
+    overflow:visible;
+    font-family: 'Bradley Hand', cursive;
+    font-size: 20px;
+}
+nav a:hover{
+    background-color: white;
+    padding: 1%;
+    color: #480373;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+
+/* header css start */
+header {
+    background-color: #6707A4;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: grid;
+    align-items: center;
+    box-shadow: 0 0 25px 0 black;
+}
+header * {
+    display: inline;
+    color: whitesmoke;
+}
+
+header li {
+    margin: 20px;
+}

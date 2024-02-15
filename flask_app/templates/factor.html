@@ -1,17 +1,67 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+{% endblock %}
+
 {% block title %}
 Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
+<link rel="stylesheet" href="factor.css">
+
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-      <h1 class="pt-5 pb-2">Factor Page</h1>  {# Heading for the factor page #}
-      <p>{{ message }}</p>  {# Display the message passed from the route #}
-    </div>
+<div class="grid-container">
+  <div class="factorPage">
+      <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
+  </div>
+<div class="table">
+      <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+          <th>ID</th>
+          <th>Order</th>
+          <th>Factor</th>
+          <th></th>
+        </tr>
+        <!-- Example placeholder until can connect toable 
+        to a database to display real-time information-->
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+        <tr>
+          <td>example</td>
+          <td>example</td>
+          <td>example</td>
+          <td>edit</td>
+        </tr>
+      </table>
+</div> 
+
+<div class="addFactor">
+  <div class="withinAdd">
+      <h4> Add New Factor</h4>
+        <!-- Textbox to add order of factor -->
+        <label for="orderFactor"></label>
+        <input type="text" id="orderFactor" name="orderFactor" placeholder="Order">
+        <!-- Textbox to add factor -->
+        <label for="factor"></label>
+        <input type="text" id="factor" name="factor" placeholder="Factor">
+        <!-- Button to submit -->
+        <input type="submit" value="Submit">
   </div>
 </div>
+
+<div class="gTP-Container">
+  <p><a href="participant"><button class="goToParticipant">Go To Participants Page</button></a></p>
+</div>
+
+</div>
+
 {% endblock %}

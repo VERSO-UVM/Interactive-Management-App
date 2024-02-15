@@ -2,19 +2,21 @@
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block styles %}
-  {{ super() }}  {# Includes any styles defined in the parent template ('base.html') #}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
 
 {% block title %}
   ISM Home  {# Sets the title of the page to "ISM Home" #}
 {% endblock %}
 
+<link rel="stylesheet" href="index.css">
+
 {% block content %}
-  <div class="container">
-      <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-        <h1 class="pt-5 pb-2">ISM Home</h1>  {# Heading for the page #}
-        <p class="pt-5"><strong>{{ message }}</strong></p>  {# Paragraph with a strong message variable #}
-        <p class="pt-5"> Welome to the ISM app. 
+  <div class="grid-container">
+      <div class="gettingStarted">
+        <h1 class="pt-5 pb-2">Getting Started</h1>  {# Heading for the page #}
+        <p class="welcome"> Welome to the ISM app. 
           This is an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants to 
           produce a flow diagram that helps a group of people solve a collective problem. 
           This app takes in a list of factors identified by research participants that affect a specific problem. 
@@ -22,7 +24,61 @@
           An algorithm will then determine which factors should be addressed first, second, and so on in order for the group to meet their goals.
           Click on the About Page to learn more. </p>
           Hit register to start solving your business problems today. 
-        <p><a href="register">Register here</a></p>  {# Link to register with a text 'Register here' #}
+          <p><a href="register">Register here</a></p>  {# Link to register with a text 'Register here' #}
+         <!-- TODO: create aboutMe.html page -->
+        <a href="aboutMe.html"><button class="goToAbout">Go To About</button></a>
       </div>
+  <!-- Load section -->
+  <div class="loadContainer">
+    <div class="shared-style">
+      <h4>Load</h4>
+      <!-- TODO: add links to factors, participants,
+        ratings, and results (clickable option) -->
+        <div class="load">
+          <!-- A button to open the popup form -->
+          <button class="loadButton" onclick="openForm()">Factors</button>
+        </div>
+        <div class="load">
+          <!-- A button to open the popup form -->
+          <button class="loadButton" onclick="openForm()">Participants</button>
+        </div>
+        <div class="load">
+          <!-- A button to open the popup form -->
+          <button class="loadButton" onclick="openForm()">Ratings</button>
+        </div>
+        <div class="load">
+          <!-- A button to open the popup form -->
+          <button class="loadButton" onclick="openForm()">Results</button>
+        </div>
+    </div>
   </div>
+  <!-- Export section-->
+  <div class="exportContainer">
+    <div class="shared-style">
+      <h4>Export</h4>
+      <!-- TODO: add links to factors, participants,
+        ratings, and results (clickable option) -->
+        <div class="export">
+          <!-- A button to open the popup form -->
+          <button class="exportButton" onclick="openForm()">Factors</button>
+        </div>
+        <div class="export">
+          <!-- A button to open the popup form -->
+          <button class="exportButton" onclick="openForm()">Participants</button>
+        </div>
+        <div class="export">
+          <!-- A button to open the popup form -->
+          <button class="exportButton" onclick="openForm()">Ratings</button>
+        </div>
+        <div class="export">
+          <!-- A button to open the popup form -->
+          <button class="exportButton" onclick="openForm()">Results</button>
+        </div>
+    </div>
+  </div>
+  <div class="empty"></div>
+  <div class="gTF-Container">
+    <p><a href="factor"><button class="goToFactor">Go To Factor Page</button></a></p>
+  </div>
+</div>
 {% endblock %}
