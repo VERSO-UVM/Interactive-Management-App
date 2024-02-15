@@ -50,6 +50,12 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
                 <br>
                 <a href="{{ url_for('ParticipantEdit',id=i.id) }}">Edit</a>
             </td>
+            <br>
+               <!-- Send to edit with id -->
+               <td class="room">
+                <br>
+                <a href="{{ url_for('rating',id=i.id) }}">Rating</a>
+            </td>
             </td>
         </tr>
         {% endfor %}

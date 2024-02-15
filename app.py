@@ -134,11 +134,16 @@ def insert_factor():
     
 
 ###################Factor Functions###############################
+     
+#########Rating##################################################################
 
 # Define route for the factor page
-@app.route('/rating')
-def rating():
+@app.route('/rating/<id>')
+def rating(id):
+    
     return render_template('rating.html', message="Hello, World!")
+
+####Rating End##############################
 
 # Define route for the factor page
 @app.route('/result')
