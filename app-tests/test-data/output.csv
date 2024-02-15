@@ -1,0 +1,11 @@
+ID,Leading Factor,Following Factor,Weight
+1,FactorA,FactorY,10
+2,FactorD,FactorY,8
+3,FactorC,FactorW,7
+4,FactorC,FactorY,10
+5,FactorB,FactorZ,1
+6,FactorB,FactorX,7
+7,FactorD,FactorZ,7
+8,FactorC,FactorX,3
+9,FactorD,FactorW,8
+10,FactorD,FactorY,9

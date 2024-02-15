@@ -14,10 +14,12 @@ app = configure_flask_application()
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 
+
 # Define a user loader function for login management
 # @login_manager.user_loader
 def load_user(user_id):
     return User.get_id(user_id)
+
 
 # Define route for the index page
 @app.route('/', methods=['GET', 'POST'])
@@ -33,6 +35,7 @@ def index():
 
     return render_template('index.html', message=message)
 
+
 # Define route for the login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -45,6 +48,7 @@ def login():
         return redirect(url_for('two_factor_registration'))
 
     return render_template('register.html', form=form)
+
 
 # Define route for the registration page
 @app.route('/register', methods=['GET', 'POST'])
@@ -64,10 +68,12 @@ def register():
 def edit_factor(id):
     return redirect(url_for('index'))
 
+
 # Define route for deleting a factor
 @app.route('/delete_factor/<id>')
 def remove_factor(id):
     return redirect(url_for('index'))
+
 
 # Define route for the factor page
 @app.route('/factor')
@@ -79,15 +85,18 @@ def factor():
 # def participant():
 #     return render_template('participant.html', message="Hello, World!")
 
+
 # Define route for the factor page
 @app.route('/rating')
 def rating():
     return render_template('rating.html', message="Hello, World!")
 
+
 # Define route for the factor page
 @app.route('/result')
 def result():
     return render_template('result.html', message="Hello, World!")
+
 
 # Define route for the about page
 @app.route('/about')
@@ -101,8 +110,9 @@ def participant():
     if request.method=='POST':
 
         # ##Get from the form
-        f_name=request.form["f_name"]
-        l_name=request.form["l_name"]
+        f_name=request.form["f_name"]  
+        l_name=request.form["l_name"]  
+        # flake8: noqa
         email=request.form["email"]
         telephone=request.form["telephone"]
         u_name="Guest"
