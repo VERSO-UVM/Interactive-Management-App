@@ -15,4 +15,43 @@
     padding-left: 35%;
     text-align: center;
     grid-template-rows: auto;
+ grace-dev
+=======
+}
+
+/* header css start */
+
+header {
+    background-color: wheat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    display: grid;
+    align-items: center;
+    box-shadow: 0 0 25px 0 black;
+}
+header * {
+    display: inline;
+}
+
+header li {
+    margin: 20px;
+}
+
+header li a {
+    color: palevioletred;
+    text-decoration: none;
+}
+
+/* header css end */
+.pTable
+{
+    border: 1px solid black;
+}
+.pTable, .room
+{
+    border: 1px solid black;
+ main
 }

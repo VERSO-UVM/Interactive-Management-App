@@ -12,7 +12,9 @@ Participant Page  {# Sets the title of the page to "Participant Page" #}
 
 <link rel="stylesheet" href="participant.css">
 
+
 {% block content %}
+ grace-dev
 <style>
     table, th, td {
       border:1px solid black;
@@ -55,6 +57,54 @@ Participant Page  {# Sets the title of the page to "Participant Page" #}
         </tr>
       </table>
     </div>
+=======
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+            <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
+            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
+        </div>
+    </div>
+</div>
+<script>
+    function validateForm() {
+        var emailInput = document.getElementById("email");
+        var emailValue = emailInput.value;
+
+        if (!emailValue.includes("@")) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+
+<table class="pTable">
+    <tr>
+        <th>Current Participants</th>
+    </tr>
+    {% for i in part %}
+        <tr>
+
+            <td class="room">{{ i.id }}</td>
+            <td class="room">{{ i.f_name }}</td>
+            <td class="room">{{ i.l_name }}</td>
+            <td class="room">{{ i.email}}</td>
+            <td class="room">{{ i.telephone }}</td>
+            <td>
+                <br>
+               <!-- Send to edit with id -->
+               <td class="room">
+                <br>
+                <a href="{{ url_for('ParticipantEdit',id=i.id) }}">Edit</a>
+            </td>
+            </td>
+        </tr>
+        {% endfor %}
+</table>
+ main
 
     <div class="addPart">
       <div class="withinAdd">
@@ -76,6 +126,7 @@ Participant Page  {# Sets the title of the page to "Participant Page" #}
       </div>
     </div>
 
+ grace-dev
   <!-- Add to each row of table -->
   <!--
     <div class="gTR-Container">
@@ -85,3 +136,23 @@ Participant Page  {# Sets the title of the page to "Participant Page" #}
 
 </div>
 {% endblock %}
+
+<form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
+
+    <label for="f_name">First Name</label>
+    <input type="text" name="f_name"><br>
+
+    <label for="l_name">Last Name</label>
+    <input type="text" name="l_name"><br>
+
+    <label for="email">email</label>
+    <input type="text" name="email" id="email"><br>
+
+    <label for="telephone">Telephone</label>
+    <input type="text" name="telephone"><br>
+
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
+
+ main
