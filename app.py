@@ -92,7 +92,7 @@ def result():
 # Define route for the about page
 @app.route('/about')
 def about():
-    return render_template('about.html', message="Welcome to the About Page. Here is where you can learn more about ISM as well as how to use it.")
+    return render_template('about.html')
 
 
 @app.route("/participant",methods=['POST','GET'])
@@ -140,6 +140,8 @@ def ParticipantEdit(id):
 
     else:
         return render_template('editPart.html',person=person)
+    
+ 
 
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
