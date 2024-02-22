@@ -24,8 +24,8 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
         <h4>Compare Factors</h4>
         <div class="box">
           <p>Area for Factor Comparison</p>
-          <p id="attempt1">-1</p>
-          <p id="attempt2">{{combination[3].factor_following}}</p>
+          <p id="attempt1">{{p_id}}</p>
+          <!-- <p id="attempt2">{{combination[3].factor_following}}</p> -->
         </div>
           <!-- Textbox to add rating -->
          
@@ -48,18 +48,29 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
 <!--Javascript so that the submit and skip button continue the iteration and also update the functions-->
 <script type="text/javascript">
   var index1=5;
-  var attempt32="{{combination[].factor_following}}";
+  var attempt32="{{combination[5].factor_following}}";
+
+  //Run the python function with javascript
+  //access the python variable
+  const input = document.getElementById("attempt1");
+  const inputValue = input.value;
+  console.log(inputValue);
+  console.log("5");
+
+
   
   // Function to modify the index and content o
   function modifyIndex() {
+    console.log(inputValue);
+    console.log("5");
       
-      //index1=index1+1;
-      var string33="";
-      for (var i = 0; i < string32.length; i++) {
-          if (string32[i] == '[') {
-        console.log("Found");
-        }
-      }
+      // //index1=index1+1;
+      // var string33="";
+      // for (var i = 0; i < string32.length; i++) {
+      //     if (string32[i] == '[') {
+      //   console.log("Found");
+      //   }
+      // }
       
       var para=document.getElementById("attempt1");
       var myVariable="hey";

@@ -163,7 +163,7 @@ def insert_rating(p_id):
         for j in range(0,len(factor_following)):
             if(i!=j):
                 r_id=(database_access.get_total_rating())+1
-                database_access.insert_rating(id=r_id,factor_leading=i,factor_following=j,rating=-1,participant_id=p_id)
+                database_access.insert_rating(id=r_id,factor_leading=i,factor_following=j,rating=0,participant_id=p_id)
 
     ##Getting the entries in rating table
     combination=database_access.get_rating_by_id(p_id)
