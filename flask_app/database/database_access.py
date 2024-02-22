@@ -106,18 +106,18 @@ def insert_participant(id: str,
 
     return False
 
-def insert_rating(factor_leading : Factor, factor_following : Factor, rating : float, p : Participant):
+def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
     
     insert : RatingsTBL
 
     try:
-        insert = RatingsTBL(id=str(uuid.uuid4()),
+        insert = RatingsTBL(id=id,
                             factor_leading=factor_leading.id,
                             factor_following=factor_following.id,
                             rating=rating,
-                            participant_id=p.id)
+                            participant_id=participant_id)
     except AttributeError:
-        print(f'ERROR: invalid rating insertion for participant={p.u_name}')
+      #  print(f'ERROR: invalid rating insertion for participant={p.u_name}')
         return False
     
     if insert:
@@ -126,19 +126,19 @@ def insert_rating(factor_leading : Factor, factor_following : Factor, rating : f
             __DATABASE_CONNECTION.commit()
             return True
         except sqlite3.ProgrammingError as e:
-            print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
+           # print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.IntegrityError as e:
-            print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
+          #  print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.OperationalError as e:
-            print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
+          #  print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
-            print(f"ERROR: database error inserting rating, participant={p.u_name}")
+           # print(f"ERROR: database error inserting rating, participant={p.u_name}")
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
@@ -329,3 +329,41 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
 #     except Exception as e:
 #         print(f"Error editing factort: {e}")
 #         return False
+    
+
+############Rating functions
+def get_rating_by_id(id):
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
+    return ratings
+
+
+def get_total_rating():
+    rating_count=__DATABASE_CONNECTION.query(RatingsTBL).count()
+    return rating_count
+
+
+def update_rating(id,leading,following,rating,person_id):
+    rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
+
+    try:
+        if rating:
+                
+                # Updating the rating
+                rating.id = id
+                rating.factor_leading = leading
+                rating.factor_following = following
+                rating.rating = rating
+                rating.participant_id = person_id
+                
+
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                return True
+        else:
+                print(f"No factor found with ID {rating.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing factort: {e}")
+        return False

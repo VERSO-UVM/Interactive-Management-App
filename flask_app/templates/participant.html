@@ -39,6 +39,10 @@
                 <!-- Send to edit with id -->
                 <a href="{{ url_for('ParticipantEdit', id=i.id) }}">Edit</a>
             </td>
+            <td>
+              <!-- Send to edit with id -->
+              <a href="{{ url_for('insert_rating', p_id=i.id) }}">Rating</a>
+          </td>
         </tr>
         {% endfor %}
       </table>
@@ -49,13 +53,13 @@
             <h4> Add Participant</h4>
             <form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
                 <label for="first">First Name</label>
-                <input type="text" id="first" name="first" placeholder="First Name"><br>
+                <input type="text" id="f_name" name="f_name" placeholder="First Name"><br>
                 <label for="last">Last Name</label>
-                <input type="text" id="last" name="last" placeholder="Last Name"><br>
+                <input type="text" id="l_name" name="l_name" placeholder="Last Name"><br>
                 <label for="email">Email</label>
                 <input type="text" id="email" name="email" placeholder="Email"><br>
                 <label for="phone">Phone</label>
-                <input type="text" id="phone" name="phone" placeholder="Phone"><br>
+                <input type="text" id="telephone" name="telephone" placeholder="Phone"><br>
                 <button type="submit">Submit</button>
             </form>
         </div>

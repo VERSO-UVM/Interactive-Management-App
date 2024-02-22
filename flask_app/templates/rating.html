@@ -1,6 +1,7 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
+
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/rating.css') }}">
@@ -23,15 +24,19 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
         <h4>Compare Factors</h4>
         <div class="box">
           <p>Area for Factor Comparison</p>
+          <p id="attempt1">-1</p>
+          <p id="attempt2">{{combination[3].factor_following}}</p>
         </div>
           <!-- Textbox to add rating -->
+         
           <label for="Rating"></label>
           <input type="text" id="rating" name="rating" placeholder="Rating/Weight/Value">
         <div class="buttons">
+
           <!-- Button to submit -->
           <input type="submit" value="Submit">
           <!-- Button to Skip-->
-          <button class="skip" onclick="openForm()">Skip</button>
+          <button class="skip" onclick="modifyIndex()">Skip</button>
         </div>
     </div>
   </div>
@@ -39,6 +44,30 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
   <div class="gTResults-Container">
     <p><a href="result"><button class="goToResult">Go To Final Results</button></a></p>
   </div>
-
 </div>
+<!--Javascript so that the submit and skip button continue the iteration and also update the functions-->
+<script type="text/javascript">
+  var index1=5;
+  var attempt32="{{combination[].factor_following}}";
+  
+  // Function to modify the index and content o
+  function modifyIndex() {
+      
+      //index1=index1+1;
+      var string33="";
+      for (var i = 0; i < string32.length; i++) {
+          if (string32[i] == '[') {
+        console.log("Found");
+        }
+      }
+      
+      var para=document.getElementById("attempt1");
+      var myVariable="hey";
+      para.textContent=myVariable;
+      
+    
+
+      // document.getElementById("attempt2").innerHTML = "{{ combination[index].factor_following }}";
+  }
+</script>
 {% endblock %}

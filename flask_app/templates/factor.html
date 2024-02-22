@@ -29,20 +29,30 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
         </tr>
         <!-- Example placeholder until can connect toable 
         to a database to display real-time information-->
-        <tr>
-          <td>example</td>
-          <td>example</td>
-          <td>example</td>
-          <td>edit</td>
-        </tr>
-        <tr>
-          <td>example</td>
-          <td>example</td>
-          <td>example</td>
-          <td>edit</td>
-        </tr>
+        {% for i in factor %}
+      <tr>
+
+          <td class="f_box">{{ i.id }}</td>
+          <td class="f_box">{{ i.votes}}</td>
+          <td class="f_box">{{ i.title }}</td>
+          
+          <td>
+              <br>
+             <!-- Send to edit with id -->
+             <td class="f_box">
+              <br>
+              <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
+             </td>
+      </tr>
+      {% endfor %}
       </table>
 </div> 
+
+
+
+<a href="{{ url_for('insert_factor')}}">
+  <button>Add Factors</button>
+</a>
 
 <div class="addFactor">
   <div class="withinAdd">

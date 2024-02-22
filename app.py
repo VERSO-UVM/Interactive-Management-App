@@ -1,5 +1,5 @@
 # Import necessary modules and classes
-from flask import render_template, request, redirect, url_for, session
+from flask import render_template, request, redirect, url_for, session,jsonify
 from flask_login import LoginManager
 from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
@@ -138,10 +138,43 @@ def insert_factor():
 #########Rating##################################################################
 
 # Define route for the factor page
-@app.route('/rating/<id>')
-def rating(id):
-    
+@app.route('/rating')
+def rating():
+
     return render_template('rating.html', message="Hello, World!")
+
+
+###Rating redirect from participant
+
+####UPDATES RATING
+def update_rating(id,leading,following,rating,participant_id):
+    database_access.update_rating(id,leading,following,rating,participant_id)
+
+
+##INSERTS RATING
+@app.route('/insert_rating/<p_id>')
+def insert_rating(p_id):
+    ##Calls the factors and figure out a way to for loop through it?\
+
+    ###Creates all the combinations of the factors with default value of -1
+    factor_leading=database_access.get_all_factors()
+    factor_following=database_access.get_all_factors()
+    for i in range(0,len(factor_leading)):
+        for j in range(0,len(factor_following)):
+            if(i!=j):
+                r_id=(database_access.get_total_rating())+1
+                database_access.insert_rating(id=r_id,factor_leading=i,factor_following=j,rating=-1,participant_id=p_id)
+
+    ##Getting the entries in rating table
+    combination=database_access.get_rating_by_id(p_id)
+   ##combinationss=[{'id': obj.id, 'factor_leading': obj.factor_leading,'factor_folowing': obj.factor_following} for obj in combination]
+    ##combinations=jsonify(combinationss)
+    return render_template('rating.html',combination=combination,update_rating=update_rating,p_id=p_id,index=0 )
+
+@app.route('/setvariable')
+def set_variable():
+  my_variable = request.args.get('data')
+  return {'success': True}
 
 ####Rating End##############################
 
