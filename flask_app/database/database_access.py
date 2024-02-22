@@ -5,7 +5,6 @@ import uuid
 from sqlalchemy import select
 from sqlalchemy.sql import func
 
-
 from flask_app.database.Alchemy import initialize_database_connection    # database connector
 from flask_app.database.Alchemy import ParticipantTBL 
 from flask_app.database.Alchemy import FactorTBL 

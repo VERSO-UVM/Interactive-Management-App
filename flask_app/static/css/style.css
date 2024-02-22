@@ -1,5 +1,5 @@
-body {
-    background-color: pink;
+ body {
+    background-color: #EFDAFC;
     padding: unset;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,28 +7,16 @@ body {
     text-align: center;
 }
 
-h1{
-    text-align: center;
-    color: #7A5C58;
-}
-
-/* nav css start */
-nav{
-    overflow:visible;
-}
-nav :hover{
-    background-color: navajowhite;
-}
 .container{
-    background-color: pink;
     padding: unset;
     font-family: Arial, sans-serif;
     margin: 0;
     padding-top: 7%;
     padding-left: 35%;
     text-align: center;
-    color: #7A5C58;
     grid-template-rows: auto;
+ grace-dev
+=======
 }
 
 /* header css start */
@@ -65,4 +53,5 @@ header li a {
 .pTable, .room
 {
     border: 1px solid black;
+ main
 }

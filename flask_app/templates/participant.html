@@ -1,22 +1,68 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}
-Participants Page  {# Sets the title of the page to "Factor Page" #}
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/participant.css') }}">
 {% endblock %}
 
-
+{% block title %}
+  Participant Page
+{% endblock %}
 
 {% block content %}
+<div class="grid-container">
+    <div class="partPage">
+      <h1 class="pt-5 pb-2">Participants</h1>
+    </div>
+    <div class="table">
+      <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+            <th>ID</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+        </tr>
+        <!-- Example placeholder until can connect to a database to display real-time information-->
+        {% for i in part %}
+        <tr>
+            <td>{{ i.id }}</td>
+            <td>{{ i.f_name }}</td>
+            <td>{{ i.l_name }}</td>
+            <td>{{ i.email }}</td>
+            <td>{{ i.telephone }}</td>
+            <td>
+                <!-- Send to edit with id -->
+                <a href="{{ url_for('ParticipantEdit', id=i.id) }}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-            <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
-            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
+    <div class="addPart">
+        <div class="withinAdd">
+            <h4> Add Participant</h4>
+            <form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
+                <label for="first">First Name</label>
+                <input type="text" id="first" name="first" placeholder="First Name"><br>
+                <label for="last">Last Name</label>
+                <input type="text" id="last" name="last" placeholder="Last Name"><br>
+                <label for="email">Email</label>
+                <input type="text" id="email" name="email" placeholder="Email"><br>
+                <label for="phone">Phone</label>
+                <input type="text" id="phone" name="phone" placeholder="Phone"><br>
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
+
 </div>
+
 <script>
     function validateForm() {
         var emailInput = document.getElementById("email");
@@ -30,53 +76,4 @@ Participants Page  {# Sets the title of the page to "Factor Page" #}
         return true;
     }
 </script>
-
-<table class="pTable">
-    <tr>
-        <th>Current Participants</th>
-    </tr>
-    {% for i in part %}
-        <tr>
-
-            <td class="room">{{ i.id }}</td>
-            <td class="room">{{ i.f_name }}</td>
-            <td class="room">{{ i.l_name }}</td>
-            <td class="room">{{ i.email}}</td>
-            <td class="room">{{ i.telephone }}</td>
-            <td>
-                <br>
-               <!-- Send to edit with id -->
-               <td class="room">
-                <br>
-                <a href="{{ url_for('ParticipantEdit',id=i.id) }}">Edit</a>
-            </td>
-            <br>
-               <!-- Send to edit with id -->
-               <td class="room">
-                <br>
-                <a href="{{ url_for('rating',id=i.id) }}">Rating</a>
-            </td>
-            </td>
-        </tr>
-        {% endfor %}
-</table>
-
-
-<form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
-
-    <label for="f_name">First Name</label>
-    <input type="text" name="f_name"><br>
-
-    <label for="l_name">Last Name</label>
-    <input type="text" name="l_name"><br>
-
-    <label for="email">email</label>
-    <input type="text" name="email" id="email"><br>
-
-    <label for="telephone">Telephone</label>
-    <input type="text" name="telephone"><br>
-
-    <button type="submit">Save</button>
-</form>
 {% endblock %}
-

@@ -17,8 +17,12 @@
     <!-- Bootstrap -->
     <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">  {# Links to Bootstrap CSS file #}
     <link rel="stylesheet" href="/static/css/style.css?version={{ now }}">  {# Links to a style CSS file with a dynamic version #}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     {%- endblock styles %}
     {%- endblock head %}
+ grace-dev
+  </head> 
+=======
   </head>
 
   <header>
@@ -35,10 +39,24 @@
     </nav>  {# Navigation links outside the main content block #}
 
   </header>   
+ main
 
   <body{% block body_attribs %}{% endblock body_attribs %}>
     {% block body -%}
     {% block navbar %}
+    <header>
+      <nav>
+        <!-- navbar content -->
+        <ul>
+          <li><a href="{{ url_for('index') }}"> Home Page</a></li>
+          <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
+          <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
+          <li><a href="{{ url_for('rating') }}"> Ratings Page</a></li>
+          <li><a href="{{ url_for('result') }}"> Results Page</a></li>
+        </ul>
+      </nav>  {# Navigation links outside the main content block #}
+  
+    </header>  
     {%- endblock navbar %}  {# Empty block for the navbar, to be overridden in child templates #}
     {% block content -%}
     {%- endblock content %}  {# Empty block for the main content, to be overridden in child templates #}

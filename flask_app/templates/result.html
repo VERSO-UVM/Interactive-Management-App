@@ -1,17 +1,65 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+{% endblock %}
+
 {% block title %}
 Result Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
+<link rel="stylesheet" href="result.css">
+
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-      <h1 class="pt-5 pb-2">Result Page</h1>  {# Heading for the factor page #}
-      <p>{{ message }}</p>  {# Display the message passed from the route #}
+<div class="grid-container">
+  <div class="resultPage">
+      <h1 class="pt-5 pb-2">Final Results</h1>  {# Heading for the factor page #}
+  </div>
+
+  <div class="results">
+    <div class="resultsContainer">
+      <div class="box">
+        <p>Area for Results Flow Diagram</p>
+      </div>
     </div>
   </div>
+
+  <div class="saveImage">
+    <p><button class="savePNG">Save as PNG</button></p>
+  </div>
+
+  <div class="table">
+    <!-- Table of factors that include: ID, Order, Factor -->
+    <table style="width: 100%">
+      <!-- Table row for header-->
+      <tr>
+        <th>ID</th>
+        <th>Leading Factor</th>
+        <th>Following Factor</th>
+        <th>Weight</th>
+        <th></th>
+      </tr>
+      <!-- Example placeholder until can connect toable 
+      to a database to display real-time information-->
+      <tr>
+        <td>example</td>
+        <td>example</td>
+        <td>example</td>
+        <td>example</td>
+
+        <td>edit</td>
+      </tr>
+      <tr>
+        <td>example</td>
+        <td>example</td>
+        <td>example</td>
+        <td>example</td>
+
+        <td>edit</td>
+      </tr>
+    </table>
+  </div> 
 </div>
 {% endblock %}

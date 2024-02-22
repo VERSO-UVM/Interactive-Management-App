@@ -1,0 +1,117 @@
+  /* "Factors" title */
+  h1 {
+    color: #6707A4;
+    padding-top: 5%;
+    text-align: center;
+  }
+  
+  /* Setup the grid layout for .grid-container */
+  .grid-container {
+    display: grid;
+    grid-template-rows: auto auto auto; /* auto for header and form, 1fr for table */
+    gap: 10px; /* Space between grid items */
+    padding-bottom: 3%;
+    font-family: 'Bradley Hand', cursive;
+  }
+  
+  /* "Factors" positioning (topmost box in grid) */
+  .resultPage {
+    grid-column: 1 / -1; /* Span across all columns */
+    color: #6707A4;
+    text-align: center;
+    padding: 5%;
+  }
+  
+  /* Style the form within the .results container */
+  .results{
+    padding: 5%;
+    padding-top: 2%;
+    border-style: solid;
+    border-color: #6707A4;
+    height: 95%;
+    width: 90%;
+    justify-self: center;
+    margin: 0;
+    background-color: #E0BBF7;
+    border-radius: 4px;
+  }
+
+  /* Positioning for Display Box */
+  .ratingContainer {
+    display: grid;
+    place-items: center;
+  }
+
+  /* Styling for Save PNG Button */
+  .image {
+    font-size: 20px;
+    padding: 10px;
+    background-color: #6707A4;
+    color: white;
+    border-radius: 4px;
+    margin-top: 40px; /* Adding some space above inputs */
+    text-align: center;
+    width: 20%;
+    cursor: pointer;
+    margin-left: 3%;
+  }
+  
+  /* Styling for Go To Result Button */
+  .saveImage {
+    justify-self: end;
+    padding-top: 1%;
+    margin-right: 15%;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  /* Positioning box for flow diagram */
+  .box {
+    padding: 20px;
+    margin-top: 25px; /* Adding some space above inputs */
+    background-color: #ead2f9;
+    border: 2px solid #6707A4;
+    border-radius: 4px;
+    width: 95%;
+    height: 300px;
+    justify-self: center;
+  }
+  
+  /* "Go To Participants" button */
+  .savePNG {
+    background-color: #6707A4;
+    color: whitesmoke;
+    text-align: center;
+    text-decoration: none;
+    padding-top: 0.5%;
+    justify-self: end;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }  
+
+/* Style for table */
+.table {
+    width: 85%;
+    border-collapse: collapse;
+    justify-self: center;
+    padding-bottom: 40px;
+    margin-top: 40px;
+  }
+  
+.table th {
+    border: 2px solid #480373;
+    padding: 8px;
+    text-align: center;
+    color: whitesmoke;
+    background-color: #6707A4;
+    font-size: 18px;
+    font-weight: normal;
+  }
+  
+.table td {
+    border: 2px solid #480373;
+    padding: 8px;
+    text-align: left;
+    background-color: #ad68d8;
+  }

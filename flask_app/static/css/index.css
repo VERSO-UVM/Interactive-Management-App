@@ -1,0 +1,169 @@
+/* "Getting Started" title */
+h1 {
+    color: #6707A4;
+    padding-top: 5%;
+    text-align: center;
+}
+
+/* Positioning for grid layout */
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'gettingStarted gettingStarted'
+    'loadContainer exportContainer'
+    'empty gTF-Container';
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  font-family: 'Bradley Hand', cursive;
+  padding-bottom: 3%;
+}
+
+/* "Getting Started" positioning (topmost box in grid) */
+.gettingStarted {
+  grid-area: gettingStarted;
+  grid-column: 1 / -1; /* Span across all columns */
+  text-align: center;
+  padding: 5%;
+}
+
+/* "Load" container */
+.loadContainer {
+  grid-area: loadContainer;
+  border-style: solid;
+  border-color: #6707A4;
+  height: 400px;
+  width: 70%;
+  justify-self: center;
+  margin: 0;
+  background-color: #E0BBF7;
+  border-radius: 4px;
+}
+
+/* "Export" container */
+.exportContainer {
+  grid-area: exportContainer;
+  border-style: solid;
+  border-color: #6707A4;
+  height: 400px;
+  width: 70%;
+  justify-self: center;
+  margin: 0;
+  background-color: #E0BBF7;
+  border-radius: 4px;
+}
+
+/* Positioning for "Load" and "Export" titles */
+.shared-style {
+  text-align: left;
+  color: #6707A4;
+  max-width: 100%;
+  margin: 0;
+  height: 10%;
+  padding-top: 30px;
+  padding-left: 60px;
+}
+
+/* "Load" and "Export" titles */
+h4 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Welcome block text */
+.welcome {
+  text-align: left;
+}
+
+/* container to position "Go To Factor" button */
+.gTF-Container {
+  grid-area: gTF-Container;
+  justify-self: end;
+  padding-top: 5%;
+  margin-right: 15%;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* "Go To Factor" button */
+.goToFactor {
+  background-color: #6707A4;
+  color: whitesmoke;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 0.5%;
+  justify-self: end;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* "Go To About" button */
+.goToAbout {
+  background-color: #6707A4;
+  color: whitesmoke;
+  text-align: center;
+  text-decoration: none;
+  justify-self: end;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Positioning for "loadButton" */
+.load {
+  width: 100%;
+  padding-right: 60px;
+}
+
+/* Styling */
+.loadButton {
+  background-color: #6707A4;
+  color: whitesmoke;
+  font-size: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-self: center;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Hover styling for "Load" buttons */
+.load :hover {
+  background-color: white;
+  color: #480373;
+  text-decoration: none;
+}
+
+/* Positioning for "exportButton" */
+.export {
+  width: 100%;
+  padding-right: 60px;
+}
+
+/* Styling */
+.exportButton {
+  background-color: #6707A4;
+  color: whitesmoke;
+  font-size: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  justify-self: center;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Hover styling for "Export" buttons */
+.export :hover {
+  background-color: white;
+  color: #480373;
+  text-decoration: none;
+}
