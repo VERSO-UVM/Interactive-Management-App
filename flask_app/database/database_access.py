@@ -147,14 +147,14 @@ def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, 
 
 
    
-def insert_result(factor_leading : Factor, factor_following : Factor, rating : float):
+def insert_result(id:float,factor_leading : Factor, factor_following : Factor, rating : float):
 
     insert : ResultsTBL
 
     try:
-        insert = ResultsTBL(id=str(uuid.uuid4()),
-                            factor_leading=factor_leading.id,
-                            factor_following=factor_following.id,
+        insert = ResultsTBL(id=id,
+                            factor_leading=factor_leading,
+                            factor_following=factor_following,
                             rating=rating)
     except AttributeError:
         print(f'ERROR: invalid result insertion')
@@ -415,15 +415,23 @@ def delete_rating(p_id):
     return rating_count+1    
 
 def calculations():
+    everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    id=0
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==1).all()
     for rating in ratings:
        average_rating = __DATABASE_CONNECTION.query(func.avg(RatingsTBL.rating)).filter(
         RatingsTBL.factor_leading == rating.factor_leading,
         RatingsTBL.factor_following == rating.factor_following).scalar()
        print(average_rating)
-       insert_result(rating.factor_leading,rating.factor_following,average_rating)
+       insert_result(id,rating.factor_leading,rating.factor_following,average_rating)
+       id+=1
 
        
     wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
-    return 
+    print(wholeTable)
+    return wholeTable
        ## math=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.factor_leading==ratings.factor_leading,RatingsTBL.factor_following==ratings.factor_following).all()

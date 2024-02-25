@@ -147,8 +147,9 @@ def rating():
 
 ####UPDATES RATING
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
-def update_rating(p_id,f_id):
-   rating=request.form["rating"]
+def update_rating(p_id,f_id,rating):
+   
+   print(rating)
    database_access.update_rating(person_id=p_id,rating=rating,index=int(f_id))
    return rating
 
@@ -214,8 +215,8 @@ def getInfoFollowing(p_id,f_id):
 # Define route for the factor page
 @app.route('/result')
 def result():
-    results=database_access.calculations()
-    return render_template('result.html', resuls=results)
+    wholeTable=database_access.calculations()
+    return render_template('result.html', wholeTable=wholeTable)
 
 
 

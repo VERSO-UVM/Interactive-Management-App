@@ -30,9 +30,13 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
           <p id="rating"></p>
         </div>
           <!-- Textbox to add rating -->
-          <form>
+          <!-- <form>
           <label for="Rating"></label>
           <input type="text" id="rating" name="rating" placeholder="Rating/Weight/Value">
+          </form> -->
+          <form id="myform">
+            <label for="rating">Rating:</label>
+            <input type="text" id="rating" name="rating">
           </form>
         <div class="buttons">
 
@@ -83,8 +87,8 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
 document.getElementById("submit").addEventListener("click",updateRating);
 function updateRating()
 {
-  //var rating = document.getElementById("rating").value;
-  $.get('/update_rating/'+p_id+'/'+index,
+  var rating = document.getElementById("myform").elements["rating"];
+  $.get('/update_rating/'+p_id+'/'+index+'/'+rating.value,
     function(x) 
     {
      // document.getElementById("rating").value="placeholder";
