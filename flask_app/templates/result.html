@@ -44,21 +44,15 @@ Result Page  {# Sets the title of the page to "Factor Page" #}
       <!-- Example placeholder until can connect toable 
       to a database to display real-time information-->
       <tr>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
+        {% for i in results %}
+        <td>{{ i.id }}</td>
+        <td>{{ i.factor_leading }}</td>
+        <td>{{ i.factor_following }}</td>
+        <td>{{ i.rating }}</td>
 
         <td>edit</td>
       </tr>
-      <tr>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-
-        <td>edit</td>
-      </tr>
+      {% endfor %}
     </table>
   </div> 
 </div>

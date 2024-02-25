@@ -145,6 +145,8 @@ def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, 
         
     return False
 
+
+   
 def insert_result(factor_leading : Factor, factor_following : Factor, rating : float):
 
     insert : ResultsTBL
@@ -341,19 +343,47 @@ def get_total_rating():
     rating_count=__DATABASE_CONNECTION.query(RatingsTBL).count()
     return rating_count
 
-
-def update_rating(id,leading,following,rating,person_id):
+def specific_id(id):
     rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
+    return rating
 
+# def update_rating(id,leading,following,rating,person_id):
+#     rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
+
+#     try:
+#         if rating:
+                
+#                 # Updating the rating
+#                 rating.id = id
+#                 rating.factor_leading = leading
+#                 rating.factor_following = following
+#                 rating.rating = rating
+#                 rating.participant_id = person_id
+                
+
+                
+#                 # Commit the changes to the database
+#                 __DATABASE_CONNECTION.commit()
+
+#                 return True
+#         else:
+#                 print(f"No factor found with ID {rating.id}")
+#                 return False
+#     except Exception as e:
+#         print(f"Error editing factort: {e}")
+#         return False
+def update_rating(person_id,rating,index):
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
+    # rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==ratings[index]).first()
     try:
         if rating:
                 
                 # Updating the rating
-                rating.id = id
-                rating.factor_leading = leading
-                rating.factor_following = following
-                rating.rating = rating
-                rating.participant_id = person_id
+                ratings[index].id = ratings[index].id 
+                ratings[index].factor_leading = ratings[index].factor_leading
+                ratings[index].factor_following = ratings[index].factor_following
+                ratings[index].rating = rating
+                ratings[index].participant_id = person_id
                 
 
                 
@@ -367,3 +397,33 @@ def update_rating(id,leading,following,rating,person_id):
     except Exception as e:
         print(f"Error editing factort: {e}")
         return False
+
+    
+def delete_everything():
+    everything=__DATABASE_CONNECTION.query(RatingsTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+def delete_rating(p_id):
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==p_id).all()
+    for rating in ratings:
+        __DATABASE_CONNECTION.delete(rating)
+        __DATABASE_CONNECTION.commit()
+
+    rating_count=__DATABASE_CONNECTION.query(RatingsTBL).count()
+    return rating_count+1    
+
+def calculations():
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==1).all()
+    for rating in ratings:
+       average_rating = __DATABASE_CONNECTION.query(func.avg(RatingsTBL.rating)).filter(
+        RatingsTBL.factor_leading == rating.factor_leading,
+        RatingsTBL.factor_following == rating.factor_following).scalar()
+       print(average_rating)
+       insert_result(rating.factor_leading,rating.factor_following,average_rating)
+
+       
+    wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    return 
+       ## math=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.factor_leading==ratings.factor_leading,RatingsTBL.factor_following==ratings.factor_following).all()

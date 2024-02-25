@@ -133,7 +133,6 @@ def insert_factor():
         return render_template("insert_factor.html")
     
 
-###################Factor Functions###############################
      
 #########Rating##################################################################
 
@@ -147,41 +146,82 @@ def rating():
 ###Rating redirect from participant
 
 ####UPDATES RATING
-def update_rating(id,leading,following,rating,participant_id):
-    database_access.update_rating(id,leading,following,rating,participant_id)
+@app.route('/update_rating/<p_id>/<f_id>/<rating>')
+def update_rating(p_id,f_id):
+   rating=request.form["rating"]
+   database_access.update_rating(person_id=p_id,rating=rating,index=int(f_id))
+   return rating
 
 
 ##INSERTS RATING
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
-    ##Calls the factors and figure out a way to for loop through it?\
+    
+    ##Deletes all exisiting ratings combinations for the user
+    database_access.delete_everything()
+    r_id=(database_access.delete_rating(p_id))
+    
 
-    ###Creates all the combinations of the factors with default value of -1
+    ###Creates all the combinations of the factors with default value of 0
     factor_leading=database_access.get_all_factors()
     factor_following=database_access.get_all_factors()
+
     for i in range(0,len(factor_leading)):
         for j in range(0,len(factor_following)):
-            if(i!=j):
-                r_id=(database_access.get_total_rating())+1
-                database_access.insert_rating(id=r_id,factor_leading=i,factor_following=j,rating=0,participant_id=p_id)
+            if(factor_leading[i]!=factor_following[j]):
+                database_access.insert_rating(id=r_id,factor_leading=factor_leading[i],factor_following=factor_following[j],rating=0,participant_id=p_id)
+                r_id+=1
+    return render_template('rating.html',p_id=p_id )
 
-    ##Getting the entries in rating table
-    combination=database_access.get_rating_by_id(p_id)
-   ##combinationss=[{'id': obj.id, 'factor_leading': obj.factor_leading,'factor_folowing': obj.factor_following} for obj in combination]
-    ##combinations=jsonify(combinationss)
-    return render_template('rating.html',combination=combination,update_rating=update_rating,p_id=p_id,index=0 )
+@app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
+def getInfoLeading(p_id,f_id):
 
-@app.route('/setvariable')
-def set_variable():
-  my_variable = request.args.get('data')
-  return {'success': True}
+   
 
-####Rating End##############################
+    # Call your Python function with the parameters
+ try:
+    result = database_access.get_rating_by_id(p_id)
+    # print(len(result))
+    # print(result)
+    results=result[int(f_id)].factor_leading
+
+    resultTitle=database_access.search_specific_factor(results)
+    resultsss=resultTitle.title
+    
+    return resultsss
+ except:
+     return "-1"
+   
+ 
+@app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
+def getInfoFollowing(p_id,f_id):
+   
+
+#     # Call your Python function with the parameters
+   result = database_access.get_rating_by_id(p_id)
+   results=result[int(f_id)].factor_following
+
+   resultTitle=database_access.search_specific_factor(results)
+   print(resultTitle.title)
+   resultsss=resultTitle.title
+    # Return the result as JSON
+   return (resultsss)
+    
+ 
+
+#####################################Results##############################
 
 # Define route for the factor page
 @app.route('/result')
 def result():
-    return render_template('result.html', message="Hello, World!")
+    results=database_access.calculations()
+    return render_template('result.html', resuls=results)
+
+
+
+
+
+
 
 # Define route for the about page
 @app.route('/about')
@@ -189,6 +229,7 @@ def about():
     return render_template('about.html', message="Welcome to the About Page. Here is where you can learn more about ISM as well as how to use it.")
 
 
+##################Participants#############################################
 @app.route("/participant",methods=['POST','GET'])
 def participant():
     

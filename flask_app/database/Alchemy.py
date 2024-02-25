@@ -96,7 +96,7 @@ class RatingsTBL(Base):
     
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
-
+    
     
 class ResultsTBL(Base):
 
