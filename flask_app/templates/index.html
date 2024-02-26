@@ -25,53 +25,205 @@
           Click on the About Page to learn more. </p>
           Hit register to start solving your business problems today. 
           <p><a href="register">Register here</a></p>  {# Link to register with a text 'Register here' #}
-         <!-- TODO: create about page -->
         <p><a href="about"><button class="goToAbout">Go To About</button></a></p>
       </div>
-  <!-- Load section -->
+
   <div class="loadContainer">
     <div class="shared-style">
       <h4>Load</h4>
-      <!-- TODO: add links to factors, participants,
-        ratings, and results (clickable option) -->
-        <div class = "load">
-          <button class="loadButton" onclick = "openWindow()">Factors </button>
-            <script>
-              function openWindow() {
-                var window = window.open("https://github.com/orgs/VERSO-UVM/projects/1/views/1?pane=issue&itemId=54177700")
-              }
-            </script>
-        </div>
-          <!-- <div class="load">
-            <!-- A button to open the popup form -->
-            <!-- <button class="loadButton" onclick="openForm()">Factors</button> 
-            <script>
-            var myWindow = window.open("about.html","newWindow","width=500,height=700");  
+      <!-- TODO: add links to factors, participants,ratings, and results (clickable option) -->
 
-            myWindow.onload = function(){
-              let content = "<button class='loadButton' onclick='window.print()'>Factors</button>";
+  <!--                                      Load Factors section                                                        -->
+        <div class="load">
+          <!-- A button to open the popup form -->
+          <button class="loadButton" onclick="openFileUploadPopup()">Factors</button>
+        </div>
+        
+        <script>
+          function openFileUploadPopup() {
+            // Open a popup window
+            var popupWindow = window.open("", "FileUploadPopup", "width=500,height=400");
+        
+            // Write HTML content to the popup window
+            popupWindow.document.write(`
+              <html>
+              <head>
+                <title>Upload File</title>
+              </head>
+              <body>
+                <h2>Upload File</h2>
+                <form id="uploadForm" enctype="multipart/form-data">
+                  <input type="file" name="fileUpload" id="fileUpload">
+                  <br>
+                  <button type="submit">Upload</button>
+                </form>
+              </body>
+              </html>
+            `);
+        
+            // Handle form submission
+            popupWindow.document.getElementById("uploadForm").onsubmit = function(event) {
+              event.preventDefault(); // Prevent default form submission
               
-            myWindow.document.getElementById('mainBody').innerHTML = content;
-            } 
+              // Get the uploaded file
+              var file = popupWindow.document.getElementById("fileUpload").files[0];
+              
+              // file upload process here, such as sending it to a server
+              // For demonstration, let's log the file details
+              console.log("Uploaded File:", file);
 
-            myWindow.window.close();
-            </script> 
-          </div> -->
+              // need to figure out how to send it to the backend and connect it
+              
+              // Close the popup window
+              popupWindow.close();
+            };
+          }
+        </script>
 
+<!--                                      Load Participant section                                                        -->
         <div class="load">
           <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Participants</button>
+          <button class="loadButton" onclick="openFileUploadPopup()">Participants</button>
         </div>
+
+        <script>
+          function openFileUploadPopup() {
+            // Open a popup window
+            var popupWindow = window.open("", "FileUploadPopup", "width=500,height=400");
+
+            // Write HTML content to the popup window
+            popupWindow.document.write(`
+              <html>
+              <head>
+                <title>Upload File</title>
+              </head>
+              <body>
+                <h2>Upload File</h2>
+                <form id="uploadForm" enctype="multipart/form-data">
+                  <input type="file" name="fileUpload" id="fileUpload">
+                  <br>
+                  <button type="submit">Upload</button>
+                </form>
+              </body>
+              </html>
+            `);
+
+            // Handle form submission
+            popupWindow.document.getElementById("uploadForm").onsubmit = function(event) {
+              event.preventDefault(); // Prevent default form submission
+              
+              // Get the uploaded file
+              var file = popupWindow.document.getElementById("fileUpload").files[0];
+              
+              // file upload process here, such as sending it to a server
+              // For demonstration, let's log the file details
+              console.log("Uploaded File:", file);
+
+              // need to figure out how to send it to the backend and connect it
+              
+              // Close the popup window
+              popupWindow.close();
+            };
+          }
+        </script>
+
+<!--                                      Load Ratings section                                                        -->
         <div class="load">
           <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Ratings</button>
+          <button class="loadButton" onclick="openFileUploadPopup()">Ratings</button>
         </div>
+
+        <script>
+          function openFileUploadPopup() {
+            // Open a popup window
+            var popupWindow = window.open("", "FileUploadPopup", "width=500,height=400");
+
+            // Write HTML content to the popup window
+            popupWindow.document.write(`
+              <html>
+              <head>
+                <title>Upload File</title>
+              </head>
+              <body>
+                <h2>Upload File</h2>
+                <form id="uploadForm" enctype="multipart/form-data">
+                  <input type="file" name="fileUpload" id="fileUpload">
+                  <br>
+                  <button type="submit">Upload</button>
+                </form>
+              </body>
+              </html>
+            `);
+
+            // Handle form submission
+            popupWindow.document.getElementById("uploadForm").onsubmit = function(event) {
+              event.preventDefault(); // Prevent default form submission
+              
+              // Get the uploaded file
+              var file = popupWindow.document.getElementById("fileUpload").files[0];
+              
+              // file upload process here, such as sending it to a server
+              // For demonstration, let's log the file details
+              console.log("Uploaded File:", file);
+
+              // need to figure out how to send it to the backend and connect it
+              
+              // Close the popup window
+              popupWindow.close();
+            };
+          }
+        </script>
+
+<!--                                      Load Results section                                                        -->
         <div class="load">
           <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Results</button>
+          <button class="loadButton" onclick="openFileUploadPopup()">Results</button>
         </div>
-    </div>
-  </div>
+
+        <script>
+          function openFileUploadPopup() {
+            // Open a popup window
+            var popupWindow = window.open("", "FileUploadPopup", "width=500,height=400");
+
+            // Write HTML content to the popup window
+            popupWindow.document.write(`
+              <html>
+              <head>
+                <title>Upload File</title>
+              </head>
+              <body>
+                <h2>Upload File</h2>
+                <form id="uploadForm" enctype="multipart/form-data">
+                  <input type="file" name="fileUpload" id="fileUpload">
+                  <br>
+                  <button type="submit">Upload</button>
+                </form>
+              </body>
+              </html>
+            `);
+
+            // Handle form submission
+            popupWindow.document.getElementById("uploadForm").onsubmit = function(event) {
+              event.preventDefault(); // Prevent default form submission
+              
+              // Get the uploaded file
+              var file = popupWindow.document.getElementById("fileUpload").files[0];
+              
+              // file upload process here, such as sending it to a server
+              // For demonstration, let's log the file details
+              console.log("Uploaded File:", file);
+
+              // need to figure out how to send it to the backend and connect it
+              
+              // Close the popup window
+              popupWindow.close();
+            };
+          }
+        </script>
+            </div>
+          </div>
+
+
   <!-- Export section-->
   <div class="exportContainer">
     <div class="shared-style">
