@@ -34,10 +34,30 @@
       <h4>Load</h4>
       <!-- TODO: add links to factors, participants,
         ratings, and results (clickable option) -->
-        <div class="load">
-          <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Factors</button>
+        <div class = "load">
+          <button class="loadButton" onclick = "openWindow()">Factors </button>
+            <script>
+              function openWindow() {
+                var window = window.open("https://github.com/orgs/VERSO-UVM/projects/1/views/1?pane=issue&itemId=54177700")
+              }
+            </script>
         </div>
+          <!-- <div class="load">
+            <!-- A button to open the popup form -->
+            <!-- <button class="loadButton" onclick="openForm()">Factors</button> 
+            <script>
+            var myWindow = window.open("about.html","newWindow","width=500,height=700");  
+
+            myWindow.onload = function(){
+              let content = "<button class='loadButton' onclick='window.print()'>Factors</button>";
+              
+            myWindow.document.getElementById('mainBody').innerHTML = content;
+            } 
+
+            myWindow.window.close();
+            </script> 
+          </div> -->
+
         <div class="load">
           <!-- A button to open the popup form -->
           <button class="loadButton" onclick="openForm()">Participants</button>
