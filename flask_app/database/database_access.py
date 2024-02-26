@@ -320,20 +320,9 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
         print(f"Error editing factort: {e}")
         return False
 
-# def delete_factor(id):
-#     factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
-#     try:
-#         if factor :
-#             __DATABASE_CONNECTION.delete(factor)
-#         else:
-#             print(f"No factor with that ID: {e}")
-#             return False
-#     except Exception as e:
-#         print(f"Error editing factort: {e}")
-#         return False
     
 
-############Rating functions
+############Rating functions#####################################
 def get_rating_by_id(id):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
     return ratings
@@ -347,34 +336,8 @@ def specific_id(id):
     rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
     return rating
 
-# def update_rating(id,leading,following,rating,person_id):
-#     rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
-
-#     try:
-#         if rating:
-                
-#                 # Updating the rating
-#                 rating.id = id
-#                 rating.factor_leading = leading
-#                 rating.factor_following = following
-#                 rating.rating = rating
-#                 rating.participant_id = person_id
-                
-
-                
-#                 # Commit the changes to the database
-#                 __DATABASE_CONNECTION.commit()
-
-#                 return True
-#         else:
-#                 print(f"No factor found with ID {rating.id}")
-#                 return False
-#     except Exception as e:
-#         print(f"Error editing factort: {e}")
-#         return False
 def update_rating(person_id,rating,index):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
-    # rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==ratings[index]).first()
     try:
         if rating:
                 
@@ -405,6 +368,8 @@ def delete_everything():
         __DATABASE_CONNECTION.delete(i)
         __DATABASE_CONNECTION.commit()
 
+
+
 def delete_rating(p_id):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==p_id).all()
     for rating in ratings:
@@ -414,6 +379,8 @@ def delete_rating(p_id):
     rating_count=__DATABASE_CONNECTION.query(RatingsTBL).count()
     return rating_count+1    
 
+#############################################Results Function#######################
+##Calculation function for the results 
 def calculations():
     everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
     for i in everything:
@@ -432,6 +399,39 @@ def calculations():
 
        
     wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
-    print(wholeTable)
     return wholeTable
-       ## math=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.factor_leading==ratings.factor_leading,RatingsTBL.factor_following==ratings.factor_following).all()
+      
+
+
+
+def search_specific_result(r_id):
+    result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
+    return result
+
+
+def edit_result(r_id,weight):
+    result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
+
+    try:
+        if result:
+                
+                # Updating the results
+                result.id = result.id 
+                result.factor_leading = result.factor_leading
+                result.factor_following = result.factor_following
+                result.weight = weight
+                
+                
+
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                return True
+        else:
+                print(f"No factor found with ID {result.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing factort: {e}")
+        return False
+    

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block title %}
+Edit Result  {# Sets the title of the page to "Participants Page" #}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+            <h1 class="pt-5 pb-2">Edit Result</h1>  {# Heading for the page #}
+            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
+        </div>
+    </div>
+</div>
+
+<form action="{{ url_for('edit_result', r_id=result.id) }}" method="post">
+    <label for="weight"></label>
+    <input type="text" name="weight" value="{{result.weight}}"><br>
+    <button type="submit">Save</button>
+
+</form>
+
+
+{% endblock %}

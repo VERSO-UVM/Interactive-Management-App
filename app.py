@@ -219,10 +219,21 @@ def result():
     return render_template('result.html', wholeTable=wholeTable)
 
 
+@app.route('/edit_result/<r_id>',methods=['POST','GET'])
+def edit_result(r_id):
+     ##Search for participant
+    result = database_access.search_specific_result(r_id)
 
-
-
-
+    #Gets the info from the selected student
+    if request.method == 'POST':
+        weight=request.form["weight"]
+        try:
+            database_access.edit_result(r_id,weight)
+            return redirect(url_for("result"))
+        except:
+            return 'There was an issue updating the factorsn information'
+    else:
+        return render_template('edit_Result.html',result=result)
 
 # Define route for the about page
 @app.route('/about')
