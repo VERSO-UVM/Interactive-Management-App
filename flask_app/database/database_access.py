@@ -329,7 +329,7 @@ def get_rating_by_id(id):
 
 
 def get_total_rating():
-    rating_count=__DATABASE_CONNECTION.query(RatingsTBL).count()
+    rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
     return rating_count
 
 def specific_id(id):
@@ -376,19 +376,19 @@ def delete_rating(p_id):
         __DATABASE_CONNECTION.delete(rating)
         __DATABASE_CONNECTION.commit()
 
-    rating_count=__DATABASE_CONNECTION.query(RatingsTBL).count()
-    return rating_count+1    
+    
+        
 
 #############################################Results Function#######################
 ##Calculation function for the results 
-def calculations():
+def calculations(r_id):
     everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
     for i in everything:
         __DATABASE_CONNECTION.delete(i)
         __DATABASE_CONNECTION.commit()
 
     id=0
-    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==1).all()
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==r_id).all()
     for rating in ratings:
        average_rating = __DATABASE_CONNECTION.query(func.avg(RatingsTBL.rating)).filter(
         RatingsTBL.factor_leading == rating.factor_leading,
