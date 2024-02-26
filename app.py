@@ -60,14 +60,14 @@ def register():
 
 ################Factor Functions######################
 
-# Define route for editing a factor
+
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
-     ##Search for participant
+  
     factors = database_access.search_specific_factor(id)
 
 
-    #Gets the info from the selected student
+   
     if request.method == 'POST':
         title=request.form["f_title"]
         label=request.form["f_label"]
@@ -85,19 +85,6 @@ def edit_factor(id):
 
     else:
         return render_template('edit_factor.html',factors=factors)
-
-
-# Define route for deleting a factor
-# @app.route('/delete_factor/<id>',methods=['POST','GET'])
-# def remove_factor(id):
-#     if request.method=='POST':
-#         try:
-#             database_access.delete_factor(id)
-#         except:
-#             return "There was an issue delete this factor"    
-#         return redirect(url_for('factor'))
-#     else:
-#         return render_template('factor.html',factor=factor)
 
 
 # Define route for the factor page
@@ -134,7 +121,7 @@ def insert_factor():
     
 
      
-#########Rating##################################################################
+#################################Rating##################################################################
 
 # Define route for the factor page
 @app.route('/rating')
@@ -143,7 +130,6 @@ def rating():
     return render_template('rating.html', message="Hello, World!")
 
 
-###Rating redirect from participant
 
 ####UPDATES RATING
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
@@ -176,14 +162,9 @@ def insert_rating(p_id):
 
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
-
-   
-
-    # Call your Python function with the parameters
  try:
     result = database_access.get_rating_by_id(p_id)
-    # print(len(result))
-    # print(result)
+   
     results=result[int(f_id)].factor_leading
 
     resultTitle=database_access.search_specific_factor(results)
@@ -196,23 +177,18 @@ def getInfoLeading(p_id,f_id):
  
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
-   
-
-#     # Call your Python function with the parameters
    result = database_access.get_rating_by_id(p_id)
    results=result[int(f_id)].factor_following
 
    resultTitle=database_access.search_specific_factor(results)
    print(resultTitle.title)
    resultsss=resultTitle.title
-    # Return the result as JSON
    return (resultsss)
     
  
 
 #####################################Results##############################
 
-# Define route for the factor page
 @app.route('/result')
 def result():
     wholeTable=database_access.calculations()
@@ -221,10 +197,9 @@ def result():
 
 @app.route('/edit_result/<r_id>',methods=['POST','GET'])
 def edit_result(r_id):
-     ##Search for participant
     result = database_access.search_specific_result(r_id)
 
-    #Gets the info from the selected student
+
     if request.method == 'POST':
         weight=request.form["weight"]
         try:
