@@ -55,8 +55,7 @@ h1 {
   border-color: #6707A4;
   height: 375px;
   width: 70%;
-  justify-self: center;
-  margin: 0;
+  margin: auto;
   background-color: #E0BBF7;
   border-radius: 4px;
 }
@@ -108,9 +107,9 @@ h1 {
 }
 
 .gTP-Container {
-  justify-self: end;
+  justify-content: end;
   padding-top: 3%;
-  margin-right: 15%;
+  margin-left: 40%;
   cursor: pointer;
   border-radius: 4px;
 }
@@ -126,4 +125,16 @@ h1 {
   font-size: 20px;
   cursor: pointer;
   border-radius: 4px;
+}
+
+.open-button {
+  font-size: 20px;
+  padding: 10px;
+  background-color: #6707A4;
+  color: white;
+  width: 10%;
+  border-radius: 4px;
+  margin-top: 40px;
+  text-align: center;
+  justify-self: center;
 }

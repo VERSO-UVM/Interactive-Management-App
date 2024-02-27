@@ -1,21 +1,23 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
 {% block title %}
 About Page  {# Sets the title of the page to "About Page" #}
 {% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-      <h1 class="pt-5 pb-2">About Page</h1>  {# Heading for the about page #}
-      <p>{{ message }}</p>  {# Display the message passed from the route #}
-      <!-- the entire page will instruct the users ( in non technical language) how to use the website. 
+<div class="grid-container">
+      <h1 class="pt-5 pb-2">About</h1>  {# Heading for the about page #}
+      <!-- The entire page will instruct the users ( in non technical language) how to use the website. 
       Overview of all pages and what they do --> 
-      <!--first chunk (Instruct the user on how to use the website) ---> 
+      <!--First Section (Instruct the user on how to use the website) ---> 
       <h2> Using This page</h2>
-      <p> This website is quite simple to use. Firstly, the user will navigate to the home page where you will asked to upload your dataset from local storage.
+      <p> To begin, the user will navigate to the home page where you will asked to upload your dataset from local storage.
          After that the user can move on towards the factors page. The factors page will have a table holding the data that was imported. The same 
          table allows the user to edit any of their factors that they choose. After the user is satisfied will the data they may move onto the next page,
          the participant page. The participant page performs similarly to the factors page. The difference is the addition of a button that sends the user to
@@ -23,7 +25,7 @@ About Page  {# Sets the title of the page to "About Page" #}
          user can move onto the final results page. The page will present the user's flowchart the algorithm produced. There is an option to download the flowchart
          allowing the user to do what they please with the chart. 
         </p>
-      <!-- second chunk (overview of each page & what they do) ---> 
+      <!-- Second Section (overview of each page & what they do) ---> 
       <h2> Participant Page </h2>
       <p> The participant page is where the entire process begins. Users will be asked to enter the participants that they would like to be 
         considered. A participant is essentially someone who plays a role in the team. </p>
@@ -37,8 +39,6 @@ About Page  {# Sets the title of the page to "About Page" #}
         the participant presents in the team. 
       </p>
       <h2> Results page</h2>
-      <p> The results page presents the flowchart that the algorithm produced using all the given information</p>
-    </div>
-  </div>
+      <p> The results page presents the flowchart that the algorithm produced using all the given information.</p>
 </div>
 {% endblock %}

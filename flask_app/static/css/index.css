@@ -73,6 +73,12 @@ h4 {
 /* Welcome block text */
 .welcome {
   text-align: left;
+  font-size: 18px;
+}
+
+.selectRegister {
+  text-align: center;
+  font-size: 18px;
 }
 
 /* container to position "Go To Factor" button */
@@ -104,8 +110,9 @@ h4 {
   color: whitesmoke;
   text-align: center;
   text-decoration: none;
+  padding-top: 0.3%;
   justify-self: end;
-  font-size: 15px;
+  font-size: 20px;
   cursor: pointer;
   border-radius: 4px;
 }
