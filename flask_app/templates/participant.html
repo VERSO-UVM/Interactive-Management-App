@@ -49,11 +49,14 @@
             <h4> Add Participant</h4>
             <form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
                 <label for="first"></label>
-                <input type="text" id="first" name="first" placeholder="First Name"><br>
+                <input type="text" id="f_name" name="f_name" placeholder="First Name"><br>
                 <label for="last"></label>
-                <input type="text" id="last" name="last" placeholder="Last Name"><br>
+                <input type="text" id="l_name" name="l_name" placeholder="Last Name"><br>
                 <label for="email"></label>
                 <input type="text" id="email" name="email" placeholder="Email"><br>
+                <label for="phone">Phone</label>
+                <input type="text" id="telephone" name="telephone" placeholder="Phone"><br>
+                <button type="submit">Submit</button>
                 <label for="phone"></label>
                 <input type="text" id="phone" name="phone" placeholder="Phone"><br>
                 <!-- NEED TO CHANGE SO THE "SUBMIT" BUTTON REFRESHED THE PAGE,

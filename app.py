@@ -60,11 +60,10 @@ def participant():
         l_name=request.form["l_name"]
         email=request.form["email"]
         telephone=request.form["telephone"]
-        u_name="Guest"
     
         id=(database_access.idSetter())+1
         
-        database_access.insert_participant(id=id,f_name=f_name,l_name=l_name,email=email,telephone=telephone,u_name=u_name)
+        database_access.insert_participant(id=id,f_name=f_name,l_name=l_name,email=email,telephone=telephone)
         return redirect (url_for('participant'))
     else:
         part=database_access.search_participant()
