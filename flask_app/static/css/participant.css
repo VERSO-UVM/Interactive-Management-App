@@ -1,129 +1,151 @@
 /* "Participants" title */
 h1 {
-    color: #6707A4;
-    padding-top: 5%;
-    text-align: center;
-  }
+  color: #6707A4;
+  padding-top: 5%;
+  text-align: center;
+}
 
 /* Setup the grid layout for .grid-container */
 .grid-container {
-    display: grid;
-    grid-template-rows: auto auto auto auto; /* auto for header and form, 1fr for table */
-    gap: 10px; /* Space between grid items */
-    padding-bottom: 3%;
-    font-family: 'Bradley Hand', cursive;
-  }
+  display: grid;
+  grid-template-rows: auto auto auto auto; /* auto for header and form, 1fr for table */
+  gap: 10px; /* Space between grid items */
+  padding-bottom: 3%;
+  font-family: 'Bradley Hand', cursive;
+}
   
-  /* "Participants" positioning (topmost box in grid) */
-  .partPage {
-    grid-column: 1 / -1; /* Span across all columns */
-    color: #6707A4;
-    text-align: center;
-    padding: 5%;
-  }
+/* "Participants" positioning (topmost box in grid) */
+.partPage {
+  grid-column: 1 / -1; /* Span across all columns */
+  color: #6707A4;
+  text-align: center;
+  padding: 5%;
+}
 
   /* Style the table */
 .table {
-    width: 75%;
-    border-collapse: collapse;
-    justify-self: center;
-    padding-bottom: 40px;
-  }
+  width: 75%;
+  border-collapse: collapse;
+  justify-self: center;
+  padding-bottom: 40px;
+}
   
-  .table th {
-    border: 2px solid #480373;
-    padding: 8px;
-    text-align: center;
-    color: whitesmoke;
-    background-color: #6707A4;
-    font-size: 18px;
-    font-weight: normal;
-  }
+.table th {
+  border: 2px solid #480373;
+  padding: 8px;
+  text-align: center;
+  color: whitesmoke;
+  background-color: #6707A4;
+  font-size: 18px;
+  font-weight: normal;
+}
   
-  .table td {
-    border: 2px solid #480373;
-    padding: 8px;
-    text-align: left;
-    background-color: #ad68d8;
-  }
+.table td {
+  border: 2px solid #480373;
+  padding: 8px;
+  text-align: left;
+  background-color: #ad68d8;
+}
 
   /* Style the form within the .addFactor container */
 .addPart {
-    padding: 5%;
-    padding-top: 2%;
-    border-style: solid;
-    border-color: #6707A4;
-    height: 550px;
-    width: 70%;
-    justify-self: center;
-    margin: 0;
-    background-color: #E0BBF7;
-    border-radius: 4px;
-  }
+  padding: 5%;
+  padding-top: 2%;
+  border-style: solid;
+  border-color: #6707A4;
+  color: #6707A4;
+  height: 550px;
+  width: 70%;
+  justify-self: center;
+  margin: auto;
+  background-color: #E0BBF7;
+  border-radius: 4px;
+}
   
+/* Box Color */
 .addPart input[type="text"] {
-    padding: 20px;
-    margin-top: 25px; /* Adding some space above inputs */
-    background-color: #ead2f9;
-    border: 2px solid #6707A4;
-    border-radius: 4px;
-    text-align: left;
-    width: 85%;
-    padding-right: 60px;
-    /*color: #6707A4;
-    height: 10%;
-    padding-left: 60px; */
-  }
+  padding: 20px;
+  margin-top: 25px; /* Adding some space above inputs */
+  background-color: #ead2f9;
+  border: 2px solid #6707A4;
+  border-radius: 4px;
+  text-align: left;
+  width: 85%;
+  padding-right: 60px;
+  /*color: #6707A4;
+  height: 10%;
+  padding-left: 60px; */
+}
   
+/* Text Color */
 .addPart input[type="text"]::placeholder {
-    color: #6707A4;
-    font-size: 15px;
-  }
+  color: #6707A4;
+  font-size: 15px;
+}
   
 .addPart input[type="submit"] {
-    font-size: 20px;
-    padding: 10px;
-    background-color: #6707A4;
-    color: white;
-    width: 30%;
-    border-radius: 4px;
-    margin-top: 40px; /* Adding some space above inputs */
-    text-align: center;
-  }
+  font-size: 20px;
+  padding: 10px;
+  background-color: #6707A4;
+  color: white;
+  width: 30%;
+  border-radius: 4px;
+  margin-top: 40px; /* Adding some space above inputs */
+  text-align: center;
+}
   
 .addPart input:hover[type="submit"] {
-    background-color: white;
-    color: #480373;
-    text-decoration: none;
-  }
+  background-color: white;
+  color: #480373;
+  text-decoration: none;
+}
 
 .addPart h4 {
-    color: #6707A4;
-    margin: 0;
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 10px; /* Space above the form */
-  
-  }
+  color: #6707A4;
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px; /* Space above the form */
+
+}
 
 .gTR-Container {
-    justify-self: end;
-    padding-top: 5%;
-    margin-right: 15%;
-    cursor: pointer;
-    border-radius: 4px;
-  }
+  justify-self: end;
+  padding-top: 5%;
+  margin-right: 15%;
+  cursor: pointer;
+  border-radius: 4px;
+}
 
-  /* "Go To Participants" button */
+/* "Go To Participants" button */
 .goToRatings {
-    background-color: #6707A4;
-    color: whitesmoke;
-    text-align: center;
-    text-decoration: none;
-    padding-top: 0.5%;
-    justify-self: end;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  
+  background-color: #6707A4;
+  color: whitesmoke;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 0.5%;
+  justify-self: end;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Submit Button*/
+input[type=submit] {
+  background-color: #6707A4;
+  color: whitesmoke;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 0.5%;
+  justify-self: end;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Hover Color & Styling */
+input:hover[type="submit"] {
+  background-color: white;
+  color: #480373;
+  text-decoration: none;
+}

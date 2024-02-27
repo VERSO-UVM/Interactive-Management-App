@@ -48,18 +48,18 @@
         <div class="withinAdd">
             <h4> Add Participant</h4>
             <form action="{{ url_for('participant') }}" method="post" onsubmit="return validateForm()">
-                <label for="first">First Name</label>
+                <label for="first"></label>
                 <input type="text" id="first" name="first" placeholder="First Name"><br>
-                <label for="last">Last Name</label>
+                <label for="last"></label>
                 <input type="text" id="last" name="last" placeholder="Last Name"><br>
-                <label for="email">Email</label>
+                <label for="email"></label>
                 <input type="text" id="email" name="email" placeholder="Email"><br>
-                <label for="phone">Phone</label>
+                <label for="phone"></label>
                 <input type="text" id="phone" name="phone" placeholder="Phone"><br>
                 <!-- NEED TO CHANGE SO THE "SUBMIT" BUTTON REFRESHED THE PAGE,
                   LINK BACK TO ITSELF, OR LOOK UP HOW TO GET THE BUTTON TO SUBMIT 
                   TO DATABASE AND REFRESH THE PAGE-->
-                <button type="submit">Submit</button>
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>
