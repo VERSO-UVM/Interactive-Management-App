@@ -28,13 +28,6 @@ first_participant = Participant(
     f_name='test_first', 
     l_name='test_last', 
     email='test_email', 
-    job_title='test_job_title', 
-    address='test_address', 
-    state='test_state', 
-    city='test_city', 
-    zip_code='test_zip_code', 
-    country='test_country', 
-    p_type='test_p_type', 
     telephone='test_telephone')
 
 second_participant = Participant(
@@ -42,13 +35,6 @@ second_participant = Participant(
     f_name='test_first', 
     l_name='test_last', 
     email='test_email', 
-    job_title='test_job_title', 
-    address='test_address', 
-    state='test_state', 
-    city='test_city', 
-    zip_code='test_zip_code', 
-    country='test_country', 
-    p_type='test_p_type', 
     telephone='test_telephone')
 
 
@@ -73,7 +59,7 @@ print(insert_factor(first_test_factor))
 print('inserting second test factor')
 print(insert_factor(second_test_factor))
 print('inserting test participant')
-print(insert_participant(first_participant))
+print(insert_participant(first_participant.id, first_participant.u_name, first_participant.f_name, first_participant.l_name, first_participant.email, first_participant.telephone))
 print('inserting test ratings')
 print(insert_rating(factor_leading=first_test_factor, factor_following=second_test_factor, rating=3, p=first_participant))
 print(insert_rating(factor_leading=first_test_factor, factor_following=second_test_factor, rating=9, p=second_participant))
