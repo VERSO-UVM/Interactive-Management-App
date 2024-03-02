@@ -1,0 +1,54 @@
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/rating.css') }}">
+{% endblock %}
+
+{% block title %}
+Ratings Page  {# Sets the title of the page to "Factor Page" #}
+{% endblock %}
+
+<link rel="stylesheet" href="rating.css">
+
+{% block content %}
+<div class="grid-container">
+  <div class="ratingPage">
+      <h1 class="pt-5 pb-2">Rating the Factors</h1>  {# Heading for the factor page #}
+  </div>
+
+  <div class="addRating">
+    <div class="ratingContainer">
+        <h4>Pick an ID</h4>
+        <div class="box">
+          <!-- <form id="myform1">
+          <span class="input-group-addon">ID</span>
+          <select name="id"  id="id" class="selectpicker form-control">
+            {% for i in resultsID %}
+            <option value={{i.id}}>{{i.id}}</option>
+            {% endfor %} 
+         </select>
+          
+        
+          <button class="submit" id="submit">Submit</button>
+        </form> -->
+         
+
+    <form action="{{ url_for('insert_ratings') }}" method="post">
+      <select name="id"  id="id" class="selectpicker form-control">
+        {% for i in resultsID %}
+        <option value={{i.id}}>{{i.id}}</option>
+        {% endfor %} 
+     </select>
+
+        <button type="submit">Save</button>
+    </form>
+          
+         
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

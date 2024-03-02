@@ -18,7 +18,7 @@ Edit Result  {# Sets the title of the page to "Participants Page" #}
 
 <form action="{{ url_for('edit_result', r_id=result.id) }}" method="post">
     <label for="weight"></label>
-    <input type="text" name="weight" value="{{result.weight}}"><br>
+    <input type="text" name="weight" value="{{result.rating}}"><br>
     <button type="submit">Save</button>
 
 </form>

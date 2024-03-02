@@ -273,6 +273,13 @@ def idSetter():
         return person
 
 
+def delete_participants(id):
+   part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
+   try:
+       __DATABASE_CONNECTION.delete(part)
+       __DATABASE_CONNECTION.commit()
+   except:
+       print("Could not delete participant")
 #############################Factor Functions ###################
 def f_id_Setter():
         factor=__DATABASE_CONNECTION.query(FactorTBL).count()
@@ -294,6 +301,15 @@ def search_specific_factor(id):
     except Exception as e:
         print(f"Error getting  participant: {e}")
         return []
+
+
+def delete_factor(id):
+   factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
+   try:
+       __DATABASE_CONNECTION.delete(factor)
+       __DATABASE_CONNECTION.commit()
+   except:
+       print("Could not delete factor")
 
 
 def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
@@ -368,6 +384,23 @@ def delete_everything():
         __DATABASE_CONNECTION.delete(i)
         __DATABASE_CONNECTION.commit()
 
+    everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    everything=__DATABASE_CONNECTION.query(ParticipantTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    everything=__DATABASE_CONNECTION.query(FactorTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+    
+
+
 
 
 def delete_rating(p_id):
@@ -419,15 +452,14 @@ def edit_result(r_id,weight):
                 result.id = result.id 
                 result.factor_leading = result.factor_leading
                 result.factor_following = result.factor_following
-                result.weight = weight
-                
-                
-
+                result.rating = weight
                 
                 # Commit the changes to the database
                 __DATABASE_CONNECTION.commit()
 
+                
                 return True
+                
         else:
                 print(f"No factor found with ID {result.id}")
                 return False
@@ -435,3 +467,7 @@ def edit_result(r_id,weight):
         print(f"Error editing factort: {e}")
         return False
     
+def get_all_results():
+    wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    print(wholeTable)
+    return wholeTable

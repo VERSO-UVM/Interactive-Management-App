@@ -43,6 +43,13 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
               <br>
               <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
              </td>
+             <td>
+              <br>
+             <!-- Send to edit with id -->
+             <td class="f_box">
+              <br>
+              <a href="{{ url_for('delete_factor',id=i.id) }}">Delete</a>
+             </td>
       </tr>
       {% endfor %}
       </table>
@@ -50,28 +57,40 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 
 
 
-<a href="{{ url_for('insert_factor')}}">
+<!-- <a href="{{ url_for('insert_factor')}}">
   <button>Add Factors</button>
-</a>
-
+</a> -->
+<!-- 
 <div class="addFactor">
   <div class="withinAdd">
       <h4> Add New Factor</h4>
         <!-- Textbox to add order of factor -->
-        <label for="orderFactor"></label>
+        <!-- <label for="orderFactor"></label>
         <input type="text" id="orderFactor" name="orderFactor" placeholder="Order">
         <!-- Textbox to add factor -->
-        <label for="factor"></label>
-        <input type="text" id="factor" name="factor" placeholder="Factor">
+        <!-- <label for="factor"></label>
+        <input type="text" id="factor" name="factor" placeholder="Factor"> -->
         <!-- Button to submit -->
-        <input type="submit" value="Submit">
+        <!-- <input type="submit" value="Submit">
   </div>
-</div>
+</div> -->
 
-<div class="gTP-Container">
+<!-- <div class="gTP-Container">
   <p><a href="participant"><button class="goToParticipant">Go To Participants Page</button></a></p>
-</div>
+</div> -->
 
-</div>
+<!-- </div> --> 
+
+<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
+
+  <label for="f_title">Factor Title</label>
+  <input type="text" name="f_title"><br>
+
+  <label for="f_order">Order</label>
+  <input type="number" name="f_order"><br>
+
+
+  <button type="submit">Save</button>
+</form>
 
 {% endblock %}

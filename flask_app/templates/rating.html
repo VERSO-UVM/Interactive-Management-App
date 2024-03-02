@@ -47,7 +47,7 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
   </div>
 
   <div class="gTResults-Container">
-    <p><a href="{{ url_for('results',r_id=p_id) }}"><button class="goToResult">Go To Final Results</button></a></p>
+    <p><a href="{{ url_for('results',r_id=p_id,edit='1') }}"><button class="goToResult">Go To Final Results</button></a></p>
   </div>
 </div>
 <!--Javascript so that the submit and skip button continue the iteration and also update the functions-->
@@ -70,7 +70,7 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
         function(x) 
         {
           $("#resBtnHere2").html(x);
-          index+=1;
+          // index+=1;
        })
       })
     }
@@ -104,7 +104,7 @@ function submitButton()
           $.get('/getInfoFollowing/'+p_id+'/'+index,
           function(x) 
           {
-            if(x!=-1)
+            if(x!='-1')
             {$("#resBtnHere2").html(x);}
           })
         }

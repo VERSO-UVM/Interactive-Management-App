@@ -32,7 +32,7 @@
         <li><a href="{{ url_for('index') }}"> Home Page</a></li>
         <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
         <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
-        <!-- <li><a href="{{ url_for('rating') }}"> Ratings Page</a></li> -->
+        <li><a href="{{ url_for('insert_rating',p_id=-1) }}"> Ratings Page</a></li>
         <li><a href="{{ url_for('result') }}"> Results Page</a></li>
         <li><a href="{{ url_for('about') }}"> About Page</a></li>
       </ul>
@@ -51,7 +51,7 @@
           <li><a href="{{ url_for('index') }}"> Home Page</a></li>
           <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
           <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
-          <li><a href="{{ url_for('rating') }}"> Ratings Page</a></li>
+          <li><a href="{{ url_for('insert_rating', p_id=-1) }}"> Ratings Page</a></li>
           <li><a href="{{ url_for('result') }}"> Results Page</a></li>
           <li><a href="{{ url_for('about') }}"> About Page</a></li>
         </ul>
