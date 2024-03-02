@@ -3,6 +3,12 @@ from flask import render_template, request, redirect, url_for, session
 from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
 import flask_app.database.database_access as database_access
+from flask_app.database.database_access import ResultsTBL
+import networkx as nx
+import datetime as dt
+import matplotlib.pyplot as plt
+import json
+
 
 # Configure Flask application
 app = configure_flask_application()
@@ -36,18 +42,36 @@ def remove_factor(id):
 # Define route for the factor page
 @app.route('/factor')
 def factor():
-    return render_template('factor.html', message="Hello, World!")
+    return render_template('factor.html')
 
 # Define route for the factor page
 @app.route('/rating')
 def rating():
-    return render_template('rating.html', message="Hello, World!")
+    return render_template('rating.html')
 
 
 # Define route for the factor page
 @app.route('/result')
 def result():
-    return render_template('result.html', message="Hello, World!")
+    database_access.calculate_average_rating()
+
+    results = database_access.fetch(ResultsTBL)
+
+    # create an undirected graph
+
+    G = nx.Graph()
+
+    for result in results:
+        data = str(result[0])
+        # split by comma
+        data = data.split(",")
+        # only keep data to the right of colons
+        data = [x.split(":")[1] for x in data]
+        G.add_edge(data[0], data[1], weight=data[2])
+    
+    graph_data = nx.json_graph.node_link_data(G)    
+
+    return render_template('result.html', graph_data=json.dumps(graph_data))
 
 
 # Define route for the about page

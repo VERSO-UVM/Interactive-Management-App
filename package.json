@@ -4,7 +4,7 @@
   "description": "ORCA Project 2023-2024",
   "main": "index.js",
   "scripts": {
-    "dev": "python3 wsgi.py --port=5001 --host=localhost --debug"
+    "dev": "python wsgi.py --port=5001 --host=localhost --debug"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/VERSO-UVM/Interactive-Management-App#readme",
   "dependencies": {
     "child_process": "^1.0.2",
+    "d3": "^7.8.5",
+    "jsnetworkx": "^0.3.4",
     "python-shell": "^5.0.0"
   }
 }

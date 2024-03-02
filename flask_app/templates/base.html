@@ -13,7 +13,6 @@
 
     {%- block styles %}
     <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">  {# Sets the favicon for the page #}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">  {# Links to a custom CSS file #}
     <!-- Bootstrap -->
     <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">  {# Links to Bootstrap CSS file #}
     <link rel="stylesheet" href="/static/css/style.css?version={{ now }}">  {# Links to a style CSS file with a dynamic version #}

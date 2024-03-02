@@ -14,52 +14,70 @@ Result Page  {# Sets the title of the page to "Factor Page" #}
 
 {% block content %}
 <div class="grid-container">
-  <div class="resultPage">
-      <h1 class="pt-5 pb-2">Final Results</h1>  {# Heading for the factor page #}
-  </div>
-
-  <div class="results">
-    <div class="resultsContainer">
-      <div class="box">
-        <p>Area for Results Flow Diagram</p>
-      </div>
+    <div class="resultPage">
+        <h1 class="pt-5 pb-2">Final Results</h1>
     </div>
-  </div>
 
-  <div class="saveImage">
-    <p><button class="savePNG">Save as PNG</button></p>
-  </div>
+    <div class="results">
+        <div class="resultsContainer">
+            <div class="box" id="graph"></div> <!-- Container for the graph -->
+        </div>
+    </div>
 
-  <div class="table">
-    <!-- Table of factors that include: ID, Order, Factor -->
-    <table style="width: 100%">
-      <!-- Table row for header-->
-      <tr>
-        <th>ID</th>
-        <th>Leading Factor</th>
-        <th>Following Factor</th>
-        <th>Weight</th>
-        <th></th>
-      </tr>
-      <!-- Example placeholder until can connect toable 
-      to a database to display real-time information-->
-      <tr>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-
-        <td>edit</td>
-      </tr>
-      <tr>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-
-        <td>edit</td>
-      </tr>
-    </table>
-  </div> 
+    <div class="saveImage">
+        <p><button class="savePNG">Save as PNG</button></p>
+    </div>
 </div>
+
+<script src="https://d3js.org/d3.v6.min.js"></script>
+
+<script>
+    // Parse the graph data passed from Flask
+    document.addEventListener('DOMContentLoaded', function() {
+      const graphData = {{graph_data|safe}};
+      // Now, use graphData directly
+
+
+    // Dimensions and setup for the D3 visualization
+    const width = 960, height = 500;
+    const svg = d3.select('#graph').append('svg')
+        .attr('width', width)
+        .attr('height', height);
+
+    // D3 force simulation setup
+    const simulation = d3.forceSimulation(graphData.nodes)
+        .force('link', d3.forceLink(graphData.links).id(d => d.id))
+        .force('charge', d3.forceManyBody())
+        .force('center', d3.forceCenter(width / 2, height / 2));
+
+    // Add lines for links
+    const link = svg.append('g')
+        .attr('class', 'links')
+        .selectAll('line')
+        .data(graphData.links)
+        .join('line');
+
+    // Add circles for nodes
+    const node = svg.append('g')
+        .attr('class', 'nodes')
+        .selectAll('circle')
+        .data(graphData.nodes)
+        .join('circle')
+            .attr('r', 5);
+
+    // Update positions on each tick
+    simulation.on('tick', () => {
+        link
+            .attr('x1', d => d.source.x)
+            .attr('y1', d => d.source.y)
+            .attr('x2', d => d.target.x)
+            .attr('y2', d => d.target.y);
+
+        node
+            .attr('cx', d => d.x)
+            .attr('cy', d => d.y);
+    });
+  });
+
+</script>
 {% endblock %}
