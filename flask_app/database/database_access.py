@@ -221,7 +221,9 @@ def calculate_average_rating():
         return None
     
 
-##Participant Functions
+###################Participant Functions#######################
+    
+##Returns all participants
 def search_participant():
     try:
         participants = __DATABASE_CONNECTION.query(ParticipantTBL).all()
@@ -230,7 +232,7 @@ def search_participant():
         print(f"Error getting all participants: {e}")
         return []
     
-
+##Returns participant with specified id
 def search_specific(id):
     try:
        person=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
@@ -241,12 +243,13 @@ def search_specific(id):
         return []
 
 
+##Edits existing participants
 def edit_participant(id,fi_name,la_name,p_email,p_telephone):
     person=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
     try:
         if person:
                 
-                # Update the job title
+                # Updates the fields
                 person.f_name = fi_name
                 person.l_name = la_name
                 person.email = p_email
@@ -265,12 +268,13 @@ def edit_participant(id,fi_name,la_name,p_email,p_telephone):
         print(f"Error editing participant: {e}")
         return False
     
-
+###Returns total existing participant
 def idSetter():
         person=__DATABASE_CONNECTION.query(ParticipantTBL).count()
         return person
 
 
+##Deletes existing participant
 def delete_participants(id):
    part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
    try:
@@ -278,11 +282,13 @@ def delete_participants(id):
        __DATABASE_CONNECTION.commit()
    except:
        print("Could not delete participant")
-#############################Factor Functions ###################
+#############################Factor Functions ###############################
+##Used to incrament id counter
 def f_id_Setter():
         factor=__DATABASE_CONNECTION.query(FactorTBL).count()
         return factor
 
+##Returns all the existing factors
 def get_all_factors():
     try:
         factors = __DATABASE_CONNECTION.query(FactorTBL).all()
@@ -291,6 +297,7 @@ def get_all_factors():
         print(f"Error getting all factors: {e}")
         return []
 
+##Returns factor with specified id 
 def search_specific_factor(id):
     try:
        factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
@@ -300,7 +307,7 @@ def search_specific_factor(id):
         print(f"Error getting  participant: {e}")
         return []
 
-
+##Deletes existing factor
 def delete_factor(id):
    factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
    try:
@@ -309,13 +316,13 @@ def delete_factor(id):
    except:
        print("Could not delete factor")
 
-
+##Edits existing factor
 def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
     factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
     try:
         if factor:
                 
-                # Update the job title
+                # Updates the fields
                 factor.title = fact_title
                 factor.label = fact_label
                 factor.description = fact_description
@@ -336,20 +343,23 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
 
     
 
-############Rating functions#####################################
+######################Rating functions#####################################
+##Returns all the ratings from a specific participant
 def get_rating_by_id(id):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
     return ratings
 
-
+##Functions used for the rating
 def get_total_rating():
     rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
     return rating_count
 
+##Returns rating with a specific id
 def specific_id(id):
     rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
     return rating
 
+##Edits rating
 def update_rating(person_id,rating,index):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
     try:
@@ -375,7 +385,7 @@ def update_rating(person_id,rating,index):
         print(f"Error editing factort: {e}")
         return False
 
-    
+##Deleted all the rows from all the tables    
 def delete_everything():
     everything=__DATABASE_CONNECTION.query(RatingsTBL).all()
     for i in everything:
@@ -400,7 +410,7 @@ def delete_everything():
 
 
 
-
+###Deleted all exisiting rating from a specific participant
 def delete_rating(p_id):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==p_id).all()
     for rating in ratings:
@@ -434,12 +444,12 @@ def calculations(r_id):
       
 
 
-
+##Returns specific result 
 def search_specific_result(r_id):
     result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
     return result
 
-
+##Edits existing result
 def edit_result(r_id,weight):
     result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
 
@@ -464,7 +474,8 @@ def edit_result(r_id,weight):
     except Exception as e:
         print(f"Error editing factort: {e}")
         return False
-    
+
+##Return all the existing results    
 def get_all_results():
     wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
     print(wholeTable)

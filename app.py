@@ -64,9 +64,9 @@ def index():
     ##database_access.delete_everything()
     return render_template('index.html')
 
-################Factor Functions######################
+#########################################FACTOR FUNCTION#######################################
 
-
+##EDITS EXISTING FACTOR
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
   
@@ -93,7 +93,7 @@ def edit_factor(id):
         return render_template('edit_factor.html',factors=factors)
 
 
-# Define route for the factor page
+#FACTOR PAGE
 @app.route('/factor',methods=['POST','GET'])
 def factor():
 
@@ -103,37 +103,38 @@ def factor():
     return render_template('factor.html',factor=factor)
 
 
-###Inserting new factors
+###ADDS NEW FACTOR
 @app.route('/insert_factor',methods=['POST','GET'])
 def insert_factor():
 
      if request.method=='POST':
 
-        # ##Get from the form
+        ##Gets information from the form
         title=request.form["f_title"]
-        # label=request.form["f_label"]
-        # description=request.form["f_description"]
         votes=request.form["f_order"]
         label="0"
         description="0"
         
+        ##Increments the id
         id=(database_access.f_id_Setter())+1
       
-
+        ##Inserts into the database
         database_access.insert_factor(id=id,title=title,label=label,description=description,votes=votes)
         return redirect (url_for('factor'))
      else:
         return render_template("insert_factor.html")
-    
+
+
+##DELETES FACTOR    
 @app.route('/delete_factor/<id>',methods=['POST','GET'])
 def delete_factor(id):
     database_access.delete_factor(id)
     return redirect (url_for('factor'))
 
       
-#################################Rating##################################################################
+#####################################RATING FUNCTION##############################################################
 
-# Define route for the factor page
+#RATING PAGE
 @app.route('/rating')
 def rating():
     resultsID=database_access.search_participant
@@ -144,21 +145,17 @@ def rating():
 ####UPDATES RATING
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
+   ##Edits rating in the database
    database_access.update_rating(person_id=p_id,rating=rating,index=int(f_id))
    return rating
 
 
-##INSERTS RATING
+##INSERTS NEW RATING 
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
     if(p_id!='-1'):
         checking=database_access.get_rating_by_id(p_id)
         if(len(checking)==0):
-            ##Deletes all exisiting ratings combinations for the user
-            ##database_access.delete_everything()
-            # print(database_access.get_total_rating())
-            # print(len(database_access.get_total_rating()))
-            
             # # (database_access.delete_rating(p_id))
             r_id=(len(database_access.get_total_rating()))+1
 
@@ -178,8 +175,7 @@ def insert_rating(p_id):
         resultsID=database_access.search_participant()
         return render_template('ratingMenu.html', resultsID=resultsID)
     
-###Insert for nav bar option
-   
+###RATING PAGE FROM NAVBAR
 @app.route('/insert_ratings',methods=['POST','GET'])
 def insert_ratings():
    if request.method=='POST':
@@ -188,6 +184,7 @@ def insert_ratings():
        
 
 
+####FUNCTION FOR DISPLAYING FACTORS FOR RATING PT1
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
  try:
@@ -201,7 +198,7 @@ def getInfoLeading(p_id,f_id):
  except:
      return "-1"
    
- 
+###PT2 
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
    try:
@@ -217,13 +214,14 @@ def getInfoFollowing(p_id,f_id):
     
  
 
-#####################################Results##############################
+#####################################RESULT FUNCTION##################################
 
 @app.route('/result')
 def result():
    
     return render_template('result.html', message="Hey")
 
+###RESULT PAGE
 @app.route('/results/<r_id>/<edit>')
 def results(r_id,edit):
     if(edit=='1'):
@@ -237,6 +235,7 @@ def results(r_id,edit):
         wholeTable=database_access.get_all_results()
         return render_template('results.html', wholeTable=wholeTable)
 
+####EDITS EXISTING RESULT
 @app.route('/edit_result/<r_id>',methods=['POST','GET'])
 def edit_result(r_id,):
     result = database_access.search_specific_result(r_id)
@@ -249,27 +248,29 @@ def edit_result(r_id,):
             return 'There was an issue updating the result weight'
     else:
         return render_template('edit_Result.html',result=result)
-
-# Define route for the about page
+####################################ABOUT FUNCTION###################################
+#ABOUT PAGE
 @app.route('/about')
 def about():
     return render_template('about.html')
 
 
-##################Participants#############################################
+###############################PARTICIPANT FUNCTION#############################################
 @app.route("/participant",methods=['POST','GET'])
 def participant():
     
     if request.method=='POST':
 
-        # ##Get from the form
+        #Gets information from the form
         f_name=request.form["f_name"]
         l_name=request.form["l_name"]
         email=request.form["email"]
         telephone=request.form["telephone"]
     
+        #Increments count for id
         id=(database_access.idSetter())+1
         
+        #Inserts into the database
         database_access.insert_participant(id=id,f_name=f_name,l_name=l_name,email=email,telephone=telephone)
         return redirect (url_for('participant'))
     else:
@@ -277,13 +278,14 @@ def participant():
         return render_template("participant.html",part=part)
     
 
-@app.route("/ParticipantEdit/<id>",methods=['POST','GET'])
-def ParticipantEdit(id):
+##EDITS EXISTING PARTICIPANT
+@app.route("/edit_participant/<id>",methods=['POST','GET'])
+def edit_participant(id):
     ##Search for participant
     person = database_access.search_specific(id)
 
 
-    #Gets the info from the selected student
+    #Gets information from the form 
     if request.method == 'POST':
         f_name=request.form["f_name"]
         l_name=request.form["l_name"]
@@ -291,9 +293,8 @@ def ParticipantEdit(id):
         telephone=request.form["telephone"]
         
         try:
-            
+            #Edits participant in the database
             database_access.edit_participant(id,f_name,l_name,email,telephone)
-           
             return redirect(url_for("participant"))
         
         except:
@@ -301,7 +302,8 @@ def ParticipantEdit(id):
 
     else:
         return render_template('editPart.html',person=person)
-    
+
+#DELETES PARTICIPANT    
 @app.route('/delete_participants/<id>',methods=['POST','GET'])
 def delete_participants(id):
     database_access.delete_participants(id)
