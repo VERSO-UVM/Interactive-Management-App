@@ -60,7 +60,6 @@ def insert_factor(id: str,
 
 
 def insert_participant(id: str,
-                       u_name: str,
                        f_name: str,
                        l_name: str,
                        email: str,
@@ -70,7 +69,6 @@ def insert_participant(id: str,
 
     try:
         insert = ParticipantTBL(id=id,
-                                 u_name=u_name,
                                  f_name=f_name,
                                  l_name=l_name,
                                  email=email,

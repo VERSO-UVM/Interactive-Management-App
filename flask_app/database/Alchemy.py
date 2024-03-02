@@ -20,7 +20,6 @@ class ParticipantTBL(Base):
 
     # columns
     id = Column('id', String, primary_key=True)
-    u_name = Column('u_name', String, nullable=False)
     f_name = Column('f_name', String, nullable=False)
     l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
@@ -28,21 +27,19 @@ class ParticipantTBL(Base):
 
     def __init__(self,
                  id: str,
-                 u_name: str,
                  f_name: str,
                  l_name: str,
                  email: str,
                  telephone: str = None):
 
         self.id = id
-        self.u_name = u_name
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
         self.telephone = telephone
 
     def __repr__(self):  # string representation
-        return f'{self.u_name} => name: {self.f_name} {self.l_name}, email: {self.email}'
+        return f'{self.f_name} {self.l_name}, email: {self.email}'
 
 
 class FactorTBL(Base):
