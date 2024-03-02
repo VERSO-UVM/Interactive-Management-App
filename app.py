@@ -1,12 +1,7 @@
 # Import necessary modules and classes
-from flask import render_template, request, redirect, url_for, session,jsonify
-from flask_login import LoginManager
+from flask import render_template, request, redirect, url_for, session
 from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
-from flask_app.forms.LoginForm import LoginForm
-from flask_app.forms.RegisterForm import RegisterForm
-import flask_app.app.dispatch as dispatch
-from flask_app.forms.WorkshopForm import WorkshopForm
 import flask_app.database.database_access as database_access
 
 # Configure Flask application

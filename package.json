@@ -4,11 +4,20 @@
   "description": "ORCA Project 2023-2024",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "python3 wsgi.py --port=5001 --host=localhost --debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VERSO-UVM/Interactive-Management-App.git"
   },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VERSO-UVM/Interactive-Management-App/issues"
+  },
+  "homepage": "https://github.com/VERSO-UVM/Interactive-Management-App#readme",
   "dependencies": {
+    "child_process": "^1.0.2",
     "python-shell": "^5.0.0"
   }
 }
