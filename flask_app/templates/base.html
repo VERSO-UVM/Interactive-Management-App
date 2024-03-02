@@ -33,7 +33,7 @@
         <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
         <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
         <li><a href="{{ url_for('insert_rating',p_id=-1) }}"> Ratings Page</a></li>
-        <li><a href="{{ url_for('result') }}"> Results Page</a></li>
+        <li><a href="{{ url_for('results',r_id=-1,edit=1) }}"> Results Page</a></li>
         <li><a href="{{ url_for('about') }}"> About Page</a></li>
       </ul>
     </nav>  {# Navigation links outside the main content block #}
@@ -52,7 +52,7 @@
           <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
           <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
           <li><a href="{{ url_for('insert_rating', p_id=-1) }}"> Ratings Page</a></li>
-          <li><a href="{{ url_for('result') }}"> Results Page</a></li>
+          <li><a href="{{ url_for('results',r_id=-1,edit=1) }}"> Results Page</a></li>
           <li><a href="{{ url_for('about') }}"> About Page</a></li>
         </ul>
       </nav>  {# Navigation links outside the main content block #}
