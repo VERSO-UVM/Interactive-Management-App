@@ -39,6 +39,14 @@
                 <!-- Send to edit with id -->
                 <a href="{{ url_for('ParticipantEdit', id=i.id) }}">Edit</a>
             </td>
+            <td>
+              <!-- Send to delete with id -->
+              <a href="{{ url_for('delete_participants', id=i.id) }}">Delete</a>
+          </td>
+            <td>
+              <!-- Send to edit with id -->
+              <a href="{{ url_for('insert_rating', p_id=i.id) }}">Rating</a>
+          </td>
         </tr>
         {% endfor %}
       </table>

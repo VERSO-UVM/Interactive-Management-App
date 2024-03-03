@@ -1,13 +1,14 @@
-
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block title %}
-Participants Page  {# Sets the title of the page to "Participants Page" #}
+Participants Page  {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
 
+
 {% block content %}
+
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
@@ -17,23 +18,20 @@ Participants Page  {# Sets the title of the page to "Participants Page" #}
     </div>
 </div>
 
-<form action="{{ url_for('ParticipantEdit', id=person.id) }}" method="post">
 
-   
-    <label for="f_name">First Name</label>
-    <input type="text" name="f_name" value="{{person.f_name}}"><br>
+<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
 
-    <label for="l_name">Last Name</label>
-    <input type="text" name="l_name" value="{{person.l_name}}"><br>
+    <label for="f_title">Factor Title</label>
+    <input type="text" name="f_title"><br>
 
-    <label for="email">Email</label>
-    <input type="text" name="email" value="{{person.email}}"><br>
+    <label for="f_label">Factor Label</label>
+    <input type="text" name="f_label"><br>
 
-    <label for="telephone">Telephone</label>
-    <input type="text" name="telephone" value="{{person.telephone}}"><br>
+    <label for="f_description">description</label>
+    <input type="text" name="f_description"><br>
+
 
     <button type="submit">Save</button>
 </form>
-
-
 {% endblock %}
+

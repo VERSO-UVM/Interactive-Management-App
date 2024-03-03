@@ -15,18 +15,22 @@ from flask_app.lib.dTypes.Participant import Participant
 __DATABASE_CONNECTION = initialize_database_connection()
 
 
-def insert_factor(f: Factor) -> bool:
+def insert_factor(id: str,
+                       title: str,
+                       label: str,
+                       description: str,
+                       votes: str) -> bool:
 
     insert: FactorTBL
 
     try:
-        insert = FactorTBL(id=f.id,
-                            title=f.title,
-                            label=f.label,
-                            description=f.description,
-                            votes=f.votes)
+        insert = FactorTBL(id=id,
+                            title=title,
+                            label=label,
+                            description=description,
+                            votes=votes)
     except AttributeError:
-        print(f'ERROR: invalid factor insertion for label={f.label}')
+        print(f'ERROR: invalid factor insertion for label={label}')
         return False
 
     if insert:
@@ -35,19 +39,19 @@ def insert_factor(f: Factor) -> bool:
             __DATABASE_CONNECTION.commit()
             return True
         except sqlite3.ProgrammingError as e:
-            print(f"ERROR: non-sqlite3 error inserting factor, label={f.label}")
+           # print(f"ERROR: non-sqlite3 error inserting factor, label={f.label}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.IntegrityError as e:
-            print(f"ERROR: database integrity violation inserting factor, label={f.label}")
+            #print(f"ERROR: database integrity violation inserting factor, label={f.label}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.OperationalError as e:
-            print(f"ERROR: database operational error inserting factor, label={f.label}")
+            #print(f"ERROR: database operational error inserting factor, label={f.label}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
-            print(f"ERROR: database error inserting factor, label={f.label}")
+            #print(f"ERROR: database error inserting factor, label={f.label}")
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
@@ -100,18 +104,18 @@ def insert_participant(id: str,
 
     return False
 
-def insert_rating(factor_leading : Factor, factor_following : Factor, rating : float, p : Participant):
+def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
     
     insert : RatingsTBL
 
     try:
-        insert = RatingsTBL(id=str(uuid.uuid4()),
+        insert = RatingsTBL(id=id,
                             factor_leading=factor_leading.id,
                             factor_following=factor_following.id,
                             rating=rating,
-                            participant_id=p.id)
+                            participant_id=participant_id)
     except AttributeError:
-        print(f'ERROR: invalid rating insertion for participant={p.u_name}')
+      #  print(f'ERROR: invalid rating insertion for participant={p.u_name}')
         return False
     
     if insert:
@@ -120,33 +124,35 @@ def insert_rating(factor_leading : Factor, factor_following : Factor, rating : f
             __DATABASE_CONNECTION.commit()
             return True
         except sqlite3.ProgrammingError as e:
-            print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
+           # print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.IntegrityError as e:
-            print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
+          #  print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.OperationalError as e:
-            print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
+          #  print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
-            print(f"ERROR: database error inserting rating, participant={p.u_name}")
+           # print(f"ERROR: database error inserting rating, participant={p.u_name}")
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
         
     return False
 
-def insert_result(factor_leading : Factor, factor_following : Factor, rating : float):
+
+   
+def insert_result(id:float,factor_leading : Factor, factor_following : Factor, rating : float):
 
     insert : ResultsTBL
 
     try:
-        insert = ResultsTBL(id=str(uuid.uuid4()),
-                            factor_leading=factor_leading.id,
-                            factor_following=factor_following.id,
+        insert = ResultsTBL(id=id,
+                            factor_leading=factor_leading,
+                            factor_following=factor_following,
                             rating=rating)
     except AttributeError:
         print(f'ERROR: invalid result insertion')
@@ -215,7 +221,7 @@ def calculate_average_rating():
         return None
     
 
-
+##Participant Functions
 def search_participant():
     try:
         participants = __DATABASE_CONNECTION.query(ParticipantTBL).all()
@@ -264,3 +270,202 @@ def idSetter():
         person=__DATABASE_CONNECTION.query(ParticipantTBL).count()
         return person
 
+
+def delete_participants(id):
+   part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
+   try:
+       __DATABASE_CONNECTION.delete(part)
+       __DATABASE_CONNECTION.commit()
+   except:
+       print("Could not delete participant")
+#############################Factor Functions ###################
+def f_id_Setter():
+        factor=__DATABASE_CONNECTION.query(FactorTBL).count()
+        return factor
+
+def get_all_factors():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).all()
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []
+
+def search_specific_factor(id):
+    try:
+       factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
+       return factor
+    
+    except Exception as e:
+        print(f"Error getting  participant: {e}")
+        return []
+
+
+def delete_factor(id):
+   factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
+   try:
+       __DATABASE_CONNECTION.delete(factor)
+       __DATABASE_CONNECTION.commit()
+   except:
+       print("Could not delete factor")
+
+
+def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
+    factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
+    try:
+        if factor:
+                
+                # Update the job title
+                factor.title = fact_title
+                factor.label = fact_label
+                factor.description = fact_description
+                factor.votes = fact_votes
+                factor.id=id
+
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                return True
+        else:
+                print(f"No factor found with ID {factor.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing factort: {e}")
+        return False
+
+    
+
+############Rating functions#####################################
+def get_rating_by_id(id):
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
+    return ratings
+
+
+def get_total_rating():
+    rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
+    return rating_count
+
+def specific_id(id):
+    rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
+    return rating
+
+def update_rating(person_id,rating,index):
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
+    try:
+        if rating:
+                
+                # Updating the rating
+                ratings[index].id = ratings[index].id 
+                ratings[index].factor_leading = ratings[index].factor_leading
+                ratings[index].factor_following = ratings[index].factor_following
+                ratings[index].rating = rating
+                ratings[index].participant_id = person_id
+                
+
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                return True
+        else:
+                print(f"No factor found with ID {rating.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing factort: {e}")
+        return False
+
+    
+def delete_everything():
+    everything=__DATABASE_CONNECTION.query(RatingsTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    everything=__DATABASE_CONNECTION.query(ParticipantTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    everything=__DATABASE_CONNECTION.query(FactorTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+    
+
+
+
+
+def delete_rating(p_id):
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==p_id).all()
+    for rating in ratings:
+        __DATABASE_CONNECTION.delete(rating)
+        __DATABASE_CONNECTION.commit()
+
+    
+        
+
+#############################################Results Function#######################
+##Calculation function for the results 
+def calculations(r_id):
+    everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+    id=0
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==r_id).all()
+    for rating in ratings:
+       average_rating = __DATABASE_CONNECTION.query(func.avg(RatingsTBL.rating)).filter(
+        RatingsTBL.factor_leading == rating.factor_leading,
+        RatingsTBL.factor_following == rating.factor_following).scalar()
+       print(average_rating)
+       insert_result(id,rating.factor_leading,rating.factor_following,average_rating)
+       id+=1
+
+       
+    wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    return wholeTable
+      
+
+
+
+def search_specific_result(r_id):
+    result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
+    return result
+
+
+def edit_result(r_id,weight):
+    result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
+
+    try:
+        if result:
+                
+                # Updating the results
+                result.id = result.id 
+                result.factor_leading = result.factor_leading
+                result.factor_following = result.factor_following
+                result.rating = weight
+                
+                # Commit the changes to the database
+                __DATABASE_CONNECTION.commit()
+
+                
+                return True
+                
+        else:
+                print(f"No factor found with ID {result.id}")
+                return False
+    except Exception as e:
+        print(f"Error editing factort: {e}")
+        return False
+    
+def get_all_results():
+    wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
+    print(wholeTable)
+    return wholeTable
