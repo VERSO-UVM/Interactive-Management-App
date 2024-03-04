@@ -10,6 +10,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import os
 import io
+from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result
+
 
 # Configure Flask application
 app = configure_flask_application()
@@ -59,8 +61,8 @@ def edit_factor(id):
 # Define route for deleting a factor
 @app.route('/delete_factor/<id>')
 def remove_factor(id):
-    return redirect(url_for('index'))
-
+    database_access.delete_factor(id)
+    return redirect(url_for('factor'))
 
 # Define route for the factor page
 @app.route('/factor',methods=['POST','GET'])
@@ -82,14 +84,11 @@ def insert_factor():
         title=request.form["f_title"]
         # label=request.form["f_label"]
         # description=request.form["f_description"]
-        votes=request.form["f_order"]
-        label="0"
-        description="0"
         
-        id=(database_access.f_id_Setter())+1
+        id=(database_access.f_id_Setter())
       
 
-        database_access.insert_factor(id=id,title=title,label=label,description=description,votes=votes)
+        database_access.insert_factor(id=id,title=title)
         return redirect (url_for('factor'))
      else:
         return render_template("insert_factor.html")
@@ -304,6 +303,71 @@ def ParticipantEdit(id):
 def delete_participants(id):
     database_access.delete_participants(id)
     return redirect (url_for('participant'))
+
+@app.route('/upload_csv', methods=['POST'])
+def upload_csv():
+    if 'csv_upload' not in request.files:
+        return 
+    file = request.files['csv_upload']
+    data_type = request.form['data_type']  # Retrieve the data type from the form
+
+    if file.filename == '':
+        return 
+    if file:
+        # Assuming the file is saved and processed to get data
+        # Here you would process the CSV file based on its data type
+        if data_type == 'factor':
+            for row in file:
+                # turn bytes into string
+                data = row.decode('utf-8')
+                print(data)
+                data = data.split(',')
+                # remove spaces and \n
+                data = [x.strip() for x in data]
+                print(data)
+
+                # Process and insert factor data
+                database_access.insert_factor(id=data[0], title=data[1])
+            return redirect(url_for('factor'))
+
+        elif data_type == 'participant':
+            for row in file:
+                # turn bytes into string
+                data = row.decode('utf-8')
+                print(data)
+                data = data.split(',')
+                # remove spaces and \n
+                data = [x.strip() for x in data]
+                print(data)
+                database_access.insert_participant(id=data[0], f_name=data[1], l_name=data[2], email=data[3], telephone=data[4])
+            return redirect(url_for('participant'))
+        
+        elif data_type == 'rating':
+            for row in file:
+                # turn bytes into string
+                data = row.decode('utf-8')
+                print(data)
+                data = data.split(',')
+                # remove spaces and \n
+                data = [x.strip() for x in data]
+                print(data)
+                database_access.insert_rating(id=data[0], factor_leading=data[1], factor_following=data[2], rating=data[3], participant_id=data[4])
+            return redirect(url_for('rating'))
+        elif data_type == 'result':
+            for row in file:
+                # turn bytes into string
+                data = row.decode('utf-8')
+                print(data)
+                data = data.split(',')
+                # remove spaces and \n
+                data = [x.strip() for x in data]
+                print(data)
+                database_access.insert_result(id=data[0], factor_leading=data[1], factor_following=data[2], weight=data[3])
+            return redirect(url_for('result'))
+        else:
+            return redirect(url_for('index'))
+    else:
+        return redirect(url_for('index'))
 
 
 # Run the Flask app if the script is executed directly

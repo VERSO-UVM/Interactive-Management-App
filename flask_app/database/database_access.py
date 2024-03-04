@@ -17,20 +17,16 @@ __DATABASE_CONNECTION = initialize_database_connection()
 
 def insert_factor(id: str,
                        title: str,
-                       label: str,
-                       description: str,
-                       votes: str) -> bool:
+                      ) -> bool:
 
     insert: FactorTBL
 
     try:
         insert = FactorTBL(id=id,
                             title=title,
-                            label=label,
-                            description=description,
-                            votes=votes)
+                           )
     except AttributeError:
-        print(f'ERROR: invalid factor insertion for label={label}')
+        print(f'ERROR: invalid factor insertion for {title}')
         return False
 
     if insert:
@@ -145,7 +141,7 @@ def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, 
 
 
    
-def insert_result(id:float,factor_leading : Factor, factor_following : Factor, rating : float):
+def insert_result(id:float,factor_leading : Factor, factor_following : Factor, weight : float):
 
     insert : ResultsTBL
 
@@ -153,7 +149,7 @@ def insert_result(id:float,factor_leading : Factor, factor_following : Factor, r
         insert = ResultsTBL(id=id,
                             factor_leading=factor_leading,
                             factor_following=factor_following,
-                            rating=rating)
+                            rating=weight)
     except AttributeError:
         print(f'ERROR: invalid result insertion')
         return False
@@ -280,7 +276,7 @@ def delete_participants(id):
        print("Could not delete participant")
 #############################Factor Functions ###################
 def f_id_Setter():
-        factor=__DATABASE_CONNECTION.query(FactorTBL).count()
+        factor=__DATABASE_CONNECTION.query(FactorTBL).count() + 1
         return factor
 
 def get_all_factors():

@@ -22,8 +22,6 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <table style="width: 100%">
         <!-- Table row for header-->
         <tr>
-          <th>ID</th>
-          <th>Order</th>
           <th>Factor</th>      
           <th>Edit</th>
           <th>Delete</th>    
@@ -33,8 +31,6 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
         {% for i in factor %}
       <tr>
 
-          <td class="f_box">{{ i.id }}</td>
-          <td class="f_box">{{ i.votes}}</td>
           <td class="f_box">{{ i.title }}</td>
           <!-- Send to edit with id -->
           <td class="f_box">
@@ -55,10 +51,6 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 
   <label for="f_title">Factor Title</label>
   <input type="text" name="f_title"><br>
-
-  <label for="f_order">Order</label>
-  <input type="number" name="f_order"><br>
-
 
   <button type="submit">Save</button>
 </form>

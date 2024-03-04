@@ -27,27 +27,27 @@
   <!-- Load section -->
   <div class="loadContainer">
     <div class="shared-style">
-      <h4>Load</h4>
-      <!-- TODO: add links to factors, participants,
-        ratings, and results (clickable option) -->
+        <h4>Upload Data</h4>
+        <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
+       
         <div class="load">
-          <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Factors</button>
+          <button onclick="triggerFileInput('factor')" class="loadButton">Upload Factors</button>
         </div>
+
         <div class="load">
-          <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Participants</button>
+          <button onclick="triggerFileInput('participant')" class="loadButton">Upload Participants</button>
         </div>
+
         <div class="load">
-          <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Ratings</button>
+          <button onclick="triggerFileInput('rating')" class="loadButton">Upload Ratings</button>
         </div>
+
         <div class="load">
-          <!-- A button to open the popup form -->
-          <button class="loadButton" onclick="openForm()">Results</button>
+          <button onclick="triggerFileInput('result')" class="loadButton">Upload Results</button>
         </div>
-    </div>
-  </div>
+
+      </div>
+</div>
   <!-- Export section-->
   <div class="exportContainer">
     <div class="shared-style">
@@ -77,4 +77,35 @@
     <p><a href="factor"><button class="goToFactor">Go To Factor Page</button></a></p>
   </div>
 </div>
+
+
+<script>
+  function triggerFileInput(type) {
+      var fileInput = document.getElementById('fileInput');
+      fileInput.setAttribute('data-type', type); // Set the type of data to upload
+      fileInput.click();
+  }
+  
+  function uploadFile(dataType) {
+      var fileInput = document.getElementById('fileInput');
+      if(fileInput.files.length > 0) {
+          var formData = new FormData();
+          formData.append('csv_upload', fileInput.files[0]);
+          formData.append('data_type', dataType); // Include the data type in the FormData
+  
+          fetch('/upload_csv', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              // Handle success or redirect
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      }
+  }
+  </script>
 {% endblock %}
