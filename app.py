@@ -20,6 +20,10 @@ app = configure_flask_application()
 # login_manager.init_app(app)
 plt.ioff()
 matplotlib.use('Agg')
+if os.path.exists('flask_app/static/plots'):
+    pass
+else:
+    os.mkdir('flask_app/static/plots')
 
 # Define route for the index page
 @app.route('/', methods=['GET', 'POST'])
