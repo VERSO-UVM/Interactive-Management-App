@@ -161,3 +161,17 @@
     cursor: pointer;
     border-radius: 4px;
   }  
+
+    
+  /* "Go To Participants" button */
+  .goToMenu {
+    background-color: #6707A4;
+    color: whitesmoke;
+    text-align: left;
+    text-decoration: none;
+    padding-top: 0.5%;
+    justify-self: end;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }  

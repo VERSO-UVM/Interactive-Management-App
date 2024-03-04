@@ -14,21 +14,23 @@ Result Page  {# Sets the title of the page to "Factor Page" #}
 
 {% block content %}
 <div class="grid-container">
-    <div class="resultPage">
-        <h1 class="pt-5 pb-2">Final Results</h1>
-    </div>
+   
 
     <div class="results">
+        <div class="resultPage">
+            <h1 class="pt-5 pb-2">Final Results</h1>
+        </div>
         <div class="resultsContainer">
             <div class="box" id="graph" >
                 <img src="{{ url_for('static', filename=filepath) }}" alt="Graph" class="img-fluid">
             </div> <!-- Container for the graph -->
         </div>
+        <div class="saveImage" style="margin: auto;">
+            <p><button class="savePNG" onclick="saveImage()">Save as PNG</button></p>
+        </div>
     </div>
 
-    <div class="saveImage">
-        <p><button class="savePNG" onclick="saveImage()">Save as PNG</button></p>
-    </div>
+    
 </div>
 
 <script>

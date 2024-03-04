@@ -55,8 +55,6 @@ def edit_factor(id):
     else:
         return render_template('edit_factor.html',factors=factors)
 
-    return redirect(url_for('index'))
-
 
 # Define route for deleting a factor
 @app.route('/delete_factor/<id>')
@@ -105,7 +103,7 @@ def delete_factor(id):
 @app.route('/rating')
 def rating():
     resultsID=database_access.search_participant
-    return render_template('rating.html', resultsID)
+    return render_template('rating.html', resultsID=resultsID)
 
 
 
@@ -205,11 +203,10 @@ def result():
         data = [x.split(":")[1] for x in data]
         G.add_edge(data[0], data[1], weight=data[2])
 
-    # plot the graph using the spring layout and store it to a file
-    fig = plt.figure()
-    pos = nx.spring_layout(G)
-    nx.draw(G, pos, with_labels=True)
-    nx.draw_networkx_edge_labels(G, pos)
+    fig = plt.figure(figsize=(10, 10))
+    pos = nx.layout.spectral_layout(G)
+    nx.draw(G, pos, with_labels=True, node_size=500, edge_color='black', width=0.75, font_size=8)
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_color='red', font_size=10)
     now = str(dt.datetime.now())
     filepath = f'flask_app/static/plots/graph_{now}.png'
     plt.savefig(filepath)
@@ -320,11 +317,9 @@ def upload_csv():
             for row in file:
                 # turn bytes into string
                 data = row.decode('utf-8')
-                print(data)
                 data = data.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
-                print(data)
 
                 # Process and insert factor data
                 database_access.insert_factor(id=data[0], title=data[1])
@@ -334,11 +329,9 @@ def upload_csv():
             for row in file:
                 # turn bytes into string
                 data = row.decode('utf-8')
-                print(data)
                 data = data.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
-                print(data)
                 database_access.insert_participant(id=data[0], f_name=data[1], l_name=data[2], email=data[3], telephone=data[4])
             return redirect(url_for('participant'))
         
@@ -346,22 +339,18 @@ def upload_csv():
             for row in file:
                 # turn bytes into string
                 data = row.decode('utf-8')
-                print(data)
                 data = data.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
-                print(data)
                 database_access.insert_rating(id=data[0], factor_leading=data[1], factor_following=data[2], rating=data[3], participant_id=data[4])
             return redirect(url_for('rating'))
         elif data_type == 'result':
             for row in file:
                 # turn bytes into string
                 data = row.decode('utf-8')
-                print(data)
                 data = data.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
-                print(data)
                 database_access.insert_result(id=data[0], factor_leading=data[1], factor_following=data[2], weight=data[3])
             return redirect(url_for('result'))
         else:

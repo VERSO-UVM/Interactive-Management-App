@@ -48,6 +48,11 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
   <div class="gTResults-Container">
     <p><a href="{{ url_for('result') }}"><button class="goToResult">Go To Final Results</button></a></p>
   </div>
+
+  <div class="gTResults-Container">
+    <p><a href="{{ url_for('insert_rating', p_id=-1) }}"><button class="goToMenu">Choose Next Participant</button></a></p>
+  </div>
+
 </div>
 <!--Javascript so that the submit and skip button continue the iteration and also update the functions-->
 <script>
