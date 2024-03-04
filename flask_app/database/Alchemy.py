@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+import json
 
 
 # @author alyssa
@@ -47,25 +48,18 @@ class FactorTBL(Base):
 
     id = Column('id', String, primary_key=True)
     title = Column('title', String, nullable=False)
-    label = Column('label', String, nullable=False)
-    description = Column('description', String, nullable=True)
-    votes = Column('votes', Integer, nullable=False)
-
+   
     def __init__(self,
                  id: str,
                  title: str,
-                 label: str,
-                 description: str = None,
-                 votes: int = 0):
+                ):
 
         self.id = id
         self.title = title
-        self.label = label
-        self.description = description
-        self.votes = votes
+    
 
     def __repr__(self):
-        return f'Factor #{self.id} "{self.label}"'
+        return f'Factor #{self.id} "{self.title}"'
 
 class RatingsTBL(Base):
 
@@ -92,7 +86,8 @@ class RatingsTBL(Base):
     
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
-
+    
+    
 class ResultsTBL(Base):
 
     __tablename__ = 'results'

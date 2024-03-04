@@ -1,6 +1,7 @@
 {% extends 'base.html' %}  {# Extends the 'base.html' template #}
 {% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
+
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/rating.css') }}">
@@ -22,23 +23,98 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
     <div class="ratingContainer">
         <h4>Compare Factors</h4>
         <div class="box">
-          <p>Area for Factor Comparison</p>
+          <p id="attempt1">{{p_id}}</p>
+          <p id="resBtnHere"></p>
+          <p id="resBtnHere2"></p>
         </div>
-          <!-- Textbox to add rating -->
-          <label for="Rating"></label>
-          <input type="text" id="rating" name="rating" placeholder="Rating/Weight/Value">
+          <form id="myform">
+            <label for="rating">Rating:</label>
+            <input type="text" id="rating" name="rating">
+          </form>
         <div class="buttons">
-          <!-- Button to submit -->
-          <input type="submit" value="Submit">
+
           <!-- Button to Skip-->
-          <button class="skip" onclick="openForm()">Skip</button>
+          <button class="skip" id="skip">Skip</button>
+
+          <!-- Button to submit -->
+          <button class="submit" id="submit">Submit</button>
+          
+         
         </div>
     </div>
   </div>
 
   <div class="gTResults-Container">
-    <p><a href="result"><button class="goToResult">Go To Final Results</button></a></p>
+    <p><a href="{{ url_for('result') }}"><button class="goToResult">Go To Final Results</button></a></p>
+  </div>
+
+  <div class="gTResults-Container">
+    <p><a href="{{ url_for('insert_rating', p_id=-1) }}"><button class="goToMenu">Choose Next Participant</button></a></p>
   </div>
 
 </div>
+<!--Javascript so that the submit and skip button continue the iteration and also update the functions-->
+<script>
+ 
+  //Access the participant id
+  var p_id = document.getElementById("attempt1").innerHTML;
+
+  //Index for the factors
+  var index=0;
+
+  //on window load
+  window.onload=function() {
+  $.get('/getInfoLeading/'+p_id+'/'+index,
+    function(x) 
+    {
+        $("#resBtnHere").html(x);
+        $.get('/getInfoFollowing/'+p_id+'/'+index,
+        function(x) 
+        {
+          $("#resBtnHere2").html(x);
+          // index+=1;
+       })
+      })
+    }
+  
+
+ 
+// skipButton()
+//logic for the submit button
+document.getElementById("submit").addEventListener("click",updateRating);
+function updateRating()
+{
+  var rating = document.getElementById("myform").elements["rating"];
+  $.get('/update_rating/'+p_id+'/'+index+'/'+rating.value,
+    function(x) 
+    {
+      //document.getElementById("rating").innerHTML="placeholder";
+    // $("#rating").html(x);
+    }
+  )
+}
+document.getElementById("skip").addEventListener("click", submitButton);
+document.getElementById("submit").addEventListener("click", submitButton);
+function submitButton() 
+{
+  $.get('/getInfoLeading/'+p_id+'/'+index,
+      function(x) 
+      {
+        if(x!='-1')
+        {
+          $("#resBtnHere").html(x);
+          $.get('/getInfoFollowing/'+p_id+'/'+index,
+          function(x) 
+          {
+            if(x!='-1')
+            {$("#resBtnHere2").html(x);}
+          })
+        }
+     }
+   )
+  index+=1;
+}
+
+     
+</script>
 {% endblock %}

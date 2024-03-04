@@ -5,10 +5,15 @@
 About Page  {# Sets the title of the page to "About Page" #}
 {% endblock %}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
+
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
       <h1 class="pt-5 pb-2">About Page</h1>  {# Heading for the about page #}
       <p>{{ message }}</p>  {# Display the message passed from the route #}
       <!-- the entire page will instruct the users ( in non technical language) how to use the website. 
@@ -38,7 +43,6 @@ About Page  {# Sets the title of the page to "About Page" #}
       </p>
       <h2> Results page</h2>
       <p> The results page presents the flowchart that the algorithm produced using all the given information</p>
-    </div>
   </div>
 </div>
 {% endblock %}
