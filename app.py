@@ -1,5 +1,5 @@
 # Import necessary modules and classes
-from flask import render_template, request, redirect, url_for, session
+from flask import Response, render_template, request, redirect, url_for, session
 from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
 import flask_app.database.database_access as database_access
@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 import os
 import io
 from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result
-
+from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL
+import csv
 
 # Configure Flask application
 app = configure_flask_application()
@@ -19,7 +20,6 @@ app = configure_flask_application()
 # login_manager.init_app(app)
 plt.ioff()
 matplotlib.use('Agg')
-
 
 # Define route for the index page
 @app.route('/', methods=['GET', 'POST'])
@@ -357,6 +357,42 @@ def upload_csv():
             return redirect(url_for('index'))
     else:
         return redirect(url_for('index'))
+
+@app.route('/export_data', methods=['POST'])
+def export_data():
+    data_type = request.form.get('data_type')
+    
+    # Define headers for each data type
+    headers = {
+        "factors": ["ID", "Title", "Label", "Description", "Votes"],
+        "participants": ["ID", "First Name", "Last Name", "Email", "Telephone"],
+        "ratings": ["ID", "Factor Leading", "Factor Following", "Rating", "Participant ID"],
+        "results": ["ID", "Factor Leading", "Factor Following", "Weight"]
+    }
+
+    # Map data_type to the corresponding database table and fetch data
+    table_map = {
+        "factors": FactorTBL,
+        "participants": ParticipantTBL,
+        "ratings": RatingsTBL,
+        "results": ResultsTBL
+    }
+
+    if data_type in table_map:
+        data = database_access.fetch(table_map[data_type])  # Assuming fetch is implemented to return all records for the table
+        csv_string = io.StringIO()
+        csv_writer = csv.writer(csv_string)
+        csv_writer.writerow(headers[data_type])
+
+        for record in data:
+            ### TODO: Add logic to handle different data types and parse the tables into comma-separated values
+            csv_writer.writerow(record)
+        
+        filename = f"{data_type}.csv"
+        return Response(csv_string, mimetype='text/csv', headers={"Content-disposition": f"attachment; filename={filename}"})
+    else:
+        return "Invalid data type", 400
+
 
 
 # Run the Flask app if the script is executed directly

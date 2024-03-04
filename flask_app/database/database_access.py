@@ -141,7 +141,7 @@ def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, 
 
 
    
-def insert_result(id:float,factor_leading : Factor, factor_following : Factor, weight : float):
+def insert_result(id:float,factor_leading : str, factor_following : str, weight : float):
 
     insert : ResultsTBL
 

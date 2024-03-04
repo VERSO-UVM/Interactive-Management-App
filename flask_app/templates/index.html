@@ -54,22 +54,21 @@
       <h4>Export</h4>
       <!-- TODO: add links to factors, participants,
         ratings, and results (clickable option) -->
-        <div class="export">
-          <!-- A button to open the popup form -->
-          <button class="exportButton" onclick="openForm()">Factors</button>
-        </div>
-        <div class="export">
-          <!-- A button to open the popup form -->
-          <button class="exportButton" onclick="openForm()">Participants</button>
-        </div>
-        <div class="export">
-          <!-- A button to open the popup form -->
-          <button class="exportButton" onclick="openForm()">Ratings</button>
-        </div>
-        <div class="export">
-          <!-- A button to open the popup form -->
-          <button class="exportButton" onclick="openForm()">Results</button>
-        </div>
+        <form action="/export_data" method="post">
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="factors">Export Factors</button>
+          </div>
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="participants">Export Participants</button>
+          </div>
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="ratings">Export Ratings</button>
+          </div>
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="results">Export Results</button>
+          </div>
+         
+        </form>
     </div>
   </div>
   <div class="empty"></div>
