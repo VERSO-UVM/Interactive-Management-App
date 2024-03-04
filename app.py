@@ -13,7 +13,7 @@ import io
 from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result
 from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL
 import csv
-
+import itertools
 # Configure Flask application
 app = configure_flask_application()
 # login_manager = LoginManager()
@@ -110,7 +110,7 @@ def rating():
 ####UPDATES RATING
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
-   database_access.update_rating(person_id=p_id,rating=rating,index=int(f_id))
+   database_access.update_rating(person_id=p_id,rating=float(rating),index=int(f_id))
    return rating
 
 
@@ -129,14 +129,12 @@ def insert_rating(p_id):
             r_id=(len(database_access.get_total_rating()))+1
 
             # ###Creates all the combinations of the factors with default value of 0
-            factor_leading=database_access.get_all_factors()
-            factor_following=database_access.get_all_factors()
-
-            for i in range(0,len(factor_leading)):
-                for j in range(0,len(factor_following)):
-                    if(factor_leading[i].id!=factor_following[j].id):
-                        database_access.insert_rating(id=r_id,factor_leading=factor_leading[i],factor_following=factor_following[j],rating=0,participant_id=p_id)
-                        r_id+=1
+            factors=database_access.get_all_factors()
+            # all combinations of the factors
+            combinations = list(itertools.combinations(factors, 2))
+            for i in range(0,len(combinations)):
+                database_access.insert_result(id=(i+1),factor_leading=combinations[i][0],factor_following=combinations[i][1],weight=0)
+            
             print(database_access.get_total_rating())
             print(len(database_access.get_total_rating()))            
         return render_template('rating.html',p_id=p_id )
