@@ -24,8 +24,9 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
         <tr>
           <th>ID</th>
           <th>Order</th>
-          <th>Factor</th>
-          <th></th>
+          <th>Factor</th>      
+          <th>Edit</th>
+          <th>Delete</th>    
         </tr>
         <!-- Example placeholder until can connect toable 
         to a database to display real-time information-->
@@ -35,27 +36,34 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
           <td class="f_box">{{ i.id }}</td>
           <td class="f_box">{{ i.votes}}</td>
           <td class="f_box">{{ i.title }}</td>
-          
-          <td>
-              <br>
-             <!-- Send to edit with id -->
-             <td class="f_box">
-              <br>
-              <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
-             </td>
-             <td>
-              <br>
-             <!-- Send to edit with id -->
-             <td class="f_box">
-              <br>
-              <a href="{{ url_for('delete_factor',id=i.id) }}">Delete</a>
-             </td>
+          <!-- Send to edit with id -->
+          <td class="f_box">
+          <br>
+          <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
+          </td>
+          <!-- Send to edit with id -->
+          <td class="f_box">
+          <br>
+          <a href="{{ url_for('delete_factor',id=i.id) }}">Delete</a>
+          </td>
       </tr>
       {% endfor %}
       </table>
 </div> 
 
+<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
 
+  <label for="f_title">Factor Title</label>
+  <input type="text" name="f_title"><br>
+
+  <label for="f_order">Order</label>
+  <input type="number" name="f_order"><br>
+
+
+  <button type="submit">Save</button>
+</form>
+
+{% endblock %}
 
 <!-- <a href="{{ url_for('insert_factor')}}">
   <button>Add Factors</button>
@@ -81,16 +89,3 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 
 <!-- </div> --> 
 
-<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
-
-  <label for="f_title">Factor Title</label>
-  <input type="text" name="f_title"><br>
-
-  <label for="f_order">Order</label>
-  <input type="number" name="f_order"><br>
-
-
-  <button type="submit">Save</button>
-</form>
-
-{% endblock %}

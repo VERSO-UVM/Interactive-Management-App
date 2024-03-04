@@ -20,64 +20,32 @@ Result Page  {# Sets the title of the page to "Factor Page" #}
 
     <div class="results">
         <div class="resultsContainer">
-            <div class="box" id="graph"></div> <!-- Container for the graph -->
+            <div class="box" id="graph" >
+                <img src="{{ url_for('static', filename=filepath) }}" alt="Graph" class="img-fluid" width="800px" height="600px">
+            </div> <!-- Container for the graph -->
         </div>
     </div>
 
     <div class="saveImage">
-        <p><button class="savePNG">Save as PNG</button></p>
+        <p><button class="savePNG" onclick="saveImage()">Save as PNG</button></p>
     </div>
 </div>
 
-<script src="https://d3js.org/d3.v6.min.js"></script>
-
 <script>
-    // Parse the graph data passed from Flask
-    document.addEventListener('DOMContentLoaded', function() {
-      const graphData = {{graph_data|safe}};
-      // Now, use graphData directly
-
-
-    // Dimensions and setup for the D3 visualization
-    const width = 500, height = 500;
-    const svg = d3.select('#graph').append('svg')
-        .attr('width', width)
-        .attr('height', height);
-
-    // D3 force simulation setup
-    const simulation = d3.forceSimulation(graphData.nodes)
-        .force('link', d3.forceLink(graphData.links).id(d => d.id))
-        .force('charge', d3.forceManyBody())
-        .force('center', d3.forceCenter(width / 2, height / 2));
-
-    // Add lines for links
-    const link = svg.append('g')
-        .attr('class', 'links')
-        .selectAll('line')
-        .data(graphData.links)
-        .join('line');
-
-    // Add circles for nodes
-    const node = svg.append('g')
-        .attr('class', 'nodes')
-        .selectAll('circle')
-        .data(graphData.nodes)
-        .join('circle')
-            .attr('r', 5);
-
-    // Update positions on each tick
-    simulation.on('tick', () => {
-        link
-            .attr('x1', d => d.source.x)
-            .attr('y1', d => d.source.y)
-            .attr('x2', d => d.target.x)
-            .attr('y2', d => d.target.y);
-
-        node
-            .attr('cx', d => d.x)
-            .attr('cy', d => d.y);
-    });
-  });
-
+function saveImage() {
+    // Get the image URL from the src attribute of the img tag
+    var imageURL = document.querySelector('#graph img').src;
+    
+    // Create an <a> element for the download
+    var downloadLink = document.createElement('a');
+    downloadLink.href = imageURL;
+    downloadLink.download = 'Graph.png'; // The name of the downloaded file
+    
+    // Append the link to the body, click it, and then remove it
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
 </script>
+
 {% endblock %}

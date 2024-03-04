@@ -1,5 +1,5 @@
  body {
-    background-color: #EFDAFC;
+    background-color: #fbf9fc;
     padding: unset;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -15,8 +15,6 @@
     padding-left: 35%;
     text-align: center;
     grid-template-rows: auto;
- grace-dev
-=======
 }
 
 /* header css start */
@@ -41,7 +39,7 @@ header li {
 }
 
 header li a {
-    color: palevioletred;
+    color: rgb(243, 241, 242);
     text-decoration: none;
 }
 
@@ -53,5 +51,4 @@ header li a {
 .pTable, .room
 {
     border: 1px solid black;
- main
 }

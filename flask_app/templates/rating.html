@@ -23,7 +23,6 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
     <div class="ratingContainer">
         <h4>Compare Factors</h4>
         <div class="box">
-          <p>Area for Factor Comparison</p>
           <p id="attempt1">{{p_id}}</p>
           <p id="resBtnHere"></p>
           <p id="resBtnHere2"></p>
@@ -35,19 +34,19 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
           </form>
         <div class="buttons">
 
-          <!-- Button to submit -->
-        
-          <button class="submit" id="submit">Submit</button>
           <!-- Button to Skip-->
           <button class="skip" id="skip">Skip</button>
 
+          <!-- Button to submit -->
+          <button class="submit" id="submit">Submit</button>
+          
          
         </div>
     </div>
   </div>
 
   <div class="gTResults-Container">
-    <p><a href="{{ url_for('results',r_id=p_id,edit='1') }}"><button class="goToResult">Go To Final Results</button></a></p>
+    <p><a href="{{ url_for('result') }}"><button class="goToResult">Go To Final Results</button></a></p>
   </div>
 </div>
 <!--Javascript so that the submit and skip button continue the iteration and also update the functions-->

@@ -39,7 +39,7 @@
   .addRating input[type="text"] {
     padding: 20px;
     margin-top: 25px; /* Adding some space above inputs */
-    background-color: #ead2f9;
+    background-color: #ffffff;
     border: 2px solid #6707A4;
     border-radius: 4px;
     text-align: left;
@@ -105,6 +105,19 @@
     cursor: pointer;
     margin-left: 3%;
   }
+
+  .submit {
+    font-size: 20px;
+    padding: 10px;
+    background-color: #6707A4;
+    color: white;
+    border-radius: 4px;
+    margin-top: 40px; /* Adding some space above inputs */
+    text-align: center;
+    width: 20%;
+    cursor: pointer;
+    margin-left: 3%;
+  }
   
   .addRating h4 {
     color: #6707A4;
@@ -128,7 +141,7 @@
   .box {
     padding: 20px;
     margin-top: 25px; /* Adding some space above inputs */
-    background-color: #ead2f9;
+    background-color: #ffffff;
     border: 2px solid #6707A4;
     border-radius: 4px;
     width: 95%;

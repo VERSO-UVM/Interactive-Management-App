@@ -6,108 +6,17 @@ import flask_app.database.database_access as database_access
 from flask_app.database.database_access import ResultsTBL
 import networkx as nx
 import datetime as dt
+import matplotlib
 import matplotlib.pyplot as plt
-import json
-
+import os
+import io
 
 # Configure Flask application
 app = configure_flask_application()
 # login_manager = LoginManager()
 # login_manager.init_app(app)
-
-
-# Define a user loader function for login management
-# @login_manager.user_loader
-def load_user(user_id):
-    return User.get_id(user_id)
-
-# # Define route for the index page
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-
-#     message: str
-
-#     # Check if 'username' is in the session
-#     if 'username' in session:
-#         message = f'Welcome {session["username"]}!'
-#     else:
-#         message = 'Welcome! Register to get started.'
-
-#     return render_template('index.html', message=message)
-
-# # Define route for the login page
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form: LoginForm = LoginForm()
-
-#     if form.validate_on_submit():
-#         print("VALID")
-#         if dispatch.login(form.name.data):
-#             return redirect(url_for('index'))
-#         return redirect(url_for('two_factor_registration'))
-
-#     return render_template('register.html', form=form)
-
-# # Define route for the registration page
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form: RegisterForm = RegisterForm()
-
-#     if form.validate_on_submit():
-#         if dispatch.register_user(form.to_dict()):
-#             session.modified = True
-#             return redirect(url_for('index'))
-
-#     return render_template('register.html', form=form)
-# Define a user loader function for login management
-
-# @login_manager.user_loader
-def load_user(user_id):
-    return User.get_id(user_id)
-
-# # Define route for the index page
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-
-#     message: str
-
-#     # Check if 'username' is in the session
-#     if 'username' in session:
-#         message = f'Welcome {session["username"]}!'
-#     else:
-#         message = 'Welcome! Register to get started.'
-
-#     return render_template('index.html', message=message)
-
-# # Define route for the login page
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form: LoginForm = LoginForm()
-
-#     if form.validate_on_submit():
-#         print("VALID")
-#         if dispatch.login(form.name.data):
-#             return redirect(url_for('index'))
-#         return redirect(url_for('two_factor_registration'))
-
-#     return render_template('register.html', form=form)
-
-# # Define route for the registration page
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form: RegisterForm = RegisterForm()
-
-#     if form.validate_on_submit():
-#         if dispatch.register_user(form.to_dict()):
-#             session.modified = True
-#             return redirect(url_for('index'))
-
-#     return render_template('register.html', form=form)
-# Define a user loader function for login management
-
-# @login_manager.user_loader
-def load_user(user_id):
-    return User.get_id(user_id)
+plt.ioff()
+matplotlib.use('Agg')
 
 
 # Define route for the index page
@@ -296,13 +205,21 @@ def result():
         # only keep data to the right of colons
         data = [x.split(":")[1] for x in data]
         G.add_edge(data[0], data[1], weight=data[2])
-    
-    graph_data = nx.json_graph.node_link_data(G)    
 
-    return render_template('result.html', graph_data=json.dumps(graph_data))
+    # plot the graph using the spring layout and store it to a file
+    fig = plt.figure()
+    pos = nx.spring_layout(G)
+    nx.draw(G, pos, with_labels=True)
+    nx.draw_networkx_edge_labels(G, pos)
+    now = str(dt.datetime.now())
+    filepath = f'flask_app/static/plots/graph_{now}.png'
+    plt.savefig(filepath)
+    plt.close()
 
-   
-    return render_template('result.html', message="Hey")
+    # Before rendering the template in your result route
+    relative_filepath = os.path.join('plots', f"graph_{now}.png")
+    return render_template('result.html', filepath=relative_filepath)
+
 
 @app.route('/results/<r_id>/<edit>')
 def results(r_id,edit):
@@ -392,4 +309,98 @@ def delete_participants(id):
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001, threaded=False)
+
+
+# Define a user loader function for login management
+# @login_manager.user_loader
+# def load_user(user_id):
+#    return User.get_id(user_id)
+
+# # Define route for the index page
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+
+#     message: str
+
+#     # Check if 'username' is in the session
+#     if 'username' in session:
+#         message = f'Welcome {session["username"]}!'
+#     else:
+#         message = 'Welcome! Register to get started.'
+
+#     return render_template('index.html', message=message)
+
+# # Define route for the login page
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     form: LoginForm = LoginForm()
+
+#     if form.validate_on_submit():
+#         print("VALID")
+#         if dispatch.login(form.name.data):
+#             return redirect(url_for('index'))
+#         return redirect(url_for('two_factor_registration'))
+
+#     return render_template('register.html', form=form)
+
+# # Define route for the registration page
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     form: RegisterForm = RegisterForm()
+
+#     if form.validate_on_submit():
+#         if dispatch.register_user(form.to_dict()):
+#             session.modified = True
+#             return redirect(url_for('index'))
+
+#     return render_template('register.html', form=form)
+# Define a user loader function for login management
+
+# @login_manager.user_loader
+# def load_user(user_id):
+#    return User.get_id(user_id)
+
+# # Define route for the index page
+# @app.route('/', methods=['GET', 'POST'])
+# def index():
+
+#     message: str
+
+#     # Check if 'username' is in the session
+#     if 'username' in session:
+#         message = f'Welcome {session["username"]}!'
+#     else:
+#         message = 'Welcome! Register to get started.'
+
+#     return render_template('index.html', message=message)
+
+# # Define route for the login page
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     form: LoginForm = LoginForm()
+
+#     if form.validate_on_submit():
+#         print("VALID")
+#         if dispatch.login(form.name.data):
+#             return redirect(url_for('index'))
+#         return redirect(url_for('two_factor_registration'))
+
+#     return render_template('register.html', form=form)
+
+# # Define route for the registration page
+# @app.route('/register', methods=['GET', 'POST'])
+# def register():
+#     form: RegisterForm = RegisterForm()
+
+#     if form.validate_on_submit():
+#         if dispatch.register_user(form.to_dict()):
+#             session.modified = True
+#             return redirect(url_for('index'))
+
+#     return render_template('register.html', form=form)
+# Define a user loader function for login management
+
+# @login_manager.user_loader
+def load_user(user_id):
+    return User.get_id(user_id)
 
