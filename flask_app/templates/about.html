@@ -1,21 +1,27 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block title %}
-About Page  {# Sets the title of the page to "About Page" #}
+About Page
+{# Sets the title of the page to "About Page" #}
 {% endblock %}
 
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{# Includes additional CSS stylesheets. Loads the CSS file 'about.css' from the 'static' directory #}
 {% endblock %}
-
 
 {% block content %}
 <div class="container">
   <div class="row">
-      <h1 class="pt-5 pb-2">About Page</h1>  {# Heading for the about page #}
-      <p>{{ message }}</p>  {# Display the message passed from the route #}
+      <h1 class="pt-5 pb-2">About Page</h1>
+      {# Heading for the about page #}
+      <p>{{ message }}</p>
+      {# Display the message passed from the route #}
       <!-- the entire page will instruct the users ( in non technical language) how to use the website. 
       Overview of all pages and what they do --> 
       <!--first chunk (Instruct the user on how to use the website) ---> 
