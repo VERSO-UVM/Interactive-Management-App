@@ -1,6 +1,5 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
-
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block styles %}
   {{ super() }}
@@ -8,15 +7,13 @@
 {% endblock %}
 
 {% block title %}
-Ratings Page  {# Sets the title of the page to "Factor Page" #}
+Ratings Page
 {% endblock %}
-
-<link rel="stylesheet" href="rating.css">
 
 {% block content %}
 <div class="grid-container">
   <div class="ratingPage">
-      <h1 class="pt-5 pb-2">Rating the Factors</h1>  {# Heading for the factor page #}
+      <h1 class="pt-5 pb-2">Rating the Factors</h1>
   </div>
 
   <div class="addRating">
@@ -32,14 +29,10 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
             <input type="text" id="rating" name="rating">
           </form>
         <div class="buttons">
-
           <!-- Button to Skip-->
           <button class="skip" id="skip">Skip</button>
-
           <!-- Button to submit -->
           <button class="submit" id="submit">Submit</button>
-          
-         
         </div>
     </div>
   </div>
@@ -51,70 +44,52 @@ Ratings Page  {# Sets the title of the page to "Factor Page" #}
   <div class="gTResults-Container">
     <p><a href="{{ url_for('insert_rating', p_id=-1) }}"><button class="goToMenu">Choose Next Participant</button></a></p>
   </div>
-
 </div>
-<!--Javascript so that the submit and skip button continue the iteration and also update the functions-->
-<script>
- 
-  //Access the participant id
-  var p_id = document.getElementById("attempt1").innerHTML;
 
-  //Index for the factors
+<script>
+  var p_id = document.getElementById("attempt1").innerHTML;
   var index=0;
 
-  //on window load
   window.onload=function() {
-  $.get('/getInfoLeading/'+p_id+'/'+index,
-    function(x) 
-    {
-        $("#resBtnHere").html(x);
-        $.get('/getInfoFollowing/'+p_id+'/'+index,
-        function(x) 
-        {
-          $("#resBtnHere2").html(x);
-          // index+=1;
-       })
-      })
-    }
-  
-
- 
-// skipButton()
-//logic for the submit button
-document.getElementById("submit").addEventListener("click",updateRating);
-function updateRating()
-{
-  var rating = document.getElementById("myform").elements["rating"];
-  $.get('/update_rating/'+p_id+'/'+index+'/'+rating.value,
-    function(x) 
-    {
-      //document.getElementById("rating").innerHTML="placeholder";
-    // $("#rating").html(x);
-    }
-  )
-}
-document.getElementById("skip").addEventListener("click", submitButton);
-document.getElementById("submit").addEventListener("click", submitButton);
-function submitButton() 
-{
-  $.get('/getInfoLeading/'+p_id+'/'+index,
-      function(x) 
-      {
-        if(x!='-1')
-        {
+    $.get('/getInfoLeading/'+p_id+'/'+index,
+      function(x) {
           $("#resBtnHere").html(x);
           $.get('/getInfoFollowing/'+p_id+'/'+index,
-          function(x) 
-          {
-            if(x!='-1')
-            {$("#resBtnHere2").html(x);}
-          })
-        }
-     }
-   )
-  index+=1;
-}
+            function(x) {
+              $("#resBtnHere2").html(x);
+            });
+        });
+  };
 
-     
+  document.getElementById("submit").addEventListener("click", updateRating);
+
+  function updateRating() {
+    var rating = document.getElementById("myform").elements["rating"];
+    $.get('/update_rating/'+p_id+'/'+index+'/'+rating.value,
+      function(x) {
+      }
+    );
+  }
+
+  document.getElementById("skip").addEventListener("click", submitButton);
+  document.getElementById("submit").addEventListener("click", submitButton);
+
+  function submitButton() {
+    $.get('/getInfoLeading/'+p_id+'/'+index,
+      function(x) {
+        if(x!='-1') {
+          $("#resBtnHere").html(x);
+          $.get('/getInfoFollowing/'+p_id+'/'+index,
+            function(x) {
+              if(x!='-1') {
+                $("#resBtnHere2").html(x);
+              }
+            }
+          );
+        }
+      }
+    );
+    index+=1;
+  }
 </script>
 {% endblock %}
