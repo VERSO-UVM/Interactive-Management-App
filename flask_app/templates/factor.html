@@ -22,55 +22,62 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <table style="width: 100%">
         <!-- Table row for header-->
         <tr>
-          <th>ID</th>
-          <th>Order</th>
-          <th>Factor</th>
-          <th></th>
+          <th>Factor</th>      
+          <th>Edit</th>
+          <th>Delete</th>    
         </tr>
         <!-- Example placeholder until can connect toable 
         to a database to display real-time information-->
-        <tr>
-          <td>example</td>
-          <td>example</td>
-          <td>example</td>
-          <td>edit</td>
-        </tr>
-        <tr>
-          <td>example</td>
-          <td>example</td>
-          <td>example</td>
-          <td>edit</td>
-        </tr>
+        {% for i in factor %}
+      <tr>
+
+          <td class="f_box">{{ i.title }}</td>
+          <!-- Send to edit with id -->
+          <td class="f_box">
+          <br>
+          <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
+          </td>
+          <!-- Send to edit with id -->
+          <td class="f_box">
+          <br>
+          <a href="{{ url_for('delete_factor',id=i.id) }}">Delete</a>
+          </td>
+      </tr>
+      {% endfor %}
       </table>
 </div> 
 
-<!-- Setting up ability to have pop-up to edit factor -->
-<button class="open-button" onclick="openForm()">Edit</button>
+<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
 
-<div class="form-popup" id="myForm">
-  <form action="/action_page.php" class="form-container">
-    <h1>Edit a Factor</h1>
-    <p>WILL CREATE AREA TO EDIT FACTOR LATER</p><br><br><br>
-    
+  <label for="f_title">Factor Title</label>
+  <input type="text" name="f_title"><br>
 
+  <button type="submit">Save</button>
+</form>
+
+{% endblock %}
+
+<!-- <a href="{{ url_for('insert_factor')}}">
+  <button>Add Factors</button>
+</a> -->
+<!-- 
 <div class="addFactor">
   <div class="withinAdd">
       <h4> Add New Factor</h4>
         <!-- Textbox to add order of factor -->
-        <label for="orderFactor"></label>
+        <!-- <label for="orderFactor"></label>
         <input type="text" id="orderFactor" name="orderFactor" placeholder="Order">
         <!-- Textbox to add factor -->
-        <label for="factor"></label>
-        <input type="text" id="factor" name="factor" placeholder="Factor">
+        <!-- <label for="factor"></label>
+        <input type="text" id="factor" name="factor" placeholder="Factor"> -->
         <!-- Button to submit -->
-        <input type="submit" value="Submit">
+        <!-- <input type="submit" value="Submit">
   </div>
-</div>
+</div> -->
 
-<div class="gTP-Container">
+<!-- <div class="gTP-Container">
   <p><a href="participant"><button class="goToParticipant">Go To Participants Page</button></a></p>
-</div>
+</div> -->
 
-</div>
+<!-- </div> --> 
 
-{% endblock %}

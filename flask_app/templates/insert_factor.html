@@ -1,0 +1,37 @@
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block title %}
+Participants Page  {# Sets the title of the page to "Factor Page" #}
+{% endblock %}
+
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+            <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
+            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
+        </div>
+    </div>
+</div>
+
+
+<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
+
+    <label for="f_title">Factor Title</label>
+    <input type="text" name="f_title"><br>
+
+    <label for="f_label">Factor Label</label>
+    <input type="text" name="f_label"><br>
+
+    <label for="f_description">description</label>
+    <input type="text" name="f_description"><br>
+
+
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
+

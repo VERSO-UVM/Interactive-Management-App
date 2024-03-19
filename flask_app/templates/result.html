@@ -14,52 +14,40 @@ Result Page  {# Sets the title of the page to "Factor Page" #}
 
 {% block content %}
 <div class="grid-container">
-  <div class="resultPage">
-      <h1 class="pt-5 pb-2">Final Results</h1>  {# Heading for the factor page #}
-  </div>
+   
 
-  <div class="results">
-    <div class="resultsContainer">
-      <div class="box">
-        <p>Area for Results Flow Diagram</p>
-      </div>
+    <div class="results">
+        <div class="resultPage">
+            <h1 class="pt-5 pb-2">Final Results</h1>
+        </div>
+        <div class="resultsContainer">
+            <div class="box" id="graph" >
+                <img src="{{ url_for('static', filename=filepath) }}" alt="Graph" class="img-fluid">
+            </div> <!-- Container for the graph -->
+        </div>
+        <div class="saveImage" style="margin: auto;">
+            <p><button class="savePNG" onclick="saveImage()">Save as PNG</button></p>
+        </div>
     </div>
-  </div>
 
-  <div class="saveImage">
-    <p><button class="savePNG">Save as PNG</button></p>
-  </div>
-
-  <div class="table">
-    <!-- Table of factors that include: ID, Order, Factor -->
-    <table style="width: 100%">
-      <!-- Table row for header-->
-      <tr>
-        <th>ID</th>
-        <th>Leading Factor</th>
-        <th>Following Factor</th>
-        <th>Weight</th>
-        <th></th>
-      </tr>
-      <!-- Example placeholder until can connect toable 
-      to a database to display real-time information-->
-      <tr>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-
-        <td>edit</td>
-      </tr>
-      <tr>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-        <td>example</td>
-
-        <td>edit</td>
-      </tr>
-    </table>
-  </div> 
+    
 </div>
+
+<script>
+function saveImage() {
+    // Get the image URL from the src attribute of the img tag
+    var imageURL = document.querySelector('#graph img').src;
+    
+    // Create an <a> element for the download
+    var downloadLink = document.createElement('a');
+    downloadLink.href = imageURL;
+    downloadLink.download = 'Graph.png'; // The name of the downloaded file
+    
+    // Append the link to the body, click it, and then remove it
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+}
+</script>
+
 {% endblock %}

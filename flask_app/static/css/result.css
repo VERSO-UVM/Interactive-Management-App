@@ -11,7 +11,7 @@
     grid-template-rows: auto auto auto; /* auto for header and form, 1fr for table */
     gap: 10px; /* Space between grid items */
     padding-bottom: 3%;
-    font-family: 'Bradley Hand', cursive;
+    font-family: 'sans-serif';
   }
   
   /* "Factors" positioning (topmost box in grid) */
@@ -22,18 +22,20 @@
     padding: 5%;
   }
   
-  /* Style the form within the .results container */
+ /* Style the form within the .results container */
   .results{
     padding: 5%;
     padding-top: 2%;
     border-style: solid;
     border-color: #6707A4;
-    height: 95%;
-    width: 90%;
     justify-self: center;
     margin: 0;
     background-color: #E0BBF7;
     border-radius: 4px;
+    display: flex; /* Added for flex layout */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    flex-direction: column; /* Stack children vertically */
   }
 
   /* Positioning for Display Box */
@@ -55,6 +57,21 @@
     cursor: pointer;
     margin-left: 3%;
   }
+
+  /* Styling for Save PNG Button */
+  .image {
+    font-size: 20px;
+    padding: 10px;
+    background-color: #6707A4;
+    color: white;
+    border-radius: 4px;
+    margin-top: 40px; /* Adding some space above inputs */
+    text-align: center;
+    width: 20%;
+    cursor: pointer;
+    margin-left: 3%;
+  }
+
   
   /* Styling for Go To Result Button */
   .saveImage {
@@ -65,17 +82,26 @@
     border-radius: 4px;
   }
 
-  /* Positioning box for flow diagram */
+  /* Positioning box for flow diagram, updated for dynamic height */
   .box {
     padding: 20px;
-    margin-top: 25px; /* Adding some space above inputs */
-    background-color: #ead2f9;
+    background-color: #ffffff;
     border: 2px solid #6707A4;
     border-radius: 4px;
-    width: 95%;
-    height: 300px;
+    width: auto; /* Adjusted to auto for flexibility */
     justify-self: center;
+    display: flex; /* Utilizes flexbox to center the image */
+    justify-content: center;
+    align-items: center;
   }
+
+  /* Ensures the image is responsive and scales within its container */
+  .box img {
+    max-width: 100%; /* Ensures the image is never wider than its container */
+    height: auto; /* Scales the height automatically based on the width */
+    display: block; /* Prevents any unnecessary margin/padding around the image */
+  }
+
   
   /* "Go To Participants" button */
   .savePNG {

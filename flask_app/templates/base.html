@@ -13,33 +13,29 @@
 
     {%- block styles %}
     <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">  {# Sets the favicon for the page #}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='custom.css') }}">  {# Links to a custom CSS file #}
     <!-- Bootstrap -->
     <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">  {# Links to Bootstrap CSS file #}
     <link rel="stylesheet" href="/static/css/style.css?version={{ now }}">  {# Links to a style CSS file with a dynamic version #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     {%- endblock styles %}
     {%- endblock head %}
- grace-dev
-  </head> 
-=======
+
   </head>
 
   <header>
     <nav>
       <!-- navbar content -->
       <ul>
-        <li><a href="{{ url_for('index') }}"> Home Page</a></li>
-        <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
-        <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
-        <li><a href="{{ url_for('rating') }}"> Ratings Page</a></li>
-        <li><a href="{{ url_for('result') }}"> Results Page</a></li>
-        <li><a href="{{ url_for('about') }}"> About Page</a></li>
+        <li><a href="{{ url_for('index') }}"> Home</a></li>
+        <li><a href="{{ url_for('factor') }}"> Factors</a></li>
+        <li><a href="{{ url_for('participant') }}"> Participants</a></li>
+        <li><a href="{{ url_for('insert_rating',p_id=-1) }}"> Ratings</a></li>
+        <li><a href="{{ url_for('result') }}"> Results</a></li>
+        <li><a href="{{ url_for('about') }}"> About</a></li>
       </ul>
     </nav>  {# Navigation links outside the main content block #}
 
   </header>   
- main
 
   <body{% block body_attribs %}{% endblock body_attribs %}>
     {% block body -%}
@@ -48,12 +44,12 @@
       <nav>
         <!-- navbar content -->
         <ul>
-          <li><a href="{{ url_for('index') }}"> Home Page</a></li>
-          <li><a href="{{ url_for('factor') }}"> Factor Page</a></li>
-          <li><a href="{{ url_for('participant') }}"> Participant Page</a></li>
-          <li><a href="{{ url_for('rating') }}"> Ratings Page</a></li>
-          <li><a href="{{ url_for('result') }}"> Results Page</a></li>
-          <li><a href="{{ url_for('about') }}"> About Page</a></li>
+          <li><a href="{{ url_for('index') }}"> Home</a></li>
+          <li><a href="{{ url_for('factor') }}"> Factors</a></li>
+          <li><a href="{{ url_for('participant') }}"> Participants</a></li>
+          <li><a href="{{ url_for('insert_rating', p_id=-1) }}"> Ratings</a></li>
+          <li><a href="{{ url_for('result') }}"> Results</a></li>
+          <li><a href="{{ url_for('about') }}"> About</a></li>
         </ul>
       </nav>  {# Navigation links outside the main content block #}
   

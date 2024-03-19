@@ -8,3 +8,4 @@ orcaapp.sock
 .vscode/*
 !.vscode/launch.json
 *.sqlite3
+flask_app/static/plots

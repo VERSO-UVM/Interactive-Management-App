@@ -14,7 +14,7 @@ h1 {
     'empty gTF-Container';
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  font-family: 'Bradley Hand', cursive;
+  font-family: 'sans-serif';
   padding-bottom: 3%;
 }
 

@@ -16,7 +16,6 @@ The __repr__ method outputs a string representation of the participant, includin
 class Participant:
 
     def __init__(self,
-                 u_name: str,
                  f_name: str,
                  l_name: str,
                  email: str,
@@ -30,7 +29,6 @@ class Participant:
                  telephone: str = None):
 
         self.id = str(uuid.uuid4())
-        self.u_name = u_name
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
