@@ -14,10 +14,9 @@ from flask_app.database.database_access import insert_factor, insert_participant
 from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL
 import csv
 import itertools
+
 # Configure Flask application
 app = configure_flask_application()
-# login_manager = LoginManager()
-# login_manager.init_app(app)
 plt.ioff()
 matplotlib.use('Agg')
 if os.path.exists('flask_app/static/plots'):
@@ -31,7 +30,7 @@ def index():
     ##database_access.delete_everything()
     return render_template('index.html')
 
-################Factor Functions######################
+# ------------------------------------------------ Factor Methods ------------------------------------------------ # 
 
 
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
@@ -76,7 +75,7 @@ def factor():
     return render_template('factor.html',factor=factor)
 
 
-###Inserting new factors
+# Inserting new factors
 @app.route('/insert_factor',methods=['POST','GET'])
 def insert_factor():
 
@@ -101,7 +100,7 @@ def delete_factor(id):
     return redirect (url_for('factor'))
 
       
-#################################Rating##################################################################
+# ------------------------------------------------ Rating Methods ------------------------------------------------ # 
 
 # Define route for the factor page
 @app.route('/rating')
@@ -111,14 +110,14 @@ def rating():
 
 
 
-####UPDATES RATING
+# Updates Ratings
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
    database_access.update_rating(person_id=p_id,rating=float(rating),index=int(f_id))
    return rating
 
 
-##INSERTS RATING
+# Inserts Rating
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
     if(p_id!='-1'):
@@ -146,15 +145,14 @@ def insert_rating(p_id):
         resultsID=database_access.search_participant()
         return render_template('ratingMenu.html', resultsID=resultsID)
     
-###Insert for nav bar option
-   
+
+# Insert for nav bar option
 @app.route('/insert_ratings',methods=['POST','GET'])
 def insert_ratings():
    if request.method=='POST':
        p_id=request.form["id"]
        return redirect (url_for('insert_rating',p_id=p_id))
-       
-
+    
 
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
@@ -185,7 +183,7 @@ def getInfoFollowing(p_id,f_id):
     
  
 
-#####################################Results##############################
+# ------------------------------------------------ Results Methods ------------------------------------------------ #
 
 @app.route('/result')
 def result():
@@ -251,7 +249,7 @@ def about():
     return render_template('about.html')
 
 
-##################Participants#############################################
+# ------------------------------------------------ Participate Methods ------------------------------------------------ #
 @app.route("/participant",methods=['POST','GET'])
 def participant():
     
@@ -400,98 +398,4 @@ def export_data():
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001, threaded=False)
-
-
-# Define a user loader function for login management
-# @login_manager.user_loader
-# def load_user(user_id):
-#    return User.get_id(user_id)
-
-# # Define route for the index page
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-
-#     message: str
-
-#     # Check if 'username' is in the session
-#     if 'username' in session:
-#         message = f'Welcome {session["username"]}!'
-#     else:
-#         message = 'Welcome! Register to get started.'
-
-#     return render_template('index.html', message=message)
-
-# # Define route for the login page
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form: LoginForm = LoginForm()
-
-#     if form.validate_on_submit():
-#         print("VALID")
-#         if dispatch.login(form.name.data):
-#             return redirect(url_for('index'))
-#         return redirect(url_for('two_factor_registration'))
-
-#     return render_template('register.html', form=form)
-
-# # Define route for the registration page
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form: RegisterForm = RegisterForm()
-
-#     if form.validate_on_submit():
-#         if dispatch.register_user(form.to_dict()):
-#             session.modified = True
-#             return redirect(url_for('index'))
-
-#     return render_template('register.html', form=form)
-# Define a user loader function for login management
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#    return User.get_id(user_id)
-
-# # Define route for the index page
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-
-#     message: str
-
-#     # Check if 'username' is in the session
-#     if 'username' in session:
-#         message = f'Welcome {session["username"]}!'
-#     else:
-#         message = 'Welcome! Register to get started.'
-
-#     return render_template('index.html', message=message)
-
-# # Define route for the login page
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form: LoginForm = LoginForm()
-
-#     if form.validate_on_submit():
-#         print("VALID")
-#         if dispatch.login(form.name.data):
-#             return redirect(url_for('index'))
-#         return redirect(url_for('two_factor_registration'))
-
-#     return render_template('register.html', form=form)
-
-# # Define route for the registration page
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form: RegisterForm = RegisterForm()
-
-#     if form.validate_on_submit():
-#         if dispatch.register_user(form.to_dict()):
-#             session.modified = True
-#             return redirect(url_for('index'))
-
-#     return render_template('register.html', form=form)
-# Define a user loader function for login management
-
-# @login_manager.user_loader
-def load_user(user_id):
-    return User.get_id(user_id)
 
