@@ -22,7 +22,8 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <table style="width: 100%">
         <!-- Table row for header-->
         <tr>
-          <th>Factor</th>      
+          <th>Factor</th>  
+          <th>Frquency</th>    
           <th>Edit</th>
           <th>Delete</th>    
         </tr>
@@ -32,6 +33,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <tr>
 
           <td class="f_box">{{ i.title }}</td>
+          <td class="f_box">{{ i.votes }}</td>
           <!-- Send to edit with id -->
           <td class="f_box">
           <br>
@@ -46,11 +48,14 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       {% endfor %}
       </table>
 </div> 
-
+<p>Add New Factor</p>
 <form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
-
   <label for="f_title">Factor Title</label>
   <input type="text" name="f_title"><br>
+  <label for="f_description">Description</label>
+  <input type="text" name="f_description"><br>
+  <label for="f_votes">Frequency</label>
+  <input type="text" name="f_votes" placeholder=0><br>
 
   <button type="submit">Save</button>
 </form>

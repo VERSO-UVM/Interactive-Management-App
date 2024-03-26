@@ -49,50 +49,50 @@ __DATABASE_CONNECTION.execute(text('CREATE TABLE IF NOT EXISTS ratings (id TEXT 
 __DATABASE_CONNECTION.execute(text('CREATE TABLE IF NOT EXISTS results (id TEXT PRIMARY KEY, factor_leading TEXT, factor_following TEXT, rating FLOAT)'))
 __DATABASE_CONNECTION.commit()
 
-print('inserting first test factor')
-print(insert_factor(1, first_test_factor.title))
-print('inserting second test factor')
-print(insert_factor(2, second_test_factor.title))
-print('inserting test participant')
-print(insert_participant(first_participant.id, first_participant.f_name, first_participant.l_name, first_participant.email, first_participant.telephone))
-print('inserting test ratings')
-print(insert_rating(1, factor_leading=first_test_factor, factor_following=second_test_factor, rating=3, participant_id=first_participant.id))
-print(insert_rating(2, factor_leading=first_test_factor, factor_following=second_test_factor, rating=9, participant_id=second_participant.id))
-print('inserting test result')
-print(insert_result(1, factor_leading=first_test_factor.id, factor_following=second_test_factor.id, weight=1))
+# print('inserting first test factor')
+# print(insert_factor(1, first_test_factor.title))
+# print('inserting second test factor')
+# print(insert_factor(2, second_test_factor.title))
+# print('inserting test participant')
+# print(insert_participant(first_participant.id, first_participant.f_name, first_participant.l_name, first_participant.email, first_participant.telephone))
+# print('inserting test ratings')
+# print(insert_rating(1, factor_leading=first_test_factor, factor_following=second_test_factor, rating=3, participant_id=first_participant.id))
+# print(insert_rating(2, factor_leading=first_test_factor, factor_following=second_test_factor, rating=9, participant_id=second_participant.id))
+# print('inserting test result')
+# print(insert_result(1, factor_leading=first_test_factor.id, factor_following=second_test_factor.id, weight=1))
 
-print('selecting all factors')
-print(fetch(FactorTBL))
-print('selecting all participants')
-print(fetch(ParticipantTBL))
-print('selecting all ratings')
-print(fetch(RatingsTBL))
+# print('selecting all factors')
+# print(fetch(FactorTBL))
+# print('selecting all participants')
+# print(fetch(ParticipantTBL))
+# print('selecting all ratings')
+# print(fetch(RatingsTBL))
 
-average_ratings = calculate_average_rating()
+# average_ratings = calculate_average_rating()
 
-print('selecting all results')
-print(fetch(ResultsTBL))
+# print('selecting all results')
+# print(fetch(ResultsTBL))
 
-__DATABASE_CONNECTION.close()
+# __DATABASE_CONNECTION.close()
 
-import csv
-from flask import Response
+# import csv
+# from flask import Response
 
-def query_results_to_csv_string(data, header):
-    """Convert query results into a CSV string."""
-    si = io.StringIO()
-    cw = csv.writer(si)
-    cw.writerow(header)  # Write the header row
-    for datum in data:
-        datum = datum[0]
-        datum = str(datum).split(',')
-        # keep data to the right of : 
-        datum = list(map(lambda x: x.split(':')[1], datum))
-        # remove leading whitespace
-        datum = list(map(lambda x: x.strip(), datum))
-        cw.writerows(datum)
-    return si.getvalue()
+# def query_results_to_csv_string(data, header):
+#     """Convert query results into a CSV string."""
+#     si = io.StringIO()
+#     cw = csv.writer(si)
+#     cw.writerow(header)  # Write the header row
+#     for datum in data:
+#         datum = datum[0]
+#         datum = str(datum).split(',')
+#         # keep data to the right of : 
+#         datum = list(map(lambda x: x.split(':')[1], datum))
+#         # remove leading whitespace
+#         datum = list(map(lambda x: x.strip(), datum))
+#         cw.writerows(datum)
+#     return si.getvalue()
 
-data = fetch(ResultsTBL)
+# data = fetch(ResultsTBL)
 
-print(query_results_to_csv_string(data, ['id', 'factor_leading', 'factor_following', 'rating']))
+# print(query_results_to_csv_string(data, ['id', 'factor_leading', 'factor_following', 'rating']))

@@ -17,6 +17,8 @@ __DATABASE_CONNECTION = initialize_database_connection()
 
 def insert_factor(id: str,
                        title: str,
+                       description: str,
+                       votes: int,
                       ) -> bool:
 
     insert: FactorTBL
@@ -24,6 +26,8 @@ def insert_factor(id: str,
     try:
         insert = FactorTBL(id=id,
                             title=title,
+                            description=description,
+                            votes=votes
                            )
     except AttributeError:
         print(f'ERROR: invalid factor insertion for {title}')

@@ -43,10 +43,11 @@ def edit_factor(id):
    
     if request.method == 'POST':
         title=request.form["f_title"]
-        label=request.form["f_label"]
         description=request.form["f_description"]
         votes=request.form["f_votes"]
-        
+        label="NA"
+
+
         try:
             
             database_access.edit_factors(id,title,label,description,votes)
@@ -84,13 +85,13 @@ def insert_factor():
 
         # ##Get from the form
         title=request.form["f_title"]
-        # label=request.form["f_label"]
-        # description=request.form["f_description"]
+        description=request.form["f_description"]
+        votes=request.form["f_votes"]
         
         id=(database_access.f_id_Setter())
       
 
-        database_access.insert_factor(id=id,title=title)
+        database_access.insert_factor(id=id,title=title,description=description,votes=votes)
         return redirect (url_for('factor'))
      else:
         return render_template("insert_factor.html")

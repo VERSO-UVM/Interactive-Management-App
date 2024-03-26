@@ -48,14 +48,20 @@ class FactorTBL(Base):
 
     id = Column('id', String, primary_key=True)
     title = Column('title', String, nullable=False)
+    description = Column('description', String, nullable=True)
+    votes = Column('votes', String, nullable=False)
    
     def __init__(self,
                  id: str,
                  title: str,
+                 description: str,
+                 votes: str,
                 ):
 
         self.id = id
         self.title = title
+        self.description = description
+        self.votes = votes
     
 
     def __repr__(self):
