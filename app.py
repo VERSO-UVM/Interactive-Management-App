@@ -14,10 +14,11 @@ from flask_app.database.database_access import insert_factor, insert_participant
 from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL
 import csv
 import itertools
+
+
 # Configure Flask application
 app = configure_flask_application()
-# login_manager = LoginManager()
-# login_manager.init_app(app)
+
 plt.ioff()
 matplotlib.use('Agg')
 if os.path.exists('flask_app/static/plots'):
@@ -25,21 +26,27 @@ if os.path.exists('flask_app/static/plots'):
 else:
     os.mkdir('flask_app/static/plots')
 
+
+"""
+Method : GET, POST
+Description : Renders the index page
+"""
 # Define route for the index page
 @app.route('/', methods=['GET', 'POST'])
 def index():
     ##database_access.delete_everything()
     return render_template('index.html')
 
-################Factor Functions######################
+# < ---------------------------------Factor Functions--------------------------------->
 
-
+"""
+Method : GET, POST
+Description : Renders the page for editing a factor with the given ID and handles the editing process.
+"""
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
   
     factors = database_access.search_specific_factor(id)
-
-
    
     if request.method == 'POST':
         title=request.form["f_title"]
@@ -47,10 +54,8 @@ def edit_factor(id):
         description=request.form["f_description"]
         votes=request.form["f_votes"]
         
-        try:
-            
+        try:  
             database_access.edit_factors(id,title,label,description,votes)
-           
             return redirect(url_for("factor"))
         
         except:
@@ -60,13 +65,19 @@ def edit_factor(id):
         return render_template('edit_factor.html',factors=factors)
 
 
-# Define route for deleting a factor
+"""
+Method : GET
+Description : Deletes the factor with the given ID.
+"""
 @app.route('/delete_factor/<id>')
 def remove_factor(id):
     database_access.delete_factor(id)
     return redirect(url_for('factor'))
 
-# Define route for the factor page
+"""
+Method : GET, POST
+Description : Renders the page displaying all factors and handles factor-related operations.
+"""
 @app.route('/factor',methods=['POST','GET'])
 def factor():
 
@@ -75,8 +86,10 @@ def factor():
     print(factor)
     return render_template('factor.html',factor=factor)
 
-
-###Inserting new factors
+"""
+Method : GET, POST 
+Description : Renders the page for inserting a new factor and handles the insertion process.
+"""
 @app.route('/insert_factor',methods=['POST','GET'])
 def insert_factor():
 
@@ -90,35 +103,45 @@ def insert_factor():
         id=(database_access.f_id_Setter())
       
 
-        database_access.insert_factor(id=id,title=title, frequency=frequency)
+        database_access.insert_factor(id=id,title=title)
         return redirect (url_for('factor'))
      else:
         return render_template("insert_factor.html")
-    
+     
+"""
+Method : GET, POST
+Description : Deletes the factor with the given ID.
+""" 
 @app.route('/delete_factor/<id>',methods=['POST','GET'])
 def delete_factor(id):
     database_access.delete_factor(id)
     return redirect (url_for('factor'))
 
       
-#################################Rating##################################################################
+#<---------------------------------Ratings Page--------------------------------->
 
-# Define route for the factor page
+"""
+Method : GET
+Description : Renders the page related to ratings.
+""" 
 @app.route('/rating')
 def rating():
     resultsID=database_access.search_participant
     return render_template('rating.html', resultsID=resultsID)
 
-
-
-####UPDATES RATING
+"""
+Method : GET
+Description : Updates the rating for a participant on a factor.
+"""
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
    database_access.update_rating(person_id=p_id,rating=float(rating),index=int(f_id))
    return rating
 
-
-##INSERTS RATING
+"""
+Method : GET
+Description : Inserts ratings for a participant.
+"""
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
     if(p_id!='-1'):
@@ -145,17 +168,21 @@ def insert_rating(p_id):
     else:
         resultsID=database_access.search_participant()
         return render_template('ratingMenu.html', resultsID=resultsID)
-    
-###Insert for nav bar option
-   
+
+"""
+Method : GET, POST
+Description : Handles insertion of ratings.
+"""
 @app.route('/insert_ratings',methods=['POST','GET'])
 def insert_ratings():
    if request.method=='POST':
        p_id=request.form["id"]
        return redirect (url_for('insert_rating',p_id=p_id))
        
-
-
+"""
+Method : GET, POST
+Description : Retrieves information about the factor leading in a rating.
+"""
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
  try:
@@ -169,7 +196,10 @@ def getInfoLeading(p_id,f_id):
  except:
      return "-1"
    
- 
+"""
+Method : GET, POST
+Description :  Retrieves information about the factor following in a rating.
+"""
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
    try:
@@ -182,11 +212,12 @@ def getInfoFollowing(p_id,f_id):
     return (resultsss)
    except:
        return "-1"
-    
- 
 
-#####################################Results##############################
-
+#<---------------------------------Results--------------------------------->
+"""
+Method: GET
+Description: Renders the page related to results and generates visualizations.
+"""
 @app.route('/result')
 def result():
     database_access.calculate_average_rating()
@@ -218,7 +249,10 @@ def result():
     relative_filepath = os.path.join('plots', f"graph_{now}.png")
     return render_template('result.html', filepath=relative_filepath)
 
-
+"""
+Method: GET
+Description: Renders the page displaying results.
+"""
 @app.route('/results/<r_id>/<edit>')
 def results(r_id,edit):
     if(edit=='1'):
@@ -232,6 +266,10 @@ def results(r_id,edit):
         wholeTable=database_access.get_all_results()
         return render_template('results.html', wholeTable=wholeTable)
 
+"""
+Method: GET, POST
+Description: Renders the page for editing a result and handles the editing process.
+"""
 @app.route('/edit_result/<r_id>',methods=['POST','GET'])
 def edit_result(r_id,):
     result = database_access.search_specific_result(r_id)
@@ -245,13 +283,20 @@ def edit_result(r_id,):
     else:
         return render_template('edit_Result.html',result=result)
 
-# Define route for the about page
+"""
+Method: GET
+Description: Renders the about page.
+"""
 @app.route('/about')
 def about():
     return render_template('about.html')
 
+#<---------------------------------Participants---------------------------------> 
 
-##################Participants#############################################
+"""
+Method: GET, POST
+Description: Renders the page displaying all participants and handles participant-related operations.
+"""
 @app.route("/participant",methods=['POST','GET'])
 def participant():
     
@@ -272,12 +317,14 @@ def participant():
         part=database_access.search_participant()
         return render_template("participant.html",part=part)
     
-
+"""
+Method: GET, POST
+Description: Renders the page for editing a participant and handles the editing process.
+"""
 @app.route("/ParticipantEdit/<id>",methods=['POST','GET'])
 def ParticipantEdit(id):
     ##Search for participant
     person = database_access.search_specific(id)
-
 
     #Gets the info from the selected student
     if request.method == 'POST':
@@ -298,11 +345,20 @@ def ParticipantEdit(id):
     else:
         return render_template('editPart.html',person=person)
     
+
+"""
+Method: GET
+Description: Deletes the participant with the given ID.
+"""    
 @app.route('/delete_participants/<id>',methods=['POST','GET'])
 def delete_participants(id):
     database_access.delete_participants(id)
     return redirect (url_for('participant'))
 
+"""
+Method: POST
+Description: Handles uploading CSV files and inserting data into the database.
+"""  
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
     if 'csv_upload' not in request.files:
@@ -360,6 +416,10 @@ def upload_csv():
     else:
         return redirect(url_for('index'))
 
+"""
+Method: POST
+Description: Handles exporting data from the database to CSV files.
+"""  
 @app.route('/export_data', methods=['POST'])
 def export_data():
     data_type = request.form.get('data_type')
