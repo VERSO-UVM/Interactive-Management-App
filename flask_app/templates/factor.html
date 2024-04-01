@@ -17,6 +17,10 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
   <div class="factorPage">
       <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
   </div>
+  <div class="buttons">
+  <button class="ascending" id="ascending">Ascending</button>
+  <button class="desscending" id="desscending">Desscending</button>
+  </div>
 <div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
@@ -27,8 +31,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
           <th>Edit</th>
           <th>Delete</th>    
         </tr>
-        <!-- Example placeholder until can connect toable 
-        to a database to display real-time information-->
+       
         {% for i in factor %}
       <tr>
 
@@ -55,34 +58,37 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
   <label for="f_description">Description</label>
   <input type="text" name="f_description"><br>
   <label for="f_votes">Frequency</label>
-  <input type="text" name="f_votes" placeholder=0><br>
+  <input type="number" name="f_votes" placeholder=0><br>
 
   <button type="submit">Save</button>
 </form>
 
+<script>
+
+document.getElementById("ascending").addEventListener("click", ascendingVotes);
+function ascendingVotes() 
+{
+  
+  $.get('/factor/1',
+    function(x) 
+    {
+
+    }
+  )
+}
+
+
+document.getElementById("desscending").addEventListener("click", descendingVotes);
+function desscendingVotes() 
+{
+  $.get('/factor/2',
+    function(x) 
+    {
+
+    }
+  )
+}
+</script>
 {% endblock %}
 
-<!-- <a href="{{ url_for('insert_factor')}}">
-  <button>Add Factors</button>
-</a> -->
-<!-- 
-<div class="addFactor">
-  <div class="withinAdd">
-      <h4> Add New Factor</h4>
-        <!-- Textbox to add order of factor -->
-        <!-- <label for="orderFactor"></label>
-        <input type="text" id="orderFactor" name="orderFactor" placeholder="Order">
-        <!-- Textbox to add factor -->
-        <!-- <label for="factor"></label>
-        <input type="text" id="factor" name="factor" placeholder="Factor"> -->
-        <!-- Button to submit -->
-        <!-- <input type="submit" value="Submit">
-  </div>
-</div> -->
-
-<!-- <div class="gTP-Container">
-  <p><a href="participant"><button class="goToParticipant">Go To Participants Page</button></a></p>
-</div> -->
-
-<!-- </div> --> 
 

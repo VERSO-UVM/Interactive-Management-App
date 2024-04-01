@@ -49,13 +49,13 @@ class FactorTBL(Base):
     id = Column('id', String, primary_key=True)
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
-    votes = Column('votes', String, nullable=False)
+    votes = Column('votes', Integer, nullable=False)
    
     def __init__(self,
                  id: str,
                  title: str,
                  description: str,
-                 votes: str,
+                 votes: int,
                 ):
 
         self.id = id

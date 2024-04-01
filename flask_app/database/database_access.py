@@ -290,6 +290,23 @@ def get_all_factors():
     except Exception as e:
         print(f"Error getting all factors: {e}")
         return []
+    
+def ascendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes).all()
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []    
+    
+def descendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes)
+
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []        
 
 def search_specific_factor(id):
     try:

@@ -61,6 +61,7 @@ def edit_factor(id):
         return render_template('edit_factor.html',factors=factors)
 
 
+
 # Define route for deleting a factor
 @app.route('/delete_factor/<id>')
 def remove_factor(id):
@@ -68,12 +69,19 @@ def remove_factor(id):
     return redirect(url_for('factor'))
 
 # Define route for the factor page
-@app.route('/factor',methods=['POST','GET'])
-def factor():
+@app.route('/factor/<num>',methods=['POST','GET'])
+def factor(num):
 
     ##Getting all the current factors
-    factor=database_access.get_all_factors()
-    print(factor)
+    if num=='-1':
+        factor=database_access.get_all_factors()
+       
+    elif num=='1':
+        factor=database_access.ascendingOrder()
+       
+    elif num=='2':
+        factor=database_access.descendingOrder()
+    
     return render_template('factor.html',factor=factor)
 
 
@@ -85,6 +93,7 @@ def insert_factor():
 
         # ##Get from the form
         title=request.form["f_title"]
+        ##Checks what happens if this empty
         description=request.form["f_description"]
         votes=request.form["f_votes"]
         
@@ -92,7 +101,7 @@ def insert_factor():
       
 
         database_access.insert_factor(id=id,title=title,description=description,votes=votes)
-        return redirect (url_for('factor'))
+        return redirect (url_for('factor',num=-1))
      else:
         return render_template("insert_factor.html")
     

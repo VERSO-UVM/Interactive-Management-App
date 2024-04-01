@@ -27,7 +27,7 @@
       <!-- navbar content -->
       <ul>
         <li><a href="{{ url_for('index') }}"> Home</a></li>
-        <li><a href="{{ url_for('factor') }}"> Factors</a></li>
+        <li><a href="{{ url_for('factor', num=-1) }}"> Factors</a></li>
         <li><a href="{{ url_for('participant') }}"> Participants</a></li>
         <li><a href="{{ url_for('insert_rating',p_id=-1) }}"> Ratings</a></li>
         <li><a href="{{ url_for('result') }}"> Results</a></li>
@@ -45,7 +45,7 @@
         <!-- navbar content -->
         <ul>
           <li><a href="{{ url_for('index') }}"> Home</a></li>
-          <li><a href="{{ url_for('factor') }}"> Factors</a></li>
+          <li><a href="{{ url_for('factor', num=-1) }}"> Factors</a></li>
           <li><a href="{{ url_for('participant') }}"> Participants</a></li>
           <li><a href="{{ url_for('insert_rating', p_id=-1) }}"> Ratings</a></li>
           <li><a href="{{ url_for('result') }}"> Results</a></li>
