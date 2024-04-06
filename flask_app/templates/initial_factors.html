@@ -16,53 +16,32 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 <div class="grid-container">
   <div class="factorPage">
       <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
-  </div>
+
+    
+<a  href="{{ url_for('pick_factors',num=-1) }}" type="button">Edit</a>
 <div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
         <!-- Table row for header-->
         <tr>
           <th>Factor</th>  
-          <th>Frquency</th>    
-          <th>Edit</th>
-          <th>Delete</th>    
+          <th>Frquency</th>       
         </tr>
        
         {% for i in factor %}
       <tr>
-
           <td class="f_box">{{ i.title }}</td>
           <td class="f_box">{{ i.votes }}</td>
           <!-- Send to edit with id -->
-          <td class="f_box">
-          <br>
-          <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
-          </td>
-          <!-- Send to edit with id -->
-          <td class="f_box">
-          <br>
-          <a href="{{ url_for('delete_factor',id=i.id) }}">Delete</a>
-          </td>
       </tr>
       {% endfor %}
       </table>
+
+      <p>Voting Options</p>
+      <a  href="{{ url_for('insert_rating',p_id=-1) }}" type="button">Ratings</a>
+
+
 </div> 
-<p>Add New Factor</p>
-<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
-  <label for="f_title">Factor Title</label>
-  <input type="text" name="f_title"><br>
-  <label for="f_description">Description</label>
-  <input type="text" name="f_description"><br>
-  <label for="f_votes">Frequency</label>
-  <input type="number" name="f_votes" placeholder=0><br>
-
-  <button type="submit">Save</button>
-</form>
-
-<div>
-<a  href="{{ url_for('pick_factors',num=-1) }}" type="button">Go to Rating</a>
-</div>
-
 
 {% endblock %}
 

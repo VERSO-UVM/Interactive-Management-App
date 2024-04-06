@@ -85,6 +85,8 @@ def factor(num):
     return render_template('factor.html',factor=factor)
 
 
+
+
 ###Inserting new factors
 @app.route('/insert_factor',methods=['POST','GET'])
 def insert_factor():
@@ -109,6 +111,28 @@ def insert_factor():
 def delete_factor(id):
     database_access.delete_factor(id)
     return redirect (url_for('factor'))
+
+
+@app.route('/pick_factors/<num>',methods=['POST','GET'])
+def pick_factors(num):
+    if request.method=='POST':
+        factors_picked=request.form.getlist('factors')
+        print(factors_picked)
+        factor=database_access.get_factor_list(factors_picked)
+        print(factor)
+        return render_template("initial_factors.html",factor=factor)
+    else:
+        if num=='-1':
+            factor=database_access.get_all_factors()
+       
+        elif num=='1':
+            factor=database_access.ascendingOrder()
+       
+        elif num=='2':
+            factor=database_access.descendingOrder()
+       
+        return render_template("pickFactor.html",factor=factor)
+
 
       
 #################################Rating##################################################################

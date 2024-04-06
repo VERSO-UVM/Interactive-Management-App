@@ -301,7 +301,7 @@ def ascendingOrder():
     
 def descendingOrder():
     try:
-        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes)
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes.desc()).all()
 
         return factors
     except Exception as e:
@@ -351,7 +351,12 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
         print(f"Error editing factort: {e}")
         return False
 
-    
+def get_factor_list(list1):
+    factors=[]
+    for i in range(0,len(list1)):
+            factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==list1[i]).first()
+            factors.append(factor)
+    return factors
 
 ############Rating functions#####################################
 def get_rating_by_id(id):
