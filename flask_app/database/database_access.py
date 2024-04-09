@@ -104,7 +104,7 @@ def insert_participant(id: str,
 
     return False
 
-def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
+def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : str):
     
     insert : RatingsTBL
 
@@ -375,7 +375,7 @@ def specific_id(id):
 def update_rating(person_id,rating,index):
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
     try:
-        if rating:
+        if ratings:
                 
                 # Updating the rating
                 ratings[index].id = ratings[index].id 
@@ -388,6 +388,8 @@ def update_rating(person_id,rating,index):
                 
                 # Commit the changes to the database
                 __DATABASE_CONNECTION.commit()
+                
+                print(__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==ratings[index].id).first())
 
                 return True
         else:

@@ -127,15 +127,17 @@ def pick_factors(num):
 
         ##Inserts into rating table with deault 0
         combinations = list(itertools.combinations(factor, 2))
+        print(combinations)
         
         id1=1
-        id2=0
+        id2=2
         for i in range(0,len(combinations)):
+            database_access.insert_rating(id=id1,factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id ="1")
+            database_access.insert_rating(id=id2,factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id ="1")
+            # print(f'{id1}{combinations[i][0]}{combinations[i][1]}')
+            # print(f'{id2}{combinations[i][1]}{combinations[i][0]}')
             id1+=2
             id2+=2
-            database_access.insert_rating(id=id1,factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id =1)
-            database_access.insert_rating(id=id2,factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id =1)
-         
 
 
        
@@ -161,7 +163,12 @@ def pick_factors(num):
 
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
-   database_access.update_rating(person_id=p_id,rating=float(rating),index=int(f_id))
+   print("YIK")
+   print(rating)
+
+
+
+   database_access.update_rating(person_id=str(p_id),rating=float(rating),index=int(f_id))
    return rating
 
 
@@ -231,12 +238,13 @@ def insert_ratings():
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
  try:
-    result = database_access.get_rating_by_id(p_id)
+    result = database_access.specific_id(f_id)
    
-    results=result[int(f_id)].factor_leading
+    results=result.factor_leading
     resultTitle=database_access.search_specific_factor(results)
     resultsss=resultTitle.title
     print(resultTitle.title)
+    print(f_id)
     return resultsss
  except:
      return "-1"
@@ -245,17 +253,23 @@ def getInfoLeading(p_id,f_id):
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
    try:
-    result = database_access.get_rating_by_id(p_id)
-    results=result[int(f_id)].factor_following
+    result = database_access.specific_id(f_id)
+    results=result.factor_following
 
     resultTitle=database_access.search_specific_factor(results)
     print(resultTitle.title)
     resultsss=resultTitle.title
     return (resultsss)
+    
    except:
        return "-1"
     
- 
+@app.route('/resultInfo',methods=['POST','GET'])
+def resultInfo():
+   factors=database_access.specific_id(1)
+   print(factors)
+   return render_template('about.html')
+   
 
 #####################################Results##############################
 
