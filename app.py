@@ -166,23 +166,14 @@ def update_rating(p_id,f_id,rating):
    print("YIK")
    print(rating)
 
-
-
    database_access.update_rating(person_id=str(p_id),rating=float(rating),index=int(f_id))
    return rating
-
 
 # Define route for the factor page
 @app.route('/rating')
 def rating():
     resultsID=database_access.search_participant
     return render_template('rating.html', resultsID=resultsID)
-
-
-
-
-
-
 
 
 ###Updates the rating table with user selections
@@ -192,10 +183,6 @@ def insert_rating(p_id):
     ##
     factor=database_access.get_rating_by_id(p_id)
     return render_template('rating.html', factor=factor)
-
-
-
-
 
 
 
