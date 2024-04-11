@@ -1,6 +1,15 @@
+/* Color Variables */
+:root {
+  --button_color: #091876;
+  --outline: black;
+  --text: #091876;
+  --main_background: 	#F0F0F0;
+  --white: whitesmoke;
+}
+
 /* "Participants" title */
 h1 {
-  color: #6707A4;
+  color: var(--text);
   padding-top: 5%;
   text-align: center;
 }
@@ -11,13 +20,13 @@ h1 {
   grid-template-rows: auto auto auto auto; /* auto for header and form, 1fr for table */
   gap: 10px; /* Space between grid items */
   padding-bottom: 3%;
-  font-family: 'Bradley Hand', cursive;
+  font-family: 'sans-serif';
 }
   
 /* "Participants" positioning (topmost box in grid) */
 .partPage {
   grid-column: 1 / -1; /* Span across all columns */
-  color: #6707A4;
+  color: var(--outline);
   text-align: center;
   padding: 5%;
 }
@@ -31,20 +40,20 @@ h1 {
 }
   
 .table th {
-  border: 2px solid #480373;
+  border: 2px solid var(--outline);
   padding: 8px;
   text-align: center;
-  color: whitesmoke;
-  background-color: #6707A4;
+  color: var(--white);
+  background-color: var(--text);
   font-size: 18px;
   font-weight: normal;
 }
   
 .table td {
-  border: 2px solid #480373;
+  border: 2px solid var(--outline);
   padding: 8px;
   text-align: left;
-  background-color: #ad68d8;
+  background-color: var(--main_background);
 }
 
   /* Style the form within the .addFactor container */
@@ -52,13 +61,13 @@ h1 {
   padding: 5%;
   padding-top: 2%;
   border-style: solid;
-  border-color: #6707A4;
-  color: #6707A4;
+  border-color: var(--text);
+  color: var(--text);
   height: 550px;
   width: 70%;
   justify-self: center;
   margin: auto;
-  background-color: #E0BBF7;
+  background-color: var(--main_background);
   border-radius: 4px;
 }
   
@@ -66,8 +75,8 @@ h1 {
 .addPart input[type="text"] {
   padding: 20px;
   margin-top: 25px; /* Adding some space above inputs */
-  background-color: #ead2f9;
-  border: 2px solid #6707A4;
+  background-color: var(--main_background);
+  border: 2px solid --text;
   border-radius: 4px;
   text-align: left;
   width: 85%;
@@ -79,15 +88,15 @@ h1 {
   
 /* Text Color */
 .addPart input[type="text"]::placeholder {
-  color: #6707A4;
+  color: var(--text);
   font-size: 15px;
 }
   
 .addPart input[type="submit"] {
   font-size: 20px;
   padding: 10px;
-  background-color: #6707A4;
-  color: white;
+  background-color: var(--button_color);
+  color: var(--white);
   width: 30%;
   border-radius: 4px;
   margin-top: 40px; /* Adding some space above inputs */
@@ -95,13 +104,13 @@ h1 {
 }
   
 .addPart input:hover[type="submit"] {
-  background-color: white;
-  color: #480373;
+  background-color: var(--white);
+  color: var(--button_color);
   text-decoration: none;
 }
 
 .addPart h4 {
-  color: #6707A4;
+  color: var(--text);
   margin: 0;
   font-size: 24px;
   font-weight: bold;
@@ -119,8 +128,8 @@ h1 {
 
 /* "Go To Participants" button */
 .goToRatings {
-  background-color: #6707A4;
-  color: whitesmoke;
+  background-color: var(--text);
+  color: var(--white);
   text-align: center;
   text-decoration: none;
   padding-top: 0.5%;
@@ -132,8 +141,8 @@ h1 {
 
 /* Submit Button*/
 input[type=submit] {
-  background-color: #6707A4;
-  color: whitesmoke;
+  background-color: var(white);
+  color: var(--button_color);
   text-align: center;
   text-decoration: none;
   padding-top: 0.5%;
@@ -145,7 +154,7 @@ input[type=submit] {
 
 /* Hover Color & Styling */
 input:hover[type="submit"] {
-  background-color: white;
-  color: #480373;
+  background-color: var(--white);
+  color: var(--button_color);
   text-decoration: none;
 }
