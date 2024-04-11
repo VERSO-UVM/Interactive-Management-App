@@ -1,6 +1,15 @@
+/* Color Variables */
+:root {
+  --button_color: #091876;
+  --outline: black;
+  --text: #091876;
+  --main_background: 	#F0F0F0;
+  --white: whitesmoke;
+}
+
 /* "Getting Started" title */
 h1 {
-    color: #6707A4;
+    color: var(--button_color);
     padding-top: 5%;
     text-align: center;
 }
@@ -30,12 +39,12 @@ h1 {
 .loadContainer {
   grid-area: loadContainer;
   border-style: solid;
-  border-color: #6707A4;
+  border-color: var(--button_color);
   height: 400px;
   width: 70%;
   justify-self: center;
   margin: 0;
-  background-color: #E0BBF7;
+  background-color: var(--main_background); 
   border-radius: 4px;
 }
 
@@ -43,19 +52,19 @@ h1 {
 .exportContainer {
   grid-area: exportContainer;
   border-style: solid;
-  border-color: #6707A4;
+  border-color: var(--button_color);
   height: 400px;
   width: 70%;
   justify-self: center;
   margin: 0;
-  background-color: #E0BBF7;
+  background-color: var(--main_background);
   border-radius: 4px;
 }
 
 /* Positioning for "Load" and "Export" titles */
 .shared-style {
   text-align: left;
-  color: #6707A4;
+  color: var(--button_color);
   max-width: 100%;
   margin: 0;
   height: 10%;
@@ -93,7 +102,7 @@ h4 {
 
 /* "Go To Factor" button */
 .goToFactor {
-  background-color: #6707A4;
+  background-color: var(--button_color);
   color: whitesmoke;
   text-align: center;
   text-decoration: none;
@@ -106,7 +115,7 @@ h4 {
 
 /* "Go To About" button */
 .goToAbout {
-  background-color: #6707A4;
+  background-color: var(--button_color);
   color: whitesmoke;
   text-align: center;
   text-decoration: none;
@@ -125,7 +134,7 @@ h4 {
 
 /* Styling */
 .loadButton {
-  background-color: #6707A4;
+  background-color: var(--button_color);
   color: whitesmoke;
   font-size: 15px;
   padding-top: 10px;
@@ -142,7 +151,7 @@ h4 {
 /* Hover styling for "Load" buttons */
 .load :hover {
   background-color: white;
-  color: #480373;
+  color: var(--button_color);
   text-decoration: none;
 }
 
@@ -154,7 +163,7 @@ h4 {
 
 /* Styling */
 .exportButton {
-  background-color: #6707A4;
+  background-color: var(--button_color);
   color: whitesmoke;
   font-size: 15px;
   padding-top: 10px;
@@ -171,6 +180,6 @@ h4 {
 /* Hover styling for "Export" buttons */
 .export :hover {
   background-color: white;
-  color: #480373;
+  color: var(--button_color);
   text-decoration: none;
 }
