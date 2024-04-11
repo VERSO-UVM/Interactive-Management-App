@@ -1,6 +1,15 @@
+/* Color Variables */
+:root {
+  --button_color: #091876;
+  --outline: black;
+  --text: #091876;
+  --main_background: 	#F0F0F0;
+  --white: whitesmoke;
+}
+
 /* "Factors" title */
 h1 {
-  color: #6707A4;
+  color: var(--button_color);
   padding-top: 5%;
   text-align: center;
 }
@@ -17,7 +26,7 @@ h1 {
 /* "Factors" positioning (topmost box in grid) */
 .factorPage {
   grid-column: 1 / -1; /* Span across all columns */
-  color: #6707A4;
+  color: var(--button_color);
   text-align: center;
   padding: 5%;
 }
@@ -31,20 +40,20 @@ h1 {
 }
 
 .table th {
-  border: 2px solid #480373;
+  border: 2px solid var(--outline);
   padding: 8px;
   text-align: center;
-  color: whitesmoke;
-  background-color: #6707A4;
+  color: var(--white);
+  background-color: var(--button_color);
   font-size: 18px;
   font-weight: normal;
 }
 
 .table td {
-  border: 2px solid #480373;
+  border: 2px solid var(--outline);
   padding: 8px;
   text-align: left;
-  background-color: #ad68d8;
+  background-color: var(--main_background);
 }
 
 /* Style the form within the .addFactor container */
@@ -52,11 +61,11 @@ h1 {
   padding: 5%;
   padding-top: 2%;
   border-style: solid;
-  border-color: #6707A4;
+  border-color: var(--button_color);
   height: 375px;
   width: 70%;
   margin: auto;
-  background-color: #E0BBF7;
+  background-color: var(--main_background);
   border-radius: 4px;
 }
 
@@ -64,8 +73,8 @@ h1 {
 .addFactor input[type="text"] {
   padding: 20px;
   margin-top: 25px; /* Adding some space above inputs */
-  background-color: #ead2f9;
-  border: 2px solid #6707A4;
+  background-color: var(--main_background);
+  border: 2px solid var(--button_color);
   border-radius: 4px;
   text-align: left;
   width: 85%;
@@ -76,15 +85,15 @@ h1 {
 }
 
 .addFactor input[type="text"]::placeholder {
-  color: #6707A4;
+  color: var(--button_color);
   font-size: 15px;
 }
 
 .addFactor input[type="submit"] {
   font-size: 20px;
   padding: 10px;
-  background-color: #6707A4;
-  color: white;
+  background-color: var(--button_color);
+  color: var(--white);
   width: 30%;
   border-radius: 4px;
   margin-top: 40px; /* Adding some space above inputs */
@@ -92,13 +101,13 @@ h1 {
 }
 
 .addFactor input:hover[type="submit"] {
-  background-color: white;
-  color: #480373;
+  background-color: var(--white);
+  color: var(--button_color);
   text-decoration: none;
 }
 
 .addFactor h4 {
-  color: #6707A4;
+  color: var(--button_color);
   margin: 0;
   font-size: 24px;
   font-weight: bold;
@@ -116,8 +125,8 @@ h1 {
 
 /* "Go To Participants" button */
 .goToParticipant {
-  background-color: #6707A4;
-  color: whitesmoke;
+  background-color: var(--button_color);
+  color: var(--white);
   text-align: center;
   text-decoration: none;
   padding-top: 0.5%;
@@ -130,8 +139,8 @@ h1 {
 .open-button {
   font-size: 20px;
   padding: 10px;
-  background-color: #6707A4;
-  color: white;
+  background-color: var(--button_color);
+  color: var(--white);
   width: 10%;
   border-radius: 4px;
   margin-top: 40px;
