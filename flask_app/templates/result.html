@@ -1,5 +1,5 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block styles %}
   {{ super() }}
@@ -7,10 +7,8 @@
 {% endblock %}
 
 {% block title %}
-Result Page  {# Sets the title of the page to "Factor Page" #}
+Result Page
 {% endblock %}
-
-<link rel="stylesheet" href="result.css">
 
 {% block content %}
 <div class="grid-container">

@@ -1,5 +1,8 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block styles %}
   {{ super() }}
@@ -7,7 +10,8 @@
 {% endblock %}
 
 {% block title %}
-  ISM Home  {# Sets the title of the page to "ISM Home" #}
+  ISM Home
+  {# Sets the title of the page to "ISM Home" #}
 {% endblock %}
 
 <link rel="stylesheet" href="index.css">
@@ -15,7 +19,8 @@
 {% block content %}
   <div class="grid-container">
       <div class="gettingStarted">
-        <h1 class="pt-5 pb-2">Getting Started</h1>  {# Heading for the page #}
+        <h1 class="pt-5 pb-2">Getting Started</h1>
+        {# Heading for the page #}
         <p class="welcome" style="font-size:20px;text-align:center"> Welome to the ISM app. 
           This is an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants to 
           produce a flow diagram that helps a group of people solve a collective problem. 
@@ -109,4 +114,41 @@
       }
   }
   </script>
+
+  /**
+ * Triggers the file input element to open the file selection dialog.
+ * @param {string} type - The type of data to upload.
+ */
+function triggerFileInput(type) {
+    var fileInput = document.getElementById('fileInput');
+    fileInput.setAttribute('data-type', type); // Set the type of data to upload
+    fileInput.click();
+}
+
+/**
+ * Uploads the selected file to the server.
+ * @param {string} dataType - The type of data being uploaded.
+ */
+function uploadFile(dataType) {
+    var fileInput = document.getElementById('fileInput');
+    if (fileInput.files.length > 0) {
+        var formData = new FormData();
+        formData.append('csv_upload', fileInput.files[0]);
+        formData.append('data_type', dataType); // Include the data type in the FormData
+
+        fetch('/upload_csv', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Handle success or redirect
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+</script>
 {% endblock %}
