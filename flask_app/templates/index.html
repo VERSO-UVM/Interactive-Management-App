@@ -27,7 +27,9 @@
           This app takes in a list of factors identified by research participants that affect a specific problem. 
           It will then work with participants to figure out the relationships between factors (things that impact their ability to act). 
           An algorithm will then determine which factors should be addressed first, second, and so on in order for the group to meet their goals.
-          Click on the About Page to learn more. </p>
+          Click on the About Page to learn more.</p>
+          
+        <p><a href="about"><button class="goToAbout">Go To About</button></a></p>
       </div>
   <!-- Load section -->
   <div class="loadContainer">
@@ -84,6 +86,35 @@
 
 
 <script>
+  function triggerFileInput(type) {
+      var fileInput = document.getElementById('fileInput');
+      fileInput.setAttribute('data-type', type); // Set the type of data to upload
+      fileInput.click();
+  }
+  
+  function uploadFile(dataType) {
+      var fileInput = document.getElementById('fileInput');
+      if(fileInput.files.length > 0) {
+          var formData = new FormData();
+          formData.append('csv_upload', fileInput.files[0]);
+          formData.append('data_type', dataType); // Include the data type in the FormData
+  
+          fetch('/upload_csv', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              // Handle success or redirect
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      }
+  }
+  </script>
+
   /**
  * Triggers the file input element to open the file selection dialog.
  * @param {string} type - The type of data to upload.
