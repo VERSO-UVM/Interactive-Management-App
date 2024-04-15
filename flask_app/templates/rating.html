@@ -23,9 +23,9 @@ Ratings Page
           
           <p>Participant:</p>
           <p id="partID">{{person.id}}</p>
-          <p id="resBtnHere"></p>
-          <p id="resBtnHere2"></p>
-          <p id="resBtnHere3"></p>
+          <p>Does the first factor affect the second factor</p>
+          <p id="fLeading"></p>
+          <p id="fFollowing"></p>
         </div>
           <form id="myform">
             <input type="radio" name="responseYN" value=1 >Yes</input>
@@ -50,43 +50,47 @@ Ratings Page
 </div>
 
 <script>
+  // Gets the participant ID and start a counter for the factors
   var p_id = document.getElementById("partID").innerHTML;
   var index=1;
 
+  //Loads factors from the start
   window.onload=function() {
     $.get('/getInfoLeading/'+p_id+'/'+index,
       function(x) {
-          $("#resBtnHere").html(x);
+          $("#fLeading").html(x);
           $.get('/getInfoFollowing/'+p_id+'/'+index,
             function(x) {
-              $("#resBtnHere2").html(x);
+              $("#fFollowing").html(x);
               index+=1;
             });
         });
   };
 
+  //Updates the ratings table as the user inputs new rating
   document.getElementById("submit").addEventListener("click", updateRating);
   function updateRating() {
     var rating = document.querySelector('input[name="responseYN"]:checked').value;
     $.get('/update_rating/'+p_id+'/'+(index-1)+'/'+rating,
       function(x) {
-        $("#resBtnHere3").html(rating.value);
       }
     );
   }
 
+  //Allows the user to go through the factors either by skipping or by submitting new ratings
   document.getElementById("skip").addEventListener("click", submitButton);
   document.getElementById("submit").addEventListener("click", submitButton);
 
   function submitButton() {
+    //Calls functins to get information on factors based on index
     $.get('/getInfoLeading/'+p_id+'/'+index,
       function(x) {
         if(x!='-1') {
-          $("#resBtnHere").html(x);
+          $("#fLeading").html(x);
           $.get('/getInfoFollowing/'+p_id+'/'+index,
             function(x) {
               if(x!='-1') {
-                $("#resBtnHere2").html(x);
+                $("#fFollowing").html(x);
                 index+=1;
               }
             }
