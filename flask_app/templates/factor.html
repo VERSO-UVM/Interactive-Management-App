@@ -1,5 +1,8 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block styles %}
   {{ super() }}
@@ -7,7 +10,8 @@
 {% endblock %}
 
 {% block title %}
-Factor Page  {# Sets the title of the page to "Factor Page" #}
+Factor Page
+{# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
 <link rel="stylesheet" href="factor.css">
@@ -15,9 +19,10 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% block content %}
 <div class="grid-container">
   <div class="factorPage">
-      <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
+      <h1 class="pt-5 pb-2">Factors</h1>
+      {# Heading for the factor page #}
   </div>
-<div class="table">
+  <div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
         <!-- Table row for header-->
@@ -30,7 +35,6 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
        
         {% for i in factor %}
       <tr>
-
           <td class="f_box">{{ i.title }}</td>
           <td class="f_box">{{ i.votes }}</td>
           <!-- Send to edit with id -->

@@ -1,18 +1,22 @@
+{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
 
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block title %}
-Participants Page  {# Sets the title of the page to "Participants Page" #}
+Participants Page
+{# Sets the title of the page to "Participants Page" #}
 {% endblock %}
-
 
 {% block content %}
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
-            <h1 class="pt-5 pb-2">Participants Page</h1>  {# Heading for the page #}
-            <p class="pt-5">{{ message }}</p>  {# Paragraph with a strong message variable #}
+            <h1 class="pt-5 pb-2">Participants Page</h1>
+            {# Heading for the page #}
+            <p class="pt-5">{{ message }}</p>
+            {# Paragraph with a strong message variable #}
         </div>
     </div>
 </div>
@@ -22,18 +26,22 @@ Participants Page  {# Sets the title of the page to "Participants Page" #}
    
     <label for="f_name">First Name</label>
     <input type="text" name="f_name" value="{{person.f_name}}"><br>
+    {# Input field for the participant's first name #}
 
     <label for="l_name">Last Name</label>
     <input type="text" name="l_name" value="{{person.l_name}}"><br>
+    {# Input field for the participant's last name #}
 
     <label for="email">Email</label>
     <input type="text" name="email" value="{{person.email}}"><br>
+    {# Input field for the participant's email #}
 
     <label for="telephone">Telephone</label>
     <input type="text" name="telephone" value="{{person.telephone}}"><br>
+    {# Input field for the participant's telephone number #}
 
     <button type="submit">Save</button>
+    {# Submit button to save the changes #}
 </form>
-
 
 {% endblock %}

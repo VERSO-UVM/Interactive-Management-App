@@ -14,12 +14,25 @@ from flask_app.lib.dTypes.Factor import Factor
 from flask_app.lib.dTypes.Participant import Participant 
 __DATABASE_CONNECTION = initialize_database_connection()
 
+# TODO COMMENTS ABOVE EACH FUNCTION
 
+# frequency essentially correlates to 'votes'. 
 def insert_factor(id: str,
                        title: str,
                        description: str,
                        votes: int,
                       ) -> bool:
+    """
+    Inserts a factor into the database with provided details.
+
+    Args:
+        id (str): Unique identifier for the factor.
+        title (str): Title of the factor.
+        frequency (int, optional): Frequency or votes associated with the factor. Defaults to None.
+
+    Returns:
+        bool: True if insertion is successful, False otherwise.
+    """
 
     insert: FactorTBL
 
@@ -65,6 +78,19 @@ def insert_participant(id: str,
                        email: str,
                        telephone: str) -> bool:
 
+    """
+    Inserts a participant into the database with provided details.
+
+    Args:
+        id (str): Unique identifier for the participant.
+        f_name (str): First name of the participant.
+        l_name (str): Last name of the participant.
+        email (str): Email address of the participant.
+        telephone (str): Telephone number of the participant.
+
+    Returns:
+        bool: True if insertion is successful, False otherwise.
+    """
     insert: ParticipantTBL
 
     try:
@@ -104,7 +130,21 @@ def insert_participant(id: str,
 
     return False
 
-def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : str):
+
+def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
+    """
+    Inserts a rating into the database with provided details.
+    
+    Args:
+        id (float): Unique identifier for the rating.
+        factor_leading (Factor): Factor leading in the comparison.
+        factor_following (Factor): Factor following in the comparison.
+        rating (float): Rating value.
+        participant_id (float): Identifier of the participant associated with the rating.
+
+    Returns:
+        bool: True if insertion is successful, False otherwise.
+    """
     
     insert : RatingsTBL
 
@@ -143,9 +183,20 @@ def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, 
         
     return False
 
-
-   
+  
 def insert_result(id:float,factor_leading : str, factor_following : str, weight : float):
+    """
+    Inserts a result into the database with provided details. 
+
+    Args:
+        id (float): Unique identifier for the result.
+        factor_leading (str): Leading factor in the comparison.
+        factor_following (str): Following factor in the comparison.
+        weight (float): Weight or rating value.
+
+    Returns:
+        bool: True if insertion is successful, False otherwise.
+    """
 
     insert : ResultsTBL
 
@@ -184,9 +235,26 @@ def insert_result(id:float,factor_leading : str, factor_following : str, weight 
     return False
 
 def fetch(tbl):
+    """
+    Fetches all entries from a specified table in the database.
+
+    Args:
+        tbl: Table name.
+
+    Returns:
+        List: List of fetched entries.
+    """
     return __DATABASE_CONNECTION.execute(select(tbl)).fetchall()
 
+
+
 def calculate_average_rating():
+    """
+    Calculates the average rating for all factor comparisons and inserts the results into the database.
+
+    Returns:
+        List: List of calculated results.
+    """
     from sqlalchemy.sql import func
 
     # Construct the query to calculate average rating
@@ -222,7 +290,15 @@ def calculate_average_rating():
     
 
 ##Participant Functions
+
+
 def search_participant():
+    """
+    Searches for all participants in the database.
+
+    Returns:
+        List: List of participants found.
+    """
     try:
         participants = __DATABASE_CONNECTION.query(ParticipantTBL).all()
         return participants
@@ -231,7 +307,17 @@ def search_participant():
         return []
     
 
+
 def search_specific(id):
+    """
+    Searches for a specific participant by ID in the database.
+
+    Args:
+        id: Identifier of the participant to search for.
+
+    Returns:
+        ParticipantTBL: Participant object found.
+    """
     try:
        person=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
        return person
@@ -241,7 +327,21 @@ def search_specific(id):
         return []
 
 
+# 
 def edit_participant(id,fi_name,la_name,p_email,p_telephone):
+    """
+    Edits details of a participant in the database. 
+
+    Args:
+        id: Identifier of the participant to edit.
+        fi_name: New first name.
+        la_name: New last name.
+        p_email: New email.
+        p_telephone: New telephone number.
+
+    Returns:
+        bool: True if editing is successful, False otherwise.
+    """
     person=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
     try:
         if person:
@@ -266,12 +366,26 @@ def edit_participant(id,fi_name,la_name,p_email,p_telephone):
         return False
     
 
+
 def idSetter():
-        person=__DATABASE_CONNECTION.query(ParticipantTBL).count()
-        return person
+    """
+    Counts the total number of participants in the database.
+
+    Returns:
+        int: Total number of participants.
+    """
+    person=__DATABASE_CONNECTION.query(ParticipantTBL).count()
+    return person
+
 
 
 def delete_participants(id):
+   """
+   Deletes a participant from the database by ID.
+
+    Args:
+        id: Identifier of the participant to delete.
+    """
    part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
    try:
        __DATABASE_CONNECTION.delete(part)
@@ -279,11 +393,25 @@ def delete_participants(id):
    except:
        print("Could not delete participant")
 #############################Factor Functions ###################
+
 def f_id_Setter():
-        factor=__DATABASE_CONNECTION.query(FactorTBL).count() + 1
-        return factor
+    """
+    Generates a unique ID for a new factor entry.
+
+    Returns:
+        int: Unique ID for the new factor entry.
+    """
+    factor=__DATABASE_CONNECTION.query(FactorTBL).count() + 1
+    return factor
+
 
 def get_all_factors():
+    """
+    Retrieves all factors stored in the database.
+
+    Returns:
+        List: List of all factors.
+    """
     try:
         factors = __DATABASE_CONNECTION.query(FactorTBL).all()
         return factors
@@ -306,9 +434,36 @@ def descendingOrder():
         return factors
     except Exception as e:
         print(f"Error getting all factors: {e}")
+        return []
+    
+def ascendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes).all()
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []    
+    
+def descendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes.desc()).all()
+
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
         return []        
 
+
 def search_specific_factor(id):
+    """
+    Searches for a specific factor by ID in the database.
+
+    Args:
+        id: Identifier of the factor to search for.
+
+    Returns:
+        FactorTBL: Factor object found.
+    """
     try:
        factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
        return factor
@@ -318,7 +473,14 @@ def search_specific_factor(id):
         return []
 
 
+
 def delete_factor(id):
+   """
+   Deletes a factor from the database by ID.
+
+    Args:
+        id: Identifier of the factor to delete.
+    """
    factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
    try:
        __DATABASE_CONNECTION.delete(factor)
@@ -327,7 +489,21 @@ def delete_factor(id):
        print("Could not delete factor")
 
 
+
 def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
+    """
+    Edits details of a factor in the database.
+
+    Args:
+        id: Identifier of the factor to edit.
+        fact_title: New title.
+        fact_label: New label.
+        fact_description: New description.
+        fact_votes: New votes or frequency.
+
+    Returns:
+        bool: True if editing is successful, False otherwise.
+    """
     factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
     try:
         if factor:
@@ -359,20 +535,61 @@ def get_factor_list(list1):
     return factors
 
 ############Rating functions#####################################
+
 def get_rating_by_id(id):
+    """
+    Retrieves ratings associated with a specific participant by ID.
+
+    Args:
+        id: Identifier of the participant.
+
+    Returns:
+        List: List of ratings associated with the participant.
+    """
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
     return ratings
 
 
+
 def get_total_rating():
+    """
+    Retrieves total count of ratings stored in the database.
+
+    Returns:
+        int: Total count of ratings.
+    """
     rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
     return rating_count
 
+
+
 def specific_id(id):
+    """
+    Searches for a specific rating by ID in the database.
+
+    Args:
+        id: Identifier of the rating to search for.
+
+    Returns:
+        RatingsTBL: Rating object found.
+    """
     rating=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==id).first()
     return rating
 
+
+
 def update_rating(person_id,rating,index):
+    """
+    Updates a rating associated with a participant in the database.
+    
+    Args:
+        person_id: Identifier of the participant.
+        rating: New rating value.
+        index: Index of the rating to update.
+
+    Returns:
+        bool: True if updating is successful, False otherwise.
+    """
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
     try:
         if ratings:
@@ -399,7 +616,8 @@ def update_rating(person_id,rating,index):
         print(f"Error editing factort: {e}")
         return False
 
-    
+
+ # Deletes all entries from all tables in the database.   
 def delete_everything():
     everything=__DATABASE_CONNECTION.query(RatingsTBL).all()
     for i in everything:
@@ -426,6 +644,12 @@ def delete_everything():
 
 
 def delete_rating(p_id):
+    """
+    Deletes ratings associated with a specific participant by ID.
+
+    Args:
+        p_id: Identifier of the participant.
+    """
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==p_id).all()
     for rating in ratings:
         __DATABASE_CONNECTION.delete(rating)
@@ -435,8 +659,18 @@ def delete_rating(p_id):
         
 
 #############################################Results Function#######################
-##Calculation function for the results 
+
 def calculations(r_id):
+    """
+    Calculates results based on ratings for a specific participant and inserts them into the database.
+
+    Args:
+        r_id: Identifier of the participant.
+
+    Returns:
+        List: List of calculated results.
+    """
+
     everything=__DATABASE_CONNECTION.query(ResultsTBL).all()
     for i in everything:
         __DATABASE_CONNECTION.delete(i)
@@ -460,11 +694,32 @@ def calculations(r_id):
 
 
 def search_specific_result(r_id):
+    """
+    Searches for a specific result by ID in the database.
+
+    Args:
+        r_id: Identifier of the result to search for.
+
+    Returns:
+        ResultsTBL: Result object found.
+    """
+
     result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
     return result
 
 
 def edit_result(r_id,weight):
+    """
+    Edits details of a result in the database.
+    
+    Args:
+        r_id: Identifier of the result to edit.
+        weight: New weight or rating value.
+
+    Returns:
+        bool: True if editing is successful, False otherwise.
+    """
+
     result=__DATABASE_CONNECTION.query(ResultsTBL).filter(ResultsTBL.id==r_id).first()
 
     try:

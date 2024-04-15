@@ -1,5 +1,11 @@
- body {
-    background-color: #fbf9fc;
+/* Color Variables */
+:root {
+    --text: #091876;
+    --white: whitesmoke;
+  }
+
+body {
+    background-color: var(--white);
     padding: unset;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -13,42 +19,10 @@
     margin: 0;
     padding-top: 7%;
     padding-left: 35%;
-    text-align: center;
+    text-align: left;
     grid-template-rows: auto;
 }
 
-/* header css start */
-
-header {
-    background-color: wheat;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    display: grid;
-    align-items: center;
-    box-shadow: 0 0 25px 0 black;
-}
-header * {
-    display: inline;
-}
-
-header li {
-    margin: 20px;
-}
-
-header li a {
-    color: rgb(243, 241, 242);
-    text-decoration: none;
-}
-
-/* header css end */
-.pTable
-{
-    border: 1px solid black;
-}
-.pTable, .room
-{
-    border: 1px solid black;
+p {
+    color: var(--text);
 }

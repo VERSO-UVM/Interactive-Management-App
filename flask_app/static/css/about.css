@@ -1,3 +1,53 @@
-p {
-  width: 100%;
+/* Color Variables */
+:root {
+    --button_color: #091876;
+    --outline: black;
+    --text: #091876;
+    --main_background: 	#F0F0F0;
+    --white: whitesmoke;
 }
+
+/* "About Page" title */
+h1 {
+    color: var(--button_color);
+    padding-top: 5%;
+    text-align: center;
+    font-family: 'Bradley Hand', cursive;
+}
+
+h2 {
+    color: var(--button_color);
+    text-align: center;
+    font-family: 'Bradley Hand', cursive;
+    text-align: left;
+}
+
+p {
+    padding-top: 1%;
+    font-family: 'Bradley Hand', cursive;
+    text-align: left;
+    font-size: 18px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    font-family: 'Bradley Hand', cursive;
+    padding-bottom: 3%;
+    justify-self: left;
+    padding: 5%;
+  }
+
+  .usingPage, .participantPage, .factorPage, 
+  .ratingPage, .resultPage{
+  /*NEW ADDITION FOR STYLING*/
+  border-style: solid;
+  border-color: var(--button_color);
+  width: 95%;
+  padding: 2%;
+  justify-self: center;
+  margin: 0;
+  background-color: var(--main_background);
+  border-radius: 4px;
+  }

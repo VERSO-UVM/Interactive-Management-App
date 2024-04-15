@@ -1,25 +1,29 @@
-{% block doc -%}
+{% block doc %}
 <!DOCTYPE html>
 <html{% block html_attribs %}{% endblock html_attribs %}>
-  {%- block html %}
+  {% block html %}
 
   <head>
-    {%- block head %}
-    <title>{% block title %}{{title|default}}{% endblock title %}</title>  {# Sets the title of the page using a block that can be overridden #}
+    {% block head %}
+    <title>{% block title %}{{title|default}}{% endblock title %}</title>
+    {# Sets the title of the page using a block that can be overridden #}
 
-    {%- block metas %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  {# Sets viewport meta tag for responsive design #}
-    {%- endblock metas %}
+    {% block metas %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# Sets viewport meta tag for responsive design #}
+    {% endblock metas %}
 
-    {%- block styles %}
-    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">  {# Sets the favicon for the page #}
+    {% block styles %}
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
+    {# Sets the favicon for the page #}
     <!-- Bootstrap -->
-    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">  {# Links to Bootstrap CSS file #}
-    <link rel="stylesheet" href="/static/css/style.css?version={{ now }}">  {# Links to a style CSS file with a dynamic version #}
+    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    {# Links to Bootstrap CSS file #}
+    <link rel="stylesheet" href="/static/css/style.css?version={{ now }}">
+    {# Links to a style CSS file with a dynamic version #}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
-    {%- endblock styles %}
-    {%- endblock head %}
-
+    {% endblock styles %}
+    {% endblock head %}
   </head>
 
   <header>
@@ -33,12 +37,12 @@
         <li><a href="{{ url_for('result') }}"> Results</a></li>
         <li><a href="{{ url_for('about') }}"> About</a></li>
       </ul>
-    </nav>  {# Navigation links outside the main content block #}
-
-  </header>   
+    </nav>
+    {# Navigation links outside the main content block #}
+  </header>
 
   <body{% block body_attribs %}{% endblock body_attribs %}>
-    {% block body -%}
+    {% block body %}
     {% block navbar %}
     <header>
       <nav>
@@ -51,24 +55,23 @@
           <li><a href="{{ url_for('result') }}"> Results</a></li>
           <li><a href="{{ url_for('about') }}"> About</a></li>
         </ul>
-      </nav>  {# Navigation links outside the main content block #}
-  
-    </header>  
-    {%- endblock navbar %}  {# Empty block for the navbar, to be overridden in child templates #}
-    {% block content -%}
-    {%- endblock content %}  {# Empty block for the main content, to be overridden in child templates #}
+      </nav>
+      {# Navigation links outside the main content block #}
+    </header>
+    {%- endblock navbar %}
+    {% block content %}{%- endblock content %}
+    {# Empty block for the main content, to be overridden in child templates #}
 
     {% block scripts %}
-    <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>  {# Links to jQuery script from Bootstrap CDN #}
-    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>  {# Links to Bootstrap JS file from CDN #}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  {# Links to an older version of jQuery from Google CDN #}
-    {%- endblock scripts %}
+    <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+    {# Links to jQuery script from Bootstrap CDN #}
+    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
+    {# Links to Bootstrap JS file from CDN #}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    {# Links to an older version of jQuery from Google CDN #}
+    {% endblock scripts %}
     {%- endblock body %}
-  
-
-
-    </body>
-    {%- endblock html %}
-
-    </html>
-    {% endblock doc -%}
+  </body>
+  {% endblock html %}
+</html>
+{% endblock doc %}

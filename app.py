@@ -406,7 +406,7 @@ def upload_csv():
                 data = [x.strip() for x in data]
 
                 # Process and insert factor data
-                database_access.insert_factor(id=data[0], title=data[1])
+                database_access.insert_factor(id=data[0], title=data[1], frequency=[2])
             return redirect(url_for('factor'))
 
         elif data_type == 'participant':
