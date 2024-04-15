@@ -115,33 +115,42 @@ def delete_factor(id):
 ##Factors subsection picked by user:
 ##Logistic for ascending and descending button
 ###Insert selected factors into rating table with default of zeros
-@app.route('/pick_factors/<num>',methods=['POST','GET'])
-def pick_factors(num):
+@app.route('/middleMan',methods=['POST','GET'])
+def middleMan():
+    if request.method=='POST':
+        p_id=request.form["id"]
+        return redirect (url_for('pick_factors',p_id=p_id,num=-1))
+    else:
+        resultsID=database_access.search_participant()
+        return render_template('ratingMenu.html', resultsID=resultsID)
+                
+@app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
+def pick_factors(p_id,num):
     if request.method=='POST':
         ##Gets factors from user selection
         factors_picked=request.form.getlist('factors')
         factor=database_access.get_factor_list(factors_picked)
 
         ##Deletes previous entries of rating table
-        (database_access.delete_rating(1))
+        (database_access.delete_rating(p_id))
 
-        ##Inserts into rating table with deault 0
+        ##Inserts into rating table with deault 0ic
         combinations = list(itertools.combinations(factor, 2))
-        print(combinations)
+        
         
         id1=1
         id2=2
         for i in range(0,len(combinations)):
-            database_access.insert_rating(id=id1,factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id ="1")
-            database_access.insert_rating(id=id2,factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id ="1")
-            # print(f'{id1}{combinations[i][0]}{combinations[i][1]}')
-            # print(f'{id2}{combinations[i][1]}{combinations[i][0]}')
+            database_access.insert_rating(id=id1,factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
+            database_access.insert_rating(id=id2,factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
+            print(f'{id1}{combinations[i][0]}{combinations[i][1]}')
+            print(f'{id2}{combinations[i][1]}{combinations[i][0]}')
             id1+=2
             id2+=2
 
 
        
-        return render_template("initial_factors.html",factor=factor)
+        return render_template("initial_factors.html",factor=factor,p_id=p_id)
     
     else:
         ##Logic for ascending and descending button
@@ -163,8 +172,7 @@ def pick_factors(num):
 
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
-   print("YIK")
-   print(rating)
+ 
 
    database_access.update_rating(person_id=str(p_id),rating=float(rating),index=int(f_id))
    return rating
@@ -182,7 +190,8 @@ def rating():
 def insert_rating(p_id):
     ##
     factor=database_access.get_rating_by_id(p_id)
-    return render_template('rating.html', factor=factor)
+    person=database_access.search_specific(p_id)
+    return render_template('rating.html', factor=factor,person=person)
 
 
 

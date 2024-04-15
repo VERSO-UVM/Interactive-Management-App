@@ -18,7 +18,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
 
     
-<a  href="{{ url_for('pick_factors',num=1) }}" type="button">Edit</a>
+<a  href="{{ url_for('pick_factors',p_id=1,num=-1) }}" type="button">Edit</a>
 <div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
@@ -38,7 +38,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       </table>
 
       <p>Voting Options</p>
-      <a  href="{{ url_for('insert_rating',p_id=1) }}" type="button">Ratings</a>
+      <a  href="{{ url_for('insert_rating',p_id=p_id) }}" type="button">Ratings</a>
 
 
 </div> 

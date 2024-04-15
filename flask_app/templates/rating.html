@@ -21,6 +21,8 @@ Ratings Page
         <h4>Compare Factors</h4>
         <div class="box">
           
+          <p>Participant:</p>
+          <p id="partID">{{person.id}}</p>
           <p id="resBtnHere"></p>
           <p id="resBtnHere2"></p>
           <p id="resBtnHere3"></p>
@@ -43,19 +45,19 @@ Ratings Page
   </div>
 
   <div class="gTResults-Container">
-    <p><a href="{{ url_for('insert_rating', p_id=-1) }}"><button class="goToMenu">Choose Next Participant</button></a></p>
+    <p><a href="{{ url_for('middleMan') }}"><button class="goToMenu">Choose Next Participant</button></a></p>
   </div>
 </div>
 
 <script>
-  // var p_id = document.getElementById("attempt1").innerHTML;
+  var p_id = document.getElementById("partID").innerHTML;
   var index=1;
 
   window.onload=function() {
-    $.get('/getInfoLeading/'+1+'/'+index,
+    $.get('/getInfoLeading/'+p_id+'/'+index,
       function(x) {
           $("#resBtnHere").html(x);
-          $.get('/getInfoFollowing/'+1+'/'+index,
+          $.get('/getInfoFollowing/'+p_id+'/'+index,
             function(x) {
               $("#resBtnHere2").html(x);
               index+=1;
@@ -66,7 +68,7 @@ Ratings Page
   document.getElementById("submit").addEventListener("click", updateRating);
   function updateRating() {
     var rating = document.querySelector('input[name="responseYN"]:checked').value;
-    $.get('/update_rating/'+"1"+'/'+(index-1)+'/'+rating,
+    $.get('/update_rating/'+p_id+'/'+(index-1)+'/'+rating,
       function(x) {
         $("#resBtnHere3").html(rating.value);
       }
@@ -77,11 +79,11 @@ Ratings Page
   document.getElementById("submit").addEventListener("click", submitButton);
 
   function submitButton() {
-    $.get('/getInfoLeading/'+1+'/'+index,
+    $.get('/getInfoLeading/'+p_id+'/'+index,
       function(x) {
         if(x!='-1') {
           $("#resBtnHere").html(x);
-          $.get('/getInfoFollowing/'+1+'/'+index,
+          $.get('/getInfoFollowing/'+p_id+'/'+index,
             function(x) {
               if(x!='-1') {
                 $("#resBtnHere2").html(x);
