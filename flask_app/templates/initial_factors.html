@@ -1,0 +1,48 @@
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+{% endblock %}
+
+{% block title %}
+Factor Page  {# Sets the title of the page to "Factor Page" #}
+{% endblock %}
+
+<link rel="stylesheet" href="factor.css">
+
+{% block content %}
+<div class="grid-container">
+  <div class="factorPage">
+      <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
+
+    
+<a  href="{{ url_for('pick_factors',p_id=1,num=-1) }}" type="button">Edit</a>
+<div class="table">
+      <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+          <th>Factor</th>  
+          <th>Frquency</th>       
+        </tr>
+       
+        {% for i in factor %}
+      <tr>
+          <td class="f_box">{{ i.title }}</td>
+          <td class="f_box">{{ i.votes }}</td>
+          <!-- Send to edit with id -->
+      </tr>
+      {% endfor %}
+      </table>
+
+      <p>Voting Options</p>
+      <a  href="{{ url_for('insert_rating',p_id=p_id) }}" type="button">Ratings</a>
+
+
+</div> 
+
+{% endblock %}
+
+

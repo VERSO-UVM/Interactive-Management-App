@@ -43,10 +43,11 @@ def edit_factor(id):
    
     if request.method == 'POST':
         title=request.form["f_title"]
-        label=request.form["f_label"]
         description=request.form["f_description"]
         votes=request.form["f_votes"]
-        
+        label="NA"
+
+
         try:
             
             database_access.edit_factors(id,title,label,description,votes)
@@ -60,6 +61,7 @@ def edit_factor(id):
         return render_template('edit_factor.html',factors=factors)
 
 
+
 # Define route for deleting a factor
 @app.route('/delete_factor/<id>')
 def remove_factor(id):
@@ -67,13 +69,22 @@ def remove_factor(id):
     return redirect(url_for('factor'))
 
 # Define route for the factor page
-@app.route('/factor',methods=['POST','GET'])
-def factor():
+@app.route('/factor/<num>',methods=['POST','GET'])
+def factor(num):
 
     ##Getting all the current factors
-    factor=database_access.get_all_factors()
-    print(factor)
+    if num=='-1':
+        factor=database_access.get_all_factors()
+       
+    elif num=='1':
+        factor=database_access.ascendingOrder()
+       
+    elif num=='2':
+        factor=database_access.descendingOrder()
+    
     return render_template('factor.html',factor=factor)
+
+
 
 
 ###Inserting new factors
@@ -84,14 +95,15 @@ def insert_factor():
 
         # ##Get from the form
         title=request.form["f_title"]
-        # label=request.form["f_label"]
-        # description=request.form["f_description"]
+        ##Checks what happens if this empty
+        description=request.form["f_description"]
+        votes=request.form["f_votes"]
         
         id=(database_access.f_id_Setter())
       
 
-        database_access.insert_factor(id=id,title=title, frequency=frequency)
-        return redirect (url_for('factor'))
+        database_access.insert_factor(id=id,title=title,description=description,votes=votes)
+        return redirect (url_for('factor',num=-1))
      else:
         return render_template("insert_factor.html")
     
@@ -100,8 +112,70 @@ def delete_factor(id):
     database_access.delete_factor(id)
     return redirect (url_for('factor'))
 
+##Factors subsection picked by user:
+##Logistic for ascending and descending button
+###Insert selected factors into rating table with default of zeros
+@app.route('/middleMan',methods=['POST','GET'])
+def middleMan():
+    if request.method=='POST':
+        p_id=request.form["id"]
+        return redirect (url_for('pick_factors',p_id=p_id,num=-1))
+    else:
+        resultsID=database_access.search_participant()
+        return render_template('ratingMenu.html', resultsID=resultsID)
+                
+@app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
+def pick_factors(p_id,num):
+    if request.method=='POST':
+        ##Gets factors from user selection
+        factors_picked=request.form.getlist('factors')
+        factor=database_access.get_factor_list(factors_picked)
+
+        ##Deletes previous entries of rating table
+        (database_access.delete_rating(p_id))
+
+        ##Inserts into rating table with deault 0ic
+        combinations = list(itertools.combinations(factor, 2))
+        
+        
+        id1=1
+        id2=2
+        for i in range(0,len(combinations)):
+            database_access.insert_rating(id=id1,factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
+            database_access.insert_rating(id=id2,factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
+            print(f'{id1}{combinations[i][0]}{combinations[i][1]}')
+            print(f'{id2}{combinations[i][1]}{combinations[i][0]}')
+            id1+=2
+            id2+=2
+
+
+       
+        return render_template("initial_factors.html",factor=factor,p_id=p_id)
+    
+    else:
+        ##Logic for ascending and descending button
+        if num=='-1':
+            factor=database_access.get_all_factors()
+       
+        elif num=='1':
+            factor=database_access.ascendingOrder()
+       
+        elif num=='2':
+            factor=database_access.descendingOrder()
+       
+        return render_template("pickFactor.html",factor=factor)
+
+
       
 #################################Rating##################################################################
+
+
+@app.route('/update_rating/<p_id>/<f_id>/<rating>')
+def update_rating(p_id,f_id,rating):
+ 
+
+   database_access.update_rating(person_id=str(p_id),rating=float(rating),index=int(f_id))
+   return rating
 
 # Define route for the factor page
 @app.route('/rating')
@@ -110,41 +184,42 @@ def rating():
     return render_template('rating.html', resultsID=resultsID)
 
 
+###Updates the rating table with user selections
 
-####UPDATES RATING
-@app.route('/update_rating/<p_id>/<f_id>/<rating>')
-def update_rating(p_id,f_id,rating):
-   database_access.update_rating(person_id=p_id,rating=float(rating),index=int(f_id))
-   return rating
-
-
-##INSERTS RATING
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
-    if(p_id!='-1'):
-        checking=database_access.get_rating_by_id(p_id)
-        if(len(checking)==0):
-            ##Deletes all exisiting ratings combinations for the user
-            ##database_access.delete_everything()
-            # print(database_access.get_total_rating())
-            # print(len(database_access.get_total_rating()))
-            
-            # # (database_access.delete_rating(p_id))
-            r_id=(len(database_access.get_total_rating()))+1
+    ##
+    factor=database_access.get_rating_by_id(p_id)
+    person=database_access.search_specific(p_id)
+    return render_template('rating.html', factor=factor,person=person)
 
-            # ###Creates all the combinations of the factors with default value of 0
-            factors=database_access.get_all_factors()
-            # all combinations of the factors
-            combinations = list(itertools.combinations(factors, 2))
-            for i in range(0,len(combinations)):
-                database_access.insert_result(id=(i+1),factor_leading=combinations[i][0],factor_following=combinations[i][1],weight=0)
+
+
+##/*STUFFFFFfFFFFFFFFFFFF*/
+    # if(p_id!='-1'):
+    #     checking=database_access.get_rating_by_id(p_id)
+    #     if(len(checking)==0):
+    #         ##Deletes all exisiting ratings combinations for the user
+    #         ##database_access.delete_everything()
+    #         # print(database_access.get_total_rating())
+    #         # print(len(database_access.get_total_rating()))
             
-            print(database_access.get_total_rating())
-            print(len(database_access.get_total_rating()))            
-        return render_template('rating.html',p_id=p_id )
-    else:
-        resultsID=database_access.search_participant()
-        return render_template('ratingMenu.html', resultsID=resultsID)
+    #         # # (database_access.delete_rating(p_id))
+    #         r_id=(len(database_access.get_total_rating()))+1
+
+    #         # ###Creates all the combinations of the factors with default value of 0
+    #         factors=database_access.get_all_factors()
+    #         # all combinations of the factors
+    #         combinations = list(itertools.combinations(factors, 2))
+    #         for i in range(0,len(combinations)):
+    #             database_access.insert_result(id=(i+1),factor_leading=combinations[i][0],factor_following=combinations[i][1],weight=0)
+            
+    #         print(database_access.get_total_rating())
+    #         print(len(database_access.get_total_rating()))            
+    #     return render_template('rating.html',p_id=p_id )
+    # else:
+    #     resultsID=database_access.search_participant()
+    #     return render_template('ratingMenu.html', resultsID=resultsID)
     
 ###Insert for nav bar option
    
@@ -159,12 +234,13 @@ def insert_ratings():
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
  try:
-    result = database_access.get_rating_by_id(p_id)
+    result = database_access.specific_id(f_id)
    
-    results=result[int(f_id)].factor_leading
+    results=result.factor_leading
     resultTitle=database_access.search_specific_factor(results)
     resultsss=resultTitle.title
     print(resultTitle.title)
+    print(f_id)
     return resultsss
  except:
      return "-1"
@@ -173,17 +249,23 @@ def getInfoLeading(p_id,f_id):
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
    try:
-    result = database_access.get_rating_by_id(p_id)
-    results=result[int(f_id)].factor_following
+    result = database_access.specific_id(f_id)
+    results=result.factor_following
 
     resultTitle=database_access.search_specific_factor(results)
     print(resultTitle.title)
     resultsss=resultTitle.title
     return (resultsss)
+    
    except:
        return "-1"
     
- 
+@app.route('/resultInfo',methods=['POST','GET'])
+def resultInfo():
+   factors=database_access.specific_id(1)
+   print(factors)
+   return render_template('about.html')
+   
 
 #####################################Results##############################
 

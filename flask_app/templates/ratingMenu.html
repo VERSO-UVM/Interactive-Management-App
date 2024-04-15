@@ -47,3 +47,21 @@ Ratings Page
         
           <button class="submit" id="submit">Submit</button>
         </form> -->
+         
+
+    <form action="{{ url_for('middleMan') }}" method="post">
+      <select name="id"  id="id" class="selectpicker form-control">
+        {% for i in resultsID %}
+        <option value={{i.id}}>{{i.id}}</option>
+        {% endfor %} 
+     </select>
+
+        <button type="submit">Save</button>
+    </form>
+          
+         
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

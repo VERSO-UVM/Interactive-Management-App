@@ -45,7 +45,7 @@
           </td>
             <td>
               <!-- Send to edit with id -->
-              <a href="{{ url_for('insert_rating', p_id=i.id) }}">Rating</a>
+              <a href="{{ url_for('pick_factors', p_id=i.id,num=-1) }}">Rating</a>
           </td>
         </tr>
         {% endfor %}

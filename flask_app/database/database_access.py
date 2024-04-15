@@ -18,8 +18,9 @@ __DATABASE_CONNECTION = initialize_database_connection()
 
 # frequency essentially correlates to 'votes'. 
 def insert_factor(id: str,
-                    title: str,
-                    frequency: int = None # Its an optional parameter so if no votes are entered the default is 0
+                       title: str,
+                       description: str,
+                       votes: int,
                       ) -> bool:
     """
     Inserts a factor into the database with provided details.
@@ -38,7 +39,8 @@ def insert_factor(id: str,
     try:
         insert = FactorTBL(id=id,
                             title=title,
-                            frequency = frequency
+                            description=description,
+                            votes=votes
                            )
     except AttributeError:
         print(f'ERROR: invalid factor insertion for {title}')
@@ -416,6 +418,40 @@ def get_all_factors():
     except Exception as e:
         print(f"Error getting all factors: {e}")
         return []
+    
+def ascendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes).all()
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []    
+    
+def descendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes.desc()).all()
+
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []
+    
+def ascendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes).all()
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []    
+    
+def descendingOrder():
+    try:
+        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes.desc()).all()
+
+        return factors
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []        
 
 
 def search_specific_factor(id):
@@ -491,7 +527,12 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
         print(f"Error editing factort: {e}")
         return False
 
-    
+def get_factor_list(list1):
+    factors=[]
+    for i in range(0,len(list1)):
+            factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==list1[i]).first()
+            factors.append(factor)
+    return factors
 
 ############Rating functions#####################################
 
@@ -551,7 +592,7 @@ def update_rating(person_id,rating,index):
     """
     ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==person_id).all()
     try:
-        if rating:
+        if ratings:
                 
                 # Updating the rating
                 ratings[index].id = ratings[index].id 
@@ -564,6 +605,8 @@ def update_rating(person_id,rating,index):
                 
                 # Commit the changes to the database
                 __DATABASE_CONNECTION.commit()
+                
+                print(__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.id==ratings[index].id).first())
 
                 return True
         else:
