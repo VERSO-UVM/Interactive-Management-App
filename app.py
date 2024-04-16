@@ -123,9 +123,14 @@ def middleMan():
     else:
         resultsID=database_access.search_participant()
         return render_template('ratingMenu.html', resultsID=resultsID)
-                
+
+
+
+
+
 @app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
 def pick_factors(p_id,num):
+
     if request.method=='POST':
         ##Gets factors from user selection
         factors_picked=request.form.getlist('factors')
