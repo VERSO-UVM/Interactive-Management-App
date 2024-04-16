@@ -69,7 +69,6 @@ h1 {
   border-radius: 4px;
 }
 
-
 .addFactor input[type="text"] {
   padding: 20px;
   margin-top: 25px; /* Adding some space above inputs */
@@ -89,30 +88,36 @@ h1 {
   font-size: 15px;
 }
 
-.addFactor input[type="submit"] {
+.save {
   font-size: 20px;
   padding: 10px;
   background-color: var(--button_color);
   color: var(--white);
-  width: 30%;
+  width: 15%;
   border-radius: 4px;
   margin-top: 40px; /* Adding some space above inputs */
   text-align: center;
 }
 
-.addFactor input:hover[type="submit"] {
+.save:hover {
   background-color: var(--white);
   color: var(--button_color);
   text-decoration: none;
 }
 
-.addFactor h4 {
-  color: var(--button_color);
-  margin: 0;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px; /* Space above the form */
-
+/* Style the form within the .addFactor container */
+.addFact {
+  padding: 5%;
+  padding-top: 2%;
+  border-style: solid;
+  border-color: var(--text);
+  color: var(--text);
+  height: 490px;
+  width: 70%;
+  justify-self: center;
+  margin: auto;
+  background-color: var(--main_background);
+  border-radius: 4px;
 }
 
 .gTP-Container {
@@ -136,6 +141,24 @@ h1 {
   border-radius: 4px;
 }
 
+/* "Go To Ratings" button */
+.goToRating {
+  background-color: var(--button_color);
+  color: var(--white);
+  text-align: center;
+  text-decoration: none;
+  justify-self: end;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}  
+
+.goToRating:hover {
+  background-color: var(--white);
+  color: var(--button_color);
+  text-decoration: none;
+}
+
 .open-button {
   font-size: 20px;
   padding: 10px;
@@ -146,4 +169,32 @@ h1 {
   margin-top: 40px;
   text-align: center;
   justify-self: center;
+}
+
+.inputText, .inputNumber {
+  font-size: 20px;
+  text-align: left;
+  color: var(--text);
+  padding: 20px;                  
+  margin-top: 25px;                 
+  background-color: var(--main_background); 
+  border: 2px solid var(--outline); 
+  border-radius: 4px;             
+  width: 85%;                     
+  box-sizing: border-box; 
+  padding-right: 60px; 
+}
+
+.inputText::placeholder, .inputNumber::placeholder {
+  color: var(--text);     
+  font-size: 18px;           
+}
+
+h4 {
+  color: var(--text);
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px; /* Space above the form */
+
 }

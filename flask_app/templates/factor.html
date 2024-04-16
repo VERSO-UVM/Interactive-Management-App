@@ -4,15 +4,16 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
+{% block title %}
+Factor Page
+{# Sets the title of the page to "Factor Page" #}
+{% endblock %}
+
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
 {% endblock %}
 
-{% block title %}
-Factor Page
-{# Sets the title of the page to "Factor Page" #}
-{% endblock %}
 
 <link rel="stylesheet" href="factor.css">
 
@@ -51,20 +52,22 @@ Factor Page
       {% endfor %}
       </table>
 </div> 
-<p>Add New Factor</p>
+<div class = "addFact">
+<h4>Add New Factor</h4>
 <form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
-  <label for="f_title">Factor Title</label>
-  <input type="text" name="f_title"><br>
-  <label for="f_description">Description</label>
-  <input type="text" name="f_description"><br>
-  <label for="f_votes">Frequency</label>
-  <input type="number" name="f_votes" placeholder=0><br>
+  <label for="f_title"></label>
+  <input type="text" name="f_title" class = "inputText" placeholder="Factor Title"><br>
+  <label for="f_description"></label>
+  <input type="text" name="f_description" class = "inputText" placeholder="Description"><br>
+  <label for="f_votes"></label>
+  <input type="number" name="f_votes" class = "inputNumber" placeholder=0><br>
 
-  <button type="submit">Save</button>
+  <button type="submit" class="save">Save</button>
 </form>
+</div>
 
 <div>
-<a  href="{{ url_for('middleMan') }}" type="button">Go to Rating</a>
+<p><a href="{{ url_for('middleMan') }}"><button class="goToRating">Go to Rating Page</button></a></p>
 </div>
 
 

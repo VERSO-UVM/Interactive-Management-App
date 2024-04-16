@@ -40,7 +40,7 @@ h1 {
   grid-area: loadContainer;
   border-style: solid;
   border-color: var(--button_color);
-  height: 400px;
+  height: 430px;
   width: 70%;
   justify-self: center;
   margin: 0;
@@ -53,7 +53,7 @@ h1 {
   grid-area: exportContainer;
   border-style: solid;
   border-color: var(--button_color);
-  height: 400px;
+  height: 430px;
   width: 70%;
   justify-self: center;
   margin: 0;
@@ -70,6 +70,7 @@ h1 {
   height: 10%;
   padding-top: 30px;
   padding-left: 60px;
+  padding-bottom: 20px;
 }
 
 /* "Load" and "Export" titles */
@@ -81,13 +82,13 @@ h4 {
 
 /* Welcome block text */
 .welcome {
-  text-align: right;
+  text-align: left;
   font-size: 18px;
 }
 
 .selectRegister {
   text-align: center;
-  font-size: 18px;
+  font-size: 20px;
 }
 
 /* container to position "Go To Factor" button */
@@ -96,19 +97,6 @@ h4 {
   justify-self: end;
   padding-top: 5%;
   margin-right: 15%;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-/* "Go To Factor" button */
-.goToFactor {
-  background-color: var(--button_color);
-  color: var(--white);
-  text-align: center;
-  text-decoration: none;
-  padding-top: 0.5%;
-  justify-self: end;
-  font-size: 20px;
   cursor: pointer;
   border-radius: 4px;
 }
@@ -136,7 +124,7 @@ h4 {
 .loadButton {
   background-color: var(--button_color);
   color: var(--white);
-  font-size: 15px;
+  font-size: 18px;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
@@ -165,7 +153,7 @@ h4 {
 .exportButton {
   background-color: var(--button_color);
   color: var(--white);
-  font-size: 15px;
+  font-size: 18px;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 20px;
