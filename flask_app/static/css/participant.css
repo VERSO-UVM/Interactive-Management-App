@@ -56,7 +56,7 @@ h1 {
   background-color: var(--main_background);
 }
 
-  /* Style the form within the .addFactor container */
+  /* Style the form within the .addPart container */
 .addPart {
   padding: 5%;
   padding-top: 2%;
@@ -76,7 +76,7 @@ h1 {
   padding: 20px;
   margin-top: 25px; /* Adding some space above inputs */
   background-color: var(--main_background);
-  border: 2px solid --text;
+  border: 2px solid var(--outline);
   border-radius: 4px;
   text-align: left;
   width: 85%;
@@ -89,7 +89,7 @@ h1 {
 /* Text Color */
 .addPart input[type="text"]::placeholder {
   color: var(--text);
-  font-size: 15px;
+  font-size: 18px;
 }
   
 .addPart input[type="submit"] {
