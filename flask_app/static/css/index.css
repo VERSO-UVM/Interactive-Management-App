@@ -101,19 +101,6 @@ h4 {
   border-radius: 4px;
 }
 
-/* "Go To Factor" button */
-.goToFactor {
-  background-color: var(--button_color);
-  color: var(--white);
-  text-align: center;
-  text-decoration: none;
-  padding-top: 0.3%;
-  justify-self: end;
-  font-size: 20px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
 /* "Go To About" button */
 .goToAbout {
   background-color: var(--button_color);
