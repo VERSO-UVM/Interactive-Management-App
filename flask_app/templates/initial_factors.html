@@ -18,7 +18,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
 
     
-<a  href="{{ url_for('pick_factors',p_id=p_id,num=-1) }}" type="button">Edit</a>
+<a  href="{{ url_for('pick_factors',p_id=p_id,num=-1)}}" type="button">Edit</a>
 
 
 <div class="table">
@@ -34,7 +34,6 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       <tr>
           <td class="f_box">{{ i.title }}</td>
           <td class="f_box">{{ i.votes }}</td>
-          <td class="f_box">Delete</td>
           <!-- Send to edit with id -->
       </tr>
       {% endfor %}
