@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/rating.css') }}">
+{% endblock %}
+
+{% block title %}
+Ratings Page
+{% endblock %}
+
+{% block content %}
+<div class="grid-container">
+  <div class="ratingPage">
+      <h1 class="pt-5 pb-2">Pick your participant id to continue</h1>
+  </div>
+
+  <div class="addRating">
+    <div class="ratingContainer">
+        <h4>Pick an your ID to continue</h4>
+        <div class="box">
+    <form action="{{ url_for('middleMan') }}" method="post">
+      <select name="id"  id="id" class="selectpicker form-control">
+        {% for i in resultsID %}
+        <option value={{i.id}}>{{i.id}}</option>
+        {% endfor %} 
+     </select>
+
+        <button type="submit">Continue</button>
+    </form>
+          
+         
+        </div>
+    </div>
+  </div>
+
+{% endblock %}

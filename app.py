@@ -31,44 +31,11 @@ def index():
     ##database_access.delete_everything()
     return render_template('index.html')
 
-################Factor Functions######################
+#######################Factor Functions##########################
 
-
-@app.route('/edit_factor/<id>', methods=['GET', 'POST'])
-def edit_factor(id):
-  
-    factors = database_access.search_specific_factor(id)
-
-
-   
-    if request.method == 'POST':
-        title=request.form["f_title"]
-        description=request.form["f_description"]
-        votes=request.form["f_votes"]
-        label="NA"
-
-
-        try:
-            
-            database_access.edit_factors(id,title,label,description,votes)
-           
-            return redirect(url_for("factor"))
-        
-        except:
-            return 'There was an issue updating the factorsn information'
-
-    else:
-        return render_template('edit_factor.html',factors=factors)
-
-
-
-# Define route for deleting a factor
-@app.route('/delete_factor/<id>')
-def remove_factor(id):
-    database_access.delete_factor(id)
-    return redirect(url_for('factor'))
-
-# Define route for the factor page
+##Main Factor page
+##Contains logic for acsending and descending button
+##Uses factor.html
 @app.route('/factor/<num>',methods=['POST','GET'])
 def factor(num):
 
@@ -84,10 +51,45 @@ def factor(num):
     
     return render_template('factor.html',factor=factor)
 
+##Edits existing factors
+##utilizes: Edit Factors function from database access
+##Html: edit_factor.html
+@app.route('/edit_factor/<id>', methods=['GET', 'POST'])
+def edit_factor(id):
+  
+    factors = database_access.search_specific_factor(id)
+    if request.method == 'POST':
+        title=request.form["f_title"]
+        description=request.form["f_description"]
+        votes=request.form["f_votes"]
+        try:
+            
+            database_access.edit_factors(id,title,description,votes)
+           
+            return redirect(url_for("factor",num='-1'))
+        
+        except:
+            return 'There was an issue updating the factors information'
+
+    else:
+        return render_template('edit_factor.html',factors=factors)
+
+
+##Deletes existing factor
+##Ultilizes: delete_factor from database acess
+##Redirects to factor main page
+@app.route('/delete_factor/<id>')
+def delete_factor(id):
+    database_access.delete_factor(id)
+    return redirect(url_for('factor',num='-1'))
 
 
 
-###Inserting new factors
+
+###Inserting new factors into factors table
+##Utilizes insert factor from database file
+##Ultizlizes insert_factor.html for the insertion 
+##and redirect to main page once done
 @app.route('/insert_factor',methods=['POST','GET'])
 def insert_factor():
 
@@ -99,33 +101,34 @@ def insert_factor():
         description=request.form["f_description"]
         votes=request.form["f_votes"]
         
-        id=(database_access.f_id_Setter())
-      
-
+        id=(database_access.factor_id_Setter())
         database_access.insert_factor(id=id,title=title,description=description,votes=votes)
         return redirect (url_for('factor',num=-1))
      else:
         return render_template("insert_factor.html")
     
-@app.route('/delete_factor/<id>',methods=['POST','GET'])
-def delete_factor(id):
-    database_access.delete_factor(id)
-    return redirect (url_for('factor'))
 
 ##Factors subsection picked by user:
 ##Logistic for ascending and descending button
-###Insert selected factors into rating table with default of zeros
+##Uses participant_id_select.html 
+##Uses search participant from database acess
 @app.route('/middleMan',methods=['POST','GET'])
 def middleMan():
     if request.method=='POST':
         p_id=request.form["id"]
         return redirect (url_for('pick_factors',p_id=p_id,num=-1))
     else:
-        resultsID=database_access.search_participant()
-        return render_template('ratingMenu.html', resultsID=resultsID)
-                
+        resultsID=database_access.all_participants()
+        return render_template('participant_id_select.html', resultsID=resultsID)
+
+
+
+###Subsection of factors picked by the users
+##Ultizies get_factor_list  from database acess
+###Shows selected_factors to pick factors but shows pick_factor from load
 @app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
 def pick_factors(p_id,num):
+
     if request.method=='POST':
         ##Gets factors from user selection
         factors_picked=request.form.getlist('factors')
@@ -134,7 +137,8 @@ def pick_factors(p_id,num):
         ##Deletes previous entries of rating table
         (database_access.delete_rating(p_id))
 
-        ##Inserts into rating table with deault 0ic
+
+        ##Inserts into rating table with default 0
         combinations = list(itertools.combinations(factor, 2))
         
         
@@ -163,93 +167,60 @@ def pick_factors(p_id,num):
         elif num=='2':
             factor=database_access.descendingOrder()
        
-        return render_template("pickFactor.html",factor=factor)
+        return render_template("pick_factor.html",factor=factor)
 
 
       
 #################################Rating##################################################################
 
-
+##Updates Rating Based on the users response
+###Ultilizies update_rating function from database access
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
- 
-
    database_access.update_rating(person_id=str(p_id),rating=float(rating),index=int(f_id))
    return rating
 
-# Define route for the factor page
-@app.route('/rating')
-def rating():
-    resultsID=database_access.search_participant
-    return render_template('rating.html', resultsID=resultsID)
 
+@app.route('/participant_id_selected',methods=['POST','GET'])
+def participant_id_selected():
+   if request.method=='POST':
+       p_id=request.form["id"]
+       return redirect (url_for('insert_rating',p_id=p_id))
 
-###Updates the rating table with user selections
-
+##Main rating page
+###Used for user rating voting 
+###Get_rating_by_id and search_specific_participant used from databasee caess
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
     ##
     factor=database_access.get_rating_by_id(p_id)
-    person=database_access.search_specific(p_id)
+    person=database_access.search_specific_participant(p_id)
     return render_template('rating.html', factor=factor,person=person)
 
 
-
-##/*STUFFFFFfFFFFFFFFFFFF*/
-    # if(p_id!='-1'):
-    #     checking=database_access.get_rating_by_id(p_id)
-    #     if(len(checking)==0):
-    #         ##Deletes all exisiting ratings combinations for the user
-    #         ##database_access.delete_everything()
-    #         # print(database_access.get_total_rating())
-    #         # print(len(database_access.get_total_rating()))
-            
-    #         # # (database_access.delete_rating(p_id))
-    #         r_id=(len(database_access.get_total_rating()))+1
-
-    #         # ###Creates all the combinations of the factors with default value of 0
-    #         factors=database_access.get_all_factors()
-    #         # all combinations of the factors
-    #         combinations = list(itertools.combinations(factors, 2))
-    #         for i in range(0,len(combinations)):
-    #             database_access.insert_result(id=(i+1),factor_leading=combinations[i][0],factor_following=combinations[i][1],weight=0)
-            
-    #         print(database_access.get_total_rating())
-    #         print(len(database_access.get_total_rating()))            
-    #     return render_template('rating.html',p_id=p_id )
-    # else:
-    #     resultsID=database_access.search_participant()
-    #     return render_template('ratingMenu.html', resultsID=resultsID)
-    
-###Insert for nav bar option
-   
-@app.route('/insert_ratings',methods=['POST','GET'])
-def insert_ratings():
-   if request.method=='POST':
-       p_id=request.form["id"]
-       return redirect (url_for('insert_rating',p_id=p_id))
-       
-
-
+###Used to get factor information for displaying from table
 @app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoLeading(p_id,f_id):
+ 
+ ##Gets information from factor based on the id 
  try:
-    result = database_access.specific_id(f_id)
-   
+    result = database_access.specific_id_factor(f_id)
     results=result.factor_leading
     resultTitle=database_access.search_specific_factor(results)
     resultsss=resultTitle.title
-    print(resultTitle.title)
-    print(f_id)
+
+  
     return resultsss
  except:
      return "-1"
    
- 
+
+###Used to get factor information for displaying from table
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
+    ##Gets information from factor based on the id 
    try:
-    result = database_access.specific_id(f_id)
+    result = database_access.specific_id_factor(f_id)
     results=result.factor_following
 
     resultTitle=database_access.search_specific_factor(results)
@@ -260,9 +231,12 @@ def getInfoFollowing(p_id,f_id):
    except:
        return "-1"
     
+
+
+######USED FOR testing    
 @app.route('/resultInfo',methods=['POST','GET'])
 def resultInfo():
-   factors=database_access.specific_id(1)
+   factors=database_access.specific_id_factor(1)
    print(factors)
    return render_template('about.html')
    
@@ -334,6 +308,11 @@ def about():
 
 
 ##################Participants#############################################
+
+##Main Participant page
+###Also works as the insert participant page
+##Uses participant_id_setter and insert_participant from database acess
+##USes participant.html
 @app.route("/participant",methods=['POST','GET'])
 def participant():
     
@@ -346,19 +325,22 @@ def participant():
         email=request.form["email"]
         telephone=request.form["telephone"]
     
-        id=(database_access.idSetter())+1
+        
+        id=(database_access.participant_id_setter())+1
         
         database_access.insert_participant(id=id,f_name=f_name,l_name=l_name,email=email,telephone=telephone)
         return redirect (url_for('participant'))
     else:
-        part=database_access.search_participant()
+        part=database_access.all_participants()
         return render_template("participant.html",part=part)
-    
 
+
+##Edits existing participant
+##Uses search_specific_participant and edit_participant from databasee acess
 @app.route("/ParticipantEdit/<id>",methods=['POST','GET'])
 def ParticipantEdit(id):
     ##Search for participant
-    person = database_access.search_specific(id)
+    person = database_access.search_specific_participant(id)
 
 
     #Gets the info from the selected student
@@ -378,8 +360,10 @@ def ParticipantEdit(id):
             return 'There was an issue updating the participant information'
 
     else:
-        return render_template('editPart.html',person=person)
-    
+        return render_template('edit_participant.html',person=person)
+
+
+###Deletes existing participant
 @app.route('/delete_participants/<id>',methods=['POST','GET'])
 def delete_participants(id):
     database_access.delete_participants(id)

@@ -247,7 +247,7 @@ def fetch(tbl):
     return __DATABASE_CONNECTION.execute(select(tbl)).fetchall()
 
 
-
+###Will probs be deleting
 def calculate_average_rating():
     """
     Calculates the average rating for all factor comparisons and inserts the results into the database.
@@ -291,8 +291,8 @@ def calculate_average_rating():
 
 ##Participant Functions
 
-
-def search_participant():
+##Used
+def all_participants():
     """
     Searches for all participants in the database.
 
@@ -307,8 +307,8 @@ def search_participant():
         return []
     
 
-
-def search_specific(id):
+###Used
+def search_specific_participant(id):
     """
     Searches for a specific participant by ID in the database.
 
@@ -327,7 +327,7 @@ def search_specific(id):
         return []
 
 
-# 
+# used
 def edit_participant(id,fi_name,la_name,p_email,p_telephone):
     """
     Edits details of a participant in the database. 
@@ -366,8 +366,8 @@ def edit_participant(id,fi_name,la_name,p_email,p_telephone):
         return False
     
 
-
-def idSetter():
+##Used
+def participant_id_setter():
     """
     Counts the total number of participants in the database.
 
@@ -378,7 +378,7 @@ def idSetter():
     return person
 
 
-
+##Used
 def delete_participants(id):
    """
    Deletes a participant from the database by ID.
@@ -394,7 +394,7 @@ def delete_participants(id):
        print("Could not delete participant")
 #############################Factor Functions ###################
 
-def f_id_Setter():
+def factor_id_Setter():
     """
     Generates a unique ID for a new factor entry.
 
@@ -404,7 +404,8 @@ def f_id_Setter():
     factor=__DATABASE_CONNECTION.query(FactorTBL).count() + 1
     return factor
 
-
+###Used
+##USed to get a list of all the factors
 def get_all_factors():
     """
     Retrieves all factors stored in the database.
@@ -419,6 +420,8 @@ def get_all_factors():
         print(f"Error getting all factors: {e}")
         return []
     
+####USED
+###Used for the acsending button    
 def ascendingOrder():
     try:
         factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes).all()
@@ -426,7 +429,8 @@ def ascendingOrder():
     except Exception as e:
         print(f"Error getting all factors: {e}")
         return []    
-    
+
+###Used for the descending button    
 def descendingOrder():
     try:
         factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes.desc()).all()
@@ -436,24 +440,8 @@ def descendingOrder():
         print(f"Error getting all factors: {e}")
         return []
     
-def ascendingOrder():
-    try:
-        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes).all()
-        return factors
-    except Exception as e:
-        print(f"Error getting all factors: {e}")
-        return []    
-    
-def descendingOrder():
-    try:
-        factors = __DATABASE_CONNECTION.query(FactorTBL).order_by(FactorTBL.votes.desc()).all()
-
-        return factors
-    except Exception as e:
-        print(f"Error getting all factors: {e}")
-        return []        
-
-
+###Used
+###Used to get a specific factor based on the ID
 def search_specific_factor(id):
     """
     Searches for a specific factor by ID in the database.
@@ -473,7 +461,7 @@ def search_specific_factor(id):
         return []
 
 
-
+##Used
 def delete_factor(id):
    """
    Deletes a factor from the database by ID.
@@ -489,8 +477,8 @@ def delete_factor(id):
        print("Could not delete factor")
 
 
-
-def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
+###Used
+def edit_factors(id,fact_title,fact_description,fact_votes):
     """
     Edits details of a factor in the database.
 
@@ -510,7 +498,6 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
                 
                 # Update the job title
                 factor.title = fact_title
-                factor.label = fact_label
                 factor.description = fact_description
                 factor.votes = fact_votes
                 factor.id=id
@@ -527,6 +514,7 @@ def edit_factors(id,fact_title,fact_label,fact_description,fact_votes):
         print(f"Error editing factort: {e}")
         return False
 
+###Gets the list of subsection factors based on the selection made by the user
 def get_factor_list(list1):
     factors=[]
     for i in range(0,len(list1)):
@@ -535,7 +523,7 @@ def get_factor_list(list1):
     return factors
 
 ############Rating functions#####################################
-
+###Used
 def get_rating_by_id(id):
     """
     Retrieves ratings associated with a specific participant by ID.
@@ -562,8 +550,8 @@ def get_total_rating():
     return rating_count
 
 
-
-def specific_id(id):
+###Used
+def specific_id_factor(id):
     """
     Searches for a specific rating by ID in the database.
 
@@ -577,7 +565,7 @@ def specific_id(id):
     return rating
 
 
-
+###Used
 def update_rating(person_id,rating,index):
     """
     Updates a rating associated with a participant in the database.

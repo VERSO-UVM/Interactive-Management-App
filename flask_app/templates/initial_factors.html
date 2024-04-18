@@ -15,10 +15,12 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% block content %}
 <div class="grid-container">
   <div class="factorPage">
-      <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
+      <h1 class="pt-5 pb-2">Factors picked</h1>  {# Heading for the factor page #}
 
     
-<a  href="{{ url_for('pick_factors',p_id=1,num=-1) }}" type="button">Edit</a>
+<a  href="{{ url_for('pick_factors',p_id=p_id,num=-1)}}" type="button">Edit</a>
+
+
 <div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
@@ -37,8 +39,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       {% endfor %}
       </table>
 
-      <p>Voting Options</p>
-      <a  href="{{ url_for('insert_rating',p_id=p_id) }}" type="button">Ratings</a>
+      <a  href="{{ url_for('insert_rating',p_id=p_id) }}" type="button">Go to Ratings</a>
 
 
 </div> 
