@@ -14,6 +14,12 @@ h1 {
   text-align: center;
 }
 
+h3{
+  color: var(--text);
+  padding-top: 5%;
+  text-align: center;
+}
+
 /* Setup the grid layout for .grid-container */
 .grid-container {
   display: grid;
