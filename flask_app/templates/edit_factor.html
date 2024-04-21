@@ -9,6 +9,11 @@ Factor Page
 {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_factor.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -33,7 +38,7 @@ Factor Page
     <label for="f_votes">Votes</label>
     <input type="text" name="f_votes" value="{{factors.votes}}"><br>
 
-    <button type="submit">Save</button>
+    <button type="submit" class="save">Save</button>
 </form>
 
 {% endblock %}
