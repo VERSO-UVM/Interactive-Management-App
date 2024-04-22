@@ -454,12 +454,25 @@ def export_data():
 
         for record in data:
             ### TODO: Add logic to handle different data types and parse the tables into comma-separated values
-            csv_writer.writerow(record)
+            for record in data:
+                if data_type == 'factors':
+                    # Assuming the record is a tuple or list with fields 
+                    csv_writer.writerow(record)
+                elif data_type == 'participants':
+                    # Assuming the record is a tuple or list with fields 
+                    csv_writer.writerow(record)
+                elif data_type == 'ratings':
+                    # Assuming the record is a tuple or list with fields
+                    csv_writer.writerow(record)
+                elif data_type == 'results':
+                    # Assuming the record is a tuple or list with fields 
+                    csv_writer.writerow(record)
         
         filename = f"{data_type}.csv"
         return Response(csv_string, mimetype='text/csv', headers={"Content-disposition": f"attachment; filename={filename}"})
     else:
         return "Invalid data type", 400
+
 
 
 
