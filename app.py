@@ -1,5 +1,5 @@
 # Import necessary modules and classes
-from flask import Response, render_template, request, redirect, url_for, session
+from flask import Response, render_template, request, redirect, url_for, session, jsonify
 from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
 import flask_app.database.database_access as database_access
@@ -14,6 +14,7 @@ from flask_app.database.database_access import insert_factor, insert_participant
 from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL
 import csv
 import itertools
+import json
 # Configure Flask application
 app = configure_flask_application()
 # login_manager = LoginManager()
@@ -238,43 +239,37 @@ def getInfoFollowing(p_id,f_id):
 def resultInfo():
    factors=database_access.specific_id_factor(1)
    print(factors)
-   return render_template('about.html')
+   return render_template('result.html')
    
 
 #####################################Results##############################
 
 @app.route('/result')
 def result():
-    database_access.calculate_average_rating()
-
-    results = database_access.fetch(ResultsTBL)
-
-    # create an undirected graph
-
-    G = nx.Graph()
-
-    for result in results:
-        data = str(result[0])
-        # split by comma
-        data = data.split(",")
-        # only keep data to the right of colons
-        data = [x.split(":")[1] for x in data]
-        G.add_edge(data[0], data[1], weight=data[2])
-
-    fig = plt.figure(figsize=(10, 10))
-    pos = nx.layout.spectral_layout(G)
-    nx.draw(G, pos, with_labels=True, node_size=500, edge_color='black', width=0.75, font_size=8)
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=nx.get_edge_attributes(G, 'weight'), font_color='red', font_size=10)
-    now = str(dt.datetime.now())
-    filepath = f'flask_app/static/plots/graph_{now}.png'
-    plt.savefig(filepath)
-    plt.close()
 
     # Before rendering the template in your result route
-    relative_filepath = os.path.join('plots', f"graph_{now}.png")
-    return render_template('result.html', filepath=relative_filepath)
+    
+    return render_template('result.html')
 
+@app.route('/get_results')
+def get_results():
+    test_data = [
+  ["FactorID", "Factor", "Description", "Frequency"],
+  [1, "Plan on meeting once or twice every week for a year", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
+  [2, "Develop plans", "kjfhvbwebvowervwer", 11],
+  [3, "Assign leaders", "werv", 15],
+  [4, "Vote on new plans", "wervwervwervwerv", 14],
+  [5, "Carry out new systems", "wervewrvwerfvfwverfvwetgyrh", 7],
+  [6, "Check up on exisiting structure", "hreyhergdfvwefvwefv", 8],
+  [7, "Monitor timeline", "werfvtehgrghet", 4],
+  [8, "Finalize work within systems", "wefgewtghtwehgtwergh", 5],
+  [9, "Decide on implementation", "wergewgethtwrh", 3]
+  
+]
 
+    return jsonify(test_data)
+
+""" JAY STUFF 
 @app.route('/results/<r_id>/<edit>')
 def results(r_id,edit):
     if(edit=='1'):
@@ -300,6 +295,7 @@ def edit_result(r_id,):
             return 'There was an issue updating the result weight'
     else:
         return render_template('edit_Result.html',result=result)
+"""
 
 # Define route for the about page
 @app.route('/about')
