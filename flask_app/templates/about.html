@@ -18,44 +18,30 @@ About Page
 {% block content %}
 <div class="grid-container">
       <h1 class="pt-5 pb-2">About</h1>  {# Heading for the about page #}
-      <!-- The entire page will instruct the users ( in non technical language) how to use the website. 
-      Overview of all pages and what they do --> 
-      <!--First Section (Instruct the user on how to use the website) ---> 
+      <!--First Section (Purpose) ---> 
       <div class="usingPage">
-      <h2> Using This page</h2>
-      <p> To begin, the user will navigate to the home page where you will asked to upload your dataset from local storage.
-         After that the user can move on towards the factors page. The factors page will have a table holding the data that was imported. The same 
-         table allows the user to edit any of their factors that they choose. After the user is satisfied will the data they may move onto the next page,
-         the participant page. The participant page performs similarly to the factors page. The difference is the addition of a button that sends the user to
-         the rating page for each participant. The user then fills in the necessary information regarding the participants' rating. Once that is finalized, the
-         user can move onto the final results page. The page will present the user's flowchart the algorithm produced. There is an option to download the flowchart
-         allowing the user to do what they please with the chart. 
-        </p>
+      <h2> Purpose </h2>
+      <p>In essence, this initiative endeavors to holistically support African entrepreneurs in their pursuit of sustainable business growth, community enrichment, and technological proficiency. 
+        By nurturing entrepreneurial talent and fostering an ecosystem conducive to innovation and progress, we aspire to contribute meaningfully to the advancement and prosperity of African societies.</p>
       </div>
-      <!-- Second Section (overview of each page & what they do) ---> 
+      <!-- Second Section (ISM Explain like im 5) ---> 
       <div class="participantPage">
-      <h2> Participant Page </h2>
-      <p> The participant page is where the entire process begins. Users will be asked to enter the participants that they would like to be 
-        considered.<br>A participant is essentially someone who plays a role in the team. </p>
+      <h2>Interpretive Structural Method Explained</h2>
+      <p>The Interpretive Structural Method (ISM) is like a tool you can use to figure out how all the different parts of the system are connected and which ones are the most important.
+        First, you start by listing out all the important things in the system, like teachers, students, classes, exams, and so on. These are called "elements."
+        Then, you compare each of these things to each other to see how they relate. For example, you might ask questions like, "Is having good teachers more important than having enough textbooks?" This helps you figure out which things affect each other the most.
+        Once you've done all these comparisons, you make a sort of map called a digraph. It's like a picture with circles for each thing in the system and arrows showing how they're connected. If something has a big influence on another thing, there's a strong arrow pointing to it.
+        Next, you organize all the things in the map into groups based on how they're connected. This helps you see which things are really important and which ones are more like details.
+        Finally, you look at the map and see what it tells you. You can see which parts of the system are most important, which ones might need fixing, and how everything fits together. </p>
       </div>
 
-      <div class="factorPage">
-      <h2> Factor Page </h2>
-      <p> The factor page is the second step in utilizing the site. The page is where the user will be asked to enter all 
-        the factors (variables) that they would like to be considered in their flowchart. They will also be asked which factors are and aren't 
-      related to each other. </p>
-      </div>
+      <!-- Second Section (Sponsers) ---> 
+      <div class="participantPage">
+        <h2>Partners</h2>
+        <p>The project, initiated in September 2023 and sponsored by Dr. John Meluso, involves partnerships with the University of Arizona, the University of Galway (Ireland), and the Open Source Collective Africa.
+          This application was built using Flask, SQLAlchemy, and CSS
+        </p>
+        </div>
 
-      <div class="ratingPage">
-      <h2> Ratings Page</h2>
-      <p> The rating page is the third step in the website. This page is where the user can input a participant's rating.<br>A participants rating is the importance that 
-        the participant presents in the team. 
-      </p>
-      </div>
-
-      <div class="resultPage">
-      <h2> Results page</h2>
-      <p> The results page presents the flowchart that the algorithm produced using all the given information.</p>
-      </div>
 </div>
 {% endblock %}
