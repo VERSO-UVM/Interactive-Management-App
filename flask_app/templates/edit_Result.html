@@ -9,6 +9,11 @@ Edit Result
 {# Sets the title of the page to "Edit Result" #}
 {% endblock %}
 
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
@@ -25,7 +30,7 @@ Edit Result
     <label for="weight">Weight:</label>
     <input type="text" name="weight" value="{{result.rating}}"><br>
     {# Input field for the weight of the result #}
-    <button type="submit">Save</button>
+    <button type="submit" class="save">Save</button>
     {# Submit button to save the changes #}
 </form>
 

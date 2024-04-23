@@ -1,5 +1,5 @@
 # Import necessary modules and classes
-from flask import Response, render_template, request, redirect, url_for, session
+from flask import Response, render_template, request, redirect, url_for, session, request
 from flask_app.config import configure_flask_application
 from flask_app.lib.dTypes.User import User
 import flask_app.database.database_access as database_access
@@ -429,16 +429,16 @@ def upload_csv():
 @app.route('/export_data', methods=['POST'])
 def export_data():
     data_type = request.form.get('data_type')
-    
+
     # Define headers for each data type
     headers = {
-        "factors": ["ID", "Title", "Label", "Description", "Votes"],
+        "factors": ["ID", "Title", "Description", "Votes"],
         "participants": ["ID", "First Name", "Last Name", "Email", "Telephone"],
         "ratings": ["ID", "Factor Leading", "Factor Following", "Rating", "Participant ID"],
-        "results": ["ID", "Factor Leading", "Factor Following", "Weight"]
+        "results": ["ID", "Factor Leading", "Factor Following", "Rating"]
     }
 
-    # Map data_type to the corresponding database table and fetch data
+    # Map data_type to the corresponding database table
     table_map = {
         "factors": FactorTBL,
         "participants": ParticipantTBL,
@@ -447,115 +447,27 @@ def export_data():
     }
 
     if data_type in table_map:
-        data = database_access.fetch(table_map[data_type])  # Assuming fetch is implemented to return all records for the table
+        # Fetch data from the database using the fetch function
+        data = database_access.fetch(table_map[data_type])
+
+        # Create a CSV string
         csv_string = io.StringIO()
         csv_writer = csv.writer(csv_string)
         csv_writer.writerow(headers[data_type])
 
         for record in data:
-            ### TODO: Add logic to handle different data types and parse the tables into comma-separated values
+            # Write each record to the CSV file
             csv_writer.writerow(record)
-        
+
+        # Prepare response with CSV content
         filename = f"{data_type}.csv"
-        return Response(csv_string, mimetype='text/csv', headers={"Content-disposition": f"attachment; filename={filename}"})
+        return Response(csv_string.getvalue(), mimetype='text/csv', headers={"Content-disposition": f"attachment; filename={filename}"})
     else:
         return "Invalid data type", 400
-
-
-
+    
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001, threaded=False)
-
-
-# Define a user loader function for login management
-# @login_manager.user_loader
-# def load_user(user_id):
-#    return User.get_id(user_id)
-
-# # Define route for the index page
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-
-#     message: str
-
-#     # Check if 'username' is in the session
-#     if 'username' in session:
-#         message = f'Welcome {session["username"]}!'
-#     else:
-#         message = 'Welcome! Register to get started.'
-
-#     return render_template('index.html', message=message)
-
-# # Define route for the login page
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form: LoginForm = LoginForm()
-
-#     if form.validate_on_submit():
-#         print("VALID")
-#         if dispatch.login(form.name.data):
-#             return redirect(url_for('index'))
-#         return redirect(url_for('two_factor_registration'))
-
-#     return render_template('register.html', form=form)
-
-# # Define route for the registration page
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form: RegisterForm = RegisterForm()
-
-#     if form.validate_on_submit():
-#         if dispatch.register_user(form.to_dict()):
-#             session.modified = True
-#             return redirect(url_for('index'))
-
-#     return render_template('register.html', form=form)
-# Define a user loader function for login management
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#    return User.get_id(user_id)
-
-# # Define route for the index page
-# @app.route('/', methods=['GET', 'POST'])
-# def index():
-
-#     message: str
-
-#     # Check if 'username' is in the session
-#     if 'username' in session:
-#         message = f'Welcome {session["username"]}!'
-#     else:
-#         message = 'Welcome! Register to get started.'
-
-#     return render_template('index.html', message=message)
-
-# # Define route for the login page
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form: LoginForm = LoginForm()
-
-#     if form.validate_on_submit():
-#         print("VALID")
-#         if dispatch.login(form.name.data):
-#             return redirect(url_for('index'))
-#         return redirect(url_for('two_factor_registration'))
-
-#     return render_template('register.html', form=form)
-
-# # Define route for the registration page
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     form: RegisterForm = RegisterForm()
-
-#     if form.validate_on_submit():
-#         if dispatch.register_user(form.to_dict()):
-#             session.modified = True
-#             return redirect(url_for('index'))
-
-#     return render_template('register.html', form=form)
-# Define a user loader function for login management
 
 # @login_manager.user_loader
 def load_user(user_id):
