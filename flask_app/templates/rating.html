@@ -22,13 +22,16 @@ Ratings Page
         <div class="box">
           
           <div id="part">
-          <p>Participant:</p>
-          <p id="partID" class="ID">{{person.id}}</p>
-          </div>
+          <p class="IDs">Participant:</p>
+          <p id="partID" class="IDs">{{person.id}}</p>
+          
 
-          <p>Does the first factor affect the second factor</p>
-          <p id="fLeading"></p>
-          <p id="fFollowing"></p>
+         <p class="guide">Does the this factor affect that factor</p>
+        </div>
+          <p id="fLeading" class="factors"></p>
+          <img src="{{ url_for('static', filename='Arrow.png') }}" alt="Influence arrow" height="300" width="200">
+          <p id="fFollowing" class="factors"></p>
+          
         </div>
           <form id="myform">
             <input type="radio" name="responseYN" value=1 >Yes</input>
