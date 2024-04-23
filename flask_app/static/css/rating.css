@@ -138,13 +138,13 @@
 
   
 
-  .ID {
+  /* .ID {
     font-size: 20px;
     font-family: 'sans serif';
     color: var(--text);
     font-weight: bold;
     text-align: left;
-  }
+  } */
   
   .addRating h4 {
     color: var(--button_color);
@@ -178,6 +178,7 @@
   
   /* "Go To Participants" button */
   .goToResult {
+    float: right;
     background-color: var(--button_color);
     color: var(--white);
     text-align: center;
@@ -189,6 +190,14 @@
     border-radius: 4px;
   }  
 
+  .gTResults-Container-left {
+    float: left;
+  }
+
+  .gTResults-Container-right {
+    float: right;
+  }
+
     
   /* "Go To Participants" button */
   .goToMenu {
@@ -196,9 +205,16 @@
     color: var(--white);
     text-align: left;
     text-decoration: none;
-    padding-top: 0.5%;
     justify-self: end;
     font-size: 20px;
     cursor: pointer;
     border-radius: 4px;
   }  
+
+  .factors
+  {
+    display: inline;
+    font-size: 20px;
+   
+  }
+
