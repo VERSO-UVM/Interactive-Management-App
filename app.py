@@ -129,6 +129,25 @@ def middleMan():
 ###Shows selected_factors to pick factors but shows pick_factor from load
 @app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
 def pick_factors(p_id,num):
+    def structure(factors):
+    
+        # Initialize a matrix to store user choices
+        matrix_size = len(factors)
+        user_choices = [[0] * matrix_size for _ in range(matrix_size)]
+        # Iterate through all ordered pairs
+        for i in range(matrix_size):
+            for j in range(i + 1, matrix_size):
+                print(f"Do {factors[i]} and {factors[j]} support each other?")
+                choice = input("Enter 'Yes' or 'No': ")
+                if choice.lower() == 'yes':
+                    user_choices[i][j] = 1
+        # Calculate structured relationships based on user choices
+        structured_factors = []
+        for i in range(matrix_size):
+            for j in range(i + 1, matrix_size):
+                if user_choices[i][j] == 1:
+                    structured_factors.append((factors[i], factors[j]))
+        return structured_factors
 
     if request.method=='POST':
         ##Gets factors from user selection
@@ -257,13 +276,8 @@ def get_results():
   ["FactorID", "Factor", "Description", "Frequency"],
   [1, "Plan on meeting once or twice every week for a year", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
   [2, "Develop plans", "kjfhvbwebvowervwer", 11],
-  [3, "Assign leaders", "werv", 15],
-  [4, "Vote on new plans", "wervwervwervwerv", 14],
-  [5, "Carry out new systems", "wervewrvwerfvfwverfvwetgyrh", 7],
-  [6, "Check up on exisiting structure", "hreyhergdfvwefvwefv", 8],
-  [7, "Monitor timeline", "werfvtehgrghet", 4],
-  [8, "Finalize work within systems", "wefgewtghtwehgtwergh", 5],
-  [9, "Decide on implementation", "wergewgethtwrh", 3]
+  [3, "Assign leaders", "werv", 15]
+  
   
 ]
 

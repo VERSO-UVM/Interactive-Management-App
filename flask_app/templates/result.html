@@ -35,13 +35,16 @@ Result Page
 document.addEventListener('DOMContentLoaded', function() {
     fetchDataAndUpdateGraph();
 });
-
+var graphData = { nodes: [], links: [], standaloneLinks: [] };
 function fetchDataAndUpdateGraph() {
     fetch('/get_results')
         .then(response => response.json())
         .then(data => {
             var formattedData = transformData(data);
-            initGraph(formattedData);
+            graphData.nodes = formattedData.nodes;
+            graphData.links = formattedData.links;
+            graphData.standaloneLinks = [];  // Reset or set it here
+            initGraph(graphData);
         })
         .catch(error => console.error('Error fetching data:', error));
 }
@@ -72,7 +75,11 @@ function transformData(data) {
 
 
 
+
+
 function initGraph(data) {
+
+var selectedLinkIndex = null;  // This will store the reference to the selected link
 
 
 var zoom = d3.zoom()
@@ -140,16 +147,30 @@ var nodeGroup = container.append("g")
 
 // Define links within the link group
 var link = linkGroup.selectAll(".link")
-    .data(data.links)
-    .enter().append("line")
-    .attr("class", "link")
-    .attr("x1", d => data.nodes[d.source].x)
-    .attr("y1", d => data.nodes[d.source].y)
-    .attr("x2", d => data.nodes[d.target].x)
-    .attr("y2", d => data.nodes[d.target].y)
-    .attr("stroke", "black")
-    .attr("marker-end", "url(#arrowhead)")
-    .style("stroke-width", "5px");
+        .data(data.links)
+        .enter().append("line")
+        .attr("class", "link")
+        .attr("x1", d => data.nodes[d.source].x)
+        .attr("y1", d => data.nodes[d.source].y)
+        .attr("x2", d => data.nodes[d.target].x)
+        .attr("y2", d => data.nodes[d.target].y)
+        .attr("stroke", "black")
+        .attr("marker-end", "url(#arrowhead)")
+        .style("stroke-width", "5px")
+        .on("click", function(d, i) { // Pass the index (second argument) here
+            selectedLinkIndex = i;
+            d3.selectAll('.link').style('stroke', 'black'); // Reset color of all links
+            d3.select(this).style('stroke', 'red'); // Highlight selected link
+        })
+        .call(d3.drag()
+    .on("start", dragStartedLink)
+        .on("drag", draggedLink)
+        .on("end", dragEndedLink))
+          // Prevent the click from affecting other elements
+    .on("click", function(d) {
+        selectedLink = this;
+        d3.event.stopPropagation()});
+
 
 
 // Then define nodes
@@ -189,7 +210,6 @@ nodes.append("text")
 updateSVGDimensions();
 
 
-
 function zoomed() {
     container.attr("transform", d3.event.transform);
 }
@@ -200,21 +220,24 @@ function dragstarted(d) {
 
 // Assuming the links and nodes are already set up correctly
 function dragged(d) {
-    // Update node position
+    // Update the position of the node being dragged
     d.x = d3.event.x;
     d.y = d3.event.y;
 
-    // Move the node visually
+    // Move the node visually by updating its transform attribute
     d3.select(this).attr("transform", `translate(${d.x}, ${d.y})`);
 
-    // Update links connected to this node
+    // Update the links connected to this node
+    // For each link, update the appropriate x1, y1, x2, y2 attributes depending on whether
+    // this node is the source or the target of the link.
     link
-        .filter(l => l.source === d || l.target === d) // Select only links connected to this node
+        .filter(function(l) { return l.source === d || l.target === d; })
         .attr("x1", l => l.source.x)
         .attr("y1", l => l.source.y)
         .attr("x2", l => l.target.x)
         .attr("y2", l => l.target.y);
 }
+
 
 
 function dragended(d) {
@@ -282,40 +305,56 @@ function dragEndedLink(d) {
     this.draggedPoint = null; // Clear the dragged point reference
 }
 
+function deleteSelectedLink() {
+    if (selectedLinkIndex !== null) {
+        // Remove the selected link from the data array
+        data.links.splice(selectedLinkIndex, 1);
+
+        // Update the links in the visualization
+        var linkUpdate = linkGroup.selectAll(".link")
+            .data(data.links);
+
+        // Remove the old link
+        linkUpdate.exit().remove();
+
+        // Reset any style changes
+        linkUpdate.style('stroke', 'black');
+
+        // Reset the selectedLinkIndex to null
+        selectedLinkIndex = null;
+    } else {
+        alert("No link selected!");
+    }
 }
 
 function addLink() {
-    standaloneLink = [];
-    var newStandaloneLink = { x1: 50, y1: 100, x2: 150, y2: 100, id: Date.now() }; // Unique ID for each link
-    data.standaloneLinks.push(newStandaloneLink);
+    var newLink = {
+        x1: 50, y1: 100, x2: 150, y2: 100,
+        id: Date.now()  // Unique identifier for the link
+    };
+    
+    graphData.standaloneLinks.push(newLink);
     updateStandaloneLinks();
 }
 
 function updateStandaloneLinks() {
-    var standaloneLink = linkGroup.selectAll(".standaloneLink")
-        .data(data.standaloneLinks, function(d) { return d.id; });
+    var linkSelection = d3.select('#graph').selectAll(".standaloneLink")
+        .data(graphData.standaloneLinks, d => d.id);
 
-    var newLink = standaloneLink.enter().append("line")
-        .attr("class", "standaloneLink")
-        .attr("x1", function(d) { return d.x1; })
-        .attr("y1", function(d) { return d.y1; })
-        .attr("x2", function(d) { return d.x2; })
-        .attr("y2", function(d) { return d.y2; })
+    linkSelection.enter()
+        .append("line")
+        .classed("standaloneLink", true)
+        .attr("x1", d => d.x1)
+        .attr("y1", d => d.y1)
+        .attr("x2", d => d.x2)
+        .attr("y2", d => d.y2)
         .attr("stroke", "black")
         .attr("marker-end", "url(#arrowhead)")
-        .style("stroke-width", "5px")
-        .on("click", function() {
-            selectedLink = this;
-            d3.event.stopPropagation();
-        });
+        .style("stroke-width", "5px");
 
-    newLink.call(d3.drag()
-        .on("start", addLinkDragStart)
-        .on("drag", addDraggedLink)
-        .on("end", addDragEndedLink));
-
-    standaloneLink.exit().remove();
+    linkSelection.exit().remove();
 }
+
 
 
 function addLinkDragStart(d) {
@@ -369,6 +408,36 @@ function addDragEndedLink(d) {
     this.draggedPoint = null; // Clear the dragged point reference
 }
 
+}
+
+
+
+function updateGraph() {
+    var svg = d3.select('svg');
+    var linkSelection = svg.select(".link-group")
+        .selectAll("line")
+        .data(graphData.links);
+
+    linkSelection.enter().append("line")
+        .classed("link", true)
+        .attr("x1", d => graphData.nodes[d.source].x)
+        .attr("y1", d => graphData.nodes[d.source].y)
+        .attr("x2", d => graphData.nodes[d.target].x)
+        .attr("y2", d => graphData.nodes[d.target].y)
+        .attr("stroke", "black")
+        .attr("marker-end", "url(#arrowhead)");
+
+    linkSelection.exit().remove();
+
+    // Update existing links
+    linkSelection.attr("x1", d => graphData.nodes[d.source].x)
+        .attr("y1", d => graphData.nodes[d.source].y)
+        .attr("x2", d => graphData.nodes[d.target].x)
+        .attr("y2", d => graphData.nodes[d.target].y);
+}
+
+
+
 function saveImage() {
     var svgElement = document.querySelector('#graph svg');
     if (!svgElement) {
@@ -379,24 +448,30 @@ function saveImage() {
     var serializer = new XMLSerializer();
     var svgString = serializer.serializeToString(svgElement);
 
-    var scale = 3;  // High-resolution image
-    var width = scale * svgElement.getBoundingClientRect().width;
-    var height = scale * svgElement.getBoundingClientRect().height;
+    // Setup scale and dimensions correctly
+    var scale = 3; // Increase or adjust this scale factor as needed for higher resolution
+    var svgWidth = svgElement.viewBox.baseVal.width || svgElement.width.baseVal.value;
+    var svgHeight = svgElement.viewBox.baseVal.height || svgElement.height.baseVal.value;
 
+    var width = scale * svgWidth;
+    var height = scale * svgHeight;
+
+    // Prepare an image to render
     var img = new Image();
     img.onload = function() {
         var canvas = document.createElement('canvas');
         canvas.width = width;
         canvas.height = height;
         var ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#FFFFFF';
+        ctx.fillStyle = '#FFFFFF'; // Ensure background is white
         ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(img, 0, 0, width, height);
+        ctx.drawImage(img, 0, 0, width, height); // Draw the image at the correct size
 
+        // Convert canvas to PNG URL and trigger download
         var pngUrl = canvas.toDataURL("image/png");
         var downloadLink = document.createElement('a');
         downloadLink.href = pngUrl;
-        downloadLink.download = 'ismviz.png';
+        downloadLink.download = 'ismviz.png'; // Name the file
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
@@ -404,6 +479,7 @@ function saveImage() {
 
     img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
 }
+
 </script>
 
 {% endblock %}
