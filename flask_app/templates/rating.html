@@ -24,37 +24,39 @@ Ratings Page
         <h4>Compare Factors</h4>
         <div class="box">
           
-          <div id="part">
-          <p class="IDs">Participant:</p>
-          <p id="partID" class="IDs">{{person.id}}</p>
-          
+            <div id="part">
+              <p class="IDs">Participant ID:</p>
+              <p id="partID" class="IDs">{{person.id}}</p>
+            </div>
 
-         <p class="guide">Does the this factor affect that factor</p>
-        </div>
-          <p id="fLeading" class="factors"></p>
-          <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="300" width="200">
-          <p id="fFollowing" class="factors"></p>
-          
-        </div>
-          <form id="myform">
-            <input type="radio" name="responseYN" value=1 >Yes</input>
-            <input type="radio" name="responseYN" value=0 >No</input>
-         </form>
-        <div class="buttons">
-          <!-- Button to Skip-->
-          <button class="skip" id="skip">Skip</button>
-          <!-- Button to submit -->
-          <button class="submit" id="submit">Submit</button>
+            <p class="guide">Does the top factor affect the bottom factor?</p>
+            </div>
+              <p id="fLeading" class="factors"></p>
+              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="300" width="200">
+              <p id="fFollowing" class="factors"></p>
+            </div>
+
+            <form id="myform">
+              <input type="radio" name="responseYN" value=1 >Yes</input>
+              <input type="radio" name="responseYN" value=0 >No</input>
+            </form>
+
+            <div class="buttons">
+              <!-- Button to Skip-->
+              <button class="skip" id="skip">Skip</button>
+              <!-- Button to submit -->
+              <button class="submit" id="submit">Submit</button>
+            </div>
         </div>
     </div>
   </div>
 
-  <div class="gTResults-Container">
-    <p><a href="{{ url_for('resultInfo') }}"><button class="goToResult">Go To Final Results</button></a></p>
+  <div class="gTResults-Container-left"> <!-- Modified class name -->
+    <p><a href="{{ url_for('middleMan') }}"><button class="goToMenu">Choose Next Participant</button></a></p>
   </div>
 
-  <div class="gTResults-Container">
-    <p><a href="{{ url_for('middleMan') }}"><button class="goToMenu">Choose Next Participant</button></a></p>
+  <div class="gTResults-Container-right"> <!-- Modified class name -->
+    <p><a href="{{ url_for('resultInfo') }}"><button class="goToResult">Go To Final Results</button></a></p>
   </div>
 </div>
 
