@@ -1,0 +1,158 @@
+Code Guide:
+
+This website is made up on three sqlalchemy tables:
+
+-Participant
+  +Id
+  +First Name
+  +Last Name
+  +Email
+  +Telephone
+-Factors
+  +Id
+  +Title
+  +Description
+  +Votes
+-Rating
+    +Id
+    +Leading Factor
+    +Following Factor
+    +Rating
+    +Participant Id
+-Result
+    +ID
+    +Leading Factor
+    +Factor Following
+    +Rating
+
+Note: These tables have been created on Alchemy.py. Any changes to this table require deleting the database cache for the database to be updated. The cache is called "data.sqlite3"
+
+
+
+
+--------------------------------#Database_access.py#----------------------------------------
+All function related to querying from these table are created in the python file "database_access.py". This is done by creating a function which returns what you need
+
+Example Query:
+ rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
+
+Example Function:
+def get_rating_by_id(id):
+    """
+    Retrieves ratings associated with a specific participant by ID.
+
+    Args:
+        id: Identifier of the participant.
+
+    Returns:
+        List: List of ratings associated with the participant.
+    """
+    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
+    return ratings
+
+**Any function that modifies the database such as deleting any entreies need to have a __DATABASE_CONNECTION.commit()
+
+Example:
+def delete_factor(id):
+   """
+   Deletes a factor from the database by ID.
+
+    Args:
+        id: Identifier of the factor to delete.
+    """
+   factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
+   try:
+       __DATABASE_CONNECTION.delete(factor)
+       __DATABASE_CONNECTION.commit()
+   except:
+       print("Could not delete factor")
+
+
+
+
+-----------------------------------------#App.py#----------------------------
+This file contains all the routes for the website. A route is essentially the path the website takes for each task
+
+Example:
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    ##database_access.delete_everything()
+    return render_template('index.html')
+
+@app.route('/factor/<num>',methods=['POST','GET'])
+def factor(num):
+
+    ##Getting all the current factors
+    if num=='-1':
+        factor=database_access.get_all_factors()
+       
+    elif num=='1':
+        factor=database_access.ascendingOrder()
+       
+    elif num=='2':
+        factor=database_access.descendingOrder()
+    
+    return render_template('factor.html',factor=factor)
+
+
+*While essentially python functions they need to contain @app.route('/') on top. 
+If functions from database_access need to be utilized the format is database_access.function name
+Any function call from data_access is returned as 1d list.
+
+
+---------------------------------#templates#---------------------------------------------
+Any html file need to be in the template folder
+
+
+
+
+Example HTML File
+
+{% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+{% endblock %}
+
+{% block title %}
+Factor Page  {# Sets the title of the page to "Factor Page" #}
+{% endblock %}
+
+<link rel="stylesheet" href="factor.css">
+
+{% block content %}
+<div class="grid-container">
+  <div class="factorPage">
+      <h1 class="pt-5 pb-2">Factors picked</h1>  {# Heading for the factor page #}
+      <h3>Final factors! Click Edit to go back and reselect factors. Click go to ratings to proceed.</h3>
+<a  href="{{ url_for('pick_factors',p_id=p_id,num=-1)}}" type="button">Edit</a>
+
+
+<div class="table">
+      <!-- Table of factors that include: ID, Order, Factor -->
+      <table style="width: 100%">
+        <!-- Table row for header-->
+        <tr>
+          <th>Factor</th>  
+          <th>Frquency</th>       
+        </tr>
+       
+        {% for i in factor %}
+      <tr>
+          <td class="f_box">{{ i.title }}</td>
+          <td class="f_box">{{ i.votes }}</td>
+          <!-- Send to edit with id -->
+      </tr>
+      {% endfor %}
+      </table>
+
+      <a  href="{{ url_for('insert_rating',p_id=p_id) }}" type="button">Go to Ratings</a>
+
+
+</div> 
+
+{% endblock %}
+
+
