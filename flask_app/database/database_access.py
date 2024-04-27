@@ -17,10 +17,9 @@ __DATABASE_CONNECTION = initialize_database_connection()
 # TODO COMMENTS ABOVE EACH FUNCTION
 
 # frequency essentially correlates to 'votes'. 
-def insert_factor(id: str,
-                       title: str,
-                       description: str,
-                       votes: int,
+def insert_factor(title: str,
+                  description: str,
+                    votes: int,
                       ) -> bool:
     """
     Inserts a factor into the database with provided details.
@@ -37,8 +36,7 @@ def insert_factor(id: str,
     insert: FactorTBL
 
     try:
-        insert = FactorTBL(id=id,
-                            title=title,
+        insert = FactorTBL(title=title,
                             description=description,
                             votes=votes
                            )
@@ -72,8 +70,7 @@ def insert_factor(id: str,
     return False
 
 
-def insert_participant(id: str,
-                       f_name: str,
+def insert_participant(f_name: str,
                        l_name: str,
                        email: str,
                        telephone: str) -> bool:
@@ -94,8 +91,7 @@ def insert_participant(id: str,
     insert: ParticipantTBL
 
     try:
-        insert = ParticipantTBL(id=id,
-                                 f_name=f_name,
+        insert = ParticipantTBL(f_name=f_name,
                                  l_name=l_name,
                                  email=email,
                                  telephone=telephone)
@@ -131,7 +127,7 @@ def insert_participant(id: str,
     return False
 
 
-def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
+def insert_rating(factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
     """
     Inserts a rating into the database with provided details.
     
@@ -149,8 +145,7 @@ def insert_rating(id:float ,factor_leading : Factor, factor_following : Factor, 
     insert : RatingsTBL
 
     try:
-        insert = RatingsTBL(id=id,
-                            factor_leading=factor_leading.id,
+        insert = RatingsTBL(factor_leading=factor_leading.id,
                             factor_following=factor_following.id,
                             rating=rating,
                             participant_id=participant_id)
@@ -291,7 +286,7 @@ def calculate_average_rating():
 
 ##Participant Functions
 
-##Used
+##Gets a list of all the people in the participant table
 def all_participants():
     """
     Searches for all participants in the database.
@@ -307,7 +302,7 @@ def all_participants():
         return []
     
 
-###Used
+###Finds single participant based on unique id
 def search_specific_participant(id):
     """
     Searches for a specific participant by ID in the database.
@@ -327,7 +322,7 @@ def search_specific_participant(id):
         return []
 
 
-# used
+#Edits existing participant
 def edit_participant(id,fi_name,la_name,p_email,p_telephone):
     """
     Edits details of a participant in the database. 
@@ -366,19 +361,9 @@ def edit_participant(id,fi_name,la_name,p_email,p_telephone):
         return False
     
 
-##Used
-def participant_id_setter():
-    """
-    Counts the total number of participants in the database.
-
-    Returns:
-        int: Total number of participants.
-    """
-    person=__DATABASE_CONNECTION.query(ParticipantTBL).count()
-    return person
 
 
-##Used
+##Deletes existing participant and updates the id of the other participants
 def delete_participants(id):
    """
    Deletes a participant from the database by ID.
@@ -387,24 +372,28 @@ def delete_participants(id):
         id: Identifier of the participant to delete.
     """
    part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
+   aum=__DATABASE_CONNECTION.query(ParticipantTBL).count()
+   idNum=int(id)
+   
+   
    try:
        __DATABASE_CONNECTION.delete(part)
+       
+       if(aum>1):
+          for i in (idNum+1,aum):
+             parts=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==i).first()
+             parts.id=i-1
        __DATABASE_CONNECTION.commit()
+             
+           
+       
    except:
        print("Could not delete participant")
 #############################Factor Functions ###################
 
-def factor_id_Setter():
-    """
-    Generates a unique ID for a new factor entry.
 
-    Returns:
-        int: Unique ID for the new factor entry.
-    """
-    factor=__DATABASE_CONNECTION.query(FactorTBL).count() + 1
-    return factor
 
-###Used
+
 ##USed to get a list of all the factors
 def get_all_factors():
     """
@@ -420,7 +409,7 @@ def get_all_factors():
         print(f"Error getting all factors: {e}")
         return []
     
-####USED
+
 ###Used for the acsending button    
 def ascendingOrder():
     try:
@@ -440,7 +429,7 @@ def descendingOrder():
         print(f"Error getting all factors: {e}")
         return []
     
-###Used
+
 ###Used to get a specific factor based on the ID
 def search_specific_factor(id):
     """
@@ -461,7 +450,7 @@ def search_specific_factor(id):
         return []
 
 
-##Used
+##Deletes existing factor based on unique id
 def delete_factor(id):
    """
    Deletes a factor from the database by ID.
@@ -477,7 +466,7 @@ def delete_factor(id):
        print("Could not delete factor")
 
 
-###Used
+###Edits existing factor
 def edit_factors(id,fact_title,fact_description,fact_votes):
     """
     Edits details of a factor in the database.
@@ -523,7 +512,7 @@ def get_factor_list(list1):
     return factors
 
 ############Rating functions#####################################
-###Used
+###Gets specific rating based on id
 def get_rating_by_id(id):
     """
     Retrieves ratings associated with a specific participant by ID.
@@ -538,7 +527,7 @@ def get_rating_by_id(id):
     return ratings
 
 
-
+#Total count of rating
 def get_total_rating():
     """
     Retrieves total count of ratings stored in the database.
@@ -550,7 +539,7 @@ def get_total_rating():
     return rating_count
 
 
-###Used
+###Get existing factor based on unique id
 def specific_id_factor(id):
     """
     Searches for a specific rating by ID in the database.
@@ -565,7 +554,7 @@ def specific_id_factor(id):
     return rating
 
 
-###Used
+###Updates existing rating
 def update_rating(person_id,rating,index):
     """
     Updates a rating associated with a participant in the database.
@@ -630,7 +619,7 @@ def delete_everything():
 
 
 
-
+##Deletes existing rating
 def delete_rating(p_id):
     """
     Deletes ratings associated with a specific participant by ID.

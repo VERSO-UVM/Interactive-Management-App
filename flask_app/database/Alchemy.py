@@ -12,27 +12,26 @@ import json
 
 Base = declarative_base()
 
-
+##Logic for creation of participant table
 class ParticipantTBL(Base):
 
     # tablename
     __tablename__ = 'participants'
 
     # columns
-    id = Column('id', String, primary_key=True)
+    id = Column('id', Integer, primary_key=True, index=True)
     f_name = Column('f_name', String, nullable=False)
     l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
     telephone = Column('telephone', String, nullable=True)
 
     def __init__(self,
-                 id: str,
                  f_name: str,
                  l_name: str,
                  email: str,
                  telephone: str = None):
 
-        self.id = id
+
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
@@ -41,24 +40,22 @@ class ParticipantTBL(Base):
     def __repr__(self):  # string representation
         return f'{self.f_name} {self.l_name}, email: {self.email}'
 
-
+##Logic for creation of logic table
 class FactorTBL(Base):
 
     __tablename__ = 'factors'
 
-    id = Column('id', String, primary_key=True)
+    id = Column('id', Integer, primary_key=True,autoincrement=True)
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
    
     def __init__(self,
-                 id: str,
                  title: str,
                  description: str,
                  votes: int,
                 ):
 
-        self.id = id
         self.title = title
         self.description = description
         self.votes = votes
@@ -67,24 +64,24 @@ class FactorTBL(Base):
     def __repr__(self):
         return f'Factor #{self.id} "{self.title}"'
 
+#Creation of rating table
 class RatingsTBL(Base):
 
     __tablename__ = 'ratings'
 
-    id = Column('id', String, primary_key=True)
-    factor_leading = Column('factor_leading', String, nullable=False)
-    factor_following = Column('factor_following', String, nullable=False)
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    factor_leading = Column('factor_leading', Integer, nullable=False)
+    factor_following = Column('factor_following', Integer, nullable=False)
     rating = Column('rating', Integer, nullable=False)
-    participant_id = Column('participant_id', String, nullable=False)
+    participant_id = Column('participant_id', Integer, nullable=False)
 
     def __init__(self,
-                    id: str,
-                    factor_leading: str,
-                    factor_following: str,
+                    factor_leading: int,
+                    factor_following: int,
                     rating: int,
-                    participant_id: str):
+                    participant_id: int):
     
-            self.id = id
+            
             self.factor_leading = factor_leading
             self.factor_following = factor_following
             self.rating = rating
@@ -93,20 +90,20 @@ class RatingsTBL(Base):
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
     
-    
+##Creation of results table   
 class ResultsTBL(Base):
 
     __tablename__ = 'results'
 
-    id = Column('id', String, primary_key=True)
-    factor_leading = Column('factor_leading', String, nullable=False)
-    factor_following = Column('factor_following', String, nullable=False)
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    factor_leading = Column('factor_leading', Integer, nullable=False)
+    factor_following = Column('factor_following', Integer, nullable=False)
     rating = Column('rating', Integer, nullable=False)
 
     def __init__(self,
-                    id: str,
-                    factor_leading: str,
-                    factor_following: str,
+                    id: int,
+                    factor_leading: int,
+                    factor_following: int,
                     rating: int):
     
             self.id = id

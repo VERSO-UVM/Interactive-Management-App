@@ -97,12 +97,11 @@ def insert_factor():
 
         # ##Get from the form
         title=request.form["f_title"]
-        ##Checks what happens if this empty
         description=request.form["f_description"]
         votes=request.form["f_votes"]
         
-        id=(database_access.factor_id_Setter())
-        database_access.insert_factor(id=id,title=title,description=description,votes=votes)
+
+        database_access.insert_factor(title=title,description=description,votes=votes)
         return redirect (url_for('factor',num=-1))
      else:
         return render_template("insert_factor.html")
@@ -142,15 +141,13 @@ def pick_factors(p_id,num):
         combinations = list(itertools.combinations(factor, 2))
         
         
-        id1=1
-        id2=2
+       
         for i in range(0,len(combinations)):
-            database_access.insert_rating(id=id1,factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
-            database_access.insert_rating(id=id2,factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
-            print(f'{id1}{combinations[i][0]}{combinations[i][1]}')
-            print(f'{id2}{combinations[i][1]}{combinations[i][0]}')
-            id1+=2
-            id2+=2
+            database_access.insert_rating(factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
+            database_access.insert_rating(factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
+            print(f'{combinations[i][0]}{combinations[i][1]}')
+            print(f'{combinations[i][1]}{combinations[i][0]}')
+           
 
 
        
@@ -177,7 +174,7 @@ def pick_factors(p_id,num):
 ###Ultilizies update_rating function from database access
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
-   database_access.update_rating(person_id=str(p_id),rating=float(rating),index=int(f_id))
+   database_access.update_rating(person_id=int(p_id),rating=float(rating),index=int(f_id))
    return rating
 
 
@@ -216,6 +213,7 @@ def getInfoLeading(p_id,f_id):
    
 
 ###Used to get factor information for displaying from table
+##Ultizies search specific factpr and specifc id factor from database acess
 @app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
 def getInfoFollowing(p_id,f_id):
     ##Gets information from factor based on the id 
@@ -326,9 +324,7 @@ def participant():
         telephone=request.form["telephone"]
     
         
-        id=(database_access.participant_id_setter())+1
-        
-        database_access.insert_participant(id=id,f_name=f_name,l_name=l_name,email=email,telephone=telephone)
+        database_access.insert_participant(f_name=f_name,l_name=l_name,email=email,telephone=telephone)
         return redirect (url_for('participant'))
     else:
         part=database_access.all_participants()
