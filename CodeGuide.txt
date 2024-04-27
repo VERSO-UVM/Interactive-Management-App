@@ -154,5 +154,3 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 </div> 
 
 {% endblock %}
-
-
