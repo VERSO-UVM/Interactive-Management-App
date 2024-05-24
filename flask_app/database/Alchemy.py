@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import json
+import os
 
 
 # @author alyssa
@@ -50,22 +51,22 @@ class FactorTBL(Base):
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
-   
+
     def __init__(self,
                  id: str,
                  title: str,
                  description: str,
                  votes: int,
-                ):
+                 ):
 
         self.id = id
         self.title = title
         self.description = description
         self.votes = votes
-    
 
     def __repr__(self):
         return f'Factor #{self.id} "{self.title}"'
+
 
 class RatingsTBL(Base):
 
@@ -78,22 +79,22 @@ class RatingsTBL(Base):
     participant_id = Column('participant_id', String, nullable=False)
 
     def __init__(self,
-                    id: str,
-                    factor_leading: str,
-                    factor_following: str,
-                    rating: int,
-                    participant_id: str):
-    
-            self.id = id
-            self.factor_leading = factor_leading
-            self.factor_following = factor_following
-            self.rating = rating
-            self.participant_id = participant_id
-    
+                 id: str,
+                 factor_leading: str,
+                 factor_following: str,
+                 rating: int,
+                 participant_id: str):
+
+        self.id = id
+        self.factor_leading = factor_leading
+        self.factor_following = factor_following
+        self.rating = rating
+        self.participant_id = participant_id
+
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
-    
-    
+
+
 class ResultsTBL(Base):
 
     __tablename__ = 'results'
@@ -104,16 +105,16 @@ class ResultsTBL(Base):
     rating = Column('rating', Integer, nullable=False)
 
     def __init__(self,
-                    id: str,
-                    factor_leading: str,
-                    factor_following: str,
-                    rating: int):
-    
-            self.id = id
-            self.factor_leading = factor_leading
-            self.factor_following = factor_following
-            self.rating = rating
-    
+                 id: str,
+                 factor_leading: str,
+                 factor_following: str,
+                 rating: int):
+
+        self.id = id
+        self.factor_leading = factor_leading
+        self.factor_following = factor_following
+        self.rating = rating
+
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_following: {self.factor_following}, rating: {self.rating}'
 
@@ -125,10 +126,11 @@ def initialize_database_connection() -> Session:
     :rtype: Session
     """
 
-    DATABASE_LOCATION: str = "/flask_app/database/data.sqlite3"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DATABASE_LOCATION = os.path.join(BASE_DIR, "data.sqlite3")
 
     # Connects to the database file: toggle echo to see activity in console
-    engine = create_engine("sqlite://" + DATABASE_LOCATION, echo=False)
+    engine = create_engine("sqlite:///" + DATABASE_LOCATION, echo=False)
 
     # Creates all the classes from above in the database
     Base.metadata.create_all(bind=engine)
