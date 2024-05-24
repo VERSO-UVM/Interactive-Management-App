@@ -481,7 +481,7 @@ def export_data():
 
         for record in data:
             # Write each record to the CSV file
-            csv_writer.writerow(record)
+            csv_writer.writerow(list(record))
 
         # Prepare response with CSV content
         filename = f"{data_type}.csv"
