@@ -409,6 +409,15 @@ def get_all_factors():
         print(f"Error getting all factors: {e}")
         return []
     
+def factorsCount():
+    try:
+        factorCount=__DATABASE_CONNECTION.query(FactorTBL).count()
+        return factorCount
+    
+    except Exception as e:
+        print(f"Error getting all factors: {e}")
+        return []
+
 
 ###Used for the acsending button    
 def ascendingOrder():
@@ -722,6 +731,23 @@ def edit_result(r_id,weight):
         return False
     
 def get_all_results():
-    wholeTable=__DATABASE_CONNECTION.query(ResultsTBL).all()
-    print(wholeTable)
+    wholeTable=__DATABASE_CONNECTION.query(RatingsTBL).all()
+    
     return wholeTable
+
+def get_results_voted(LeadingFactor,subSection):
+
+    ##Suppose I have total factor count 
+    nestedList=[0]*subSection
+    resultsOne=__DATABASE_CONNECTION.query(RatingsTBL.factor_following).filter(RatingsTBL.rating==1).filter(RatingsTBL.factor_leading==LeadingFactor).all()
+    if(len(resultsOne)>0):
+        print(resultsOne)
+        for i in range (len(resultsOne)):
+            
+            finder=(resultsOne[i][0])-1
+            nestedList[finder]=1
+
+        
+    
+    return nestedList
+

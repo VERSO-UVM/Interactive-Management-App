@@ -29,12 +29,14 @@ Ratings Page
               <p id="partID" class="IDs">{{person.id}}</p>
             </div>
 
-            <p class="guide">Does the top factor affect the bottom factor?</p>
+            <p class="guide">Does the left factor affect the right factor?</p>
+              <p id="fLeading" class="Factorsss"></p>
+              
+              <p id="fFollowing" class="Factorsss"></p>
+              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100">
             </div>
-              <p id="fLeading" class="factors"></p>
-              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="300" width="200">
-              <p id="fFollowing" class="factors"></p>
-            </div>
+          
+          </div>
 
             <form id="myform">
               <input type="radio" name="responseYN" value=1 >Yes</input>
@@ -62,7 +64,7 @@ Ratings Page
 
 <script>
   // Gets the participant ID and start a counter for the factors
-  var p_id = int(document.getElementById("partID").innerHTML);
+  var p_id =document.getElementById("partID").innerHTML;
   var index=1;
 
   //Loads factors from the start

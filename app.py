@@ -15,6 +15,185 @@ from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, Re
 import csv
 import itertools
 import json
+import numpy as np
+import pandas as pd
+
+def structure_matrix(A):
+    """
+    This function that takes a square boolean numpy array as input and returns
+    a dictionary of the levels and lists of indices for those levels.
+
+    Parameters:
+    A (numpy.ndarray): A 2-dimensional numpy array
+
+    Returns:
+    dict: a dictionary with keys as levels and values as indices (indexed from
+    0) returned in lists
+
+    Example :
+    >>> import numpy as np
+    >>> A = np.array([
+        [0, 1, 0, 0, 0, 0],
+        [0, 0, 1, 0, 1, 1],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]], dtype=bool)
+    >>> structure_matrix(A)
+    {1: [0], 2: [1], 3: [2, 5], 4: [3], 5: [4]}
+    """
+
+    # Check if A is a square matrix
+    if len(A) != len(A[0]):
+        raise "Error: The input matrix is not square."
+
+    # Construct reachability matrix
+    M = create_reachability_matrix(A)
+
+    # Structure reachability matrix
+    level2indices = find_levels(M)
+
+    # Return the levels and indices
+    return level2indices
+
+
+def create_reachability_matrix(A):
+    """
+    This function takes a 2-dimensional numpy array A as input and returns a
+    reachability matrix M. Matrix A consists of elements a_ij where the rows i
+    correspond to the source nodes and the columns j correspond to the
+    destination nodes. All entries indexed from 0.
+
+    Parameters:
+    A (numpy.ndarray): A 2-dimensional numpy array
+
+    Returns:
+    numpy.ndarray: A reachability matrix M
+
+    Raises:
+    RuntimeError: If the matrix does not converge within 1000 iterations
+
+    Example:
+    >>> import numpy as np
+    >>> A = np.array([[0, 1, 0], [0, 0, 1], [1, 0, 0]])
+    >>> create_reachability_matrix(A)
+    array([[ True,  True,  True],
+           [ True,  True,  True],
+           [ True,  True,  True]])
+    """
+
+    # Sum A with identity matrix I
+    n = len(A)
+    I = np.eye(n, dtype=bool)
+    M = A + I
+
+    # Take M to successive powers until (A+I)^n = (A+I)^(n+1)
+    MAX_ITERATIONS = 100
+    ii = 0
+    while ii < MAX_ITERATIONS:
+        ii += 1
+        M2 = np.matmul(M, M)
+        if np.array_equal(M2, M):
+            break
+        M = M2
+
+    # Return an error message if the matrix does not converge w/i 100 iters
+    if not np.array_equal(M, M2):
+        raise RuntimeError("The matrix did not converge within "
+                           + "{MAX_ITERATIONS} iterations.")
+
+    # Otherwise, return reachability matrix M
+    return M
+
+
+def find_levels(M):
+    """
+    This function takes a 2-dimensional numpy array M as input and returns a
+    dictionary level2indices with keys as levels and values as lists of
+    indices corresponding to that level. Entries are indexed from 0, except
+    levels which are indexed from 1.
+
+    Parameters:
+    M (numpy.ndarray): A 2-dimensional numpy array
+
+    Returns:
+    dict: A dictionary level2indices
+
+    Example:
+    >>> import numpy as np
+    >>> M = np.array([[1, 0, 0], [1, 1, 0], [0, 1, 1]])
+    >>> find_levels(M)
+    {1: [0], 2: [1], 3: [2]}
+    """
+
+    # Convert the matrix to a pandas dataframe
+    df = pd.DataFrame(M)
+
+    # Create dictionaries index2reachable, index2antecedents, and intersection
+    index2reachable, index2antecedents, intersection = get_matrix_sets(df)
+
+    # Create dictionary level2indices
+    level2indices = {}
+
+    # Iteratively find level2indices levels
+    kk = 1
+    while intersection:
+
+        # Add an empty entry to level2indices
+        level2indices[kk] = []
+
+        # Check entries that repeat (antecedents = intersections)
+        for ii in intersection:
+            if index2antecedents[ii] == intersection[ii]:
+                for ss in index2antecedents[ii]:
+                    if ss not in level2indices[kk]:
+                        level2indices[kk].append(ss)
+
+        # Remove row and column from M
+        df = df.drop(level2indices[kk], axis=0)
+        df = df.drop(level2indices[kk], axis=1)
+
+        # Increment index
+        kk += 1
+
+        # Recreate dicts index2reachable, index2antecedents, and intersection
+        index2reachable, index2antecedents, intersection = get_matrix_sets(df)
+
+    return level2indices
+
+
+def get_matrix_sets(df):
+    """
+    This function takes a pandas dataframe df as input and returns three
+    dictionaries: ind2reach, ind2antec, and intx.
+
+    Parameters:
+    df (pandas.DataFrame): A pandas dataframe
+
+    Returns:
+    tuple: A tuple of three dictionaries: ind2reach, ind2antec, and intx
+
+    Example:
+    >>> import pandas as pd
+    >>> df = pd.DataFrame({0: [1, 0, 0], 1: [0, 1, 1], 2: [1, 0, 1]})
+    >>> get_matrix_sets(df)
+    ({0: [0, 2], 1: [1], 2: [1, 2]},
+     {0: [0], 1: [1, 2], 2: [0, 2]},
+     {0: [0], 1: [1], 2: [2]})
+    """
+
+    # Create dictionaries index2reachable, index2antecedents, and intersection
+    ind2reach = {ii: list(df.columns[(df.iloc[ii, :] == 1).values])
+                 for ii in range(len(df))}
+    ind2antec = {jj: list(df.index[(df.iloc[:, jj] == 1).values])
+                 for jj in range(len(df.columns))}
+    intx = {ii: list(set(ind2reach[ii]) & set(ind2antec[ii]))
+            for ii in range(len(df))}
+
+    # Return dictionaries
+    return ind2reach, ind2antec, intx
+
+subsection=0
 # Configure Flask application
 app = configure_flask_application()
 # login_manager = LoginManager()
@@ -128,7 +307,44 @@ def middleMan():
 ###Shows selected_factors to pick factors but shows pick_factor from load
 @app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
 def pick_factors(p_id,num):
-    def structure(factors):
+
+    if request.method=='POST':
+        ##Gets factors from user selection
+        factors_picked=request.form.getlist('factors')
+        factor=database_access.get_factor_list(factors_picked)
+        global subsection
+        subsection=len(factor)
+
+        ##Deletes previous entries of rating table
+        (database_access.delete_rating(p_id))
+
+
+        ##Inserts into rating table with default 0
+        combinations = list(itertools.combinations(factor, 2))
+        
+        
+        for i in range(0,len(combinations)):
+            database_access.insert_rating(factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
+            database_access.insert_rating(factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
+            print(f'{combinations[i][0]}{combinations[i][1]}')
+            print(f'{combinations[i][1]}{combinations[i][0]}')
+        return render_template("initial_factors.html",factor=factor,p_id=p_id)
+    
+    else:
+        ##Logic for ascending and descending button
+        if num=='-1':
+            factor=database_access.get_all_factors()
+       
+        elif num=='1':
+            factor=database_access.ascendingOrder()
+       
+        elif num=='2':
+            factor=database_access.descendingOrder()
+       
+        return render_template("pick_factor.html",factor=factor)
+
+
+def structure(factors):
     
         # Initialize a matrix to store user choices
         matrix_size = len(factors)
@@ -147,54 +363,15 @@ def pick_factors(p_id,num):
                 if user_choices[i][j] == 1:
                     structured_factors.append((factors[i], factors[j]))
         return structured_factors
-
-    if request.method=='POST':
-        ##Gets factors from user selection
-        factors_picked=request.form.getlist('factors')
-        factor=database_access.get_factor_list(factors_picked)
-
-        ##Deletes previous entries of rating table
-        (database_access.delete_rating(p_id))
-
-
-        ##Inserts into rating table with default 0
-        combinations = list(itertools.combinations(factor, 2))
-        
-        
-       
-        for i in range(0,len(combinations)):
-            database_access.insert_rating(factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
-            database_access.insert_rating(factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
-            print(f'{combinations[i][0]}{combinations[i][1]}')
-            print(f'{combinations[i][1]}{combinations[i][0]}')
-           
-
-
-       
-        return render_template("initial_factors.html",factor=factor,p_id=p_id)
     
-    else:
-        ##Logic for ascending and descending button
-        if num=='-1':
-            factor=database_access.get_all_factors()
-       
-        elif num=='1':
-            factor=database_access.ascendingOrder()
-       
-        elif num=='2':
-            factor=database_access.descendingOrder()
-       
-        return render_template("pick_factor.html",factor=factor)
-
-
-      
 #################################Rating##################################################################
 
 ##Updates Rating Based on the users response
 ###Ultilizies update_rating function from database access
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
 def update_rating(p_id,f_id,rating):
-   database_access.update_rating(person_id=int(p_id),rating=float(rating),index=int(f_id))
+   f_id=int(f_id)
+   database_access.update_rating(person_id=int(p_id),rating=float(rating),index=f_id-1)
    return rating
 
 
@@ -209,7 +386,7 @@ def participant_id_selected():
 ###Get_rating_by_id and search_specific_participant used from databasee caess
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
-    ##
+   
     factor=database_access.get_rating_by_id(p_id)
     person=database_access.search_specific_participant(p_id)
     return render_template('rating.html', factor=factor,person=person)
@@ -220,13 +397,13 @@ def insert_rating(p_id):
 def getInfoLeading(p_id,f_id):
  
  ##Gets information from factor based on the id 
+ 
  try:
+    
     result = database_access.specific_id_factor(f_id)
     results=result.factor_leading
-    resultTitle=database_access.search_specific_factor(results)
+    resultTitle=database_access.search_specific_factor(int(results))
     resultsss=resultTitle.title
-
-  
     return resultsss
  except:
      return "-1"
@@ -241,7 +418,7 @@ def getInfoFollowing(p_id,f_id):
     result = database_access.specific_id_factor(f_id)
     results=result.factor_following
 
-    resultTitle=database_access.search_specific_factor(results)
+    resultTitle=database_access.search_specific_factor(int(results))
     print(resultTitle.title)
     resultsss=resultTitle.title
     return (resultsss)
@@ -254,10 +431,30 @@ def getInfoFollowing(p_id,f_id):
 ######USED FOR testing    
 @app.route('/resultInfo',methods=['POST','GET'])
 def resultInfo():
-   factors=database_access.specific_id_factor(1)
-   print(factors)
+   
+   ##Make a nested np array of things and then call the functions?
+#    ratingsInfo=database_access.get_all_results()
+#    print(ratingsInfo)
+   bigArr=[]
+   totalFactors=database_access.factorsCount()
+   global subsection
+   
+   for i in range(subsection):
+        
+        nestedList=database_access.get_results_voted(i+1,subsection)
+        bigArr.append(nestedList)
+
+   
+   bigArray=np.array(bigArr,dtype=bool)
+   print(bigArray)
+   stuff=structure_matrix(bigArray)
+   print(stuff)
+   
+
+   
    return render_template('result.html')
    
+   #2.5 hours 
 
 #####################################Results##############################
 
@@ -265,6 +462,10 @@ def resultInfo():
 def result():
 
     # Before rendering the template in your result route
+    #Idea: I need to get all the combinations that were rated with one 
+    factorVoted=database_access.get_results_voted()
+    print(factorVoted)
+
     
     return render_template('result.html')
 
@@ -272,7 +473,7 @@ def result():
 def get_results():
     test_data = [
   ["FactorID", "Factor", "Description", "Frequency"],
-  [1, "Plan on meeting once or twice every week for a year", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
+  [1, "Plan on", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
   [2, "Develop plans", "kjfhvbwebvowervwer", 11],
   [3, "Assign leaders", "werv", 15]
   
@@ -280,34 +481,6 @@ def get_results():
 ]
 
     return jsonify(test_data)
-
-""" JAY STUFF 
-@app.route('/results/<r_id>/<edit>')
-def results(r_id,edit):
-    if(edit=='1'):
-        if(r_id!="-1"):
-            wholeTable=database_access.calculations(r_id)
-            return render_template('results.html', wholeTable=wholeTable)
-        else:
-            wholeTable=database_access.calculations(1)
-            return render_template('results.html', wholeTable=wholeTable)
-    else:
-        wholeTable=database_access.get_all_results()
-        return render_template('results.html', wholeTable=wholeTable)
-
-@app.route('/edit_result/<r_id>',methods=['POST','GET'])
-def edit_result(r_id,):
-    result = database_access.search_specific_result(r_id)
-    if request.method == 'POST':
-        weight=request.form["weight"]
-        try:
-            database_access.edit_result(r_id,weight)       
-            return redirect(url_for("results",r_id=r_id,edit=-1))
-        except:
-            return 'There was an issue updating the result weight'
-    else:
-        return render_template('edit_Result.html',result=result)
-"""
 
 # Define route for the about page
 @app.route('/about')
