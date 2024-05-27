@@ -287,7 +287,7 @@ def insert_factor():
 
         database_access.insert_factor(title=title,description=description,votes=votes)
         return redirect (url_for('factor',num=-1))
-     else:
+    else:
         return render_template("insert_factor.html")
 
 
