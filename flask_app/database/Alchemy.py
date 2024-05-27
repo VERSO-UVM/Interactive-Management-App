@@ -13,7 +13,9 @@ import os
 
 Base = declarative_base()
 
-##Logic for creation of participant table
+# Logic for creation of participant table
+
+
 class ParticipantTBL(Base):
 
     # tablename
@@ -32,7 +34,6 @@ class ParticipantTBL(Base):
                  email: str,
                  telephone: str = None):
 
-
         self.f_name = f_name
         self.l_name = l_name
         self.email = email
@@ -41,12 +42,14 @@ class ParticipantTBL(Base):
     def __repr__(self):  # string representation
         return f'{self.f_name} {self.l_name}, email: {self.email}'
 
-##Logic for creation of logic table
+# Logic for creation of logic table
+
+
 class FactorTBL(Base):
 
     __tablename__ = 'factors'
 
-    id = Column('id', Integer, primary_key=True,autoincrement=True)
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
@@ -64,7 +67,9 @@ class FactorTBL(Base):
     def __repr__(self):
         return f'Factor #{self.id} "{self.title}"'
 
-#Creation of rating table
+# Creation of rating table
+
+
 class RatingsTBL(Base):
 
     __tablename__ = 'ratings'
@@ -76,21 +81,22 @@ class RatingsTBL(Base):
     participant_id = Column('participant_id', Integer, nullable=False)
 
     def __init__(self,
-                    factor_leading: int,
-                    factor_following: int,
-                    rating: int,
-                    participant_id: int):
-    
-            
-            self.factor_leading = factor_leading
-            self.factor_following = factor_following
-            self.rating = rating
-            self.participant_id = participant_id
-    
+                 factor_leading: int,
+                 factor_following: int,
+                 rating: int,
+                 participant_id: int):
+
+        self.factor_leading = factor_leading
+        self.factor_following = factor_following
+        self.rating = rating
+        self.participant_id = participant_id
+
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
-    
-##Creation of results table   
+
+# Creation of results table
+
+
 class ResultsTBL(Base):
 
     __tablename__ = 'results'
@@ -101,16 +107,16 @@ class ResultsTBL(Base):
     rating = Column('rating', Integer, nullable=False)
 
     def __init__(self,
-                    id: int,
-                    factor_leading: int,
-                    factor_following: int,
-                    rating: int):
-    
-            self.id = id
-            self.factor_leading = factor_leading
-            self.factor_following = factor_following
-            self.rating = rating
-    
+                 id: int,
+                 factor_leading: int,
+                 factor_following: int,
+                 rating: int):
+
+        self.id = id
+        self.factor_leading = factor_leading
+        self.factor_following = factor_following
+        self.rating = rating
+
     def __repr__(self):
         return f'factor_id_leading: {self.factor_leading}, factor_following: {self.factor_following}, rating: {self.rating}'
 
@@ -127,6 +133,7 @@ def initialize_database_connection() -> Session:
 
     # Connects to the database file: toggle echo to see activity in console
     engine = create_engine("sqlite:///" + DATABASE_LOCATION, echo=False)
+    Base.metadata.drop_all(bind=engine)
 
     # Creates all the classes from above in the database
     Base.metadata.create_all(bind=engine)
