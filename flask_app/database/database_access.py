@@ -384,12 +384,12 @@ def delete_participants(id):
     Args:
         id: Identifier of the participant to delete.
     """
-   part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
-   aum=__DATABASE_CONNECTION.query(ParticipantTBL).count()
-   idNum=int(id)
+    part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
+    aum=__DATABASE_CONNECTION.query(ParticipantTBL).count()
+    idNum=int(id)
    
    
-   try:
+    try:
        __DATABASE_CONNECTION.delete(part)
        
        if(aum>1):
@@ -397,10 +397,8 @@ def delete_participants(id):
              parts=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==i).first()
              parts.id=i-1
        __DATABASE_CONNECTION.commit()
-             
-           
-       
-   except:
+                
+    except:
        print("Could not delete participant")
 #############################Factor Functions ###################
 
@@ -650,7 +648,7 @@ def delete_everything():
         __DATABASE_CONNECTION.delete(i)
         __DATABASE_CONNECTION.commit()
 
-        
+
     
 
 
