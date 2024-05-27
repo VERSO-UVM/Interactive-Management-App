@@ -75,7 +75,6 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 document.getElementById("ascending").addEventListener("click", ascendingVotes);
 function ascendingVotes() 
 {
-  
   $.get('/factor/1',
     function(x) 
     {
@@ -83,8 +82,6 @@ function ascendingVotes()
     }
   )
 }
-
-
 document.getElementById("desscending").addEventListener("click", descendingVotes);
 function desscendingVotes() 
 {
@@ -95,27 +92,29 @@ function desscendingVotes()
     }
   )
 }
-function limitCheckboxes() {
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            var checkedCount = 0;
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    checkedCount++;
-                }
-            }
-            
-            if (checkedCount > 15) 
-            {
-                alert("You can only pick up to 15 factors.");
-                return false;
-            }
-                if (checkedCount <1 ) 
-            {
-                alert("You must pick at least 2.");
-                return false;
-            }
-        }
-
-      
+function limitCheckboxes() 
+{
+  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  var checkedCount = 0;
+  for (var i = 0; i < checkboxes.length; i++) 
+  {
+    if (checkboxes[i].checked) 
+    {
+      checkedCount++;
+    }
+  }
+  
+  if (checkedCount > 15) 
+  {
+    alert("You can only pick up to 15 factors.");
+    return false;
+  }
+  if (checkedCount <=1) 
+  {
+    alert("You must pick at least 2.");
+    return false;
+  }
+  
+}
 </script>
 {% endblock %}
