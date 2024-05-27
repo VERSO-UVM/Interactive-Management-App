@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import json
+import os
 
 
 # @author alyssa
@@ -49,17 +50,16 @@ class FactorTBL(Base):
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
-   
+
     def __init__(self,
                  title: str,
                  description: str,
                  votes: int,
-                ):
+                 ):
 
         self.title = title
         self.description = description
         self.votes = votes
-    
 
     def __repr__(self):
         return f'Factor #{self.id} "{self.title}"'
@@ -122,10 +122,11 @@ def initialize_database_connection() -> Session:
     :rtype: Session
     """
 
-    DATABASE_LOCATION: str = "/flask_app/database/data.sqlite3"
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    DATABASE_LOCATION = os.path.join(BASE_DIR, "data.sqlite3")
 
     # Connects to the database file: toggle echo to see activity in console
-    engine = create_engine("sqlite://" + DATABASE_LOCATION, echo=False)
+    engine = create_engine("sqlite:///" + DATABASE_LOCATION, echo=False)
 
     # Creates all the classes from above in the database
     Base.metadata.create_all(bind=engine)
