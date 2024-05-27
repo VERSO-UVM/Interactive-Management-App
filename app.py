@@ -475,7 +475,8 @@ def get_results():
   ["FactorID", "Factor", "Description", "Frequency"],
   [1, "Plan on", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
   [2, "Develop plans", "kjfhvbwebvowervwer", 11],
-  [3, "Assign leaders", "werv", 15]
+  [3, "Assign leaders", "werv", 15],
+  [4, "Assign leaders", "werv", 15]
   
   
 ]
