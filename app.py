@@ -477,17 +477,24 @@ def result():
 
 @app.route('/get_results')
 def get_results():
-    test_data = [
-  ["FactorID", "Factor", "Description", "Frequency"],
-  [1, "Plan on", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
-  [2, "Develop plans", "kjfhvbwebvowervwer", 11],
-  [3, "Assign leaders", "werv", 15],
-  [4, "Assign leaders", "werv", 15]
-  
-  
-]
+    dag_data = {
+    "nodes": [
+        {"id": "A"},
+        {"id": "B"},
+        {"id": "C"},
+        {"id": "D"},
+        {"id": "E"}
+    ],
+    "links": [
+        {"source": "A", "target": "B"},
+        {"source": "A", "target": "C"},
+        {"source": "B", "target": "D"},
+        {"source": "C", "target": "D"},
+        {"source": "D", "target": "E"}
+    ]
+}
 
-    return jsonify(test_data)
+    return jsonify(dag_data)
 
 # Define route for the about page
 
