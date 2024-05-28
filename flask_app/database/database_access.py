@@ -17,11 +17,13 @@ __DATABASE_CONNECTION = initialize_database_connection()
 
 # TODO COMMENTS ABOVE EACH FUNCTION
 
-# frequency essentially correlates to 'votes'. 
+# frequency essentially correlates to 'votes'.
+
+
 def insert_factor(title: str,
                   description: str,
-                    votes: int,
-                      ) -> bool:
+                  votes: int,
+                  ) -> bool:
     """
     Inserts a factor into the database with provided details.
 
@@ -38,8 +40,8 @@ def insert_factor(title: str,
 
     try:
         insert = FactorTBL(title=title,
-                            description=description,
-                            votes=votes
+                           description=description,
+                           votes=votes
                            )
     except AttributeError:
         print(f'ERROR: invalid factor insertion for {title}')
@@ -92,9 +94,9 @@ def insert_participant(f_name: str,
 
     try:
         insert = ParticipantTBL(f_name=f_name,
-                                 l_name=l_name,
-                                 email=email,
-                                 telephone=telephone)
+                                l_name=l_name,
+                                email=email,
+                                telephone=telephone)
 
     except AttributeError:
         print('ERROR: attempting to insert Participant, but data is invalid or missing')
@@ -127,7 +129,7 @@ def insert_participant(f_name: str,
     return False
 
 
-def insert_rating(factor_leading : Factor, factor_following : Factor, rating : float, participant_id : float):
+def insert_rating(factor_leading: Factor, factor_following: Factor, rating: float, participant_id: float):
     """
     Inserts a rating into the database with provided details.
 
@@ -241,13 +243,16 @@ def fetch(tbl):
         List: List of fetched entries.
     """
     if tbl == FactorTBL:
+        # Fetch specific columns for FactorTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.title, tbl.description, tbl.votes)).fetchall()
     elif tbl == ParticipantTBL:
+        # Fetch specific columns for ParticipantTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.f_name, tbl.l_name, tbl.email, tbl.telephone)).fetchall()
     elif tbl == RatingsTBL:
+        # Fetch specific columns for RatingsTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating, tbl.participant_id)).fetchall()
     elif tbl == ResultsTBL:
-        # return __DATABASE_CONNECTION.execute(select(tbl)).fetchall()
+        # Fetch specific columns for ResultsTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating)).fetchall()
     else:
         raise ValueError("Invalid table name")
@@ -298,7 +303,7 @@ def calculate_average_rating():
 
 # Participant Functions
 
-##Gets a list of all the people in the participant table
+# Gets a list of all the people in the participant table
 def all_participants():
     """
     Searches for all participants in the database.
@@ -314,7 +319,7 @@ def all_participants():
         return []
 
 
-###Finds single participant based on unique id
+# Finds single participant based on unique id
 def search_specific_participant(id):
     """
     Searches for a specific participant by ID in the database.
@@ -335,8 +340,8 @@ def search_specific_participant(id):
         return []
 
 
-#Edits existing participant
-def edit_participant(id,fi_name,la_name,p_email,p_telephone):
+# Edits existing participant
+def edit_participant(id, fi_name, la_name, p_email, p_telephone):
     """
     Edits details of a participant in the database. 
 
@@ -374,38 +379,35 @@ def edit_participant(id,fi_name,la_name,p_email,p_telephone):
         return False
 
 
-
-
-##Deletes existing participant and updates the id of the other participants
+# Deletes existing participant and updates the id of the other participants
 def delete_participants(id):
     """
     Deletes a participant from the database by ID.
 
-    Args:
-        id: Identifier of the participant to delete.
-    """
-    part=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==id).first()
-    aum=__DATABASE_CONNECTION.query(ParticipantTBL).count()
-    idNum=int(id)
-   
-   
+     Args:
+         id: Identifier of the participant to delete.
+     """
+    part = __DATABASE_CONNECTION.query(ParticipantTBL).filter(
+        ParticipantTBL.id == id).first()
+    aum = __DATABASE_CONNECTION.query(ParticipantTBL).count()
+    idNum = int(id)
+
     try:
-       __DATABASE_CONNECTION.delete(part)
-       
-       if(aum>1):
-          for i in (idNum+1,aum):
-             parts=__DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.id==i).first()
-             parts.id=i-1
-       __DATABASE_CONNECTION.commit()
-                
+        __DATABASE_CONNECTION.delete(part)
+
+        if (aum > 1):
+            for i in (idNum+1, aum):
+                parts = __DATABASE_CONNECTION.query(
+                    ParticipantTBL).filter(ParticipantTBL.id == i).first()
+                parts.id = i-1
+        __DATABASE_CONNECTION.commit()
+
     except:
-       print("Could not delete participant")
-#############################Factor Functions ###################
+        print("Could not delete participant")
+############################# Factor Functions ###################
 
 
-
-
-##USed to get a list of all the factors
+# USed to get a list of all the factors
 def get_all_factors():
     """
     Retrieves all factors stored in the database.
@@ -419,18 +421,19 @@ def get_all_factors():
     except Exception as e:
         print(f"Error getting all factors: {e}")
         return []
-    
+
+
 def factorsCount():
     try:
-        factorCount=__DATABASE_CONNECTION.query(FactorTBL).count()
+        factorCount = __DATABASE_CONNECTION.query(FactorTBL).count()
         return factorCount
-    
+
     except Exception as e:
         print(f"Error getting all factors: {e}")
         return []
 
 
-###Used for the acsending button    
+# Used for the acsending button
 def ascendingOrder():
     try:
         factors = __DATABASE_CONNECTION.query(
@@ -452,9 +455,9 @@ def descendingOrder():
     except Exception as e:
         print(f"Error getting all factors: {e}")
         return []
-    
 
-###Used to get a specific factor based on the ID
+
+# Used to get a specific factor based on the ID
 def search_specific_factor(id):
     """
     Searches for a specific factor by ID in the database.
@@ -475,7 +478,7 @@ def search_specific_factor(id):
         return []
 
 
-##Deletes existing factor based on unique id
+# Deletes existing factor based on unique id
 def delete_factor(id):
     """
     Deletes a factor from the database by ID.
@@ -492,8 +495,8 @@ def delete_factor(id):
         print("Could not delete factor")
 
 
-###Edits existing factor
-def edit_factors(id,fact_title,fact_description,fact_votes):
+# Edits existing factor
+def edit_factors(id, fact_title, fact_description, fact_votes):
     """
     Edits details of a factor in the database.
 
@@ -540,8 +543,10 @@ def get_factor_list(list1):
         factors.append(factor)
     return factors
 
-############Rating functions#####################################
-###Gets specific rating based on id
+############ Rating functions#####################################
+# Gets specific rating based on id
+
+
 def get_rating_by_id(id):
     """
     Retrieves ratings associated with a specific participant by ID.
@@ -557,7 +562,7 @@ def get_rating_by_id(id):
     return ratings
 
 
-#Total count of rating
+# Total count of rating
 def get_total_rating():
     """
     Retrieves total count of ratings stored in the database.
@@ -569,7 +574,7 @@ def get_total_rating():
     return rating_count
 
 
-###Get existing factor based on unique id
+# Get existing factor based on unique id
 def specific_id_factor(id):
     """
     Searches for a specific rating by ID in the database.
@@ -585,8 +590,8 @@ def specific_id_factor(id):
     return rating
 
 
-###Updates existing rating
-def update_rating(person_id,rating,index):
+# Updates existing rating
+def update_rating(person_id, rating, index):
     """
     Updates a rating associated with a participant in the database.
 
@@ -649,11 +654,7 @@ def delete_everything():
         __DATABASE_CONNECTION.commit()
 
 
-    
-
-
-
-##Deletes existing rating
+# Deletes existing rating
 def delete_rating(p_id):
     """
     Deletes ratings associated with a specific participant by ID.
@@ -756,23 +757,22 @@ def edit_result(r_id, weight):
 
 
 def get_all_results():
-    wholeTable=__DATABASE_CONNECTION.query(RatingsTBL).all()
-    
+    wholeTable = __DATABASE_CONNECTION.query(RatingsTBL).all()
+
     return wholeTable
 
-def get_results_voted(LeadingFactor,subSection):
 
-    ##Suppose I have total factor count 
-    nestedList=[0]*subSection
-    resultsOne=__DATABASE_CONNECTION.query(RatingsTBL.factor_following).filter(RatingsTBL.rating==1).filter(RatingsTBL.factor_leading==LeadingFactor).all()
-    if(len(resultsOne)>0):
+def get_results_voted(LeadingFactor, subSection):
+
+    # Suppose I have total factor count
+    nestedList = [0]*subSection
+    resultsOne = __DATABASE_CONNECTION.query(RatingsTBL.factor_following).filter(
+        RatingsTBL.rating == 1).filter(RatingsTBL.factor_leading == LeadingFactor).all()
+    if (len(resultsOne) > 0):
         print(resultsOne)
-        for i in range (len(resultsOne)):
-            
-            finder=(resultsOne[i][0])-1
-            nestedList[finder]=1
+        for i in range(len(resultsOne)):
 
-        
-    
+            finder = (resultsOne[i][0])-1
+            nestedList[finder] = 1
+
     return nestedList
-
