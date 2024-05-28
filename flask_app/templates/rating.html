@@ -64,15 +64,15 @@ Ratings Page
 
 <script>
   // Gets the participant ID and start a counter for the factors
-  var p_id =document.getElementById("partID").innerHTML;
-  var index=1;
+  const participantId =document.getElementById("partID").innerHTML;
+  let index=1;
 
   //Loads factors from the start
   window.onload=function() {
-    $.get('/getInfoLeading/'+p_id+'/'+index,
+    $.get('/getInfoLeading/'+participantId+'/'+index,
       function(x) {
           $("#fLeading").html(x);
-          $.get('/getInfoFollowing/'+p_id+'/'+index,
+          $.get('/getInfoFollowing/'+participantId+'/'+index,
             function(x) {
               $("#fFollowing").html(x);
               index+=1;
@@ -83,8 +83,8 @@ Ratings Page
   //Updates the ratings table as the user inputs new rating
   document.getElementById("submit").addEventListener("click", updateRating);
   function updateRating() {
-    var rating = document.querySelector('input[name="responseYN"]:checked').value;
-    $.get('/update_rating/'+p_id+'/'+(index-1)+'/'+rating,
+    const rating = document.querySelector('input[name="responseYN"]:checked').value;
+    $.get('/update_rating/'+participantId+'/'+(index-1)+'/'+rating,
       function(x) {
       }
     );
@@ -96,11 +96,11 @@ Ratings Page
 
   function submitButton() {
     //Calls functins to get information on factors based on index
-    $.get('/getInfoLeading/'+p_id+'/'+index,
+    $.get('/getInfoLeading/'+participantId+'/'+index,
       function(x) {
         if(x!='-1') {
           $("#fLeading").html(x);
-          $.get('/getInfoFollowing/'+p_id+'/'+index,
+          $.get('/getInfoFollowing/'+participantId+'/'+index,
             function(x) {
               if(x!='-1') {
                 $("#fFollowing").html(x);
