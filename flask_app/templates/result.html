@@ -1,485 +1,498 @@
-{% extends 'base.html' %}
-{% import "bootstrap/wtf.html" as wtf %}
-
-{% block styles %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
-{% endblock %}
-
-{% block title %}
-Result Page
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% import "bootstrap/wtf.html" as wtf %} {% block
+styles %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/result.css') }}"
+/>
+{% endblock %} {% block title %} Result Page {% endblock %} {% block content %}
 <div class="grid-container">
-    <div class="results">
-        <div class="resultPage">
-            <h1 class="pt-5 pb-2">Final Results</h1>
-        </div>
-        <div class="resultsContainer">
-            <div class="box" id="graph">
-
-                <!-- Placeholder for D3.js visualization -->
-            </div>
-        </div>
-        <div class="saveImage" style="margin: auto;">
-            <button class="savePNG" onclick="saveImage()">Save as PNG</button>
-            <button onclick="addLink()">Add New Arrow</button>
-            <button onclick="deleteSelectedLink()">Delete Selected Arrow</button>
-        </div>
+  <div class="results">
+    <div class="resultPage">
+      <h1 class="pt-5 pb-2">Final Results</h1>
     </div>
+    <div class="resultsContainer">
+      <div class="box" id="graph">
+        <!-- Placeholder for D3.js visualization -->
+      </div>
+    </div>
+    <div class="saveImage" style="margin: auto">
+      <button class="savePNG" onclick="saveImage()">Save as PNG</button>
+      <button onclick="addLink()">Add New Arrow</button>
+      <button onclick="deleteSelectedLink()">Delete Selected Arrow</button>
+    </div>
+  </div>
 </div>
 
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener("DOMContentLoaded", function () {
     fetchDataAndUpdateGraph();
-});
-var graphData = { nodes: [], links: [], standaloneLinks: [] };
-function fetchDataAndUpdateGraph() {
-    fetch('/get_results')
-        .then(response => response.json())
-        .then(data => {
-            var formattedData = transformData(data);
-            graphData.nodes = formattedData.nodes;
-            graphData.links = formattedData.links;
-            graphData.standaloneLinks = [];  // Reset or set it here
-            initGraph(graphData);
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
+  });
+  let graphData = { nodes: [], links: [], standaloneLinks: [] };
+  function fetchDataAndUpdateGraph() {
+    fetch("/get_results")
+      .then((response) => response.json())
+      .then((data) => {
+        const formattedData = transformData(data);
+        graphData.nodes = formattedData.nodes;
+        graphData.links = formattedData.links;
+        graphData.standaloneLinks = []; // Reset or set it here
+        initGraph(graphData);
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }
 
-function transformData(data) {
+  function transformData(data) {
     // Constants for text sizing
     const baseWidth = 120; // Minimum width of the box
-    const charWidth = 8;   // Estimated width per character
-    const padding = 20;    // Additional padding for each box
+    const charWidth = 8; // Estimated width per character
+    const padding = 20; // Additional padding for each box
 
-    var nodes = data.slice(1).map((d, i) => ({
-        name: d[1],
-        description: d[2], // Assuming you might want to use the description as well
-        x: 200 + 150 * i,
-        y: 200 + (i % 2) * 200, // Alternating y positions for visual distinction
-        width: Math.max(baseWidth, d[1].length * charWidth + padding), // Width calculation with padding
-        height: 60
+    const nodes = data.slice(1).map((d, i) => ({
+      name: d[1],
+      description: d[2], // Assuming you might want to use the description as well
+      x: 200 + 150 * i,
+      y: 200 + (i % 2) * 200, // Alternating y positions for visual distinction
+      width: Math.max(baseWidth, d[1].length * charWidth + padding), // Width calculation with padding
+      height: 60,
     }));
 
-    var links = nodes.map((node, i) => {
+    const links = nodes
+      .map((node, i) => {
         if (i < nodes.length - 1) {
-            return { source: i, target: i + 1 };
+          return { source: i, target: i + 1 };
         }
-    }).filter(link => link !== undefined);
+      })
+      .filter((link) => link !== undefined);
 
     return { nodes, links };
-}
+  }
 
+  function initGraph(data) {
+    let selectedLinkIndex = null; // This will store the reference to the selected link
 
+    const zoom = d3.zoom().scaleExtent([0.5, 10]).on("zoom", zoomed);
 
-
-
-function initGraph(data) {
-
-var selectedLinkIndex = null;  // This will store the reference to the selected link
-
-
-var zoom = d3.zoom()
-    .scaleExtent([0.5, 10])
-    .on("zoom", zoomed);
-
-
-function calculateExtents(nodes) {
-    let maxX = 0;
-    let maxY = 0;
-    let minX = Infinity; // Start with the largest possible to find the minimum
-    nodes.forEach(d => {
+    function calculateExtents(nodes) {
+      let maxX = 0;
+      let maxY = 0;
+      let minX = Infinity; // Start with the largest possible to find the minimum
+      nodes.forEach((d) => {
         maxX = Math.max(maxX, d.x + d.width / 2);
         maxY = Math.max(maxY, d.y + d.height / 2);
         minX = Math.min(minX, d.x - d.width / 2);
-    });
-    // Padding for the right side is also calculated dynamically, here assumed 100 more than left
-    let paddingX = 25; // Customizable padding for the left
-    let extraRightPadding = 125;
-    return { minX, maxX, width: maxX - minX + extraRightPadding, height: maxY, paddingX }; // Additional padding for X
-}
-
-// Call this function to update the viewBox and position elements after nodes data is set
-function updateSVGDimensions() {
-    const extents = calculateExtents(data.nodes);
-    const viewBoxX = extents.minX - extents.paddingX; // Start from less minX by padding
-    const viewBoxWidth = extents.width + 2 * extents.paddingX; // Add padding to both sides
-    const viewBoxHeight = extents.height + 20; // Some bottom padding, adjust as needed
-
-    svg.attr("viewBox", `${viewBoxX} 0 ${viewBoxWidth} ${viewBoxHeight}`)
-       .attr("width", "100%")
-       .attr("height", Math.min(500, viewBoxHeight)); // Adjust the min height as needed
-
-    // Adjust container position if needed (optional, depending on your initial offset needs)
-    container.attr("transform", `translate(${80 - viewBoxX}, -50)`);
-}
-
-// Assuming data.nodes is already defined and populated
-var svg = d3.select("#graph").append("svg")
-    .call(zoom);
-
-var container = svg.append("g")
-    .attr("transform", "translate(80, -50)");
-
-// Create a group specifically for links
-var linkGroup = container.append("g")
-    .attr("class", "link-group");
-
-// Create a group specifically for nodes
-var nodeGroup = container.append("g")
-    .attr("class", "node-group");
-
-    container.append('defs').append('marker')
-    .attr('id', 'arrowhead')
-    .attr('viewBox', '0 -5 10 10')  // ViewBox should be adjusted if arrow size changes
-    .attr('refX', 24)               // Position the tip of the arrow further from the node; adjust based on node size and arrow size
-    .attr('refY', 0)
-    .attr('orient', 'auto')
-    .attr('markerWidth', 4)
-    .attr('markerHeight', 4)
-    .attr('xoverflow', 'visible')
-    .append('svg:path')
-    .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-    .attr('fill', '#999');
-
-// Define links within the link group
-var link = linkGroup.selectAll(".link")
-        .data(data.links)
-        .enter().append("line")
-        .attr("class", "link")
-        .attr("x1", d => data.nodes[d.source].x)
-        .attr("y1", d => data.nodes[d.source].y)
-        .attr("x2", d => data.nodes[d.target].x)
-        .attr("y2", d => data.nodes[d.target].y)
-        .attr("stroke", "black")
-        .attr("marker-end", "url(#arrowhead)")
-        .style("stroke-width", "5px")
-        .on("click", function(d, i) { // Pass the index (second argument) here
-            selectedLinkIndex = i;
-            d3.selectAll('.link').style('stroke', 'black'); // Reset color of all links
-            d3.select(this).style('stroke', 'red'); // Highlight selected link
-        })
-        .call(d3.drag()
-    .on("start", dragStartedLink)
-        .on("drag", draggedLink)
-        .on("end", dragEndedLink))
-          // Prevent the click from affecting other elements
-    .on("click", function(d) {
-        selectedLink = this;
-        d3.event.stopPropagation()});
-
-
-
-// Then define nodes
-var nodes = nodeGroup.selectAll(".nodeGroup")
-        .data(data.nodes)
-        .enter().append("g")
-        .attr("class", "nodeGroup")
-        .attr('transform', d => `translate(${d.x}, ${d.y})`)
-        .call(d3.drag()
-            .on("start", dragstarted)
-            .on("drag", dragged)
-            .on("end", dragended))
-       
-
-// Update the rectangle drawing part
-nodes.append("rect")
-    .attr("x", d => -d.width / 2)  // Center the rectangle around the node's center
-    .attr("y", -30)
-    .attr("width", d => d.width)   // Use dynamic width
-    .attr("height", d => d.height) // Use dynamic height if needed
-    .style("fill", "lightgrey")
-    .style("stroke", "grey");
-
-nodes.append("text")
-    .attr("dy", "0.35em") // Center text vertically
-    .attr("text-anchor", "middle")
-    .text(d => d.name)
-    .style("fill", "black")
-    .style("font-family", "Arial")
-    .style("font-weight", "bold")
-    .style("font-size", "16px")
-    .style("paint-order", "stroke")
-    .style("stroke", "white")
-    .style("stroke-width", "0.6px");
-
-
-updateSVGDimensions();
-
-
-function zoomed() {
-    container.attr("transform", d3.event.transform);
-}
-
-function dragstarted(d) {
-    d3.select(this).raise().classed("active", true);
-}
-
-// Assuming the links and nodes are already set up correctly
-function dragged(d) {
-    // Update the position of the node being dragged
-    d.x = d3.event.x;
-    d.y = d3.event.y;
-
-    // Move the node visually by updating its transform attribute
-    d3.select(this).attr("transform", `translate(${d.x}, ${d.y})`);
-
-    // Update the links connected to this node
-    // For each link, update the appropriate x1, y1, x2, y2 attributes depending on whether
-    // this node is the source or the target of the link.
-    link
-        .filter(function(l) { return l.source === d || l.target === d; })
-        .attr("x1", l => l.source.x)
-        .attr("y1", l => l.source.y)
-        .attr("x2", l => l.target.x)
-        .attr("y2", l => l.target.y);
-}
-
-
-
-function dragended(d) {
-    d3.select(this).classed("active", false);
-    tooltip.style("display", "none");
-}
-
-
-
-function dragStartedLink(d) {
-    d3.event.sourceEvent.stopPropagation(); // Prevent event propagation to avoid unwanted behaviors
-    var coords = d3.mouse(this);
-    var x = coords[0];
-    var y = coords[1];
-
-    var sourceX = data.nodes[d.source].x;
-    var sourceY = data.nodes[d.source].y;
-    var targetX = data.nodes[d.target].x;
-    var targetY = data.nodes[d.target].y;
-
-    // Calculate distance to source and target to determine the drag point
-    var distanceToSource = Math.sqrt((x - sourceX) ** 2 + (y - sourceY) ** 2);
-    var distanceToTarget = Math.sqrt((x - targetX) ** 2 + (y - targetY) ** 2);
-
-    if (distanceToSource < 50) {
-        this.draggedPoint = "source";
-    } else if (distanceToTarget < 50) {
-        this.draggedPoint = "target";
-    } else {
-        this.draggedPoint = "middle";
+      });
+      // Padding for the right side is also calculated dynamically, here assumed 100 more than left
+      let paddingX = 25; // Customizable padding for the left
+      let extraRightPadding = 125;
+      return {
+        minX,
+        maxX,
+        width: maxX - minX + extraRightPadding,
+        height: maxY,
+        paddingX,
+      }; // Additional padding for X
     }
 
-    d3.select(this).raise().classed("active", true);
-}
+    // Call this function to update the viewBox and position elements after nodes data is set
+    function updateSVGDimensions() {
+      const extents = calculateExtents(data.nodes);
+      const viewBoxX = extents.minX - extents.paddingX; // Start from less minX by padding
+      const viewBoxWidth = extents.width + 2 * extents.paddingX; // Add padding to both sides
+      const viewBoxHeight = extents.height + 20; // Some bottom padding, adjust as needed
 
-function draggedLink(d) {
-    var x = d3.event.x;
-    var y = d3.event.y;
+      svg
+        .attr("viewBox", `${viewBoxX} 0 ${viewBoxWidth} ${viewBoxHeight}`)
+        .attr("width", "100%")
+        .attr("height", Math.min(500, viewBoxHeight)); // Adjust the min height as needed
 
-    if (this.draggedPoint === "source") {
+      // Adjust container position if needed (optional, depending on your initial offset needs)
+      container.attr("transform", `translate(${80 - viewBoxX}, -50)`);
+    }
+
+    // Assuming data.nodes is already defined and populated
+    const svg = d3.select("#graph").append("svg").call(zoom);
+
+    const container = svg.append("g").attr("transform", "translate(80, -50)");
+
+    // Create a group specifically for links
+    const linkGroup = container.append("g").attr("class", "link-group");
+
+    // Create a group specifically for nodes
+    const nodeGroup = container.append("g").attr("class", "node-group");
+
+    container
+      .append("defs")
+      .append("marker")
+      .attr("id", "arrowhead")
+      .attr("viewBox", "0 -5 10 10") // ViewBox should be adjusted if arrow size changes
+      .attr("refX", 24) // Position the tip of the arrow further from the node; adjust based on node size and arrow size
+      .attr("refY", 0)
+      .attr("orient", "auto")
+      .attr("markerWidth", 4)
+      .attr("markerHeight", 4)
+      .attr("xoverflow", "visible")
+      .append("svg:path")
+      .attr("d", "M 0,-5 L 10 ,0 L 0,5")
+      .attr("fill", "#999");
+
+    // Define links within the link group
+    const link = linkGroup
+      .selectAll(".link")
+      .data(data.links)
+      .enter()
+      .append("line")
+      .attr("class", "link")
+      .attr("x1", (d) => data.nodes[d.source].x)
+      .attr("y1", (d) => data.nodes[d.source].y)
+      .attr("x2", (d) => data.nodes[d.target].x)
+      .attr("y2", (d) => data.nodes[d.target].y)
+      .attr("stroke", "black")
+      .attr("marker-end", "url(#arrowhead)")
+      .style("stroke-width", "5px")
+      .on("click", function (d, i) {
+        // Pass the index (second argument) here
+        selectedLinkIndex = i;
+        d3.selectAll(".link").style("stroke", "black"); // Reset color of all links
+        d3.select(this).style("stroke", "red"); // Highlight selected link
+      })
+      .call(
+        d3
+          .drag()
+          .on("start", dragStartedLink)
+          .on("drag", draggedLink)
+          .on("end", dragEndedLink)
+      )
+      // Prevent the click from affecting other elements
+      .on("click", function (d) {
+        selectedLink = this;
+        d3.event.stopPropagation();
+      });
+
+    // Then define nodes
+    const nodes = nodeGroup
+      .selectAll(".nodeGroup")
+      .data(data.nodes)
+      .enter()
+      .append("g")
+      .attr("class", "nodeGroup")
+      .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+      .call(
+        d3
+          .drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended)
+      );
+
+    // Update the rectangle drawing part
+    nodes
+      .append("rect")
+      .attr("x", (d) => -d.width / 2) // Center the rectangle around the node's center
+      .attr("y", -30)
+      .attr("width", (d) => d.width) // Use dynamic width
+      .attr("height", (d) => d.height) // Use dynamic height if needed
+      .style("fill", "lightgrey")
+      .style("stroke", "grey");
+
+    nodes
+      .append("text")
+      .attr("dy", "0.35em") // Center text vertically
+      .attr("text-anchor", "middle")
+      .text((d) => d.name)
+      .style("fill", "black")
+      .style("font-family", "Arial")
+      .style("font-weight", "bold")
+      .style("font-size", "16px")
+      .style("paint-order", "stroke")
+      .style("stroke", "white")
+      .style("stroke-width", "0.6px");
+
+    updateSVGDimensions();
+
+    function zoomed() {
+      container.attr("transform", d3.event.transform);
+    }
+
+    function dragstarted(d) {
+      d3.select(this).raise().classed("active", true);
+    }
+
+    // Assuming the links and nodes are already set up correctly
+    function dragged(d) {
+      // Update the position of the node being dragged
+      d.x = d3.event.x;
+      d.y = d3.event.y;
+
+      // Move the node visually by updating its transform attribute
+      d3.select(this).attr("transform", `translate(${d.x}, ${d.y})`);
+
+      // Update the links connected to this node
+      // For each link, update the appropriate x1, y1, x2, y2 attributes depending on whether
+      // this node is the source or the target of the link.
+      link
+        .filter(function (l) {
+          return l.source === d || l.target === d;
+        })
+        .attr("x1", (l) => l.source.x)
+        .attr("y1", (l) => l.source.y)
+        .attr("x2", (l) => l.target.x)
+        .attr("y2", (l) => l.target.y);
+    }
+
+    function dragended(d) {
+      d3.select(this).classed("active", false);
+      tooltip.style("display", "none");
+    }
+
+    function dragStartedLink(d) {
+      d3.event.sourceEvent.stopPropagation(); // Prevent event propagation to avoid unwanted behaviors
+      const coords = d3.mouse(this);
+      const x = coords[0];
+      const y = coords[1];
+
+      const sourceX = data.nodes[d.source].x;
+      const sourceY = data.nodes[d.source].y;
+      const targetX = data.nodes[d.target].x;
+      const targetY = data.nodes[d.target].y;
+
+      // Calculate distance to source and target to determine the drag point
+      const distanceToSource = Math.sqrt(
+        (x - sourceX) ** 2 + (y - sourceY) ** 2
+      );
+      const distanceToTarget = Math.sqrt(
+        (x - targetX) ** 2 + (y - targetY) ** 2
+      );
+
+      if (distanceToSource < 50) {
+        this.draggedPoint = "source";
+      } else if (distanceToTarget < 50) {
+        this.draggedPoint = "target";
+      } else {
+        this.draggedPoint = "middle";
+      }
+
+      d3.select(this).raise().classed("active", true);
+    }
+
+    function draggedLink(d) {
+      var x = d3.event.x;
+      var y = d3.event.y;
+
+      if (this.draggedPoint === "source") {
         data.nodes[d.source].x = x;
         data.nodes[d.source].y = y;
-    } else if (this.draggedPoint === "target") {
+      } else if (this.draggedPoint === "target") {
         data.nodes[d.target].x = x;
         data.nodes[d.target].y = y;
-    } else if (this.draggedPoint === "middle") {
-        var dx = x - (data.nodes[d.source].x + (data.nodes[d.target].x - data.nodes[d.source].x) / 2);
-        var dy = y - (data.nodes[d.source].y + (data.nodes[d.target].y - data.nodes[d.source].y) / 2);
+      } else if (this.draggedPoint === "middle") {
+        var dx =
+          x -
+          (data.nodes[d.source].x +
+            (data.nodes[d.target].x - data.nodes[d.source].x) / 2);
+        var dy =
+          y -
+          (data.nodes[d.source].y +
+            (data.nodes[d.target].y - data.nodes[d.source].y) / 2);
         data.nodes[d.source].x += dx;
         data.nodes[d.source].y += dy;
         data.nodes[d.target].x += dx;
         data.nodes[d.target].y += dy;
+      }
+
+      // Update link attributes to reflect node position changes
+      d3.select(this)
+        .attr("x1", data.nodes[d.source].x)
+        .attr("y1", data.nodes[d.source].y)
+        .attr("x2", data.nodes[d.target].x)
+        .attr("y2", data.nodes[d.target].y);
     }
 
-    // Update link attributes to reflect node position changes
-    d3.select(this)
-      .attr("x1", data.nodes[d.source].x)
-      .attr("y1", data.nodes[d.source].y)
-      .attr("x2", data.nodes[d.target].x)
-      .attr("y2", data.nodes[d.target].y);
-}
+    function dragEndedLink(d) {
+      d3.select(this).classed("active", false);
+      this.draggedPoint = null; // Clear the dragged point reference
+    }
 
-function dragEndedLink(d) {
-    d3.select(this).classed("active", false);
-    this.draggedPoint = null; // Clear the dragged point reference
-}
-
-function deleteSelectedLink() {
-    if (selectedLinkIndex !== null) {
+    function deleteSelectedLink() {
+      if (selectedLinkIndex !== null) {
         // Remove the selected link from the data array
         data.links.splice(selectedLinkIndex, 1);
 
         // Update the links in the visualization
-        var linkUpdate = linkGroup.selectAll(".link")
-            .data(data.links);
+        var linkUpdate = linkGroup.selectAll(".link").data(data.links);
 
         // Remove the old link
         linkUpdate.exit().remove();
 
         // Reset any style changes
-        linkUpdate.style('stroke', 'black');
+        linkUpdate.style("stroke", "black");
 
         // Reset the selectedLinkIndex to null
         selectedLinkIndex = null;
-    } else {
+      } else {
         alert("No link selected!");
+      }
     }
-}
 
-function addLink() {
-    var newLink = {
-        x1: 50, y1: 100, x2: 150, y2: 100,
-        id: Date.now()  // Unique identifier for the link
-    };
-    
-    graphData.standaloneLinks.push(newLink);
-    updateStandaloneLinks();
-}
+    function addLink() {
+      var newLink = {
+        x1: 50,
+        y1: 100,
+        x2: 150,
+        y2: 100,
+        id: Date.now(), // Unique identifier for the link
+      };
 
-function updateStandaloneLinks() {
-    var linkSelection = d3.select('#graph').selectAll(".standaloneLink")
-        .data(graphData.standaloneLinks, d => d.id);
+      graphData.standaloneLinks.push(newLink);
+      updateStandaloneLinks();
+    }
 
-    linkSelection.enter()
+    function updateStandaloneLinks() {
+      var linkSelection = d3
+        .select("#graph")
+        .selectAll(".standaloneLink")
+        .data(graphData.standaloneLinks, (d) => d.id);
+
+      linkSelection
+        .enter()
         .append("line")
         .classed("standaloneLink", true)
-        .attr("x1", d => d.x1)
-        .attr("y1", d => d.y1)
-        .attr("x2", d => d.x2)
-        .attr("y2", d => d.y2)
+        .attr("x1", (d) => d.x1)
+        .attr("y1", (d) => d.y1)
+        .attr("x2", (d) => d.x2)
+        .attr("y2", (d) => d.y2)
         .attr("stroke", "black")
         .attr("marker-end", "url(#arrowhead)")
         .style("stroke-width", "5px");
 
-    linkSelection.exit().remove();
-}
-
-
-
-function addLinkDragStart(d) {
-    var coords = d3.mouse(this);
-    var x = coords[0];
-    var y = coords[1];
-
-    // Determine if the click is near an endpoint or the middle
-    var distanceToStart = Math.sqrt((x - d.x1) ** 2 + (y - d.y1) ** 2);
-    var distanceToEnd = Math.sqrt((x - d.x2) ** 2 + (y - d.y2) ** 2);
-    
-    if (distanceToStart < 50) {
-        this.draggedPoint = "start";
-    } else if (distanceToEnd < 50) {
-        this.draggedPoint = "end";
-    } else {
-        this.draggedPoint = "middle"; // Move the entire line
+      linkSelection.exit().remove();
     }
-    d3.select(this).raise().classed("active", true);
-}
 
-function addDraggedLink(d) {
-    var x = d3.event.x;
-    var y = d3.event.y;
+    function addLinkDragStart(d) {
+      var coords = d3.mouse(this);
+      var x = coords[0];
+      var y = coords[1];
 
-    if (this.draggedPoint === "end") {
+      // Determine if the click is near an endpoint or the middle
+      var distanceToStart = Math.sqrt((x - d.x1) ** 2 + (y - d.y1) ** 2);
+      var distanceToEnd = Math.sqrt((x - d.x2) ** 2 + (y - d.y2) ** 2);
+
+      if (distanceToStart < 50) {
+        this.draggedPoint = "start";
+      } else if (distanceToEnd < 50) {
+        this.draggedPoint = "end";
+      } else {
+        this.draggedPoint = "middle"; // Move the entire line
+      }
+      d3.select(this).raise().classed("active", true);
+    }
+
+    function addDraggedLink(d) {
+      const x = d3.event.x;
+      const y = d3.event.y;
+
+      if (this.draggedPoint === "end") {
         d.x2 = x;
         d.y2 = y;
-    } else if (this.draggedPoint === "start") {
+      } else if (this.draggedPoint === "start") {
         d.x1 = x;
         d.y1 = y;
-    } else {
+      } else {
         // Move the entire line
-        var dx = x - (d.x1 + (d.x2 - d.x1) / 2);
-        var dy = y - (d.y1 + (d.y2 - d.y1) / 2);
+        const dx = x - (d.x1 + (d.x2 - d.x1) / 2);
+        const dy = y - (d.y1 + (d.y2 - d.y1) / 2);
         d.x1 += dx;
         d.y1 += dy;
         d.x2 += dx;
         d.y2 += dy;
+      }
+
+      d3.select(this)
+        .attr("x1", d.x1)
+        .attr("y1", d.y1)
+        .attr("x2", d.x2)
+        .attr("y2", d.y2);
     }
-    
-    d3.select(this)
-      .attr("x1", d.x1)
-      .attr("y1", d.y1)
-      .attr("x2", d.x2)
-      .attr("y2", d.y2);
-}
 
-function addDragEndedLink(d) {
-    d3.select(this).classed("active", false);
-    this.draggedPoint = null; // Clear the dragged point reference
-}
+    function addDragEndedLink(d) {
+      d3.select(this).classed("active", false);
+      this.draggedPoint = null; // Clear the dragged point reference
+    }
+  }
 
-}
+  function updateGraph() {
+    const svg = d3.select("svg");
+    const linkSelection = svg
+      .select(".link-group")
+      .selectAll("line")
+      .data(graphData.links);
 
-
-
-function updateGraph() {
-    var svg = d3.select('svg');
-    var linkSelection = svg.select(".link-group")
-        .selectAll("line")
-        .data(graphData.links);
-
-    linkSelection.enter().append("line")
-        .classed("link", true)
-        .attr("x1", d => graphData.nodes[d.source].x)
-        .attr("y1", d => graphData.nodes[d.source].y)
-        .attr("x2", d => graphData.nodes[d.target].x)
-        .attr("y2", d => graphData.nodes[d.target].y)
-        .attr("stroke", "black")
-        .attr("marker-end", "url(#arrowhead)");
+    linkSelection
+      .enter()
+      .append("line")
+      .classed("link", true)
+      .attr("x1", (d) => graphData.nodes[d.source].x)
+      .attr("y1", (d) => graphData.nodes[d.source].y)
+      .attr("x2", (d) => graphData.nodes[d.target].x)
+      .attr("y2", (d) => graphData.nodes[d.target].y)
+      .attr("stroke", "black")
+      .attr("marker-end", "url(#arrowhead)");
 
     linkSelection.exit().remove();
 
     // Update existing links
-    linkSelection.attr("x1", d => graphData.nodes[d.source].x)
-        .attr("y1", d => graphData.nodes[d.source].y)
-        .attr("x2", d => graphData.nodes[d.target].x)
-        .attr("y2", d => graphData.nodes[d.target].y);
-}
+    linkSelection
+      .attr("x1", (d) => graphData.nodes[d.source].x)
+      .attr("y1", (d) => graphData.nodes[d.source].y)
+      .attr("x2", (d) => graphData.nodes[d.target].x)
+      .attr("y2", (d) => graphData.nodes[d.target].y);
+  }
 
-
-
-function saveImage() {
-    var svgElement = document.querySelector('#graph svg');
+  function saveImage() {
+    const svgElement = document.querySelector("#graph svg");
     if (!svgElement) {
-        alert('No SVG element found!');
-        return;
+      alert("No SVG element found!");
+      return;
     }
 
-    var serializer = new XMLSerializer();
-    var svgString = serializer.serializeToString(svgElement);
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgElement);
 
     // Setup scale and dimensions correctly
-    var scale = 3; // Increase or adjust this scale factor as needed for higher resolution
-    var svgWidth = svgElement.viewBox.baseVal.width || svgElement.width.baseVal.value;
-    var svgHeight = svgElement.viewBox.baseVal.height || svgElement.height.baseVal.value;
+    const scale = 3; // Increase or adjust this scale factor as needed for higher resolution
+    const svgWidth =
+      svgElement.viewBox.baseVal.width || svgElement.width.baseVal.value;
+    const svgHeight =
+      svgElement.viewBox.baseVal.height || svgElement.height.baseVal.value;
 
-    var width = scale * svgWidth;
-    var height = scale * svgHeight;
+    const width = scale * svgWidth;
+    const height = scale * svgHeight;
 
     // Prepare an image to render
-    var img = new Image();
-    img.onload = function() {
-        var canvas = document.createElement('canvas');
-        canvas.width = width;
-        canvas.height = height;
-        var ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#FFFFFF'; // Ensure background is white
-        ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(img, 0, 0, width, height); // Draw the image at the correct size
+    const img = new Image();
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#FFFFFF"; // Ensure background is white
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(img, 0, 0, width, height); // Draw the image at the correct size
 
-        // Convert canvas to PNG URL and trigger download
-        var pngUrl = canvas.toDataURL("image/png");
-        var downloadLink = document.createElement('a');
-        downloadLink.href = pngUrl;
-        downloadLink.download = 'ismviz.png'; // Name the file
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+      // Convert canvas to PNG URL and trigger download
+      const pngUrl = canvas.toDataURL("image/png");
+      const downloadLink = document.createElement("a");
+      downloadLink.href = pngUrl;
+      downloadLink.download = "ismviz.png"; // Name the file
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
     };
 
-    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgString)));
-}
-
+    img.src =
+      "data:image/svg+xml;base64," +
+      btoa(unescape(encodeURIComponent(svgString)));
+  }
 </script>
 
 {% endblock %}
