@@ -9,3 +9,5 @@ orcaapp.sock
 !.vscode/launch.json
 *.sqlite3
 flask_app/static/plots
+
+node_modules
