@@ -1,150 +1,192 @@
-{% extends 'base.html' %}
-{# Extends the 'base.html' template #}
+{% extends 'base.html' %} {# Extends the 'base.html' template #} {% import
+"bootstrap/wtf.html" as wtf %} {# Imports 'wtf.html' from the 'bootstrap'
+directory with an alias 'wtf' #} {% block styles %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/index.css') }}"
+/>
+{% endblock %} {% block title %} ISM Home {# Sets the title of the page to "ISM
+Home" #} {% endblock %}
 
-{% import "bootstrap/wtf.html" as wtf %}
-{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
-
-{% block styles %}
-  {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-{% endblock %}
-
-{% block title %}
-  ISM Home
-  {# Sets the title of the page to "ISM Home" #}
-{% endblock %}
-
-<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="index.css" />
 
 {% block content %}
-  <div class="grid-container">
-      <div class="gettingStarted">
-        <h1 class="pt-5 pb-2">Getting Started</h1>
-        {# Heading for the page #}
-        <p class="welcome"> Welome to the ISM app. 
-          This is an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants to 
-          produce a visual that helps a group of people solve a collective problem. 
-          This app takes in a list of factors identified by research participants that affect a specific problem. 
-          It will then work with participants to figure out the relationships between factors (things that impact their ability to act). 
-          An algorithm will then determine which factors should be addressed first, second, and so on in order for the group to meet their goals.</p>
-          <br><p style="text-align: center; font-size: 18px;">Click on the About Page to learn more.</p>
-          
-        <p><a href="about"><button class="goToAbout">Go To About</button></a></p>
-      </div>
+<div class="grid-container">
+  <div class="gettingStarted">
+    <h1 class="pt-5 pb-2">Getting Started</h1>
+    {# Heading for the page #}
+    <p class="welcome">
+      Welome to the ISM app. This is an open source tool for conducting
+      Interpretive Structural Modeling (ISM) research with participants to
+      produce a visual that helps a group of people solve a collective problem.
+      This app takes in a list of factors identified by research participants
+      that affect a specific problem. It will then work with participants to
+      figure out the relationships between factors (things that impact their
+      ability to act). An algorithm will then determine which factors should be
+      addressed first, second, and so on in order for the group to meet their
+      goals.
+    </p>
+    <br />
+    <p style="text-align: center; font-size: 18px">
+      Click on the About Page to learn more.
+    </p>
+
+    <p>
+      <a href="about"><button class="goToAbout">Go To About</button></a>
+    </p>
+  </div>
   <!-- Load section -->
   <div class="loadContainer">
     <div class="shared-style">
-        <h4>Upload Data</h4>
-        <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
-       
-        <div class="load">
-          <button onclick="triggerFileInput('factor')" class="loadButton">Upload Factors</button>
-        </div>
+      <h4>Upload Data</h4>
+      <input
+        type="file"
+        id="fileInput"
+        style="display: none"
+        accept=".csv"
+        onchange="uploadFile(this.getAttribute('data-type'))"
+      />
 
-        <div class="load">
-          <button onclick="triggerFileInput('participant')" class="loadButton">Upload Participants</button>
-        </div>
-
-        <div class="load">
-          <button onclick="triggerFileInput('rating')" class="loadButton">Upload Ratings</button>
-        </div>
-
-        <div class="load">
-          <button onclick="triggerFileInput('result')" class="loadButton">Upload Results</button>
-        </div>
-
+      <div class="load">
+        <button onclick="triggerFileInput('factor')" class="loadButton">
+          Upload Factors
+        </button>
       </div>
-</div>
+
+      <div class="load">
+        <button onclick="triggerFileInput('participant')" class="loadButton">
+          Upload Participants
+        </button>
+      </div>
+
+      <div class="load">
+        <button onclick="triggerFileInput('rating')" class="loadButton">
+          Upload Ratings
+        </button>
+      </div>
+
+      <div class="load">
+        <button onclick="triggerFileInput('result')" class="loadButton">
+          Upload Results
+        </button>
+      </div>
+    </div>
+  </div>
   <!-- Export section-->
   <div class="exportContainer">
     <div class="shared-style">
       <h4>Export</h4>
       <!-- TODO: add links to factors, participants,
         ratings, and results (clickable option) -->
-        <form action="/export_data" method="post">
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="factors">Export Factors</button>
-          </div>
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="participants">Export Participants</button>
-          </div>
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="ratings">Export Ratings</button>
-          </div>
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="results">Export Results</button>
-          </div>
-         
-        </form>
+      <form action="/export_data" method="post">
+        <div class="export">
+          <button
+            class="exportButton"
+            type="submit"
+            name="data_type"
+            value="factors"
+          >
+            Export Factors
+          </button>
+        </div>
+        <div class="export">
+          <button
+            class="exportButton"
+            type="submit"
+            name="data_type"
+            value="participants"
+          >
+            Export Participants
+          </button>
+        </div>
+        <div class="export">
+          <button
+            class="exportButton"
+            type="submit"
+            name="data_type"
+            value="ratings"
+          >
+            Export Ratings
+          </button>
+        </div>
+        <div class="export">
+          <button
+            class="exportButton"
+            type="submit"
+            name="data_type"
+            value="results"
+          >
+            Export Results
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
-
 <script>
   function triggerFileInput(type) {
-      var fileInput = document.getElementById('fileInput');
-      fileInput.setAttribute('data-type', type); // Set the type of data to upload
-      fileInput.click();
-  }
-  
-  function uploadFile(dataType) {
-      var fileInput = document.getElementById('fileInput');
-      if(fileInput.files.length > 0) {
-          var formData = new FormData();
-          formData.append('csv_upload', fileInput.files[0]);
-          formData.append('data_type', dataType); // Include the data type in the FormData
-  
-          fetch('/upload_csv', {
-              method: 'POST',
-              body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log(data);
-              // Handle success or redirect
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
-      }
-  }
-  </script>
-
-  <!-- /**
- * Triggers the file input element to open the file selection dialog.
- * @param {string} type - The type of data to upload.
- */
-function triggerFileInput(type) {
-    var fileInput = document.getElementById('fileInput');
-    fileInput.setAttribute('data-type', type); // Set the type of data to upload
+    const fileInput = document.getElementById("fileInput");
+    fileInput.setAttribute("data-type", type); // Set the type of data to upload
     fileInput.click();
-}
+  }
 
-/**
- * Uploads the selected file to the server.
- * @param {string} dataType - The type of data being uploaded.
- */
-function uploadFile(dataType) {
-    var fileInput = document.getElementById('fileInput');
+  function uploadFile(dataType) {
+    const fileInput = document.getElementById("fileInput");
     if (fileInput.files.length > 0) {
-        var formData = new FormData();
-        formData.append('csv_upload', fileInput.files[0]);
-        formData.append('data_type', dataType); // Include the data type in the FormData
+      const formData = new FormData();
+      formData.append("csv_upload", fileInput.files[0]);
+      formData.append("data_type", dataType); // Include the data type in the FormData
 
-        fetch('/upload_csv', {
-            method: 'POST',
-            body: formData
+      fetch("/upload_csv", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // Handle success or redirect
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            // Handle success or redirect
-        })
-        .catch(error => {
-            console.error('Error:', error);
+        .catch((error) => {
+          console.error("Error:", error);
         });
     }
-} -->
+  }
+
+  // /**
+  //  * Triggers the file input element to open the file selection dialog.
+  //  * @param {string} type - The type of data to upload.
+  //  */
+  // function triggerFileInput(type) {
+  //     const fileInput = document.getElementById('fileInput');
+  //     fileInput.setAttribute('data-type', type); // Set the type of data to upload
+  //     fileInput.click();
+  // }
+
+  // /**
+  //  * Uploads the selected file to the server.
+  //  * @param {string} dataType - The type of data being uploaded.
+  //  */
+  // function uploadFile(dataType) {
+  //     const fileInput = document.getElementById('fileInput');
+  //     if (fileInput.files.length > 0) {
+  //         const formData = new FormData();
+  //         formData.append('csv_upload', fileInput.files[0]);
+  //         formData.append('data_type', dataType); // Include the data type in the FormData
+
+  //         fetch('/upload_csv', {
+  //             method: 'POST',
+  //             body: formData
+  //         })
+  //         .then(response => response.json())
+  //         .then(data => {
+  //             console.log(data);
+  //             // Handle success or redirect
+  //         })
+  //         .catch(error => {
+  //             console.error('Error:', error);
+  //         });
+  //     }
+  // }
 </script>
 {% endblock %}
