@@ -94,8 +94,8 @@ function desscendingVotes()
 }
 function limitCheckboxes() 
 {
-  var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  var checkedCount = 0;
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  let checkedCount = 0;
   for (var i = 0; i < checkboxes.length; i++) 
   {
     if (checkboxes[i].checked) 
