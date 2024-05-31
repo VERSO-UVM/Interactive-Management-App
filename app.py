@@ -479,11 +479,11 @@ def result():
 def get_results():
     dag_data = {
     "nodes": [
-        {"id": "A"},
-        {"id": "B"},
-        {"id": "C"},
-        {"id": "D"},
-        {"id": "E"}
+        {"name": "A"},
+        {"name": "B"},
+        {"name": "C"},
+        {"name": "D"},
+        {"name": "E"}
     ],
     "links": [
         {"source": "A", "target": "B"},
