@@ -33,6 +33,7 @@ def configure_flask_application() -> _Flask:
     """
     app = _Flask(__name__)
     app.config['APPLICATION_ROOT'] = os.path.dirname(os.path.abspath(__file__))
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
     __app_csrf_init(app)
     _Bootstrap(app)
 
