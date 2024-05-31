@@ -11,13 +11,87 @@ from flask_app.database.Alchemy import ParticipantTBL
 from flask_app.database.Alchemy import FactorTBL
 from flask_app.database.Alchemy import RatingsTBL
 from flask_app.database.Alchemy import ResultsTBL
+from flask_app.database.Alchemy import User
 from flask_app.lib.dTypes.Factor import Factor
 from flask_app.lib.dTypes.Participant import Participant
+from passlib.hash import bcrypt_sha256
 __DATABASE_CONNECTION = initialize_database_connection()
 
 # TODO COMMENTS ABOVE EACH FUNCTION
 
 # frequency essentially correlates to 'votes'.
+
+
+def query_user_by_email(email: str):
+    """
+    Queries a user from the database based on email.
+
+    Args:
+        email (str): Email address of the user.
+
+    Returns:
+        User: User object found or None if not found.
+    """
+    try:
+        user = __DATABASE_CONNECTION.query(
+            User).filter(User.email == email).first()
+        return user
+    except Exception as e:
+        print(f"Error querying user by email: {e}")
+        return None
+
+
+def query_user_by_id(user_id: int):
+    """
+    Queries a user from the database based on user ID.
+
+    Args:
+        user_id (int): ID of the user.
+
+    Returns:
+        User: User object found or None if not found.
+    """
+    try:
+        user = __DATABASE_CONNECTION.query(
+            User).filter(User.id == user_id).first()
+        return user
+    except Exception as e:
+        print(f"Error querying user by ID: {e}")
+        return None
+
+
+def insert_user(email: str, password: str) -> bool:
+    """
+    Insert a new user into the database.
+    """
+    password_hash = bcrypt_sha256.hash(password)
+    try:
+        user = User(email=email, password_hash=password_hash)
+
+    except AttributeError:
+        print('ERROR: attempting to insert Participant, but data is invalid or missing')
+        return False
+    if user:
+        try:
+            __DATABASE_CONNECTION.add(user)
+            __DATABASE_CONNECTION.commit()
+            return True
+
+        except sqlite3.ProgrammingError as e:
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.IntegrityError as e:
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.OperationalError as e:
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.DatabaseError as e:
+            print("is the database file missing?")
+            print(f"{e.with_traceback()}")
+            return False
+
+    return False
 
 
 def insert_factor(title: str,
@@ -232,28 +306,29 @@ def insert_result(id: float, factor_leading: str, factor_following: str, weight:
     return False
 
 
-def fetch(tbl):
+def fetch(tbl, user_id):
     """
-    Fetches all entries from a specified table in the database.
+    Fetches all entries from a specified table in the database associated with the given user ID.
 
     Args:
         tbl: Table name.
+        user_id: ID of the user whose data to fetch.
 
     Returns:
         List: List of fetched entries.
     """
     if tbl == FactorTBL:
         # Fetch specific columns for FactorTBL
-        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.title, tbl.description, tbl.votes)).fetchall()
+        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.title, tbl.description, tbl.votes).where(tbl.user_id == user_id)).fetchall()
     elif tbl == ParticipantTBL:
         # Fetch specific columns for ParticipantTBL
-        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.f_name, tbl.l_name, tbl.email, tbl.telephone)).fetchall()
+        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.f_name, tbl.l_name, tbl.email, tbl.telephone).where(tbl.user_id == user_id)).fetchall()
     elif tbl == RatingsTBL:
         # Fetch specific columns for RatingsTBL
-        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating, tbl.participant_id)).fetchall()
+        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating, tbl.participant_id).where(tbl.user_id == user_id)).fetchall()
     elif tbl == ResultsTBL:
         # Fetch specific columns for ResultsTBL
-        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating)).fetchall()
+        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating).where(tbl.user_id == user_id)).fetchall()
     else:
         raise ValueError("Invalid table name")
 

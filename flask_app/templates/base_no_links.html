@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}{{title|default}}{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico">
+    <link href="{{bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap')}}" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?version={{ now }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+  </head>
+  
+  <body>
+    <header>
+      <nav>
+      </nav>
+    </header>
+    {% block content %}{% endblock content %}
+    <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
+    <script src="{{bootstrap_find_resource('js/bootstrap.js', cdn='bootstrap')}}"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{% extends 'base_no_links.html' %}
+{# Extends the 'base_no_links.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+
+
+{% block title %}Login{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Login</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-group">
+            {{ wtf.form_field(form.email) }}
+        </div>
+        
+        <div class="form-group">
+            {{ wtf.form_field(form.password) }}
+        </div>
+        
+        <div class="form-group form-check">
+            {{ wtf.form_field(form.remember) }}
+        </div>
+        
+        <div class="form-group">
+            {{ wtf.form_field(form.submit, class="btn btn-primary") }}
+        </div>
+        
+    </form>
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>  <!-- Registration link -->
+</div>
+{% endblock content %}

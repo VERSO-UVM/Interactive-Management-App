@@ -1,9 +1,10 @@
 # Import necessary modules and classes
-from flask import Response, render_template, request, redirect, url_for, session, jsonify, request
+from flask import Response, flash, get_flashed_messages, render_template, request, redirect, url_for, session, jsonify, request
 from flask_app.config import configure_flask_application
-from flask_app.lib.dTypes.User import User
 import flask_app.database.database_access as database_access
-from flask_app.database.database_access import ResultsTBL
+from flask_app.database.database_access import ResultsTBL, query_user_by_email, insert_user, query_user_by_id
+from flask_login import login_user, current_user, logout_user, login_required, LoginManager
+from flask_app.forms import LoginForm, RegistrationForm
 import networkx as nx
 import datetime as dt
 import matplotlib
@@ -11,7 +12,7 @@ import matplotlib.pyplot as plt
 import os
 import io
 from flask_app.database.database_access import insert_factor, insert_participant, insert_rating, insert_result
-from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL
+from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL, User
 import csv
 import itertools
 import json
@@ -198,8 +199,8 @@ def get_matrix_sets(df):
 subsection = 0
 # Configure Flask application
 app = configure_flask_application()
-# login_manager = LoginManager()
-# login_manager.init_app(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 plt.ioff()
 matplotlib.use('Agg')
 plots_dir = 'flask_app/static/plots'
@@ -207,13 +208,52 @@ plots_dir = 'flask_app/static/plots'
 # Ensure the directory exists
 os.makedirs(plots_dir, exist_ok=True)
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    # This function is called to load a user object based on the user ID stored in the session
+    return query_user_by_id(user_id)
+
+
 # Define route for the index page
-
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def index():
     # database_access.delete_everything()
     return render_template('index.html')
+
+
+@app.route("/", methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = query_user_by_email(form.email.data)
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember.data)
+            return redirect(url_for('index'))
+
+        else:
+            flash(
+                'Login Unsuccessful. Please check email and password and try again.', 'danger')
+
+    return render_template('login.html', title='Login', form=form)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        insert_user(form.email.data, form.password.data)
+        flash('Congratulations, you are now a registered user!', 'success')
+        return redirect(url_for('index'))
+    return render_template('register.html', title='Register', register_form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 ####################### Factor Functions##########################
 
@@ -643,8 +683,9 @@ def export_data():
     }
 
     if data_type in table_map:
+        current_user_id = current_user.id
         # Fetch data from the database using the fetch function
-        data = database_access.fetch(table_map[data_type])
+        data = database_access.fetch(table_map[data_type], current_user_id)
 
         # Create a CSV string
         csv_string = io.StringIO()
@@ -665,9 +706,3 @@ def export_data():
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001, threaded=False)
-
-# @login_manager.user_loader
-
-
-def load_user(user_id):
-    return User.get_id(user_id)
