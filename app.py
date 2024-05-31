@@ -18,6 +18,7 @@ import json
 import numpy as np
 import pandas as pd
 
+
 def structure_matrix(A):
     """
     This function that takes a square boolean numpy array as input and returns
@@ -193,7 +194,8 @@ def get_matrix_sets(df):
     # Return dictionaries
     return ind2reach, ind2antec, intx
 
-subsection=0
+
+subsection = 0
 # Configure Flask application
 app = configure_flask_application()
 # login_manager = LoginManager()
@@ -280,13 +282,13 @@ def insert_factor():
     if request.method == 'POST':
 
         # ##Get from the form
-        title=request.form["f_title"]
-        description=request.form["f_description"]
-        votes=request.form["f_votes"]
-        
+        title = request.form["f_title"]
+        description = request.form["f_description"]
+        votes = request.form["f_votes"]
 
-        database_access.insert_factor(title=title,description=description,votes=votes)
-        return redirect (url_for('factor',num=-1))
+        database_access.insert_factor(
+            title=title, description=description, votes=votes)
+        return redirect(url_for('factor', num=-1))
     else:
         return render_template("insert_factor.html")
 
@@ -305,78 +307,80 @@ def middleMan():
         return render_template('participant_id_select.html', resultsID=resultsID)
 
 
+# Subsection of factors picked by the users
+# Ultizies get_factor_list  from database acess
+# Shows selected_factors to pick factors but shows pick_factor from load
+@app.route('/pick_factors/<p_id>/<num>', methods=['POST', 'GET'])
+def pick_factors(p_id, num):
 
-###Subsection of factors picked by the users
-##Ultizies get_factor_list  from database acess
-###Shows selected_factors to pick factors but shows pick_factor from load
-@app.route('/pick_factors/<p_id>/<num>',methods=['POST','GET'])
-def pick_factors(p_id,num):
-
-    if request.method=='POST':
-        ##Gets factors from user selection
-        factors_picked=request.form.getlist('factors')
-        factor=database_access.get_factor_list(factors_picked)
+    if request.method == 'POST':
+        # Gets factors from user selection
+        factors_picked = request.form.getlist('factors')
+        factor = database_access.get_factor_list(factors_picked)
         global subsection
-        subsection=len(factor)
+        subsection = len(factor)
 
-        ##Deletes previous entries of rating table
+        # Deletes previous entries of rating table
         (database_access.delete_rating(p_id))
 
-
-        ##Inserts into rating table with default 0
+        # Inserts into rating table with default 0
         combinations = list(itertools.combinations(factor, 2))
-        
-        
-        for i in range(0,len(combinations)):
-            database_access.insert_rating(factor_leading=combinations[i][0],factor_following=combinations[i][1],rating=0,participant_id=p_id)
-            database_access.insert_rating(factor_leading=combinations[i][1],factor_following=combinations[i][0],rating=0,participant_id=p_id)
+
+        for i in range(0, len(combinations)):
+            database_access.insert_rating(
+                factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, participant_id=p_id)
+            database_access.insert_rating(
+                factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, participant_id=p_id)
             print(f'{combinations[i][0]}{combinations[i][1]}')
             print(f'{combinations[i][1]}{combinations[i][0]}')
-        return render_template("initial_factors.html",factor=factor,p_id=p_id)
-    
+        return render_template("initial_factors.html", factor=factor, p_id=p_id)
+
     else:
-        ##Logic for ascending and descending button
-        if num=='-1':
-            factor=database_access.get_all_factors()
-       
-        elif num=='1':
-            factor=database_access.ascendingOrder()
-       
-        elif num=='2':
-            factor=database_access.descendingOrder()
-       
-        return render_template("pick_factor.html",factor=factor)
+        # Logic for ascending and descending button
+        if num == '-1':
+            factor = database_access.get_all_factors()
+
+        elif num == '1':
+            factor = database_access.ascendingOrder()
+
+        elif num == '2':
+            factor = database_access.descendingOrder()
+
+        return render_template("pick_factor.html", factor=factor)
 
 
 def structure(factors):
-    
-        # Initialize a matrix to store user choices
-        matrix_size = len(factors)
-        user_choices = [[0] * matrix_size for _ in range(matrix_size)]
-        # Iterate through all ordered pairs
-        for i in range(matrix_size):
-            for j in range(i + 1, matrix_size):
-                print(f"Do {factors[i]} and {factors[j]} support each other?")
-                choice = input("Enter 'Yes' or 'No': ")
-                if choice.lower() == 'yes':
-                    user_choices[i][j] = 1
-        # Calculate structured relationships based on user choices
-        structured_factors = []
-        for i in range(matrix_size):
-            for j in range(i + 1, matrix_size):
-                if user_choices[i][j] == 1:
-                    structured_factors.append((factors[i], factors[j]))
-        return structured_factors
-    
-#################################Rating##################################################################
+
+    # Initialize a matrix to store user choices
+    matrix_size = len(factors)
+    user_choices = [[0] * matrix_size for _ in range(matrix_size)]
+    # Iterate through all ordered pairs
+    for i in range(matrix_size):
+        for j in range(i + 1, matrix_size):
+            print(f"Do {factors[i]} and {factors[j]} support each other?")
+            choice = input("Enter 'Yes' or 'No': ")
+            if choice.lower() == 'yes':
+                user_choices[i][j] = 1
+    # Calculate structured relationships based on user choices
+    structured_factors = []
+    for i in range(matrix_size):
+        for j in range(i + 1, matrix_size):
+            if user_choices[i][j] == 1:
+                structured_factors.append((factors[i], factors[j]))
+    return structured_factors
+
+################################# Rating##################################################################
 
 # Updates Rating Based on the users response
 # Ultilizies update_rating function from database access
+
+
 @app.route('/update_rating/<p_id>/<f_id>/<rating>')
-def update_rating(p_id,f_id,rating):
-   f_id=int(f_id)
-   database_access.update_rating(person_id=int(p_id),rating=float(rating),index=f_id-1)
-   return rating
+def update_rating(p_id, f_id, rating):
+    f_id = int(f_id)
+    database_access.update_rating(person_id=int(
+        p_id), rating=float(rating), index=f_id-1)
+    return rating
 
 
 @app.route('/participant_id_selected', methods=['POST', 'GET'])
@@ -392,73 +396,69 @@ def participant_id_selected():
 
 @app.route('/insert_rating/<p_id>')
 def insert_rating(p_id):
-   
-    factor=database_access.get_rating_by_id(p_id)
-    person=database_access.search_specific_participant(p_id)
-    return render_template('rating.html', factor=factor,person=person)
+
+    factor = database_access.get_rating_by_id(p_id)
+    person = database_access.search_specific_participant(p_id)
+    return render_template('rating.html', factor=factor, person=person)
 
 
-###Used to get factor information for displaying from table
-@app.route('/getInfoLeading/<p_id>/<f_id>',methods=['POST','GET'])
-def getInfoLeading(p_id,f_id):
- 
- ##Gets information from factor based on the id 
- 
- try:
-    
-    result = database_access.specific_id_factor(f_id)
-    results=result.factor_leading
-    resultTitle=database_access.search_specific_factor(int(results))
-    resultsss=resultTitle.title
-    return resultsss
- except:
-     return "-1"
-   
+# Used to get factor information for displaying from table
+@app.route('/getInfoLeading/<p_id>/<f_id>', methods=['POST', 'GET'])
+def getInfoLeading(p_id, f_id):
 
-###Used to get factor information for displaying from table
-##Ultizies search specific factpr and specifc id factor from database acess
-@app.route('/getInfoFollowing/<p_id>/<f_id>',methods=['POST','GET'])
-def getInfoFollowing(p_id,f_id):
-    ##Gets information from factor based on the id 
-   try:
-    result = database_access.specific_id_factor(f_id)
-    results=result.factor_following
+    # Gets information from factor based on the id
 
-    resultTitle=database_access.search_specific_factor(int(results))
-    print(resultTitle.title)
-    resultsss=resultTitle.title
-    return (resultsss)
-    
-   except:
-       return "-1"
-    
+    try:
+
+        result = database_access.specific_id_factor(f_id)
+        results = result.factor_leading
+        resultTitle = database_access.search_specific_factor(int(results))
+        resultsss = resultTitle.title
+        return resultsss
+    except:
+        return "-1"
+
+
+# Used to get factor information for displaying from table
+# Ultizies search specific factpr and specifc id factor from database acess
+@app.route('/getInfoFollowing/<p_id>/<f_id>', methods=['POST', 'GET'])
+def getInfoFollowing(p_id, f_id):
+    # Gets information from factor based on the id
+    try:
+        result = database_access.specific_id_factor(f_id)
+        results = result.factor_following
+
+        resultTitle = database_access.search_specific_factor(int(results))
+        print(resultTitle.title)
+        resultsss = resultTitle.title
+        return (resultsss)
+
+    except:
+        return "-1"
+
 
 # USED FOR testing
 @app.route('/resultInfo', methods=['POST', 'GET'])
 def resultInfo():
-   
-   ##Make a nested np array of things and then call the functions?
-#    ratingsInfo=database_access.get_all_results()
-#    print(ratingsInfo)
-   bigArr=[]
-   totalFactors=database_access.factorsCount()
-   global subsection
-   
-   for i in range(subsection):
-        
-        nestedList=database_access.get_results_voted(i+1,subsection)
+
+    # Make a nested np array of things and then call the functions?
+    #    ratingsInfo=database_access.get_all_results()
+    #    print(ratingsInfo)
+    bigArr = []
+    totalFactors = database_access.factorsCount()
+    global subsection
+
+    for i in range(subsection):
+
+        nestedList = database_access.get_results_voted(i+1, subsection)
         bigArr.append(nestedList)
 
-   
-   bigArray=np.array(bigArr,dtype=bool)
-   print(bigArray)
-   stuff=structure_matrix(bigArray)
-   print(stuff)
-   
+    bigArray = np.array(bigArr, dtype=bool)
+    print(bigArray)
+    stuff = structure_matrix(bigArray)
+    print(stuff)
 
-   
-   return render_template('result.html')
-   
+    return render_template('result.html')
 
 
 ##################################### Results##############################
@@ -467,25 +467,24 @@ def resultInfo():
 def result():
 
     # Before rendering the template in your result route
-    #Idea: I need to get all the combinations that were rated with one 
-    factorVoted=database_access.get_results_voted()
+    # Idea: I need to get all the combinations that were rated with one
+    factorVoted = database_access.get_results_voted()
     print(factorVoted)
 
-    
     return render_template('result.html')
 
 
 @app.route('/get_results')
 def get_results():
     test_data = [
-  ["FactorID", "Factor", "Description", "Frequency"],
-  [1, "Plan on", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
-  [2, "Develop plans", "kjfhvbwebvowervwer", 11],
-  [3, "Assign leaders", "werv", 15],
-  [4, "Assign leaders", "werv", 15]
-  
-  
-]
+        ["FactorID", "Factor", "Description", "Frequency"],
+        [1, "Plan on", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
+        [2, "Develop plans", "kjfhvbwebvowervwer", 11],
+        [3, "Assign leaders", "werv", 15],
+        [4, "Assign leaders", "werv", 15]
+
+
+    ]
 
     return jsonify(test_data)
 
@@ -495,6 +494,11 @@ def get_results():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+
+@app.route('/help')
+def help():
+    return render_template('help.html')
 
 
 ################## Participants#############################################
@@ -512,12 +516,12 @@ def participant():
         f_name = request.form["f_name"]
         l_name = request.form["l_name"]
         # flake8: noqa
-        email=request.form["email"]
-        telephone=request.form["telephone"]
-    
-        
-        database_access.insert_participant(f_name=f_name,l_name=l_name,email=email,telephone=telephone)
-        return redirect (url_for('participant'))
+        email = request.form["email"]
+        telephone = request.form["telephone"]
+
+        database_access.insert_participant(
+            f_name=f_name, l_name=l_name, email=email, telephone=telephone)
+        return redirect(url_for('participant'))
     else:
         part = database_access.all_participants()
         return render_template("participant.html", part=part)
@@ -569,47 +573,44 @@ def upload_csv():
     if file.filename == '':
         return
     if file:
-        # Assuming the file is saved and processed to get data
-        # Here you would process the CSV file based on its data type
         if data_type == 'factor':
-            for row in file:
+            lines = file.read().decode('utf-8').splitlines()
+            for line in lines[1:]:
                 # turn bytes into string
-                data = row.decode('utf-8')
-                data = data.split(',')
+                data = line.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
-
                 # Process and insert factor data
                 database_access.insert_factor(
-                    id=data[0], title=data[1], frequency=[2])
-            return redirect(url_for('factor'))
+                    title=data[1], description=data[2], votes=data[3])
+            return redirect(url_for('factor', num='1'))
 
         elif data_type == 'participant':
-            for row in file:
+            lines = file.read().decode('utf-8').splitlines()
+            for line in lines[1:]:
                 # turn bytes into string
-                data = row.decode('utf-8')
-                data = data.split(',')
+                data = line.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
                 database_access.insert_participant(
-                    id=data[0], f_name=data[1], l_name=data[2], email=data[3], telephone=data[4])
+                    f_name=data[1], l_name=data[2], email=data[3], telephone=data[4])
             return redirect(url_for('participant'))
 
         elif data_type == 'rating':
-            for row in file:
+            lines = file.read().decode('utf-8').splitlines()
+            for line in lines[1:]:
                 # turn bytes into string
-                data = row.decode('utf-8')
-                data = data.split(',')
+                data = line.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
                 database_access.insert_rating(
-                    id=data[0], factor_leading=data[1], factor_following=data[2], rating=data[3], participant_id=data[4])
+                    factor_leading=data[1], factor_following=data[2], rating=data[3], participant_id=data[4])
             return redirect(url_for('rating'))
         elif data_type == 'result':
-            for row in file:
+            lines = file.read().decode('utf-8').splitlines()
+            for line in lines[1:]:
                 # turn bytes into string
-                data = row.decode('utf-8')
-                data = data.split(',')
+                data = line.split(',')
                 # remove spaces and \n
                 data = [x.strip() for x in data]
                 database_access.insert_result(
@@ -621,7 +622,7 @@ def upload_csv():
         return redirect(url_for('index'))
 
 
-@app.route('/export_data', methods=['POST'])
+@ app.route('/export_data', methods=['POST'])
 def export_data():
     data_type = request.form.get('data_type')
 
