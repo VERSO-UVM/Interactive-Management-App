@@ -57,6 +57,10 @@ Factor Page
       {% endfor %}
       </table>
 </div> 
+<div>
+  <button type="Delete" onclick="DeleteData()">Delete</button>
+<div>
+
 <div class = "addFact">
 <h4>Add New Factor</h4>
 <form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
@@ -70,10 +74,18 @@ Factor Page
   <button type="submit" class="save">Save</button>
 </form>
 </div>
+<script>
+    function DeleteData()
+    {
+      let confirmDelete=confirm("Are you sure you want to delete ALL the factors; This is not reversible");
+      if(confirmDelete)
+      {
+        window.location.href = "/deleteFactorButton";
+      }
+      
+    }
+</script>
 
-<div>
-<p><a href="{{ url_for('middleMan') }}"><button class="goToRating">Go to Rating Page</button></a></p>
-</div>
 
 
 {% endblock %}

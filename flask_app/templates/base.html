@@ -25,7 +25,21 @@
     {% endblock styles %}
     {% endblock head %}
   </head>
-  
+
+  <header>
+    <nav>
+      <!-- navbar content -->
+      <ul>
+        <li><a href="{{ url_for('index') }}"> Home</a></li>
+        <li><a href="{{ url_for('factor', num=-1) }}"> Factors</a></li>
+        <li><a href="{{ url_for('participant') }}"> Participants</a></li>
+        <li><a id="resultBar" href="{{ url_for('resultInfo') }}"> Results</a></li>
+        <li><a href="{{ url_for('about') }}"> About</a></li>
+      </ul>
+    </nav>
+    {# Navigation links outside the main content block #}
+  </header>
+
   <body{% block body_attribs %}{% endblock body_attribs %}>
     {% block body %}
     {% block navbar %}
@@ -36,8 +50,7 @@
           <li><a href="{{ url_for('index') }}"> Home</a></li>
           <li><a href="{{ url_for('factor', num=-1) }}"> Factors</a></li>
           <li><a href="{{ url_for('participant') }}"> Participants</a></li>
-          <!-- <li><a href="{{ url_for('pick_factors',p_id=-1,num=1) }}"> Ratings</a></li> -->
-          <li><a href="{{ url_for('result') }}"> Results</a></li>
+          <li><a id="resultBar" href="{{ url_for('resultInfo') }}"> Results</a></li>
           <li><a href="{{ url_for('about') }}"> About</a></li>
           <li><a href="{{ url_for('help') }}"> Help</a></li>
           <li><a href="{{ url_for('logout') }}"> Log Out</a></li>
@@ -58,6 +71,7 @@
     {# Links to an older version of jQuery from Google CDN #}
     {% endblock scripts %}
     {%- endblock body %}
+   
   </body>
   {% endblock html %}
 </html>

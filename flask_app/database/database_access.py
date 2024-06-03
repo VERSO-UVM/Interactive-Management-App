@@ -850,29 +850,71 @@ def get_all_results(user_id):
 
 def get_results_voted(LeadingFactor, subSection, user_id):
     """
-    Retrieves results voted for a specific leading factor and subsection for a specific user.
+    Retrieves the voted results for a specific leading factor and user.
 
     Args:
-        LeadingFactor: The leading factor to search for.
-        subSection: The subsection to search within.
         user_id: Identifier of the user.
+        LeadingFactor: The leading factor to filter the results by.
+        subSection: Total number of factors.
 
     Returns:
-        List: List of results voted.
+        List: Nested list of results voted.
     """
-    try:
-        nestedList = [0] * subSection
-        resultsOne = __DATABASE_CONNECTION.query(RatingsTBL.factor_following).filter(
-            RatingsTBL.rating == 1,
-            RatingsTBL.factor_leading == LeadingFactor,
-            RatingsTBL.user_id == user_id).all()
-        if resultsOne:
-            print(resultsOne)
-            for i in range(len(resultsOne)):
-                finder = resultsOne[i][0] - 1
-                nestedList[finder] = 1
-        return nestedList
-    except Exception as e:
-        print(
-            f"Error getting results voted for leading factor {LeadingFactor} and user {user_id}: {e}")
-        return []
+    # Initialize the nested list with zeros
+    nestedList = [0] * subSection
+
+    # Query the database for the results
+    resultsOne = __DATABASE_CONNECTION.query(RatingsTBL.factor_following).filter(
+        RatingsTBL.user_id == user_id,
+        RatingsTBL.rating == 1,
+        RatingsTBL.factor_leading == LeadingFactor
+    ).all()
+
+    # Check if there are results and process them
+    if len(resultsOne) > 0:
+        print(resultsOne)
+        for result in resultsOne:
+            finder = result[0] - 1
+            nestedList[finder] = 1
+
+    return nestedList
+
+
+def factorTitle(subsection,user_id):
+    factorsTitle = []
+    for i in range(0, subsection):
+        factor = __DATABASE_CONNECTION.query(FactorTBL.title).filter(
+            FactorTBL.user_id == user_id,
+            FactorTBL.id == i + 1
+        ).first()
+        factorsTitle.append(factor)
+    
+    return factorsTitle
+
+
+def delete_all_participants(user_id):
+    """
+    Deletes all participants associated with a specific user from the database.
+
+    Args:
+        user_id: Identifier of the user.
+    """
+    participants = __DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.user_id == user_id).all()
+    for participant in participants:
+        __DATABASE_CONNECTION.delete(participant)
+    __DATABASE_CONNECTION.commit()
+
+
+def delete_all_factors(user_id):
+    """
+    Deletes all factors associated with a specific user from the database.
+
+    Args:
+        user_id: Identifier of the user.
+    """
+    factors = __DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.user_id == user_id).all()
+    for factor in factors:
+        __DATABASE_CONNECTION.delete(factor)
+    __DATABASE_CONNECTION.commit()
+
+

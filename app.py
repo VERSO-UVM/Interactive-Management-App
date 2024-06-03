@@ -18,7 +18,7 @@ import itertools
 import json
 import numpy as np
 import pandas as pd
-
+import networkk as nt
 
 def structure_matrix(A):
     """
@@ -389,40 +389,20 @@ def pick_factors(p_id, num):
         return render_template("initial_factors.html", factor=factor, p_id=p_id)
 
     else:
-        # Logic for ascending and descending button
-        if num == '-1':
-            factor = database_access.get_all_factors(current_user_id)
 
-        elif num == '1':
-            factor = database_access.ascendingOrder(current_user_id)
-
-        elif num == '2':
-            factor = database_access.descendingOrder(current_user_id)
-
-        return render_template("pick_factor.html", factor=factor)
-
-
-def structure(factors):
-
-    # Initialize a matrix to store user choices
-    matrix_size = len(factors)
-    user_choices = [[0] * matrix_size for _ in range(matrix_size)]
-    # Iterate through all ordered pairs
-    for i in range(matrix_size):
-        for j in range(i + 1, matrix_size):
-            print(f"Do {factors[i]} and {factors[j]} support each other?")
-            choice = input("Enter 'Yes' or 'No': ")
-            if choice.lower() == 'yes':
-                user_choices[i][j] = 1
-    # Calculate structured relationships based on user choices
-    structured_factors = []
-    for i in range(matrix_size):
-        for j in range(i + 1, matrix_size):
-            if user_choices[i][j] == 1:
-                structured_factors.append((factors[i], factors[j]))
-    return structured_factors
-
-################################# Rating##################################################################
+        ##Logic for ascending and descending button
+        if num=='-1':
+            factor=database_access.get_all_factors(current_user_id)
+       
+        elif num=='1':
+            factor=database_access.ascendingOrder(current_user_id)
+       
+        elif num=='2':
+            factor=database_access.descendingOrder(current_user_id)
+       
+        return render_template("pick_factor.html",factor=factor)
+    
+#################################Rating##################################################################
 
 # Updates Rating Based on the users response
 # Ultilizies update_rating function from database access
@@ -489,37 +469,62 @@ def getInfoFollowing(p_id, f_id):
         resultTitle = database_access.search_specific_factor(
             int(results), current_user_id)
         print(resultTitle.title)
-        resultsss = resultTitle.title
+        resultsss=resultTitle.title
         return (resultsss)
-
+    
     except:
-        return "-1"
+       return "-1"
 
+@app.route('/emptyResult', methods=['POST', 'GET'])
+def emptyResult():  
+    empty=database_access.get_total_rating()
+    if (len(empty)>0):
+        print(len(empty))
+        return 1
+    else:
+        return 0
 
 # USED FOR testing
 @app.route('/resultInfo', methods=['POST', 'GET'])
-def resultInfo():
-    current_user_id = current_user.id
-
-    # Make a nested np array of things and then call the functions?
-    #    ratingsInfo=database_access.get_all_results()
-    #    print(ratingsInfo)
-    bigArr = []
-    totalFactors = database_access.factorsCount(current_user_id)
+def resultInfo():   
     global subsection
+    print(subsection)
+    if (subsection>0):
+        return render_template('result.html')
+    else:
+        return render_template('resultEmpty.html')
 
-    for i in range(subsection):
 
-        nestedList = database_access.get_results_voted(
-            i+1, subsection, current_user_id)
+@app.route('/nameList',methods=['POST','GET'])
+def nameList():
+    current_user_id = current_user.id
+    global subsection
+    list=database_access.factorTitle(subsection,current_user_id)
+    return jsonify(list)  
+
+@app.route('/confusionList',methods=['POST','GET'])
+def confusionList():
+   current_user_id = current_user.id
+   bigArr=[]
+   global subsection
+   for i in range(subsection):
+        nestedList=database_access.get_results_voted(i+1,subsection, current_user_id)
         bigArr.append(nestedList)
 
-    bigArray = np.array(bigArr, dtype=bool)
-    print(bigArray)
-    stuff = structure_matrix(bigArray)
-    print(stuff)
+   bigArray=np.array(bigArr,dtype=bool)
+   print(bigArray)
+   stuff=structure_matrix(bigArray)
+   print(stuff)
+   listAnswers=[]
+   for i in range(len(bigArray)):
+       for j in range(len(bigArray[i])):
+           if(bigArray[i][j]==True):
+               listAnswers.append(i)
+               listAnswers.append(j)
+   print (listAnswers)
+   return jsonify(listAnswers)   
+       
 
-    return render_template('result.html')
 
 
 ##################################### Results##############################
@@ -538,17 +543,24 @@ def result():
 
 @app.route('/get_results')
 def get_results():
-    test_data = [
-        ["FactorID", "Factor", "Description", "Frequency"],
-        [1, "Plan on", "qwhbkfkuq hwbdfuiqwbf wqubfqwkhf", 9],
-        [2, "Develop plans", "kjfhvbwebvowervwer", 11],
-        [3, "Assign leaders", "werv", 15],
-        [4, "Assign leaders", "werv", 15]
-
-
+    dag_data = {
+    "nodes": [
+        {"name": "A"},
+        {"name": "B"},
+        {"name": "C"},
+        {"name": "D"},
+        {"name": "E"}
+    ],
+    "links": [
+        {"source": "A", "target": "B"},
+        {"source": "A", "target": "C"},
+        {"source": "B", "target": "D"},
+        {"source": "C", "target": "D"},
+        {"source": "D", "target": "E"}
     ]
+}
 
-    return jsonify(test_data)
+    return jsonify(dag_data)
 
 # Define route for the about page
 
@@ -727,6 +739,17 @@ def export_data():
         return Response(csv_string.getvalue(), mimetype='text/csv', headers={"Content-disposition": f"attachment; filename={filename}"})
     else:
         return "Invalid data type", 400
+
+
+@app.route('/deleteParticipantsButton', methods=['POST','GET'])
+def deleteParticipantsButton():
+    database_access.delete_all_participants()
+    return redirect(url_for('participant'))
+
+@app.route('/deleteFactorButton', methods=['POST','GET'])
+def deleteFactorButton():
+    database_access.delete_all_factors()
+    return redirect(url_for("factor", num='-1'))
 
 
 # Run the Flask app if the script is executed directly
