@@ -4,7 +4,11 @@
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
-  <script src="https://d3js.org/d3.v5.min.js"></script>
+<!-- Include Cytoscape.js library -->
+<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+<script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
+<script src="static/cytoscape-dagre.js"></script>
+
 {% endblock %}
 
 {% block title %}
@@ -12,97 +16,89 @@ Result Page
 {% endblock %}
 
 {% block content %}
-    <svg width="960" height="800"></svg>
 
+<style>
+
+    #cy {
+       
+				z-index: 999;
+                width: 80%;
+                height:80%;
+                position: absolute;
+
+    }
+</style>
+<div class="grid-container">
+<div class="resultsContainer">
+    <div class="resultPage">
+<div  id="cy"></div>
+</div>
+</div>
+</div>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetchDataAndUpdateGraph();
-});
+    // After including Cytoscape.js and Cytoscape-Dagre layout extension
+    
 
-function fetchDataAndUpdateGraph() {
-var svg = d3.select("svg");
-var width = svg.attr("width");
-var height = svg.attr("height");
+    
 
-var graph = {
-    "nodes": [
-        {"name": "A"},
-        {"name": "B"},
-        {"name": "C"},
-        {"name": "D"},
-        {"name": "E"},
-        {"name": "F"}
-    ],
-    "links": [
-        {"source": "A", "target": "B"},
-        {"source": "A", "target": "C"},
-        {"source": "B", "target": "D"},
-        {"source": "C", "target": "D"},
-        {"source": "D", "target": "E"}
-    ]
-};
-//Arrows logic
-svg.append('defs').append('marker')
-    .attr('id','arrowhead')
-    .attr('viewBox','1 -5 8 10')
-    .attr('refX',20)
-    .attr('refY',0)
-    .attr('orient','auto')
-    .attr('markerWidth',15)
-    .attr('markerHeight',20)
-    .attr('xoverflow','visible')
-    .append('svg:path')
-    .attr('d', 'M 0,-5 L 10 ,0 L 0,5')
-    .attr('fill', '#999')
-    .style('stroke','none');
 
-var simulation = d3.forceSimulation(graph.nodes)
-    .force("link", d3.forceLink(graph.links).id(function(d) { return d.name; }))
-    .force("charge", d3.forceCenter())
-    .force("center", d3.forceCenter(width / 2, height / 2))
-    .on("tick", ticked);
+document.addEventListener('DOMContentLoaded', function(){ 
+    $.get('/nameList', function(x) 
+    {
+        let dataFactorTitle = x;
+        let myList=[];
+        for (var i = 0; i < dataFactorTitle.length; i++) 
+        {
+            myList.push({data:{id:String(i),label:dataFactorTitle[i]}})
+        }
+        $.get('/confusionList', function(x) 
+        {
+            let edgeInfo = x;
+            let edgeList=[];
+            console.log(edgeList)   
+            for (var i = 0; i < edgeInfo.length; i+=2) 
+            {
+            edgeList.push({ data: { source: String(edgeInfo[i]), target: String(edgeInfo[i+1]) }})
+            }
 
-//Connection between factors
-var link = svg.append("g")
-    .selectAll("line")
-    .data(graph.links)
-    .enter()
-    .append("line")
-    .attr("stroke-width",1.5)
-    .style("stroke", "blue")
-    .attr('marker-end','url(#arrowhead)');
 
-//Factor circles
-var node = svg.append("g")
-    .selectAll(".node")
-    .data(graph.nodes)
-    .enter()
-    .append("circle")
-    .attr("r", 30) 
-    .attr("fill", "orange");
+        console.log(edgeList)   
+        let cy = cytoscape({
+                    container: document.getElementById('cy'),
+                    boxSelectionEnabled: false,
+                    autounselectify: true,
+                    layout: { name: 'dagre',rankDir: 'LR'},
+                    style: 
+                    [
+                        {
+                            selector: 'node',
+                            style: {
+                                'background-color': '#11479e',
+                                'content': 'data(label)'
+                            }
+                        },
+                        {
+                            selector: 'edge',
+                            style: {
+                                'width': 1,
+                                'target-arrow-shape': 'triangle',
+                                'line-color': '#9dbaea',
+                                'target-arrow-color': '#9dbaea',
+                                'curve-style': 'bezier'
+                            }
+                        }
+                    ],
+                    elements: 
+                    {
+                        nodes: myList,
+                        edges: edgeList
+                    }
+                });
 
-    var texts = svg.append("g")
-    .selectAll("text")
-    .data(graph.nodes)
-    .enter()
-    .append("text")
-    .text(d => d.name)
-    .attr("text-anchor", "middle") 
-    .attr("dy", "0.35em") 
-    .style("font-size", "19px"); 
 
-function ticked() {
-    texts.attr("x", d => d.x) // Set the x position of the text
-    texts.attr("y", d => d.y) // Set the y position of the text
-    link.attr("x1", function(d) { return d.source.x; })
-        .attr("y1", function(d) { return d.source.y; })
-        .attr("x2", function(d) { return d.target.x; }) 
-        .attr("y2", function(d) { return d.target.y; }); 
-
-    node.attr("cx", function(d) { return d.x; })
-        .attr("cy", function(d) { return d.y; });
-}
-}
-</script>
+            });
+        });     
+    });
+    </script>
 
 {% endblock %}

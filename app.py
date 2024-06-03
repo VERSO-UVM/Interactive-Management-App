@@ -17,6 +17,7 @@ import itertools
 import json
 import numpy as np
 import pandas as pd
+import networkk as nt
 
 def structure_matrix(A):
     """
@@ -194,6 +195,7 @@ def get_matrix_sets(df):
     return ind2reach, ind2antec, intx
 
 subsection=0
+subsctionList=[]
 # Configure Flask application
 app = configure_flask_application()
 # login_manager = LoginManager()
@@ -346,27 +348,6 @@ def pick_factors(p_id,num):
             factor=database_access.descendingOrder()
        
         return render_template("pick_factor.html",factor=factor)
-
-
-def structure(factors):
-    
-        # Initialize a matrix to store user choices
-        matrix_size = len(factors)
-        user_choices = [[0] * matrix_size for _ in range(matrix_size)]
-        # Iterate through all ordered pairs
-        for i in range(matrix_size):
-            for j in range(i + 1, matrix_size):
-                print(f"Do {factors[i]} and {factors[j]} support each other?")
-                choice = input("Enter 'Yes' or 'No': ")
-                if choice.lower() == 'yes':
-                    user_choices[i][j] = 1
-        # Calculate structured relationships based on user choices
-        structured_factors = []
-        for i in range(matrix_size):
-            for j in range(i + 1, matrix_size):
-                if user_choices[i][j] == 1:
-                    structured_factors.append((factors[i], factors[j]))
-        return structured_factors
     
 #################################Rating##################################################################
 
@@ -435,30 +416,37 @@ def getInfoFollowing(p_id,f_id):
 
 # USED FOR testing
 @app.route('/resultInfo', methods=['POST', 'GET'])
-def resultInfo():
-   
-   ##Make a nested np array of things and then call the functions?
-#    ratingsInfo=database_access.get_all_results()
-#    print(ratingsInfo)
+def resultInfo():   
+   return render_template('result.html')
+
+@app.route('/nameList',methods=['POST','GET'])
+def nameList():
+    global subsection
+    list=database_access.factorTitle(subsection)
+    return jsonify(list)  
+
+@app.route('/confusionList',methods=['POST','GET'])
+def confusionList():
    bigArr=[]
-   totalFactors=database_access.factorsCount()
    global subsection
-   
    for i in range(subsection):
-        
         nestedList=database_access.get_results_voted(i+1,subsection)
         bigArr.append(nestedList)
 
-   
    bigArray=np.array(bigArr,dtype=bool)
    print(bigArray)
    stuff=structure_matrix(bigArray)
    print(stuff)
-   
+   listAnswers=[]
+   for i in range(len(bigArray)):
+       for j in range(len(bigArray[i])):
+           if(bigArray[i][j]==True):
+               listAnswers.append(i)
+               listAnswers.append(j)
+   print (listAnswers)
+   return jsonify(listAnswers)   
+       
 
-   
-   return render_template('result.html')
-   
 
 
 ##################################### Results##############################

@@ -750,3 +750,12 @@ def get_results_voted(LeadingFactor,subSection):
         
     
     return nestedList
+
+
+def factorTitle(subsection):
+    factorsTitle=[]
+    for i in range(0,subsection):
+            factor=__DATABASE_CONNECTION.query(FactorTBL.title).filter(FactorTBL.id==i+1).first()
+            factorsTitle.append(factor)
+ 
+    return factorsTitle
