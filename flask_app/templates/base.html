@@ -59,8 +59,7 @@
     {%- endblock navbar %}
     {% block content %}{%- endblock content %}
     {# Empty block for the main content, to be overridden in child templates #}
-<script>
-document.getElementById("resultBar").addEventListener("click", emptyChecker);</script>
+
     {% block scripts %}
     <script src="{{bootstrap_find_resource('jquery.js', cdn='jquery')}}"></script>
     {# Links to jQuery script from Bootstrap CDN #}
@@ -70,6 +69,7 @@ document.getElementById("resultBar").addEventListener("click", emptyChecker);</s
     {# Links to an older version of jQuery from Google CDN #}
     {% endblock scripts %}
     {%- endblock body %}
+   
   </body>
   {% endblock html %}
 </html>

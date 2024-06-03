@@ -412,12 +412,25 @@ def getInfoFollowing(p_id,f_id):
     
    except:
        return "-1"
-    
+
+@app.route('/emptyResult', methods=['POST', 'GET'])
+def emptyResult():  
+    empty=database_access.get_total_rating()
+    if (len(empty)>0):
+        print(len(empty))
+        return 1
+    else:
+        return 0
 
 # USED FOR testing
 @app.route('/resultInfo', methods=['POST', 'GET'])
 def resultInfo():   
-   return render_template('result.html')
+    global subsection
+    print(subsection)
+    if (subsection>0):
+        return render_template('result.html')
+    else:
+        return render_template('resultEmpty.html')
 
 @app.route('/nameList',methods=['POST','GET'])
 def nameList():
