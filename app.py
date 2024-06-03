@@ -244,7 +244,9 @@ def login():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        insert_user(form.email.data, form.password.data)
+        user = User(form.email.data, form.password.data)
+        insert_user(user)
+        login_user(user, remember=True)
         flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('index'))
     return render_template('register.html', title='Register', register_form=form)
@@ -382,8 +384,8 @@ def pick_factors(p_id, num):
                 factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, participant_id=p_id, user_id=current_user_id)
             database_access.insert_rating(
                 factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, participant_id=p_id, user_id=current_user_id)
-            print(f'{combinations[i][0]}{combinations[i][1]}')
-            print(f'{combinations[i][1]}{combinations[i][0]}')
+            # print(f'{combinations[i][0]} {combinations[i][1]}')
+            # print(f'{combinations[i][1]} {combinations[i][0]}')
         return render_template("initial_factors.html", factor=factor, p_id=p_id)
 
     else:
