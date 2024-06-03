@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block title %}
+Help Page
+{# Sets the title of the page to "Help Page" #}
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{# Includes additional CSS stylesheets. Loads the CSS file 'about.css' from the 'static' directory #}
+{% endblock %}
+{% block content %}
+<div class="grid-container">
+      <h1 class="pt-5 pb-2">Help</h1>  {# Heading for the help page #}
+      <div class="usingPage">
+      <p>1.To begin, the user should either upload factors and particpiants from the home page or enter them maunally using the links above.</p>
+      <p>2. Next, click the button at the bottom of the factors page "Go to Rating Page".</p>
+      <p>3. Here, a user can select their participant id, and then choose the factors they want to keep.</p>
+      <p>4. After proceeding to the ratings page, the user is repeatedly asked if one factor affects the other.</p>
+      <p>5. Once the user has answered "yes" or "no" for each factor combination, the final results image is shown.</p>
+{% endblock %}
+
