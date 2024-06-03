@@ -407,12 +407,12 @@ def getInfoFollowing(p_id, f_id):
         result = database_access.specific_id_factor(f_id)
         results = result.factor_following
 
-    resultTitle=database_access.search_specific_factor(int(results))
-    print(resultTitle.title)
-    resultsss=resultTitle.title
-    return (resultsss)
+        resultTitle=database_access.search_specific_factor(int(results))
+        print(resultTitle.title)
+        resultsss=resultTitle.title
+        return (resultsss)
     
-   except:
+    except:
        return "-1"
 
 @app.route('/emptyResult', methods=['POST', 'GET'])
