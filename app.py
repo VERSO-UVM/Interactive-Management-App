@@ -669,6 +669,17 @@ def export_data():
         return "Invalid data type", 400
 
 
+@app.route('/deleteParticipantsButton', methods=['POST','GET'])
+def deleteParticipantsButton():
+    database_access.delete_all_participants()
+    return redirect(url_for('participant'))
+
+@app.route('/deleteFactorButton', methods=['POST','GET'])
+def deleteFactorButton():
+    database_access.delete_all_factors()
+    return redirect(url_for("factor", num='-1'))
+
+
 # Run the Flask app if the script is executed directly
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5001, threaded=False)

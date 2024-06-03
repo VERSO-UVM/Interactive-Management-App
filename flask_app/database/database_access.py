@@ -759,3 +759,15 @@ def factorTitle(subsection):
             factorsTitle.append(factor)
  
     return factorsTitle
+
+def delete_all_participants():
+    everything=__DATABASE_CONNECTION.query(ParticipantTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+def delete_all_factors():
+    everything=__DATABASE_CONNECTION.query(FactorTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()

@@ -56,6 +56,9 @@ Participant Page
         {% endfor %}
       </table>
     </div>
+    <div>
+      <button type="Delete" onclick="DeleteData()">Delete</button>
+    <div>
 
     <div class="addPart">
         <div class="withinAdd">
@@ -80,6 +83,15 @@ Participant Page
      * Validates the email input field before submitting the form.
      * @returns {boolean} True if the email is valid, otherwise false.
      */
+    function DeleteData()
+    {
+      let confirmDelete=confirm("Are you sure you want to delete ALL the participants; This is not reversible");
+      if(confirmDelete)
+      {
+        window.location.href = "/deleteParticipantsButton";
+      }
+      
+    }
     function validateForm() {
         var emailInput = document.getElementById("email");
         var emailValue = emailInput.value;
