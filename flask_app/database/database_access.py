@@ -776,3 +776,24 @@ def get_results_voted(LeadingFactor, subSection):
             nestedList[finder] = 1
 
     return nestedList
+
+
+def factorTitle(subsection):
+    factorsTitle=[]
+    for i in range(0,subsection):
+            factor=__DATABASE_CONNECTION.query(FactorTBL.title).filter(FactorTBL.id==i+1).first()
+            factorsTitle.append(factor)
+ 
+    return factorsTitle
+
+def delete_all_participants():
+    everything=__DATABASE_CONNECTION.query(ParticipantTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()
+
+def delete_all_factors():
+    everything=__DATABASE_CONNECTION.query(FactorTBL).all()
+    for i in everything:
+        __DATABASE_CONNECTION.delete(i)
+        __DATABASE_CONNECTION.commit()

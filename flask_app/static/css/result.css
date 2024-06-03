@@ -110,8 +110,7 @@
     height: auto; /* Scales the height automatically based on the width */
     display: block; /* Prevents any unnecessary margin/padding around the image */
   }
-
-  
+ 
   /* "Go To Participants" button */
   .savePNG {
     background-color: var(--button_color);

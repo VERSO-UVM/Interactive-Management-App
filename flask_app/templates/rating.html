@@ -31,9 +31,9 @@ Ratings Page
 
             <p class="guide">Does the left factor affect the right factor?</p>
               <p id="fLeading" class="Factorsss"></p>
-              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100">
-              <p id="fFollowing" class="Factorsss"></p>
               
+              <p id="fFollowing" class="Factorsss"></p>
+              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
             </div>
           
           </div>
@@ -51,10 +51,6 @@ Ratings Page
             </div>
         </div>
     </div>
-  </div>
-
-  <div class="gTResults-Container-left"> <!-- Modified class name -->
-    <p><a href="{{ url_for('middleMan') }}"><button class="goToMenu">Choose Next Participant</button></a></p>
   </div>
 
   <div class="gTResults-Container-right"> <!-- Modified class name -->
@@ -97,17 +93,30 @@ Ratings Page
   function submitButton() {
     //Calls functins to get information on factors based on index
     $.get('/getInfoLeading/'+p_id+'/'+index,
-      function(x) {
-        if(x!='-1') {
+      function(x) 
+      {
+        if(x!='-1') 
+        {
           $("#fLeading").html(x);
           $.get('/getInfoFollowing/'+p_id+'/'+index,
-            function(x) {
-              if(x!='-1') {
+            function(x) 
+            {
+              if(x!='-1') 
+              {
                 $("#fFollowing").html(x);
                 index+=1;
               }
             }
           );
+        }
+        else
+        {
+          $("#fFollowing").html("Finished");
+          $("#skip").hide();
+          $("#submit").hide();
+          $("#myform").hide();
+          $("#fLeading").hide();
+          $("#Arrow").hide();
         }
       }
     );
