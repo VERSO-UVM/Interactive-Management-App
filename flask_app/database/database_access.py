@@ -3,7 +3,7 @@ import datetime
 import uuid
 
 from sqlalchemy import select
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, and_
 
 # database connector
 from flask_app.database.Alchemy import initialize_database_connection
@@ -591,8 +591,6 @@ def edit_factors(id, fact_title, fact_description, fact_votes, user_id):
 
 
 # Gets the list of subsection factors based on the selection made by the user
-
-
 def get_factor_list(list1, user_id):
     factors = []
     try:
@@ -609,6 +607,23 @@ def get_factor_list(list1, user_id):
 
 ############ Rating functions#####################################
 # Gets specific rating based on id
+
+def get_all_ratings(user_id):
+    """
+    Retrieves all ratings for a specific user.
+
+    Args:
+        user_id: Identifier of the user.
+
+    Returns:
+        List of tuples: (factor_leading, factor_following, rating)
+    """
+    # Query the database for all ratings for the user
+    ratings = __DATABASE_CONNECTION.query(
+        RatingsTBL.factor_leading, RatingsTBL.factor_following, RatingsTBL.rating
+    ).filter(RatingsTBL.user_id == user_id).all()
+
+    return ratings
 
 
 def get_rating_by_id(id, user_id):
@@ -848,52 +863,48 @@ def get_all_results(user_id):
         return []
 
 
-def get_results_voted(LeadingFactor, subSection, user_id):
+def get_results_voted(all_ratings, user_id, subsection):
     """
-    Retrieves the voted results for a specific leading factor and user.
+    Retrieves the voted results for a specific user.
 
     Args:
-        user_id: Identifier of the user.
-        LeadingFactor: The leading factor to filter the results by.
-        subSection: Total number of factors.
+        all_ratings (list): List of all ratings.
+        user_id (int): Identifier of the user.
+        subsection (int): Total number of factors.
 
     Returns:
-        List: Nested list of results voted.
+        list: Multi-dimensional array representing the confusion matrix.
     """
-    # Initialize the nested list with zeros
-    nestedList = [0] * subSection
+    confusion_matrix = [[0] * subsection for _ in range(subsection)]
+    unique_factors = set()
+    for rating in all_ratings:
+        unique_factors.add(rating.factor_leading)
+        unique_factors.add(rating.factor_following)
 
-    # Query the database for the results
-    resultsOne = __DATABASE_CONNECTION.query(RatingsTBL.factor_following).filter(
-        RatingsTBL.user_id == user_id,
-        RatingsTBL.rating == 1,
-        RatingsTBL.factor_leading == LeadingFactor
-    ).all()
+    sorted_factors = sorted(unique_factors)
 
-    print("resultsOne:", resultsOne)
-    # Check if there are results and process them
-    if len(resultsOne) > 0:
-        for i in range(len(resultsOne)):
-            nestedList[i] = 1
+    factor_indices = {factor: index for index,
+                      factor in enumerate(sorted_factors)}
 
-        '''for result in resultsOne:
-            finder = result[0] - 1
-            nestedList[finder] = 1'''
+    for rating in all_ratings:
+        factor_leading, factor_following = rating.factor_leading, rating.factor_following
+        if rating.rating == 1:
+            leading_index = factor_indices.get(factor_leading)
+            following_index = factor_indices.get(factor_following)
+            if leading_index is not None and following_index is not None:
+                confusion_matrix[leading_index][following_index] = 1
 
-    return nestedList
+    return confusion_matrix
 
 
-def factorTitle(subsection, user_id):
-    factorsTitle = []
-    for i in range(subsection):
-        factor = __DATABASE_CONNECTION.query(FactorTBL.title).filter(
-            FactorTBL.user_id == user_id,
-            FactorTBL.id == i + 1
-        ).first()
-        if factor:
-            # Convert Row object to dictionary
-            factor_dict = dict(factor._mapping)
-            factorsTitle.append(factor_dict)
+def factorTitle(user_id):
+    factors = __DATABASE_CONNECTION.query(FactorTBL.title).join(
+        RatingsTBL,
+        and_(RatingsTBL.factor_leading == FactorTBL.id,
+             RatingsTBL.user_id == user_id)
+    ).distinct().all()
+
+    factorsTitle = [factor.title for factor in factors]
     return factorsTitle
 
 

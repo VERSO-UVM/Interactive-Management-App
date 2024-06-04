@@ -383,9 +383,8 @@ def pick_factors(p_id, num):
                 factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, participant_id=p_id, user_id=current_user_id)
             database_access.insert_rating(
                 factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, participant_id=p_id, user_id=current_user_id)
-            print("HEREEE")
-            print(f'{combinations[i][0]} {combinations[i][1]}')
-            print(f'{combinations[i][1]} {combinations[i][0]}')
+            # print(f'{combinations[i][0]} {combinations[i][1]}')
+            # print(f'{combinations[i][1]} {combinations[i][0]}')
         return render_template("initial_factors.html", factor=factor, p_id=p_id)
 
     else:
@@ -497,36 +496,40 @@ def resultInfo():
 @app.route('/nameList', methods=['POST', 'GET'])
 def nameList():
     current_user_id = current_user.id
-    global subsection
-    list = database_access.factorTitle(subsection, current_user_id)
+    list = database_access.factorTitle(current_user_id)
     return jsonify(list)
 
 
 @app.route('/confusionList', methods=['POST', 'GET'])
 def confusionList():
     current_user_id = current_user.id
-    bigArr = []
-    global subsection
-    for i in range(subsection):
-        nestedList = database_access.get_results_voted(
-            i+1, subsection, current_user_id)
-        bigArr.append(nestedList)
 
-    bigArray = np.array(bigArr, dtype=bool)
-    print(bigArray)
+    # Get all ratings
+    all_ratings = database_access.get_all_ratings(current_user_id)
+
+    # Get the number of factors (subsection)
+    global subsection
+
+    # Get the confusion matrix
+    matrix = database_access.get_results_voted(
+        all_ratings, current_user_id, subsection)
+
+    bigArray = np.array(matrix, dtype=bool)
+    print("bigArray:", bigArray)
     stuff = structure_matrix(bigArray)
-    print(stuff)
+    print("stuff:", stuff)
     listAnswers = []
     for i in range(len(bigArray)):
         for j in range(len(bigArray[i])):
             if (bigArray[i][j] == True):
                 listAnswers.append(i)
                 listAnswers.append(j)
-    print(listAnswers)
+    print("listAnswers:", listAnswers)
     return jsonify(listAnswers)
 
 
 ##################################### Results##############################
+
 
 @app.route('/result')
 def result():
@@ -658,8 +661,6 @@ def upload_csv():
                 # remove spaces and \n
                 data = [x.strip() for x in data]
                 # Process and insert factor data
-                for i in data:
-                    print(i)
                 database_access.insert_factor(
                     title=data[1], description=data[2], votes=data[3], user_id=current_user_id)
             return redirect(url_for('factor', num='1'))
