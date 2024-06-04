@@ -20,6 +20,7 @@ import numpy as np
 import pandas as pd
 import networkk as nt
 
+
 def structure_matrix(A):
     """
     This function that takes a square boolean numpy array as input and returns
@@ -244,9 +245,8 @@ def login():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(form.email.data, form.password.data)
-        insert_user(user)
-        login_user(user, remember=True)
+        new_user = insert_user(form.email.data, form.password.data)
+        login_user(new_user, remember=True)
         flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('index'))
     return render_template('register.html', title='Register', register_form=form)
@@ -369,7 +369,6 @@ def pick_factors(p_id, num):
         factors_picked = request.form.getlist('factors')
         factor = database_access.get_factor_list(
             factors_picked, current_user_id)
-        print(factor)
         global subsection
         subsection = len(factor)
 
@@ -384,25 +383,26 @@ def pick_factors(p_id, num):
                 factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, participant_id=p_id, user_id=current_user_id)
             database_access.insert_rating(
                 factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, participant_id=p_id, user_id=current_user_id)
-            # print(f'{combinations[i][0]} {combinations[i][1]}')
-            # print(f'{combinations[i][1]} {combinations[i][0]}')
+            print("HEREEE")
+            print(f'{combinations[i][0]} {combinations[i][1]}')
+            print(f'{combinations[i][1]} {combinations[i][0]}')
         return render_template("initial_factors.html", factor=factor, p_id=p_id)
 
     else:
 
-        ##Logic for ascending and descending button
-        if num=='-1':
-            factor=database_access.get_all_factors(current_user_id)
-       
-        elif num=='1':
-            factor=database_access.ascendingOrder(current_user_id)
-       
-        elif num=='2':
-            factor=database_access.descendingOrder(current_user_id)
-       
-        return render_template("pick_factor.html",factor=factor)
-    
-#################################Rating##################################################################
+        # Logic for ascending and descending button
+        if num == '-1':
+            factor = database_access.get_all_factors(current_user_id)
+
+        elif num == '1':
+            factor = database_access.ascendingOrder(current_user_id)
+
+        elif num == '2':
+            factor = database_access.descendingOrder(current_user_id)
+
+        return render_template("pick_factor.html", factor=factor)
+
+################################# Rating##################################################################
 
 # Updates Rating Based on the users response
 # Ultilizies update_rating function from database access
@@ -441,7 +441,6 @@ def insert_rating(p_id):
 @app.route('/getInfoLeading/<p_id>/<f_id>', methods=['POST', 'GET'])
 def getInfoLeading(p_id, f_id):
     current_user_id = current_user.id
-
     # Gets information from factor based on the id
 
     try:
@@ -468,63 +467,63 @@ def getInfoFollowing(p_id, f_id):
 
         resultTitle = database_access.search_specific_factor(
             int(results), current_user_id)
-        print(resultTitle.title)
-        resultsss=resultTitle.title
+        resultsss = resultTitle.title
         return (resultsss)
-    
+
     except:
-       return "-1"
+        return "-1"
+
 
 @app.route('/emptyResult', methods=['POST', 'GET'])
-def emptyResult():  
-    empty=database_access.get_total_rating()
-    if (len(empty)>0):
-        print(len(empty))
+def emptyResult():
+    empty = database_access.get_total_rating()
+    if (len(empty) > 0):
         return 1
     else:
         return 0
 
 # USED FOR testing
+
+
 @app.route('/resultInfo', methods=['POST', 'GET'])
-def resultInfo():   
+def resultInfo():
     global subsection
-    print(subsection)
-    if (subsection>0):
+    if (subsection > 0):
         return render_template('result.html')
     else:
         return render_template('resultEmpty.html')
 
 
-@app.route('/nameList',methods=['POST','GET'])
+@app.route('/nameList', methods=['POST', 'GET'])
 def nameList():
     current_user_id = current_user.id
     global subsection
-    list=database_access.factorTitle(subsection,current_user_id)
-    return jsonify(list)  
+    list = database_access.factorTitle(subsection, current_user_id)
+    return jsonify(list)
 
-@app.route('/confusionList',methods=['POST','GET'])
+
+@app.route('/confusionList', methods=['POST', 'GET'])
 def confusionList():
-   current_user_id = current_user.id
-   bigArr=[]
-   global subsection
-   for i in range(subsection):
-        nestedList=database_access.get_results_voted(i+1,subsection, current_user_id)
+    current_user_id = current_user.id
+    bigArr = []
+    global subsection
+    for i in range(subsection):
+        nestedList = database_access.get_results_voted(
+            i+1, subsection, current_user_id)
         bigArr.append(nestedList)
 
-   bigArray=np.array(bigArr,dtype=bool)
-   print(bigArray)
-   stuff=structure_matrix(bigArray)
-   print(stuff)
-   listAnswers=[]
-   for i in range(len(bigArray)):
-       for j in range(len(bigArray[i])):
-           if(bigArray[i][j]==True):
-               listAnswers.append(i)
-               listAnswers.append(j)
-   print (listAnswers)
-   return jsonify(listAnswers)   
-       
-
+    bigArray = np.array(bigArr, dtype=bool)
+    print(bigArray)
+    stuff = structure_matrix(bigArray)
+    print(stuff)
+    listAnswers = []
+    for i in range(len(bigArray)):
+        for j in range(len(bigArray[i])):
+            if (bigArray[i][j] == True):
+                listAnswers.append(i)
+                listAnswers.append(j)
+    print(listAnswers)
+    return jsonify(listAnswers)
 
 
 ##################################### Results##############################
@@ -544,21 +543,21 @@ def result():
 @app.route('/get_results')
 def get_results():
     dag_data = {
-    "nodes": [
-        {"name": "A"},
-        {"name": "B"},
-        {"name": "C"},
-        {"name": "D"},
-        {"name": "E"}
-    ],
-    "links": [
-        {"source": "A", "target": "B"},
-        {"source": "A", "target": "C"},
-        {"source": "B", "target": "D"},
-        {"source": "C", "target": "D"},
-        {"source": "D", "target": "E"}
-    ]
-}
+        "nodes": [
+            {"name": "A"},
+            {"name": "B"},
+            {"name": "C"},
+            {"name": "D"},
+            {"name": "E"}
+        ],
+        "links": [
+            {"source": "A", "target": "B"},
+            {"source": "A", "target": "C"},
+            {"source": "B", "target": "D"},
+            {"source": "C", "target": "D"},
+            {"source": "D", "target": "E"}
+        ]
+    }
 
     return jsonify(dag_data)
 
@@ -659,6 +658,8 @@ def upload_csv():
                 # remove spaces and \n
                 data = [x.strip() for x in data]
                 # Process and insert factor data
+                for i in data:
+                    print(i)
                 database_access.insert_factor(
                     title=data[1], description=data[2], votes=data[3], user_id=current_user_id)
             return redirect(url_for('factor', num='1'))
@@ -741,14 +742,17 @@ def export_data():
         return "Invalid data type", 400
 
 
-@app.route('/deleteParticipantsButton', methods=['POST','GET'])
+@app.route('/deleteParticipantsButton', methods=['POST', 'GET'])
 def deleteParticipantsButton():
-    database_access.delete_all_participants()
+    current_user_id = current_user.id
+    database_access.delete_all_participants(current_user_id)
     return redirect(url_for('participant'))
 
-@app.route('/deleteFactorButton', methods=['POST','GET'])
+
+@app.route('/deleteFactorButton', methods=['POST', 'GET'])
 def deleteFactorButton():
-    database_access.delete_all_factors()
+    current_user_id = current_user.id
+    database_access.delete_all_factors(current_user_id)
     return redirect(url_for("factor", num='-1'))
 
 

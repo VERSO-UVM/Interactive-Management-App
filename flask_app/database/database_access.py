@@ -60,7 +60,7 @@ def query_user_by_id(user_id: int):
         return None
 
 
-def insert_user(email: str, password: str) -> bool:
+def insert_user(email: str, password: str) -> User:
     """
     Insert a new user into the database.
     """
@@ -75,7 +75,7 @@ def insert_user(email: str, password: str) -> bool:
         try:
             __DATABASE_CONNECTION.add(user)
             __DATABASE_CONNECTION.commit()
-            return True
+            return user
 
         except sqlite3.ProgrammingError as e:
             print(f"{e.with_traceback()}")
@@ -870,25 +870,30 @@ def get_results_voted(LeadingFactor, subSection, user_id):
         RatingsTBL.factor_leading == LeadingFactor
     ).all()
 
+    print("resultsOne:", resultsOne)
     # Check if there are results and process them
     if len(resultsOne) > 0:
-        print(resultsOne)
-        for result in resultsOne:
+        for i in range(len(resultsOne)):
+            nestedList[i] = 1
+
+        '''for result in resultsOne:
             finder = result[0] - 1
-            nestedList[finder] = 1
+            nestedList[finder] = 1'''
 
     return nestedList
 
 
-def factorTitle(subsection,user_id):
+def factorTitle(subsection, user_id):
     factorsTitle = []
-    for i in range(0, subsection):
+    for i in range(subsection):
         factor = __DATABASE_CONNECTION.query(FactorTBL.title).filter(
             FactorTBL.user_id == user_id,
             FactorTBL.id == i + 1
         ).first()
-        factorsTitle.append(factor)
-    
+        if factor:
+            # Convert Row object to dictionary
+            factor_dict = dict(factor._mapping)
+            factorsTitle.append(factor_dict)
     return factorsTitle
 
 
@@ -899,7 +904,8 @@ def delete_all_participants(user_id):
     Args:
         user_id: Identifier of the user.
     """
-    participants = __DATABASE_CONNECTION.query(ParticipantTBL).filter(ParticipantTBL.user_id == user_id).all()
+    participants = __DATABASE_CONNECTION.query(ParticipantTBL).filter(
+        ParticipantTBL.user_id == user_id).all()
     for participant in participants:
         __DATABASE_CONNECTION.delete(participant)
     __DATABASE_CONNECTION.commit()
@@ -912,9 +918,8 @@ def delete_all_factors(user_id):
     Args:
         user_id: Identifier of the user.
     """
-    factors = __DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.user_id == user_id).all()
+    factors = __DATABASE_CONNECTION.query(FactorTBL).filter(
+        FactorTBL.user_id == user_id).all()
     for factor in factors:
         __DATABASE_CONNECTION.delete(factor)
     __DATABASE_CONNECTION.commit()
-
-

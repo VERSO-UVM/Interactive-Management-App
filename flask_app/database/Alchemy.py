@@ -43,7 +43,8 @@ class User(Base):
 class ParticipantTBL(Base):
     __tablename__ = 'participants'
 
-    id = Column('id', Integer, primary_key=True, index=True)
+    id = Column('id', Integer, primary_key=True,
+                index=True, autoincrement=True)
     f_name = Column('f_name', String, nullable=False)
     l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
@@ -66,7 +67,8 @@ class ParticipantTBL(Base):
 class FactorTBL(Base):
     __tablename__ = 'factors'
 
-    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    id = Column('id', Integer, primary_key=True,
+                autoincrement=True)
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
