@@ -245,10 +245,15 @@ def login():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        new_user = insert_user(form.email.data, form.password.data)
-        login_user(new_user, remember=True)
-        flash('Congratulations, you are now a registered user!', 'success')
-        return redirect(url_for('index'))
+        existing_user = query_user_by_email(form.email.data)
+        if existing_user:
+            flash('Email address already exists. Please use a different email.', 'danger')
+
+        else:
+            new_user = insert_user(form.email.data, form.password.data)
+            login_user(new_user, remember=True)
+            flash('Congratulations, you are now a registered user!', 'success')
+            return redirect(url_for('index'))
     return render_template('register.html', title='Register', register_form=form)
 
 
