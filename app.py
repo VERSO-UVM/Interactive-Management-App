@@ -341,26 +341,11 @@ def insert_factor():
         return render_template("insert_factor.html")
 
 
-# Factors subsection picked by user:
-# Logistic for ascending and descending button
-# Uses participant_id_select.html
-# Uses search participant from database acess
-@app.route('/middleMan', methods=['POST', 'GET'])
-def middleMan():
-    current_user_id = current_user.id
-    if request.method == 'POST':
-        p_id = request.form["id"]
-        return redirect(url_for('pick_factors', p_id=p_id, num=-1))
-    else:
-        resultsID = database_access.all_participants(current_user_id)
-        return render_template('participant_id_select.html', resultsID=resultsID)
-
-
 # Subsection of factors picked by the users
 # Ultizies get_factor_list  from database acess
 # Shows selected_factors to pick factors but shows pick_factor from load
-@app.route('/pick_factors/<p_id>/<num>', methods=['POST', 'GET'])
-def pick_factors(p_id, num):
+@app.route('/pick_factors/<num>', methods=['POST', 'GET'])
+def pick_factors(num):
     current_user_id = current_user.id
 
     if request.method == 'POST':
@@ -373,19 +358,19 @@ def pick_factors(p_id, num):
         subsection = len(factor)
 
         # Deletes previous entries of rating table
-        (database_access.delete_rating(p_id, current_user_id))
+        (database_access.delete_rating(current_user_id))
 
         # Inserts into rating table with default 0
         combinations = list(itertools.combinations(factor, 2))
 
         for i in range(0, len(combinations)):
             database_access.insert_rating(
-                factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, participant_id=p_id, user_id=current_user_id)
+                factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, user_id=current_user_id)
             database_access.insert_rating(
-                factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, participant_id=p_id, user_id=current_user_id)
-            # print(f'{combinations[i][0]} {combinations[i][1]}')
-            # print(f'{combinations[i][1]} {combinations[i][0]}')
-        return render_template("initial_factors.html", factor=factor, p_id=p_id)
+                factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, user_id=current_user_id)
+            print(f'{combinations[i][0]} {combinations[i][1]}')
+            print(f'{combinations[i][1]} {combinations[i][0]}')
+        return render_template("initial_factors.html", factor=factor)
 
     else:
 
@@ -407,12 +392,13 @@ def pick_factors(p_id, num):
 # Ultilizies update_rating function from database access
 
 
-@app.route('/update_rating/<p_id>/<f_id>/<rating>')
-def update_rating(p_id, f_id, rating):
+@app.route('/update_rating/<leading>/<following>/<rating>')
+def update_rating(leading, following, rating):
     current_user_id = current_user.id
-    f_id = int(f_id)
-    database_access.update_rating(person_id=int(
-        p_id), rating=float(rating), index=f_id-1, user_id=current_user_id)
+    factor_leading = int(leading)
+    factor_following = int(following)
+    database_access.update_rating(rating=float(
+        rating), factor_leading=factor_leading, factor_following=factor_following, user_id=current_user_id)
     return rating
 
 
@@ -427,48 +413,62 @@ def participant_id_selected():
 # Get_rating_by_id and search_specific_participant used from databasee caess
 
 
-@app.route('/insert_rating/<p_id>')
-def insert_rating(p_id):
+@app.route('/insert_rating')
+def insert_rating():
     current_user_id = current_user.id
+    factors = database_access.get_rating_by_id(current_user_id)
 
-    factor = database_access.get_rating_by_id(p_id, current_user_id)
-    person = database_access.search_specific_participant(p_id, current_user_id)
-    return render_template('rating.html', factor=factor, person=person)
+    # Convert factors to a list of dictionaries
+    factors_list = [
+        {
+            'factor_id_leading': factor.factor_leading,
+            'factor_id_following': factor.factor_following,
+            'rating': factor.rating
+        }
+        for factor in factors
+    ]
+
+    return render_template('rating.html', factors=factors_list, user_id=current_user_id)
 
 
 # Used to get factor information for displaying from table
-@app.route('/getInfoLeading/<p_id>/<f_id>', methods=['POST', 'GET'])
-def getInfoLeading(p_id, f_id):
+@app.route('/getInfoLeading/<f_id>', methods=['POST', 'GET'])
+def getInfoLeading(f_id):
     current_user_id = current_user.id
     # Gets information from factor based on the id
+    print("leading")
+    print("User id:", current_user_id)
+    print("factor id:", f_id)
 
     try:
 
-        result = database_access.specific_id_factor(f_id, current_user_id)
-        results = result.factor_leading
         resultTitle = database_access.search_specific_factor(
-            int(results), current_user_id)
-        resultsss = resultTitle.title
-        return resultsss
+            int(f_id), current_user_id)
+        print("resultTitle:", resultTitle)
+        results = resultTitle.title
+        print("results:", results)
+        return results
     except:
         return "-1"
 
 
 # Used to get factor information for displaying from table
 # Ultizies search specific factpr and specifc id factor from database acess
-@app.route('/getInfoFollowing/<p_id>/<f_id>', methods=['POST', 'GET'])
-def getInfoFollowing(p_id, f_id):
+@app.route('/getInfoFollowing/<f_id>', methods=['POST', 'GET'])
+def getInfoFollowing(f_id):
     current_user_id = current_user.id
     # Gets information from factor based on the id
+    print("following")
+    print("User id:", current_user_id)
+    print("factor id:", f_id)
     try:
-        result = database_access.specific_id_factor(f_id, current_user_id)
-        results = result.factor_following
 
         resultTitle = database_access.search_specific_factor(
-            int(results), current_user_id)
-        resultsss = resultTitle.title
-        return (resultsss)
-
+            int(f_id), current_user_id)
+        print("resultTitle:", resultTitle)
+        results = resultTitle.title
+        print("results:", results)
+        return results
     except:
         return "-1"
 
@@ -684,7 +684,7 @@ def upload_csv():
                 # remove spaces and \n
                 data = [x.strip() for x in data]
                 database_access.insert_rating(
-                    factor_leading=data[1], factor_following=data[2], rating=data[3], participant_id=data[4], user_id=current_user_id)
+                    factor_leading=data[1], factor_following=data[2], rating=data[3], user_id=current_user_id)
             return redirect(url_for('rating'))
         elif data_type == 'result':
             lines = file.read().decode('utf-8').splitlines()
@@ -710,7 +710,7 @@ def export_data():
     headers = {
         "factors": ["ID", "Title", "Description", "Votes"],
         "participants": ["ID", "First Name", "Last Name", "Email", "Telephone"],
-        "ratings": ["ID", "Factor Leading", "Factor Following", "Rating", "Participant ID"],
+        "ratings": ["ID", "Factor Leading", "Factor Following", "Rating"],
         "results": ["ID", "Factor Leading", "Factor Following", "Rating"]
     }
 

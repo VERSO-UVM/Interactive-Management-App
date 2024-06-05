@@ -93,19 +93,17 @@ class RatingsTBL(Base):
     factor_leading = Column('factor_leading', Integer, nullable=False)
     factor_following = Column('factor_following', Integer, nullable=False)
     rating = Column('rating', Integer, nullable=False)
-    participant_id = Column('participant_id', Integer, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='ratings')
 
-    def __init__(self, factor_leading: int, factor_following: int, rating: int, participant_id: int, user_id: int = None):
+    def __init__(self, factor_leading: int, factor_following: int, rating: int, user_id: int = None):
         self.factor_leading = factor_leading
         self.factor_following = factor_following
         self.rating = rating
-        self.participant_id = participant_id
         self.user_id = user_id
 
     def __repr__(self):
-        return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
+        return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}'
 
 
 # Results model

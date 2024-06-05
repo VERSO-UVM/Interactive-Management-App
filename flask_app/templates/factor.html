@@ -24,7 +24,7 @@ Factor Page
       <h3>Here is where you add all of your factors/issues into the application. Some examples include "High Turnover Rate", or "Bad Management". 
         Add a description, and see how many votes there are and input into the program. 
         Select edit to go back and fix any errors, or delete to remove a factor. 
-        Add as many as you please! Use the "Go To Rating Page" button to progress.
+        Add as many as you please! Use the "Go To Rating Page" button at the bottom of the page to progress.
       </h3>
       {# Heading for the factor page #}
   </div>
@@ -74,6 +74,7 @@ Factor Page
   <button type="submit" class="save">Save</button>
 </form>
 </div>
+<p><a href="{{ url_for('pick_factors', num=-1) }}"><button class="goToRating">Go to Rating Page</button></a></p>
 <script>
     function DeleteData()
     {

@@ -204,7 +204,7 @@ def insert_participant(f_name: str,
     return False
 
 
-def insert_rating(factor_leading: Factor, factor_following: Factor, rating: float, participant_id: float, user_id: int):
+def insert_rating(factor_leading: Factor, factor_following: Factor, rating: float, user_id: int):
     """
     Inserts a rating into the database with provided details.
 
@@ -213,7 +213,6 @@ def insert_rating(factor_leading: Factor, factor_following: Factor, rating: floa
         factor_leading (Factor): Factor leading in the comparison.
         factor_following (Factor): Factor following in the comparison.
         rating (float): Rating value.
-        participant_id (float): Identifier of the participant associated with the rating.
 
     Returns:
         bool: True if insertion is successful, False otherwise.
@@ -224,8 +223,7 @@ def insert_rating(factor_leading: Factor, factor_following: Factor, rating: floa
     try:
         insert = RatingsTBL(factor_leading=factor_leading.id,
                             factor_following=factor_following.id,
-                            rating=rating,
-                            participant_id=participant_id, user_id=user_id)
+                            rating=rating, user_id=user_id)
     except AttributeError:
       #  print(f'ERROR: invalid rating insertion for participant={p.u_name}')
         return False
@@ -626,19 +624,18 @@ def get_all_ratings(user_id):
     return ratings
 
 
-def get_rating_by_id(id, user_id):
+def get_rating_by_id(user_id):
     """
-    Retrieves ratings associated with a specific participant by ID and user.
+    Retrieves ratings associated with a specific user.
 
     Args:
-        id: Identifier of the participant.
         user_id: Identifier of the user.
 
     Returns:
-        List: List of ratings associated with the participant.
+        List: List of ratings associated with the user.
     """
     ratings = __DATABASE_CONNECTION.query(RatingsTBL).filter_by(
-        participant_id=id, user_id=user_id).all()
+        user_id=user_id).all()
     return ratings
 
 
@@ -681,34 +678,35 @@ def specific_id_factor(id, user_id):
 
 
 # Updates existing rating
-def update_rating(person_id, rating, index, user_id):
+def update_rating(rating, factor_leading, factor_following, user_id):
     """
     Updates a rating associated with a participant in the database.
 
     Args:
-        person_id: Identifier of the participant.
         rating: New rating value.
-        index: Index of the rating to update.
+        factor_leading: Identifier of the leading factor.
+        factor_following: Identifier of the following factor.
         user_id: Identifier of the user.
 
     Returns:
         bool: True if updating is successful, False otherwise.
     """
-    ratings = __DATABASE_CONNECTION.query(RatingsTBL).filter_by(
-        participant_id=person_id, user_id=user_id).all()
+    rating_entry = __DATABASE_CONNECTION.query(RatingsTBL).filter_by(
+        factor_leading=factor_leading,
+        factor_following=factor_following,
+        user_id=user_id
+    ).first()
+
     try:
-        if ratings and index < len(ratings):
-            ratings[index].rating = rating
+        if rating_entry:
+            rating_entry.rating = rating
 
             # Commit the changes to the database
             __DATABASE_CONNECTION.commit()
-
-            print(__DATABASE_CONNECTION.query(RatingsTBL).filter_by(
-                id=ratings[index].id, user_id=user_id).first())
             return True
         else:
             print(
-                f"No rating found at index {index} for participant {person_id} and user {user_id}")
+                f"No rating found for factor leading {factor_leading}, factor following {factor_following}, and user {user_id}")
             return False
     except Exception as e:
         print(f"Error updating rating for user {user_id}: {e}")
@@ -736,7 +734,7 @@ def delete_everything(user_id):
 
 
 # Deletes existing rating
-def delete_rating(p_id, user_id):
+def delete_rating(user_id):
     """
     Deletes ratings associated with a specific participant by ID and user.
 
@@ -746,13 +744,13 @@ def delete_rating(p_id, user_id):
     """
     try:
         ratings = __DATABASE_CONNECTION.query(RatingsTBL).filter_by(
-            participant_id=p_id, user_id=user_id).all()
+            user_id=user_id).all()
         for rating in ratings:
             __DATABASE_CONNECTION.delete(rating)
         __DATABASE_CONNECTION.commit()
     except Exception as e:
         print(
-            f"Error deleting ratings for participant {p_id} and user {user_id}: {e}")
+            f"Error deleting ratings for user {user_id}: {e}")
 
 
 ############################################# Results Function#######################
