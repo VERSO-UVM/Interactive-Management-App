@@ -18,3 +18,19 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password', validators=[
                                      DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
+
+class ForgotPassword(FlaskForm):
+    email=StringField('Email',validators=[DataRequired(),Email()])
+    submit=SubmitField('Recover')
+
+class VerificationCode(FlaskForm):
+    codeVerification=StringField('Verification Code',validators=[DataRequired()])
+    submit=SubmitField('Submit')
+
+
+class PasswordChangeForm(FlaskForm):
+    password = PasswordField('Password', validators=[
+                             DataRequired(), Length(min=6)])
+    confirm_password = PasswordField('Confirm Password', validators=[
+                                     DataRequired(), EqualTo('password')])
+    submit = SubmitField('Change Password')

@@ -11,6 +11,7 @@ from flask_app.database.Alchemy import ParticipantTBL
 from flask_app.database.Alchemy import FactorTBL
 from flask_app.database.Alchemy import RatingsTBL
 from flask_app.database.Alchemy import ResultsTBL
+from flask_app.database.Alchemy import PasswordRecovery
 from flask_app.database.Alchemy import User
 from flask_app.lib.dTypes.Factor import Factor
 from flask_app.lib.dTypes.Participant import Participant
@@ -87,6 +88,45 @@ def insert_user(email: str, password: str) -> User:
             print(f"{e.with_traceback()}")
             return False
         except sqlite3.DatabaseError as e:
+            print("is the database file missing?")
+            print(f"{e.with_traceback()}")
+            return False
+
+    return False
+
+
+def insert_passwordVerification(email: str,
+                  verificationCode: str,
+                  ) -> bool:
+
+    insert: PasswordRecovery
+
+    try:
+        insert = PasswordRecovery(email=email,
+                           verificationCode=verificationCode,
+                           )
+    except AttributeError:
+        return False
+
+    if insert:
+        try:
+            __DATABASE_CONNECTION.add(insert)
+            __DATABASE_CONNECTION.commit()
+            return True
+        except sqlite3.ProgrammingError as e:
+           # print(f"ERROR: non-sqlite3 error inserting factor, label={f.label}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.IntegrityError as e:
+            # print(f"ERROR: database integrity violation inserting factor, label={f.label}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.OperationalError as e:
+            # print(f"ERROR: database operational error inserting factor, label={f.label}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.DatabaseError as e:
+            # print(f"ERROR: database error inserting factor, label={f.label}")
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
@@ -932,3 +972,45 @@ def delete_all_factors(user_id):
     for factor in factors:
         __DATABASE_CONNECTION.delete(factor)
     __DATABASE_CONNECTION.commit()
+
+
+def find_password(email: str):
+    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email ==email).first()
+    return password[0]
+
+def update_code(email, verificationCode):
+    try:
+        codeUpdate = __DATABASE_CONNECTION.query(
+            PasswordRecovery).filter_by(email=email).first()
+        if codeUpdate:
+            codeUpdate.email = email
+            codeUpdate.verificationCode = verificationCode
+            
+            __DATABASE_CONNECTION.commit()
+            return True
+        else:
+          
+            return False
+    except Exception as e:
+       
+        return False
+
+
+def update_password(email, password):
+    try:
+        passwordUpdate = __DATABASE_CONNECTION.query(
+            User).filter_by(email=email).first()
+        
+        if passwordUpdate:
+            passwordUpdate.email = email
+            passwordUpdate.password_hash =  bcrypt_sha256.hash(password)
+            
+            __DATABASE_CONNECTION.commit()
+            return True
+        else:
+          
+            return False
+    except Exception as e:
+       
+        return False
+
