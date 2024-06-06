@@ -7,52 +7,6 @@ styles %} {{ super() }}
 {% endblock %} {% block title %} Participant Page {% endblock %} {% block
 content %}
 <div class="grid-container">
-  <<<<<<< HEAD
-  <div class="partPage">
-    <h1 class="pt-5 pb-2">Participants</h1>
-    <h3>
-      This page is where all users should enter their information! Select the
-      Edit button to fix any errors, or the Delete button to remove a
-      particiapant. Press the Go Rate button to keep progressing.
-    </h3>
-  </div>
-  <div class="table">
-    <!-- Table of factors that include: ID, Order, Factor -->
-    <table style="width: 100%">
-      <!-- Table row for header-->
-      <tr>
-        <th>First</th>
-        <th>Last</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Edit</th>
-        <th>Delete</th>
-        <th>Rate</th>
-      </tr>
-      <!-- Example placeholder until can connect to a database to display real-time information-->
-      {% for i in part %}
-      <tr>
-        <td>{{ i.f_name }}</td>
-        <td>{{ i.l_name }}</td>
-        <td>{{ i.email }}</td>
-        <td>{{ i.telephone }}</td>
-        <td>
-          <!-- Send to edit with id -->
-          <a href="{{ url_for('ParticipantEdit', id=i.id) }}">Edit</a>
-        </td>
-        <td>
-          <!-- Send to delete with id -->
-          <a href="{{ url_for('delete_participants', id=i.id) }}">Delete</a>
-        </td>
-        <td>
-          <!-- Send to edit with id -->
-          <a href="{{ url_for('pick_factors', p_id=i.id,num=-1) }}">Go Rate</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </table>
-  </div>
-  =======
   <div class="partPage">
     <h1 class="pt-5 pb-2">Participants</h1>
     <h3>
@@ -95,8 +49,6 @@ content %}
   <div>
     <button type="Delete" onclick="DeleteData()">Delete</button>
     <div>
-      >>>>>>> origin/main
-
       <div class="addPart">
         <div class="withinAdd">
           <h4>Add Participant</h4>
