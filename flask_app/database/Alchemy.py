@@ -38,6 +38,19 @@ class User(Base):
     def get_id(self):
         return str(self.id)
 
+class PasswordRecovery(Base):
+    __tablename__ = 'passwordRecovery'
+
+    email=Column('email',String, primary_key=True, index=True)
+    verificationCode=Column("code",String,nullable=False)
+
+    def __init__(self, email: str, verificationCode: str):
+        self.email = email
+        self.verificationCode = verificationCode
+
+    def __repr__(self):  # string representation
+        return f'{self.email} {self.verificationCode}'
+       
 
 # Participant model
 class ParticipantTBL(Base):

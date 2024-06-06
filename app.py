@@ -4,7 +4,7 @@ from flask_app.config import configure_flask_application
 import flask_app.database.database_access as database_access
 from flask_app.database.database_access import ResultsTBL, query_user_by_email, insert_user, query_user_by_id
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
-from flask_app.forms import LoginForm, RegistrationForm
+from flask_app.forms import LoginForm, RegistrationForm, ForgotPassword,VerificationCode,PasswordChangeForm
 import networkx as nx
 import datetime as dt
 import matplotlib
@@ -19,6 +19,9 @@ import json
 import numpy as np
 import pandas as pd
 import networkk as nt
+from flask_mail import Mail, Message
+import secrets
+
 
 def structure_matrix(A):
     """
@@ -209,6 +212,19 @@ plots_dir = 'flask_app/static/plots'
 os.makedirs(plots_dir, exist_ok=True)
 
 
+app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+app.config['MAIL_USERNAME'] = 'ismrecoverydeveloper@outlook.com'
+app.config['MAIL_PASSWORD'] = '@Ism.Email.123'
+app.config['MAIL_DEFAULT_SENDER'] = 'ismrecoverydeveloper@outlook.com'
+mail = Mail(app)
+
+
+
+
+
 @login_manager.user_loader
 def load_user(user_id):
     # This function is called to load a user object based on the user ID stored in the session
@@ -245,7 +261,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(form.email.data, form.password.data)
-        insert_user(user)
+        insert_user(form.email.data, form.password.data)
         login_user(user, remember=True)
         flash('Congratulations, you are now a registered user!', 'success')
         return redirect(url_for('index'))
@@ -256,6 +272,52 @@ def register():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+@app.route('/forgotPassword',methods=['GET', 'POST'])
+def forgotPassword():
+    form=ForgotPassword()
+    if form.validate_on_submit():
+        if(query_user_by_email(form.email.data)):
+            verificationSecret=secrets.token_hex(3)
+            msg = Message('Email Recovery',
+            recipients=["fernandagirelli3@gmail.com"],
+            body=f"{verificationSecret}")
+            mail.send(msg)
+
+            codeSaved=database_access.find_password(form.email.data)
+            if(codeSaved):
+                database_access.update_code(form.email.data,verificationSecret)
+            else:
+                database_access.insert_passwordVerification(form.email.data,verificationSecret)
+            return redirect(url_for('recoveryVerification',email=form.email.data))
+        else:
+            flash('No user with this email.', 'danger')
+            
+    return render_template("forgotPassword.html",title='Password Recovery', form=form)
+
+@app.route('/recoveryVerification/<email>',methods=['GET', 'POST'])
+def recoveryVerification(email):
+    form=VerificationCode()
+    codeSaved=database_access.find_password(email)
+    codeCheck=form.codeVerification.data
+    if form.validate_on_submit():
+        if(codeSaved==codeCheck):
+           
+            return redirect(url_for('updatePassword',email=email))
+        else:
+            flash(
+                'Verification Unsuccessful. Please check verification code.', 'danger')
+    return render_template("verificationCode.html",title='verification', form=form)
+
+@app.route('/updatePassword/<email>',methods=['GET', 'POST'])
+def updatePassword(email):
+    form=PasswordChangeForm()
+    if form.validate_on_submit():
+       database_access.update_password(email, form.password.data)
+       return redirect(url_for('login'))
+    return render_template('updatePassword.html',title='UpdatePassword', form=form)
+
+
 
 ####################### Factor Functions##########################
 
