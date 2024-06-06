@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/685568968.svg)](https://zenodo.org/doi/10.5281/zenodo.11508669)
+
 # Interactive Management App
 ORCA Project 2023-2024
 
