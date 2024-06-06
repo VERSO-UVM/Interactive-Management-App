@@ -287,7 +287,7 @@ def forgotPassword():
             recipients=[f"{form.email.data}"],
             body=f"{verificationSecret}")
             mail.send(msg)
-
+            
             codeSaved=database_access.find_password(form.email.data)
             if(codeSaved):
                 database_access.update_code(form.email.data,verificationSecret)
