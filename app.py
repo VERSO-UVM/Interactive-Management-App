@@ -284,7 +284,7 @@ def forgotPassword():
         if(query_user_by_email(form.email.data)):
             verificationSecret=secrets.token_hex(3)
             msg = Message('Email Recovery',
-            recipients=["fernandagirelli3@gmail.com"],
+            recipients=[f"{form.email.data}"],
             body=f"{verificationSecret}")
             mail.send(msg)
 
