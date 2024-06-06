@@ -56,7 +56,8 @@ class PasswordRecovery(Base):
 class ParticipantTBL(Base):
     __tablename__ = 'participants'
 
-    id = Column('id', Integer, primary_key=True, index=True)
+    id = Column('id', Integer, primary_key=True,
+                index=True, autoincrement=True)
     f_name = Column('f_name', String, nullable=False)
     l_name = Column('l_name', String, nullable=False)
     email = Column('email', String, nullable=False)
@@ -79,7 +80,8 @@ class ParticipantTBL(Base):
 class FactorTBL(Base):
     __tablename__ = 'factors'
 
-    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    id = Column('id', Integer, primary_key=True,
+                autoincrement=True)
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
@@ -104,19 +106,17 @@ class RatingsTBL(Base):
     factor_leading = Column('factor_leading', Integer, nullable=False)
     factor_following = Column('factor_following', Integer, nullable=False)
     rating = Column('rating', Integer, nullable=False)
-    participant_id = Column('participant_id', Integer, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='ratings')
 
-    def __init__(self, factor_leading: int, factor_following: int, rating: int, participant_id: int, user_id: int = None):
+    def __init__(self, factor_leading: int, factor_following: int, rating: int, user_id: int = None):
         self.factor_leading = factor_leading
         self.factor_following = factor_following
         self.rating = rating
-        self.participant_id = participant_id
         self.user_id = user_id
 
     def __repr__(self):
-        return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}, participant_id: {self.participant_id}'
+        return f'factor_id_leading: {self.factor_leading}, factor_id_following: {self.factor_following}, rating: {self.rating}'
 
 
 # Results model
