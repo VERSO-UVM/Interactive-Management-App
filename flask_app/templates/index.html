@@ -38,19 +38,21 @@ Home" #} {% endblock %}
   <!-- Load section -->
   <div class="loadContainer">
     <div class="shared-style">
-      <h4>Upload Data</h4>
-      <input
-        type="file"
-        id="fileInput"
-        style="display: none"
-        accept=".csv"
-        onchange="uploadFile(this.getAttribute('data-type'))"
-      />
+        <h4>Upload Data</h4>
+        <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
+       
+        <div class="load">
+          <button onclick="triggerFileInput('factor')" class="loadButton">Upload Factors</button>
+        </div>
 
-      <div class="load">
-        <button onclick="triggerFileInput('factor')" class="loadButton">
-          Upload Factors
-        </button>
+        <div class="load">
+          <button onclick="triggerFileInput('participant')" class="loadButton">Upload Participants</button>
+        </div>
+
+        <div class="load">
+          <button onclick="triggerFileInput('rating')" class="loadButton">Upload Ratings</button>
+        </div>
+
       </div>
 
       <div class="load">
@@ -78,48 +80,17 @@ Home" #} {% endblock %}
       <h4>Export</h4>
       <!-- TODO: add links to factors, participants,
         ratings, and results (clickable option) -->
-      <form action="/export_data" method="post">
-        <div class="export">
-          <button
-            class="exportButton"
-            type="submit"
-            name="data_type"
-            value="factors"
-          >
-            Export Factors
-          </button>
-        </div>
-        <div class="export">
-          <button
-            class="exportButton"
-            type="submit"
-            name="data_type"
-            value="participants"
-          >
-            Export Participants
-          </button>
-        </div>
-        <div class="export">
-          <button
-            class="exportButton"
-            type="submit"
-            name="data_type"
-            value="ratings"
-          >
-            Export Ratings
-          </button>
-        </div>
-        <div class="export">
-          <button
-            class="exportButton"
-            type="submit"
-            name="data_type"
-            value="results"
-          >
-            Export Results
-          </button>
-        </div>
-      </form>
+        <form action="/export_data" method="post">
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="factors">Export Factors</button>
+          </div>
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="participants">Export Participants</button>
+          </div>
+          <div class="export">
+            <button class="exportButton" type="submit" name="data_type" value="ratings">Export Ratings</button>
+          </div>
+        </form>
     </div>
   </div>
 </div>

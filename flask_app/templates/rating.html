@@ -14,8 +14,7 @@ Ratings Page
 <div class="grid-container">
   <div class="ratingPage">
       <h1 class="pt-5 pb-2">Rating the Factors</h1>
-      <h3>The participant id correspond to the order all users were entered! Answer a few questions and proceed to the final results. 
-        Another user can also answer these questions, by the Choose Next Participant button, which allows the user to select another ID.
+      <h3>Answer a few questions and proceed to the final results. 
       </h3>
   </div>
 
@@ -25,13 +24,13 @@ Ratings Page
         <div class="box">
           
             <div id="part">
-              <p class="IDs">Participant ID:</p>
-              <p id="partID" class="IDs">{{person.id}}</p>
+              <p class="IDs">User ID:</p>
+              <p id="partID" class="IDs">{{ user_id }}</p>
             </div>
 
             <p class="guide">Does the left factor affect the right factor?</p>
               <p id="fLeading" class="Factorsss"></p>
-              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100">
+              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
               <p id="fFollowing" class="Factorsss"></p>
               
             </div>
@@ -53,65 +52,56 @@ Ratings Page
     </div>
   </div>
 
-  <div class="gTResults-Container-left"> <!-- Modified class name -->
-    <p><a href="{{ url_for('middleMan') }}"><button class="goToMenu">Choose Next Participant</button></a></p>
-  </div>
-
   <div class="gTResults-Container-right"> <!-- Modified class name -->
     <p><a href="{{ url_for('resultInfo') }}"><button class="goToResult">Go To Final Results</button></a></p>
   </div>
 </div>
 
 <script>
-  // Gets the participant ID and start a counter for the factors
-  const participantId =document.getElementById("partID").innerHTML;
-  let index=1;
+  window.onload = function() {
+    let factors = JSON.parse('{{ factors | tojson | safe }}');
+    let index = 0;
 
-  //Loads factors from the start
-  window.onload=function() {
-    $.get('/getInfoLeading/'+participantId+'/'+index,
-      function(x) {
+    function loadFactors() {
+      if (index < factors.length) {
+        let factorLeading = factors[index].factor_id_leading;
+        let factorFollowing = factors[index].factor_id_following;
+
+        $.get('/getInfoLeading/' + factorLeading, function(x) {
           $("#fLeading").html(x);
-          $.get('/getInfoFollowing/'+participantId+'/'+index,
-            function(x) {
-              $("#fFollowing").html(x);
-              index+=1;
-            });
+          $.get('/getInfoFollowing/' + factorFollowing, function(x) {
+            $("#fFollowing").html(x);
+          });
         });
+      } else {
+        $("#fLeading").hide()
+        $("#fFollowing").html("Finished");
+        $("#skip").hide();
+        $("#submit").hide();
+        $("#myform").hide();
+        $("#Arrow").hide();
+      }
+    }
+
+    document.getElementById("submit").addEventListener("click", function() {
+    let rating = document.querySelector('input[name="responseYN"]:checked').value;
+    let factorLeading = factors[index].factor_id_leading;
+    let factorFollowing = factors[index].factor_id_following;
+    $.get('/update_rating/' + factorLeading + '/' + factorFollowing + '/' + rating, function(x) {});
+});
+
+
+    document.getElementById("skip").addEventListener("click", function() {
+      index += 1;
+      loadFactors();
+    });
+
+    document.getElementById("submit").addEventListener("click", function() {
+      index += 1;
+      loadFactors();
+    });
+
+    loadFactors();
   };
-
-  //Updates the ratings table as the user inputs new rating
-  document.getElementById("submit").addEventListener("click", updateRating);
-  function updateRating() {
-    const rating = document.querySelector('input[name="responseYN"]:checked').value;
-    $.get('/update_rating/'+participantId+'/'+(index-1)+'/'+rating,
-      function(x) {
-      }
-    );
-  }
-
-  //Allows the user to go through the factors either by skipping or by submitting new ratings
-  document.getElementById("skip").addEventListener("click", submitButton);
-  document.getElementById("submit").addEventListener("click", submitButton);
-
-  function submitButton() {
-    //Calls functins to get information on factors based on index
-    $.get('/getInfoLeading/'+participantId+'/'+index,
-      function(x) {
-        if(x!='-1') {
-          $("#fLeading").html(x);
-          $.get('/getInfoFollowing/'+participantId+'/'+index,
-            function(x) {
-              if(x!='-1') {
-                $("#fFollowing").html(x);
-                index+=1;
-              }
-            }
-          );
-        }
-      }
-    );
-   
-  }
 </script>
 {% endblock %}

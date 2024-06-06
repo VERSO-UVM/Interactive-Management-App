@@ -7,6 +7,7 @@ styles %} {{ super() }}
 {% endblock %} {% block title %} Participant Page {% endblock %} {% block
 content %}
 <div class="grid-container">
+  <<<<<<< HEAD
   <div class="partPage">
     <h1 class="pt-5 pb-2">Participants</h1>
     <h3>
@@ -51,57 +52,116 @@ content %}
       {% endfor %}
     </table>
   </div>
+  =======
+  <div class="partPage">
+    <h1 class="pt-5 pb-2">Participants</h1>
+    <h3>
+      This page is where all users should enter their information! Select the
+      Edit button to fix any errors, or the Delete button to remove a
+      particiapant. Click the Factors page at the top to continue.
+    </h3>
+  </div>
+  <div class="table">
+    <!-- Table of factors that include: ID, Order, Factor -->
+    <table style="width: 100%">
+      <!-- Table row for header-->
+      <tr>
+        <th>First</th>
+        <th>Last</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      <!-- Example placeholder until can connect to a database to display real-time information-->
+      {% for i in part %}
+      <tr>
+        <td>{{ i.f_name }}</td>
+        <td>{{ i.l_name }}</td>
+        <td>{{ i.email }}</td>
+        <td>{{ i.telephone }}</td>
+        <td>
+          <!-- Send to edit with id -->
+          <a href="{{ url_for('ParticipantEdit', id=i.id) }}">Edit</a>
+        </td>
+        <td>
+          <!-- Send to delete with id -->
+          <a href="{{ url_for('delete_participants', id=i.id) }}">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  <div>
+    <button type="Delete" onclick="DeleteData()">Delete</button>
+    <div>
+      >>>>>>> origin/main
 
-  <div class="addPart">
-    <div class="withinAdd">
-      <h4>Add Participant</h4>
-      <form
-        action="{{ url_for('participant') }}"
-        method="post"
-        onsubmit="return validateForm()"
-      >
-        <label for="first"></label>
-        <input
-          type="text"
-          id="f_name"
-          name="f_name"
-          placeholder="First Name"
-        /><br />
-        <label for="last"></label>
-        <input
-          type="text"
-          id="l_name"
-          name="l_name"
-          placeholder="Last Name"
-        /><br />
-        <label for="email"></label>
-        <input type="text" id="email" name="email" placeholder="Email" /><br />
-        <input
-          type="text"
-          id="telephone"
-          name="telephone"
-          placeholder="Phone"
-        /><br />
-        <input type="submit" value="Submit" />
-      </form>
+      <div class="addPart">
+        <div class="withinAdd">
+          <h4>Add Participant</h4>
+          <form
+            action="{{ url_for('participant') }}"
+            method="post"
+            onsubmit="return validateForm()"
+          >
+            <label for="first"></label>
+            <input
+              type="text"
+              id="f_name"
+              name="f_name"
+              placeholder="First Name"
+            /><br />
+            <label for="last"></label>
+            <input
+              type="text"
+              id="l_name"
+              name="l_name"
+              placeholder="Last Name"
+            /><br />
+            <label for="email"></label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              placeholder="Email"
+            /><br />
+            <input
+              type="text"
+              id="telephone"
+              name="telephone"
+              placeholder="Phone"
+            /><br />
+            <input type="submit" value="Submit" />
+          </form>
+        </div>
+      </div>
     </div>
+
+    <script>
+      /**
+       * Validates the email input field before submitting the form.
+       * @returns {boolean} True if the email is valid, otherwise false.
+       */
+      function DeleteData() {
+        let confirmDelete = confirm(
+          "Are you sure you want to delete ALL the participants; This is not reversible"
+        );
+        if (confirmDelete) {
+          window.location.href = "/deleteParticipantsButton";
+        }
+      }
+      function validateForm() {
+        const emailInput = document.getElementById("email");
+
+        if (!emailInput.value.includes("@")) {
+          alert("Please enter a valid email address.");
+          return false;
+        }
+
+        return true;
+      }
+    </script>
+    {% endblock %}
   </div>
 </div>
-
-<script>
-  /**
-   * Validates the email input field before submitting the form.
-   * @returns {boolean} True if the email is valid, otherwise false.
-   */
-  function validateForm() {
-    const emailValue = document.getElementById("email").value;
-
-    if (!emailValue.includes("@")) {
-      alert("Please enter a valid email address.");
-      return false;
-    }
-
-    return true;
-  }
-</script>
-{% endblock %}
