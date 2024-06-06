@@ -16,7 +16,9 @@ from flask_app.database.Alchemy import User
 from flask_app.lib.dTypes.Factor import Factor
 from flask_app.lib.dTypes.Participant import Participant
 from passlib.hash import bcrypt_sha256
+import time
 __DATABASE_CONNECTION = initialize_database_connection()
+
 
 # TODO COMMENTS ABOVE EACH FUNCTION
 
@@ -974,9 +976,13 @@ def delete_all_factors(user_id):
     __DATABASE_CONNECTION.commit()
 
 
-def find_password(email: str):
-    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email ==email).first()
-    return password[0]
+def find_password(email: str)->str:
+    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email==email).first()
+    if(password is not None): 
+        print(password[0])
+        password=password[0]
+   
+    return password
 
 def update_code(email, verificationCode):
     try:

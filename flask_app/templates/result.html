@@ -21,41 +21,18 @@ Result Page
 
     #cy {
 				z-index: 999;
-                width: 100%;
-                height:100%;
+                width: 80%;
+                height:80%;
                 position: absolute;
+                top: 8%; left:-15%; 
     }
-    #layer0-selectbox
+    #surrond
     {
-        width: 100%;
-        height:100%;
-    }
-    #layer1-drag
-    {
-        width: 100%;
-        height:100%;
-    }
-    #layer2-nodes
-    {
-        width: 100%;
-        height:100%;
+        background-color: yellow;
     }
  
  
 </style>
-
-{% endblock %}
-
-
-{% block content %}
-
-<div class="grid-container">
-   <div class="resultsContainer">
-        <div class="resultPage"></div>
-    </div>
-</div>
-<div id="cy"></div>
-
 <script>
     // After including Cytoscape.js and Cytoscape-Dagre layout extension
 document.addEventListener('DOMContentLoaded', function(){ 
@@ -83,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     container: document.getElementById('cy'),
                     boxSelectionEnabled: false,
                     autounselectify: true,
-                    layout: { name: 'dagre',rankDir: 'LR'},
+                    layout: { name: 'dagre',rankDir: 'LR',fit: true, padding: 10},
                     style: 
                     [
                         {
@@ -116,5 +93,22 @@ document.addEventListener('DOMContentLoaded', function(){
         });     
     });
     </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="grid-container">
+   <div class="resultsContainer">
+        <div class="resultPage"></div>
+    </div>
+</div>
+<div id="surrond">
+<div id="cy" >
+</div>
+</div>
+
+
 
 {% endblock %}

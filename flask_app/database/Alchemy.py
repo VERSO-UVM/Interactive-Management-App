@@ -50,6 +50,7 @@ class PasswordRecovery(Base):
 
     def __repr__(self):  # string representation
         return f'{self.email} {self.verificationCode}'
+    
        
 
 # Participant model

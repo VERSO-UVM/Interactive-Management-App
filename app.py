@@ -287,7 +287,7 @@ def forgotPassword():
             recipients=[f"{form.email.data}"],
             body=f"{verificationSecret}")
             mail.send(msg)
-
+            
             codeSaved=database_access.find_password(form.email.data)
             if(codeSaved):
                 database_access.update_code(form.email.data,verificationSecret)
@@ -303,12 +303,13 @@ def forgotPassword():
 def recoveryVerification(email):
     form=VerificationCode()
     codeSaved=database_access.find_password(email)
-    codeCheck=form.codeVerification.data
+   
     if form.validate_on_submit():
-        if(codeSaved==codeCheck):
-           
+         codeCheck=form.codeVerification.data
+         print(codeCheck)
+         if(codeSaved==codeCheck):
             return redirect(url_for('updatePassword',email=email))
-        else:
+         else:
             flash(
                 'Verification Unsuccessful. Please check verification code.', 'danger')
     return render_template("verificationCode.html",title='verification', form=form)
