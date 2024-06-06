@@ -974,9 +974,11 @@ def delete_all_factors(user_id):
     __DATABASE_CONNECTION.commit()
 
 
-def find_password(email: str):
-    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email ==email).first()
-    return password[0]
+def find_password(email: str)->str:
+    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email==email).first()
+    print(password[0])
+    newPassword=password[0]
+    return newPassword
 
 def update_code(email, verificationCode):
     try:
