@@ -59,13 +59,13 @@ Ratings Page
 
 <script>
   window.onload = function() {
-    var factors = JSON.parse('{{ factors | tojson | safe }}');
-    var index = 0;
+    let factors = JSON.parse('{{ factors | tojson | safe }}');
+    let index = 0;
 
     function loadFactors() {
       if (index < factors.length) {
-        var factorLeading = factors[index].factor_id_leading;
-        var factorFollowing = factors[index].factor_id_following;
+        let factorLeading = factors[index].factor_id_leading;
+        let factorFollowing = factors[index].factor_id_following;
 
         $.get('/getInfoLeading/' + factorLeading, function(x) {
           $("#fLeading").html(x);
@@ -84,9 +84,9 @@ Ratings Page
     }
 
     document.getElementById("submit").addEventListener("click", function() {
-    var rating = document.querySelector('input[name="responseYN"]:checked').value;
-    var factorLeading = factors[index].factor_id_leading;
-    var factorFollowing = factors[index].factor_id_following;
+    let rating = document.querySelector('input[name="responseYN"]:checked').value;
+    let factorLeading = factors[index].factor_id_leading;
+    let factorFollowing = factors[index].factor_id_following;
     $.get('/update_rating/' + factorLeading + '/' + factorFollowing + '/' + rating, function(x) {});
 });
 
