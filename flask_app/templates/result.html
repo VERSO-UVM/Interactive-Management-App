@@ -18,20 +18,22 @@ Result Page
 <script src="static/cytoscape-dagre.js"></script>
 
 <style>
-
-    #cy {
-				z-index: 999;
-                width: 80%;
-                height:80%;
-                position: absolute;
-                top: 8%; left:-15%; 
-    }
-    #surrond
-    {
-        background-color: yellow;
-    }
- 
- 
+   
+ #cy {
+       position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        text-align: initial;
+        z-index: 999;
+ }
+ #imgg
+ {
+        position: absolute;
+        z-index: 99999;
+        margin: 1em;
+ }
 </style>
 <script>
     // After including Cytoscape.js and Cytoscape-Dagre layout extension
@@ -53,61 +55,69 @@ document.addEventListener('DOMContentLoaded', function(){
             {
             edgeList.push({ data: { source: String(edgeInfo[i]), target: String(edgeInfo[i+1]) }})
             }
-
-
-        console.log(edgeList)   
-        let cy = cytoscape({
-                    container: document.getElementById('cy'),
-                    boxSelectionEnabled: false,
-                    autounselectify: true,
-                    layout: { name: 'dagre',rankDir: 'LR',fit: true, padding: 10},
-                    style: 
-                    [
-                        {
-                            selector: 'node',
-                            style: {
-                                'background-color': '#11479e',
-                                'content': 'data(label)'
+            console.log(edgeList)   
+            let cy = cytoscape({
+                        container: document.getElementById('cy'),
+                        boxSelectionEnabled: false,
+                        autounselectify: false,
+                        layout: { name: 'dagre',rankDir: 'LR'},
+                        style: 
+                        [
+                            {
+                                selector: 'node',
+                                style: {
+                                    'background-color': '#11479e',
+                                    'content': 'data(label)', 
+                                }
+                            },
+                            {
+                                selector: 'edge',
+                                style: {
+                                    'width': 1,
+                                    'target-arrow-shape': 'triangle',
+                                    'line-color': '#9dbaea',
+                                    'target-arrow-color': '#9dbaea',
+                                    'curve-style': 'bezier'
+                                }
                             }
-                        },
+                        ],
+                        elements: 
                         {
-                            selector: 'edge',
-                            style: {
-                                'width': 1,
-                                'target-arrow-shape': 'triangle',
-                                'line-color': '#9dbaea',
-                                'target-arrow-color': '#9dbaea',
-                                'curve-style': 'bezier'
-                            }
+                            nodes: myList,
+                            edges: edgeList
                         }
-                    ],
-                    elements: 
-                    {
-                        nodes: myList,
-                        edges: edgeList
-                    }
-                });
+                    });
+                    document.querySelector('#imgg').addEventListener('click', function() {
+                    const base64URI = cy.png();
+                    var download = document.createElement('a');
+                    download.href = base64URI;
+                    download.download = 'Visual.png';
+                    download.click();
 
-
+                    
+                    
+                    });  
             });
-        });     
+        });   
+      
     });
+
+    
     </script>
 
 {% endblock %}
 
 
 {% block content %}
-
 <div class="grid-container">
-   <div class="resultsContainer">
-        <div class="resultPage"></div>
+    <div class="resultPage">
+        <div id="cy"></div>
+        <div id="buttons">
+            <button id="imgg">Download Visual</button>
+        </div>
     </div>
 </div>
-<div id="surrond">
-<div id="cy" >
-</div>
-</div>
+
 
 
 
