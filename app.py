@@ -4,7 +4,7 @@ from flask_app.config import configure_flask_application
 import flask_app.database.database_access as database_access
 from flask_app.database.database_access import ResultsTBL, query_user_by_email, insert_user, query_user_by_id
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
-from flask_app.forms import LoginForm, RegistrationForm, ForgotPassword,VerificationCode,PasswordChangeForm
+from flask_app.forms import LoginForm, RegistrationForm, ForgotPassword, VerificationCode, PasswordChangeForm
 import networkx as nx
 import datetime as dt
 import matplotlib
@@ -222,9 +222,6 @@ app.config['MAIL_DEFAULT_SENDER'] = 'ismrecoverydeveloper@outlook.com'
 mail = Mail(app)
 
 
-
-
-
 @login_manager.user_loader
 def load_user(user_id):
     # This function is called to load a user object based on the user ID stored in the session
@@ -277,51 +274,55 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/forgotPassword',methods=['GET', 'POST'])
+
+@app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
-    form=ForgotPassword()
+    form = ForgotPassword()
     if form.validate_on_submit():
-        if(query_user_by_email(form.email.data)):
-            verificationSecret=secrets.token_hex(3)
+        if (query_user_by_email(form.email.data)):
+            verificationSecret = secrets.token_hex(3)
             msg = Message('Email Recovery',
-            recipients=[f"{form.email.data}"],
-            body=f"{verificationSecret}")
+                          recipients=[f"{form.email.data}"],
+                          body=f"{verificationSecret}")
             mail.send(msg)
-            
-            codeSaved=database_access.find_password(form.email.data)
-            if(codeSaved):
-                database_access.update_code(form.email.data,verificationSecret)
+
+            codeSaved = database_access.find_password(form.email.data)
+            if (codeSaved):
+                database_access.update_code(
+                    form.email.data, verificationSecret)
             else:
-                database_access.insert_passwordVerification(form.email.data,verificationSecret)
-            return redirect(url_for('recoveryVerification',email=form.email.data))
+                database_access.insert_passwordVerification(
+                    form.email.data, verificationSecret)
+            return redirect(url_for('recoveryVerification', email=form.email.data))
         else:
             flash('No user with this email.', 'danger')
-            
-    return render_template("forgotPassword.html",title='Password Recovery', form=form)
 
-@app.route('/recoveryVerification/<email>',methods=['GET', 'POST'])
+    return render_template("forgotPassword.html", title='Password Recovery', form=form)
+
+
+@app.route('/recoveryVerification/<email>', methods=['GET', 'POST'])
 def recoveryVerification(email):
-    form=VerificationCode()
-    codeSaved=database_access.find_password(email)
-   
+    form = VerificationCode()
+    codeSaved = database_access.find_password(email)
+
     if form.validate_on_submit():
-         codeCheck=form.codeVerification.data
-         print(codeCheck)
-         if(codeSaved==codeCheck):
-            return redirect(url_for('updatePassword',email=email))
-         else:
+        codeCheck = form.codeVerification.data
+        print(codeCheck)
+        if (codeSaved == codeCheck):
+            return redirect(url_for('updatePassword', email=email))
+        else:
             flash(
                 'Verification Unsuccessful. Please check verification code.', 'danger')
-    return render_template("verificationCode.html",title='verification', form=form)
+    return render_template("verificationCode.html", title='verification', form=form)
 
-@app.route('/updatePassword/<email>',methods=['GET', 'POST'])
+
+@app.route('/updatePassword/<email>', methods=['GET', 'POST'])
 def updatePassword(email):
-    form=PasswordChangeForm()
+    form = PasswordChangeForm()
     if form.validate_on_submit():
-       database_access.update_password(email, form.password.data)
-       return redirect(url_for('login'))
-    return render_template('updatePassword.html',title='UpdatePassword', form=form)
-
+        database_access.update_password(email, form.password.data)
+        return redirect(url_for('login'))
+    return render_template('updatePassword.html', title='UpdatePassword', form=form)
 
 
 ####################### Factor Functions##########################
@@ -712,72 +713,51 @@ def delete_participants(id):
 def upload_csv():
     current_user_id = current_user.id
     if 'csv_upload' not in request.files:
-        return
+        return jsonify({'success': False, 'message': 'No file part'})
+
     file = request.files['csv_upload']
-    # Retrieve the data type from the form
     data_type = request.form['data_type']
 
     if file.filename == '':
-        return
+        return jsonify({'success': False, 'message': 'No selected file'})
+
     if file:
-        if data_type == 'factor':
-            lines = file.read().decode('utf-8').splitlines()
-            for line in lines[1:]:
-                # turn bytes into string
-                data = line.split(',')
-                # remove spaces and \n
-                data = [x.strip() for x in data]
-                # Process and insert factor data
+        lines = file.read().decode('utf-8').splitlines()
+        for line in lines[1:]:
+            data = line.split(',')
+            data = [x.strip() for x in data]
+
+            # Add checks for the number of columns based on data type
+            if data_type == 'factor' and len(data) >= 4:
                 database_access.insert_factor(
                     title=data[1], description=data[2], votes=data[3], user_id=current_user_id)
-            return redirect(url_for('factor', num='1'))
-
-        elif data_type == 'participant':
-            lines = file.read().decode('utf-8').splitlines()
-            for line in lines[1:]:
-                # turn bytes into string
-                data = line.split(',')
-                # remove spaces and \n
-                data = [x.strip() for x in data]
+            elif data_type == 'participant' and len(data) >= 5:
                 database_access.insert_participant(
                     f_name=data[1], l_name=data[2], email=data[3], telephone=data[4], user_id=current_user_id)
-            return redirect(url_for('participant'))
-
-        elif data_type == 'rating':
-            lines = file.read().decode('utf-8').splitlines()
-            for line in lines[1:]:
-                # turn bytes into string
-                data = line.split(',')
-                # remove spaces and \n
-                data = [x.strip() for x in data]
+            elif data_type == 'rating' and len(data) >= 4:
                 database_access.insert_rating(
                     factor_leading=data[1], factor_following=data[2], rating=data[3], user_id=current_user_id)
-            return redirect(url_for('rating'))
-        elif data_type == 'result':
-            lines = file.read().decode('utf-8').splitlines()
-            for line in lines[1:]:
-                # turn bytes into string
-                data = line.split(',')
-                # remove spaces and \n
-                data = [x.strip() for x in data]
+            elif data_type == 'result' and len(data) >= 4:
                 database_access.insert_result(
                     id=data[0], factor_leading=data[1], factor_following=data[2], weight=data[3], user_id=current_user_id)
-            return redirect(url_for('result'))
-        else:
-            return redirect(url_for('index'))
+            else:
+                return jsonify({'success': False, 'message': 'Invalid data format'})
+
+        return jsonify({'success': True})
     else:
-        return redirect(url_for('index'))
+        return jsonify({'success': False, 'message': 'File upload failed'})
 
 
 @ app.route('/export_data', methods=['POST'])
 def export_data():
+    global subsection
     data_type = request.form.get('data_type')
 
     # Define headers for each data type
     headers = {
         "factors": ["ID", "Title", "Description", "Votes"],
         "participants": ["ID", "First Name", "Last Name", "Email", "Telephone"],
-        "ratings": ["ID", "Factor Leading", "Factor Following", "Rating"],
+        "ratings": ["User", "Factor Leading", "Factor Following", "Rating"],
         "results": ["ID", "Factor Leading", "Factor Following", "Rating"]
     }
 
