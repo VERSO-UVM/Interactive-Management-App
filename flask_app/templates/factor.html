@@ -22,9 +22,9 @@ Factor Page
   <div class="factorPage">
       <h1 class="pt-5 pb-2">Factors</h1>
       <h3>Here is where you add all of your factors/issues into the application. Some examples include "High Turnover Rate", or "Bad Management". 
-        Add a description, and see how many votes there are and input into the program. 
+        Add a description, see how many votes there are, and input into the program. 
         Select edit to go back and fix any errors, or delete to remove a factor. 
-        Add as many as you please! Use the "Go To Rating Page" button at the bottom of the page to progress.
+        Add as many as you please! <h4>Click <a href="{{ url_for('pick_factors', num=-1) }}">here</a> to continue once you have added all factors.</h4>
       </h3>
       {# Heading for the factor page #}
   </div>
@@ -57,12 +57,14 @@ Factor Page
       {% endfor %}
       </table>
 </div> 
-<div>
-  <button type="Delete" onclick="DeleteData()">Delete</button>
-<div>
+<input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
+    <div class="load">
+      <button onclick="triggerFileInput('factor')" class="loadButton">Upload Existing File</button>
+      <button type="Delete" onclick="DeleteData()">Delete All</button>
+    </div>
 
 <div class = "addFact">
-<h4>Add New Factor</h4>
+<h5>Add New Factor</h5>
 <form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
   <label for="f_title"></label>
   <input type="text" name="f_title" class = "inputText" placeholder="Factor Title"><br>
@@ -74,7 +76,6 @@ Factor Page
   <button type="submit" class="save">Save</button>
 </form>
 </div>
-<p><a href="{{ url_for('pick_factors', num=-1) }}"><button class="goToRating">Go to Rating Page</button></a></p>
 <script>
     function DeleteData()
     {
@@ -85,6 +86,37 @@ Factor Page
       }
       
     }
+    function triggerFileInput(type) {
+      var fileInput = document.getElementById('fileInput');
+      fileInput.setAttribute('data-type', type); // Set the type of data to upload
+      fileInput.click();
+  }
+  
+  function uploadFile(dataType) {
+      var fileInput = document.getElementById('fileInput');
+      if(fileInput.files.length > 0) {
+          var formData = new FormData();
+          formData.append('csv_upload', fileInput.files[0]);
+          formData.append('data_type', dataType); // Include the data type in the FormData
+  
+          fetch('/upload_csv', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert('File upload failed. Please try again.');
+                }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      }
+  }
 </script>
 
 

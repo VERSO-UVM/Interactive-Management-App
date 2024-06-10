@@ -4,6 +4,7 @@ import uuid
 
 from sqlalchemy import select
 from sqlalchemy.sql import func, and_
+from sqlalchemy.orm import aliased, joinedload
 
 # database connector
 from flask_app.database.Alchemy import initialize_database_connection
@@ -98,15 +99,15 @@ def insert_user(email: str, password: str) -> User:
 
 
 def insert_passwordVerification(email: str,
-                  verificationCode: str,
-                  ) -> bool:
+                                verificationCode: str,
+                                ) -> bool:
 
     insert: PasswordRecovery
 
     try:
         insert = PasswordRecovery(email=email,
-                           verificationCode=verificationCode,
-                           )
+                                  verificationCode=verificationCode,
+                                  )
     except AttributeError:
         return False
 
@@ -298,7 +299,7 @@ def insert_rating(factor_leading: Factor, factor_following: Factor, rating: floa
 
 def insert_result(id: float, factor_leading: str, factor_following: str, weight: float, user_id: int):
     """
-    Inserts a result into the database with provided details. 
+    Inserts a result into the database with provided details.
 
     Args:
         id (float): Unique identifier for the result.
@@ -360,13 +361,33 @@ def fetch(tbl, user_id):
     """
     if tbl == FactorTBL:
         # Fetch specific columns for FactorTBL
+        factortitle = __DATABASE_CONNECTION.query()
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.title, tbl.description, tbl.votes).where(tbl.user_id == user_id)).fetchall()
     elif tbl == ParticipantTBL:
         # Fetch specific columns for ParticipantTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.f_name, tbl.l_name, tbl.email, tbl.telephone).where(tbl.user_id == user_id)).fetchall()
     elif tbl == RatingsTBL:
         # Fetch specific columns for RatingsTBL
-        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating, tbl.participant_id).where(tbl.user_id == user_id)).fetchall()
+        results = __DATABASE_CONNECTION.execute(select(
+            tbl.factor_leading, tbl.factor_following, tbl.rating, User.email)
+            .join(User)
+            .where(tbl.user_id == user_id)).fetchall()
+
+        factor_titles = {factor.id: factor.title for factor in __DATABASE_CONNECTION.query(
+            FactorTBL.id, FactorTBL.title).all()}
+
+        # Replace factor IDs with titles in results
+        updated_results = []
+        for result in results:
+            factor_leading_title = factor_titles.get(
+                result.factor_leading, 'Unknown')
+            factor_following_title = factor_titles.get(
+                result.factor_following, 'Unknown')
+            updated_results.append(
+                (result.email, factor_leading_title, factor_following_title, result.rating))
+
+        return updated_results
+
     elif tbl == ResultsTBL:
         # Fetch specific columns for ResultsTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating).where(tbl.user_id == user_id)).fetchall()
@@ -976,13 +997,15 @@ def delete_all_factors(user_id):
     __DATABASE_CONNECTION.commit()
 
 
-def find_password(email: str)->str:
-    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email==email).first()
-    if(password is not None): 
+def find_password(email: str) -> str:
+    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(
+        PasswordRecovery.email == email).first()
+    if (password is not None):
         print(password[0])
-        password=password[0]
-   
+        password = password[0]
+
     return password
+
 
 def update_code(email, verificationCode):
     try:
@@ -991,14 +1014,14 @@ def update_code(email, verificationCode):
         if codeUpdate:
             codeUpdate.email = email
             codeUpdate.verificationCode = verificationCode
-            
+
             __DATABASE_CONNECTION.commit()
             return True
         else:
-          
+
             return False
     except Exception as e:
-       
+
         return False
 
 
@@ -1006,17 +1029,16 @@ def update_password(email, password):
     try:
         passwordUpdate = __DATABASE_CONNECTION.query(
             User).filter_by(email=email).first()
-        
+
         if passwordUpdate:
             passwordUpdate.email = email
-            passwordUpdate.password_hash =  bcrypt_sha256.hash(password)
-            
+            passwordUpdate.password_hash = bcrypt_sha256.hash(password)
+
             __DATABASE_CONNECTION.commit()
             return True
         else:
-          
+
             return False
     except Exception as e:
-       
-        return False
 
+        return False

@@ -18,10 +18,11 @@ Help Page
 <div class="grid-container">
       <h1 class="pt-5 pb-2">Help</h1>  {# Heading for the help page #}
       <div class="usingPage">
-      <p>1.To begin, the user should either upload factors and particpiants from the home page or enter them maunally using the links above.</p>
-      <p>2. Next, click the button at the bottom of the factors page "Go to Rating Page".</p>
-      <p>3. Here, a user can choose the factors they want to use for the exercise.</p>
+      <p>1. To begin, the user should either upload factors and participants from the home page or click the <a href="{{ url_for('participant') }}"> Participants </a>button at the top.</p>
+      <p>2. In the participants page, the user can add, edit, and delete participants to their liking. Follow the instructions to progress to the <a href="{{ url_for('factor', num=-1) }}"> Factors Page.</a></p>
+      <p>3. Here, a user can choose the factors they want to use for the exercise, along with how many votes (frequency) each factor received from the participants.</p>
       <p>4. After proceeding to the ratings page, the user is repeatedly asked if one factor affects the other.</p>
       <p>5. Once the user has answered "yes" or "no" for each factor combination, the final results image is shown.</p>
+      <p>6. The user can export the factors and participants used, as well as the ratings, from the <a href="{{ url_for('index') }}"> Home</a> page.</p>
 {% endblock %}
 
