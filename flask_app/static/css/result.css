@@ -13,14 +13,13 @@
     padding-top: 5%;
     text-align: center;
   }
-  
+
   /* Setup the grid layout for .grid-container */
   .grid-container {
     display: grid;
-    grid-template-rows: auto auto auto; /* auto for header and form, 1fr for table */
-    gap: 10px; /* Space between grid items */
-    padding-bottom: 3%;
+    grid-template-columns: 1fr 1fr;
     font-family: 'sans-serif';
+    border-color: var(--button_color);
   }
   
   /* "Factors" positioning (topmost box in grid) */
