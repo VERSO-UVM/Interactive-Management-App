@@ -297,6 +297,44 @@ def insert_rating(factor_leading: Factor, factor_following: Factor, rating: floa
     return False
 
 
+def insert_rating_by_id(factor_leading: int, factor_following: int, rating: float, user_id: int):
+    """
+    Inserts a rating by id of factors. Used when uploading ratings through csv file.
+    """
+    try:
+        insert = RatingsTBL(factor_leading=factor_leading,
+                            factor_following=factor_following,
+                            rating=rating, user_id=user_id)
+
+    except AttributeError:
+      #  print(f'ERROR: invalid rating insertion for participant={p.u_name}')
+        return False
+    if insert:
+        try:
+            __DATABASE_CONNECTION.add(insert)
+            __DATABASE_CONNECTION.commit()
+            return True
+        except sqlite3.ProgrammingError as e:
+           # print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.IntegrityError as e:
+          #  print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.OperationalError as e:
+          #  print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.DatabaseError as e:
+           # print(f"ERROR: database error inserting rating, participant={p.u_name}")
+            print("is the database file missing?")
+            print(f"{e.with_traceback()}")
+            return False
+
+    return False
+
+
 def insert_result(id: float, factor_leading: str, factor_following: str, weight: float, user_id: int):
     """
     Inserts a result into the database with provided details.
@@ -361,7 +399,6 @@ def fetch(tbl, user_id):
     """
     if tbl == FactorTBL:
         # Fetch specific columns for FactorTBL
-        factortitle = __DATABASE_CONNECTION.query()
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.title, tbl.description, tbl.votes).where(tbl.user_id == user_id)).fetchall()
     elif tbl == ParticipantTBL:
         # Fetch specific columns for ParticipantTBL
@@ -369,10 +406,10 @@ def fetch(tbl, user_id):
     elif tbl == RatingsTBL:
         # Fetch specific columns for RatingsTBL
         results = __DATABASE_CONNECTION.execute(select(
-            tbl.factor_leading, tbl.factor_following, tbl.rating, User.email)
-            .join(User)
+            tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating)
             .where(tbl.user_id == user_id)).fetchall()
 
+        # Fetch factor titles based on factor IDs
         factor_titles = {factor.id: factor.title for factor in __DATABASE_CONNECTION.query(
             FactorTBL.id, FactorTBL.title).all()}
 
@@ -384,7 +421,7 @@ def fetch(tbl, user_id):
             factor_following_title = factor_titles.get(
                 result.factor_following, 'Unknown')
             updated_results.append(
-                (result.email, factor_leading_title, factor_following_title, result.rating))
+                (result.id, result.factor_leading, factor_leading_title, result.factor_following, factor_following_title, result.rating))
 
         return updated_results
 
