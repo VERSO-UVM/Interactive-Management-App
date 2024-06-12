@@ -24,30 +24,25 @@
   }
 h3
 {
-  font-size: 28px;
+  font-size: 38px;
+  font-family:'sans-serif';
 }
 
-.secondPart{
-   
-  padding-top:100px;
-  margin-left:50px;
-  margin-right:50px;
-}
 
 .SecondPart {
     position: relative;
     display: inline-block;
   }
   
-  .SecondPart img {
+.SecondPart img {
     display: block;
     width: 100%;
     height: auto;
-  }
+}
   
 .secondText {
     position: absolute;
-    top: 25%; 
+    top: 20%; 
     color: #fff; 
     font-size: 20px; 
     text-align: center;
@@ -57,6 +52,9 @@ h3
 {
   font-size: 30px; 
   color: #fff; 
+  font-family: 'sans-serif';
+  padding-left:10px;
+  padding-right:10px;
   
 }
     

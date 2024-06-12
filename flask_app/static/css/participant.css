@@ -3,7 +3,7 @@
   --button_color: #2b4257;
   --outline: black;
   --text: #091876;
-  --main_background: 	;
+  --main_background:	#F0F0F0 	;
   --white: whitesmoke;
 }
 
@@ -51,7 +51,7 @@ h3{
   padding: 8px;
   text-align: center;
   color: var(--white);
-  background-color: var(--text);
+  background-color: var(--button_color);
   font-size: 18px;
   font-weight: normal;
 }
@@ -74,7 +74,7 @@ h3{
   width: 70%;
   justify-self: center;
   margin: auto;
-  background-color: var(--button_color);
+  background-color: var(--main_background);
   border-radius: 4px;
 }
   

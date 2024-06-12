@@ -14,6 +14,12 @@ h1 {
     text-align: center;
 }
 
+#together
+{
+  display: inline;
+  font-size: 20px;
+ 
+}
 /* Positioning for grid layout */
 .grid-container {
   display: grid;

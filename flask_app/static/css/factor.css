@@ -3,7 +3,7 @@
   --button_color: #2b4257;
   --outline: black;
   --text: #091876;
-  --main_background: 	;
+  --main_background:	#F0F0F0 	;
   --white: whitesmoke;
 }
 
@@ -54,7 +54,7 @@ h1 {
   border: 2px solid var(--outline);
   padding: 8px;
   text-align: left;
-  background-color: var(--button_color);
+  background-color: var(--main_background);
 }
 
 /* Style the form within the .addFactor container */

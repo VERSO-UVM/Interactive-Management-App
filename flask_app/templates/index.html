@@ -7,6 +7,7 @@
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+
 {% endblock %}
 
 {% block title %}
@@ -26,7 +27,8 @@
 
   <div class="loadContainer">
     <div class="shared-style">
-        <h4>Upload Data</h4>
+        <h4 id="together">Upload Data</h4>
+        <!-- <p class="helpExport">Upload CSV with information on the select tables to populate the tables<p> -->
         <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
        
         <div class="load">
