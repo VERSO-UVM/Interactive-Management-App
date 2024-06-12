@@ -421,7 +421,7 @@ def fetch(tbl, user_id):
             factor_following_title = factor_titles.get(
                 result.factor_following, 'Unknown')
             updated_results.append(
-                (result.id, result.factor_leading, factor_leading_title, result.factor_following, factor_following_title, result.rating))
+                (user_id, result.factor_leading, factor_leading_title, result.factor_following, factor_following_title, result.rating))
 
         return updated_results
 
