@@ -18,7 +18,7 @@
   }
   h2
   {
-    color: var(--button_color);
+    color: #345e7d;
     font-size: 28px;
     text-align: center;
   }
@@ -27,11 +27,10 @@ h3
   font-size: 38px;
   font-family:'sans-serif';
 }
-
-
 .SecondPart {
     position: relative;
     display: inline-block;
+    top:-280px;
   }
   
 .SecondPart img {

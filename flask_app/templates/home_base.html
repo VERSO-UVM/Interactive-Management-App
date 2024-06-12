@@ -30,8 +30,10 @@
     {% block body %}
     {% block navbar %}
     <header>
+      
       <nav>
         <!-- navbar content -->
+        <img src="{{ url_for('static', filename='ISM.png')}}" alt="background picture" id="logoNav">
         <ul>
           <li><a href="{{ url_for('front') }}"> Home</a></li>
           <li><a href="{{ url_for('aboutUs') }}"> About Us</a></li>

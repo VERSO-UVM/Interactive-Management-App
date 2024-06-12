@@ -18,13 +18,12 @@
 {% block content %}
   <div class="grid-container">
       <div class="gettingStarted">
-        <h1 class="pt-5 pb-2">ISM</h1>
-        <h2 class="pt-5 pb-2">Interpretive Structural Modeling</h1>
         {# Heading for the page #}
-       
-    
+        <img src="{{ url_for('static', filename='header.png')}}" alt="header" id="header" width=90% >
+        <p>Login to get started</p>
+        <a href="{{ url_for('login') }}"><button class="loginButton">Login</button></a>
         <div class="SecondPart">
-        <img src="{{ url_for('static', filename='bcover.png')}}" alt="Influence arrow" id="bcover">
+        <img src="{{ url_for('static', filename='transition.png')}}" alt="background picture" id="background" height=90%>
         <div class="secondText">
         <h3>At First Glance<h3>
             <p> This is an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants to 
@@ -32,7 +31,6 @@
                 This app takes in a list of factors identified by research participants that affect a specific problem. 
                 It will then work with participants to figure out the relationships between factors (things that impact their ability to act). 
                 An algorithm will then determine which factors should be addressed first, second, and so on in order for the group to meet their goals.</p>
-           
             </div>
        
           
