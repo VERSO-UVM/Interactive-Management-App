@@ -1,9 +1,9 @@
 /* Color Variables */
 :root {
-  --button_color: #091876;
+  --button_color: #2b4257;
   --outline: black;
   --text: #091876;
-  --main_background: 	#F0F0F0;
+  --main_background: 	;
   --white: whitesmoke;
 }
 
@@ -59,17 +59,17 @@ h1 {
   margin: 0;
   background-color: var(--main_background);
   border-radius: 4px;
-  border-width: 4px;
 }
 
 .templateFile {
   grid-area: templateFile;
   border-style: solid;
   border-color: var(--button_color);
-  height: 430px;
+  height: 350px;
   width: 70%;
+  left:1000px;
   justify-self: center;
-  margin: 0;
+  margin-left: 20%;
   background-color: var(--main_background); 
   border-radius: 4px;
 }

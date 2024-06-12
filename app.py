@@ -230,6 +230,19 @@ def load_user(user_id):
     # This function is called to load a user object based on the user ID stored in the session
     return query_user_by_id(user_id)
 
+@app.route("/", methods=['GET', 'POST'])
+def front():
+    return render_template("front.html")
+
+@app.route('/aboutUs', methods=['GET', 'POST'])
+def aboutUs():
+    # database_access.delete_everything()
+    return render_template('aboutUs.html')
+
+@app.route('/sponsors', methods=['GET', 'POST'])
+def sponsors():
+    # database_access.delete_everything()
+    return render_template('sponsors.html')
 
 # Define route for the index page
 @app.route('/home', methods=['GET', 'POST'])
@@ -238,7 +251,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))

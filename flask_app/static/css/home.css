@@ -1,0 +1,62 @@
+/* Color Variables */
+:root {
+    --button_color: #091876;
+    --outline: black;
+    --text: #091876;
+    --main_background: 	#F0F0F0;
+    --white: whitesmoke;
+  }
+  
+  /* "Getting Started" title */
+  h1 {
+      /* color: #3d5a80; */
+      color: #345e7d;
+      font-size: 300px;
+      padding-top: 15%;
+      text-align: center;
+      font-family: 'sans-serif';
+  }
+  h2
+  {
+    color: var(--button_color);
+    font-size: 28px;
+    text-align: center;
+  }
+h3
+{
+  font-size: 28px;
+}
+
+.secondPart{
+   
+  padding-top:100px;
+  margin-left:50px;
+  margin-right:50px;
+}
+
+.SecondPart {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .SecondPart img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  
+.secondText {
+    position: absolute;
+    top: 25%; 
+    color: #fff; 
+    font-size: 20px; 
+    text-align: center;
+
+}
+.secondText p
+{
+  font-size: 30px; 
+  color: #fff; 
+  
+}
+    

@@ -1,11 +1,12 @@
 /* Color Variables */
 :root {
-  --button_color: #091876;
+  --button_color: #2b4257;
   --outline: black;
   --text: #091876;
-  --main_background: 	#F0F0F0;
+  --main_background: 	;
   --white: whitesmoke;
 }
+
 
 /* "Participants" title */
 h1 {
@@ -73,7 +74,7 @@ h3{
   width: 70%;
   justify-self: center;
   margin: auto;
-  background-color: var(--main_background);
+  background-color: var(--button_color);
   border-radius: 4px;
 }
   

@@ -1,11 +1,12 @@
 /* Color Variables */
 :root {
-  --button_color: #091876;
+  --button_color: #2b4257;
   --outline: black;
   --text: #091876;
-  --main_background: 	#F0F0F0;
+  --main_background: 	;
   --white: whitesmoke;
 }
+
 
 /* "Factors" title */
 h1 {
@@ -53,7 +54,7 @@ h1 {
   border: 2px solid var(--outline);
   padding: 8px;
   text-align: left;
-  background-color: var(--main_background);
+  background-color: var(--button_color);
 }
 
 /* Style the form within the .addFactor container */
