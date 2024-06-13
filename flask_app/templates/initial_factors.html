@@ -3,7 +3,7 @@
 
 {% block styles %}
   {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pick_factors.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -15,12 +15,12 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 {% block content %}
 <div class="grid-container">
   <div class="factorPage">
-      <h1 class="pt-5 pb-2">Factors picked</h1>  {# Heading for the factor page #}
+      <h1 class="pt-5 pb-2">Factors Picked</h1>  {# Heading for the factor page #}
       <h3>Final factors! Click Edit to go back and reselect factors. Click go to ratings to proceed.</h3>
-<a  href="{{ url_for('pick_factors',num=-1)}}" type="button">Edit</a>
+<a  href="{{ url_for('pick_factors',num=-1)}}" type="button" class="editPicked">Edit</a>
 
 
-<div class="table">
+<div class="tables">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
         <!-- Table row for header-->
@@ -38,7 +38,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       {% endfor %}
       </table>
 
-      <a  href="{{ url_for('insert_rating') }}" type="button">Go to Ratings</a>
+      <a  href="{{ url_for('insert_rating') }}" type="button" class="goToRating">Go to Ratings</a>
 
 
 </div> 

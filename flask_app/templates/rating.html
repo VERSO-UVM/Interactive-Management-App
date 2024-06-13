@@ -22,19 +22,17 @@ Ratings Page
     <div class="ratingContainer">
         <h4>Compare Factors</h4>
         <div class="box">
-          
-            <div id="part">
-              <p class="IDs">User ID:</p>
-              <p id="partID" class="IDs">{{ user_id }}</p>
-            </div>
+        
 
             <p class="guide">Does the left factor affect the right factor?</p>
-              <p id="fLeading" class="Factorsss"></p> <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
+            <div class="box2">
+              <p id="fLeading" class="fLeading"></p> <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
              
-              <p id="fFollowing" class="Factorsss"></p>
+              <p id="fFollowing" class="fFollowing"></p>
               
             </div>
           
+          </div>
           </div>
 
             <form id="myform">

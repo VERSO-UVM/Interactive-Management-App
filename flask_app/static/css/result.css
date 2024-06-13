@@ -148,4 +148,17 @@
     text-align: left;
     background-color: var(--main_background);
   }
+  #imgg
+{
+    border-color:var(--orange);
+    background-color:var(--orange);
+    color:white;
+    border-bottom-left-radius:10px;
+     border-bottom-right-radius:10px;
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
+    position:relative;
+    right:0%;
+    top:10%;
+}
   
