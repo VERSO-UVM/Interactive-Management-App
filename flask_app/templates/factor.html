@@ -109,7 +109,7 @@ Factor Page
               if (data.success) {
                     window.location.reload();
                 } else {
-                    alert('File upload failed. Please try again.');
+                  alert('Upload failed: ' + data.message);
                 }
           })
           .catch(error => {

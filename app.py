@@ -316,7 +316,6 @@ def recoveryVerification(email):
 
     if form.validate_on_submit():
         codeCheck = form.codeVerification.data
-        print(codeCheck)
         if (codeSaved == codeCheck):
             return redirect(url_for('updatePassword', email=email))
         else:
@@ -441,7 +440,6 @@ def pick_factors(num):
 
             # Gets factors from user selection
             factors_picked = request.form.getlist('factors')
-            print("factors picked:", factors_picked)
             factor = database_access.get_factor_list(
                 factors_picked, current_user_id)
             global subsection
@@ -452,15 +450,12 @@ def pick_factors(num):
 
             # Inserts into rating table with default 0
             combinations = list(itertools.combinations(factor, 2))
-            print("combinations:", combinations)
 
             for i in range(0, len(combinations)):
                 database_access.insert_rating(
                     factor_leading=combinations[i][0], factor_following=combinations[i][1], rating=0, user_id=current_user_id)
                 database_access.insert_rating(
                     factor_leading=combinations[i][1], factor_following=combinations[i][0], rating=0, user_id=current_user_id)
-                print(f'{combinations[i][0]} {combinations[i][1]}')
-                print(f'{combinations[i][1]} {combinations[i][0]}')
             return render_template("initial_factors.html", factor=factor)
 
         else:
@@ -530,17 +525,12 @@ def getInfoLeading(f_id):
     if current_user.is_authenticated:
         current_user_id = current_user.id
         # Gets information from factor based on the id
-        print("leading")
-        print("User id:", current_user_id)
-        print("factor id:", f_id)
 
         try:
 
             resultTitle = database_access.search_specific_factor(
                 int(f_id), current_user_id)
-            print("resultTitle:", resultTitle)
             results = resultTitle.title
-            print("results:", results)
             return results
         except:
             return "-1"
@@ -555,16 +545,11 @@ def getInfoFollowing(f_id):
     if current_user.is_authenticated:
         current_user_id = current_user.id
         # Gets information from factor based on the id
-        print("following")
-        print("User id:", current_user_id)
-        print("factor id:", f_id)
         try:
 
             resultTitle = database_access.search_specific_factor(
                 int(f_id), current_user_id)
-            print("resultTitle:", resultTitle)
             results = resultTitle.title
-            print("results:", results)
             return results
         except:
             return "-1"
@@ -600,7 +585,6 @@ def nameList():
     if current_user.is_authenticated:
         current_user_id = current_user.id
         list = database_access.factorTitle(current_user_id)
-        print("list:", list)
         return jsonify(list)
     else:
         return render_template("error.html")
@@ -613,7 +597,6 @@ def confusionList():
 
         # Get all ratings
         all_ratings = database_access.get_all_ratings(current_user_id)
-        print("all ratings:", all_ratings)
 
         # Get the number of factors (subsection)
         global subsection
@@ -623,16 +606,13 @@ def confusionList():
             all_ratings, current_user_id, subsection)
 
         bigArray = np.array(matrix, dtype=bool)
-        print("bigArray:", bigArray)
         stuff = structure_matrix(bigArray)
-        print("stuff:", stuff)
         listAnswers = []
         for i in range(len(bigArray)):
             for j in range(len(bigArray[i])):
                 if (bigArray[i][j] == True):
                     listAnswers.append(i)
                     listAnswers.append(j)
-        print("listAnswers:", listAnswers)
         return jsonify(listAnswers)
     else:
         return render_template("error.html")
@@ -649,7 +629,6 @@ def result():
         # Before rendering the template in your result route
         # Idea: I need to get all the combinations that were rated with one
         factorVoted = database_access.get_results_voted(current_user_id)
-        print(factorVoted)
 
         return render_template('result.html')
     else:
@@ -791,12 +770,11 @@ def upload_csv():
 
             # Perform length check once at the beginning based on data type
             valid_length = False
-            if data_type == 'factor' and len(lines[0].split(',')) >= 4:
+            if data_type == 'factor' and len(lines[0].split(',')) == 4:
                 valid_length = True
-            elif data_type == 'participant' and len(lines[0].split(',')) >= 5:
+            elif data_type == 'participant' and len(lines[0].split(',')) == 5:
                 valid_length = True
-            elif data_type == 'rating' and len(lines[0].split(',')) >= 6:
-                database_access.delete_rating(current_user_id)
+            elif data_type == 'rating' and len(lines[0].split(',')) == 6:
                 global subsection
                 valid_length = True
                 length = len(lines) - 1
@@ -811,6 +789,14 @@ def upload_csv():
             if not valid_length:
                 return jsonify({'success': False, 'message': 'Invalid data format'})
 
+            unique_factors = set()
+            combinations_set = set()
+
+            # Fetch all factors associated with the user
+            user_factors = database_access.get_all_factors(current_user_id)
+            user_factor_ids = {factor.id for factor in user_factors}
+            print("user factor ids:", user_factor_ids)
+
             for line in lines[1:]:
                 data = line.split(',')
                 data = [x.strip() for x in data]
@@ -823,8 +809,41 @@ def upload_csv():
                     database_access.insert_participant(
                         f_name=data[1], l_name=data[2], email=data[3], telephone=data[4], user_id=current_user_id)
                 elif data_type == 'rating':
-                    database_access.insert_rating_by_id(
-                        factor_leading=data[1], factor_following=data[3], rating=data[5], user_id=current_user_id)
+                    factor_leading_id = int(data[1])
+                    factor_following_id = int(data[3])
+
+                    # Check if factor IDs are associated with the current user
+                    if factor_leading_id not in user_factor_ids or factor_following_id not in user_factor_ids:
+                        subsection = 0
+                        return jsonify({'success': False, 'message': 'Some factors are not associated with the user'})
+
+                    # Update unique factors and combinations
+                    unique_factors.update(
+                        [factor_leading_id, factor_following_id])
+                    combinations_set.add(
+                        (factor_leading_id, factor_following_id))
+                    combinations_set.add(
+                        (factor_following_id, factor_leading_id))
+
+            if data_type == 'rating':
+                # Validate the number of unique factors and combinations
+                expected_combinations = set(
+                    itertools.permutations(unique_factors, 2))
+                if len(unique_factors) != subsection or combinations_set != expected_combinations:
+                    subsection = 0
+                    return jsonify({'success': False, 'message': 'Invalid data format'})
+
+                else:
+                    database_access.delete_rating(current_user_id)
+                    for line in lines[1:]:
+                        data = line.split(',')
+                        data = [x.strip() for x in data]
+                        if data_type == 'rating':
+                            factor_leading_id = data[1]
+                            factor_following_id = data[3]
+                            rating = data[5]
+                            database_access.insert_rating_by_id(
+                                factor_leading=factor_leading_id, factor_following=factor_following_id, rating=rating, user_id=current_user_id)
 
             return jsonify({'success': True})
         else:
@@ -843,7 +862,7 @@ def export_data():
         headers = {
             "factors": ["ID", "Title", "Description", "Votes"],
             "participants": ["ID", "First Name", "Last Name", "Email", "Telephone"],
-            "ratings": ["ID", "Factor Leading ID", "Factor Leading", "Factor Following ID", "Factor Following", "Rating"],
+            "ratings": ["User", "Factor Leading ID", "Factor Leading", "Factor Following ID", "Factor Following", "Rating"],
         }
 
         # Map data_type to the corresponding database table
