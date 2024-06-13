@@ -146,49 +146,32 @@ def insert_factor(title: str,
     Inserts a factor into the database with provided details.
 
     Args:
-        id (str): Unique identifier for the factor.
         title (str): Title of the factor.
-        frequency (int, optional): Frequency or votes associated with the factor. Defaults to None.
+        description (str): Description of the factor.
+        votes (int): Votes associated with the factor.
+        user_id (int): ID of the user.
 
     Returns:
         bool: True if insertion is successful, False otherwise.
     """
-
-    insert: FactorTBL
-
     try:
-        insert = FactorTBL(title=title,
-                           description=description,
-                           votes=votes, user_id=user_id
-                           )
-    except AttributeError:
-        print(f'ERROR: invalid factor insertion for {title}')
+        # Check if a factor with the same title and user_id already exists
+        existing_factor = __DATABASE_CONNECTION.query(
+            FactorTBL).filter_by(title=title, user_id=user_id).first()
+        if existing_factor:
+            return False  # Factor already exists, so no need to insert a new one
+
+        # If the factor does not exist, create a new one
+        new_factor = FactorTBL(title=title,
+                               description=description,
+                               votes=votes, user_id=user_id)
+
+        __DATABASE_CONNECTION.add(new_factor)
+        __DATABASE_CONNECTION.commit()
+        return True
+    except Exception as e:
+        print(f"ERROR: {e}")
         return False
-
-    if insert:
-        try:
-            __DATABASE_CONNECTION.add(insert)
-            __DATABASE_CONNECTION.commit()
-            return True
-        except sqlite3.ProgrammingError as e:
-           # print(f"ERROR: non-sqlite3 error inserting factor, label={f.label}")
-            print(f"{e.with_traceback()}")
-            return False
-        except sqlite3.IntegrityError as e:
-            # print(f"ERROR: database integrity violation inserting factor, label={f.label}")
-            print(f"{e.with_traceback()}")
-            return False
-        except sqlite3.OperationalError as e:
-            # print(f"ERROR: database operational error inserting factor, label={f.label}")
-            print(f"{e.with_traceback()}")
-            return False
-        except sqlite3.DatabaseError as e:
-            # print(f"ERROR: database error inserting factor, label={f.label}")
-            print("is the database file missing?")
-            print(f"{e.with_traceback()}")
-            return False
-
-    return False
 
 
 def insert_participant(f_name: str,

@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Integer, ForeignKey
+from sqlalchemy import create_engine, Column, String, Integer, ForeignKey, UniqueConstraint
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, Session
 from passlib.hash import bcrypt_sha256
@@ -38,11 +38,12 @@ class User(Base):
     def get_id(self):
         return str(self.id)
 
+
 class PasswordRecovery(Base):
     __tablename__ = 'passwordRecovery'
 
-    email=Column('email',String, primary_key=True, index=True)
-    verificationCode=Column("code",String,nullable=False)
+    email = Column('email', String, primary_key=True, index=True)
+    verificationCode = Column("code", String, nullable=False)
 
     def __init__(self, email: str, verificationCode: str):
         self.email = email
@@ -50,8 +51,7 @@ class PasswordRecovery(Base):
 
     def __repr__(self):  # string representation
         return f'{self.email} {self.verificationCode}'
-    
-       
+
 
 # Participant model
 class ParticipantTBL(Base):
@@ -81,13 +81,15 @@ class ParticipantTBL(Base):
 class FactorTBL(Base):
     __tablename__ = 'factors'
 
-    id = Column('id', Integer, primary_key=True,
-                autoincrement=True)
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
     title = Column('title', String, nullable=False)
     description = Column('description', String, nullable=True)
     votes = Column('votes', Integer, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
     user = relationship('User', back_populates='factors')
+
+    __table_args__ = (UniqueConstraint(
+        'title', 'user_id', name='_user_title_uc'),)
 
     def __init__(self, title: str, description: str, votes: int, user_id: int = None):
         self.title = title
