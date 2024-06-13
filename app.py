@@ -811,12 +811,10 @@ def upload_csv():
                 elif data_type == 'rating':
                     factor_leading_id = int(data[1])
                     factor_following_id = int(data[3])
-                    print("factor_leading_id:", factor_leading_id)
-                    print("factor_following_id:", factor_following_id)
 
                     # Check if factor IDs are associated with the current user
                     if factor_leading_id not in user_factor_ids or factor_following_id not in user_factor_ids:
-                        print("here")
+                        subsection = 0
                         return jsonify({'success': False, 'message': 'Some factors are not associated with the user'})
 
                     # Update unique factors and combinations
