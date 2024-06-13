@@ -5,6 +5,7 @@
   --text: #091876;
   --main_background: 	#F0F0F0;
   --white: whitesmoke;
+  --orange:#F9943A;
 }
   
   /* "Factors" title */
@@ -160,5 +161,11 @@
     position:relative;
     right:0%;
     top:10%;
+}
+.finished
+{
+  font-size:50px;
+  margin-left:100%;
+ 
 }
   
