@@ -4,6 +4,7 @@ import uuid
 
 from sqlalchemy import select
 from sqlalchemy.sql import func, and_
+from sqlalchemy.orm import aliased, joinedload
 
 # database connector
 from flask_app.database.Alchemy import initialize_database_connection
@@ -98,15 +99,15 @@ def insert_user(email: str, password: str) -> User:
 
 
 def insert_passwordVerification(email: str,
-                  verificationCode: str,
-                  ) -> bool:
+                                verificationCode: str,
+                                ) -> bool:
 
     insert: PasswordRecovery
 
     try:
         insert = PasswordRecovery(email=email,
-                           verificationCode=verificationCode,
-                           )
+                                  verificationCode=verificationCode,
+                                  )
     except AttributeError:
         return False
 
@@ -296,9 +297,47 @@ def insert_rating(factor_leading: Factor, factor_following: Factor, rating: floa
     return False
 
 
+def insert_rating_by_id(factor_leading: int, factor_following: int, rating: float, user_id: int):
+    """
+    Inserts a rating by id of factors. Used when uploading ratings through csv file.
+    """
+    try:
+        insert = RatingsTBL(factor_leading=factor_leading,
+                            factor_following=factor_following,
+                            rating=rating, user_id=user_id)
+
+    except AttributeError:
+      #  print(f'ERROR: invalid rating insertion for participant={p.u_name}')
+        return False
+    if insert:
+        try:
+            __DATABASE_CONNECTION.add(insert)
+            __DATABASE_CONNECTION.commit()
+            return True
+        except sqlite3.ProgrammingError as e:
+           # print(f"ERROR: non-sqlite3 error inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.IntegrityError as e:
+          #  print(f"ERROR: database integrity violation inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.OperationalError as e:
+          #  print(f"ERROR: database operational error inserting rating, participant={p.u_name}")
+            print(f"{e.with_traceback()}")
+            return False
+        except sqlite3.DatabaseError as e:
+           # print(f"ERROR: database error inserting rating, participant={p.u_name}")
+            print("is the database file missing?")
+            print(f"{e.with_traceback()}")
+            return False
+
+    return False
+
+
 def insert_result(id: float, factor_leading: str, factor_following: str, weight: float, user_id: int):
     """
-    Inserts a result into the database with provided details. 
+    Inserts a result into the database with provided details.
 
     Args:
         id (float): Unique identifier for the result.
@@ -366,7 +405,26 @@ def fetch(tbl, user_id):
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.f_name, tbl.l_name, tbl.email, tbl.telephone).where(tbl.user_id == user_id)).fetchall()
     elif tbl == RatingsTBL:
         # Fetch specific columns for RatingsTBL
-        return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating, tbl.participant_id).where(tbl.user_id == user_id)).fetchall()
+        results = __DATABASE_CONNECTION.execute(select(
+            tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating)
+            .where(tbl.user_id == user_id)).fetchall()
+
+        # Fetch factor titles based on factor IDs
+        factor_titles = {factor.id: factor.title for factor in __DATABASE_CONNECTION.query(
+            FactorTBL.id, FactorTBL.title).all()}
+
+        # Replace factor IDs with titles in results
+        updated_results = []
+        for result in results:
+            factor_leading_title = factor_titles.get(
+                result.factor_leading, 'Unknown')
+            factor_following_title = factor_titles.get(
+                result.factor_following, 'Unknown')
+            updated_results.append(
+                (result.id, result.factor_leading, factor_leading_title, result.factor_following, factor_following_title, result.rating))
+
+        return updated_results
+
     elif tbl == ResultsTBL:
         # Fetch specific columns for ResultsTBL
         return __DATABASE_CONNECTION.execute(select(tbl.id, tbl.factor_leading, tbl.factor_following, tbl.rating).where(tbl.user_id == user_id)).fetchall()
@@ -976,13 +1034,15 @@ def delete_all_factors(user_id):
     __DATABASE_CONNECTION.commit()
 
 
-def find_password(email: str)->str:
-    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(PasswordRecovery.email==email).first()
-    if(password is not None): 
+def find_password(email: str) -> str:
+    password = __DATABASE_CONNECTION.query(PasswordRecovery.verificationCode).filter(
+        PasswordRecovery.email == email).first()
+    if (password is not None):
         print(password[0])
-        password=password[0]
-   
+        password = password[0]
+
     return password
+
 
 def update_code(email, verificationCode):
     try:
@@ -991,14 +1051,14 @@ def update_code(email, verificationCode):
         if codeUpdate:
             codeUpdate.email = email
             codeUpdate.verificationCode = verificationCode
-            
+
             __DATABASE_CONNECTION.commit()
             return True
         else:
-          
+
             return False
     except Exception as e:
-       
+
         return False
 
 
@@ -1006,17 +1066,16 @@ def update_password(email, password):
     try:
         passwordUpdate = __DATABASE_CONNECTION.query(
             User).filter_by(email=email).first()
-        
+
         if passwordUpdate:
             passwordUpdate.email = email
-            passwordUpdate.password_hash =  bcrypt_sha256.hash(password)
-            
+            passwordUpdate.password_hash = bcrypt_sha256.hash(password)
+
             __DATABASE_CONNECTION.commit()
             return True
         else:
-          
+
             return False
     except Exception as e:
-       
-        return False
 
+        return False
