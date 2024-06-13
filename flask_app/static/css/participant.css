@@ -2,23 +2,36 @@
 :root {
   --button_color: #2b4257;
   --outline: black;
-  --text: #091876;
+  --text: #2b4257;
   --main_background:	#F0F0F0 	;
   --white: whitesmoke;
+  --orange:#F9943A;
 }
 
 
 /* "Participants" title */
 h1 {
-  color: var(--text);
+  color: white;
+  font-size:60px;
   padding-top: 5%;
   text-align: center;
 }
 
 h3{
-  color: var(--text);
+  color: white;
   padding-top: 5%;
   text-align: center;
+}
+
+h4
+{
+  margin-top:5%;
+  color:white
+}
+h4 a
+{
+  
+  color:orange
 }
 
 /* Setup the grid layout for .grid-container */
@@ -50,17 +63,17 @@ h3{
   border: 2px solid var(--outline);
   padding: 8px;
   text-align: center;
-  color: var(--white);
-  background-color: var(--button_color);
+  color: #f8fbfb;
+  background-color: #F9943A;
   font-size: 18px;
   font-weight: normal;
 }
   
 .table td {
-  border: 2px solid var(--outline);
+  border: 2px solid ;
   padding: 8px;
   text-align: left;
-  background-color: var(--main_background);
+  background-color:#f8fbfb;
 }
 
   /* Style the form within the .addPart container */
@@ -68,22 +81,24 @@ h3{
   padding: 5%;
   padding-top: 2%;
   border-style: solid;
-  border-color: var(--text);
-  color: var(--text);
+  border-color: #F9943A;
+  color: #F9943A;
   height: 550px;
   width: 70%;
   justify-self: center;
   margin: auto;
-  background-color: var(--main_background);
-  border-radius: 4px;
+  /* background-color: #f8fbfb; */
+  background-color:#F0F0F0 ;
+  border-radius: 7px;
+  border-width: 4px;
 }
   
 /* Box Color */
 .addPart input[type="text"] {
   padding: 20px;
   margin-top: 25px; /* Adding some space above inputs */
-  background-color: var(--main_background);
-  border: 2px solid var(--outline);
+  background-color: #f8fbfb;
+  border: 2px solid #2b4257;
   border-radius: 4px;
   text-align: left;
   width: 85%;
@@ -164,4 +179,13 @@ input:hover[type="submit"] {
   background-color: var(--white);
   color: var(--button_color);
   text-decoration: none;
+}
+button
+{
+  border-color:var(--orange);
+  border-bottom-right-radius:10px;
+  border-top-right-radius:10px;
+  border-top-left-radius:10px;
+  border-bottom-left-radius:10px;
+  color:#2b4257;
 }

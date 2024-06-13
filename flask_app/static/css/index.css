@@ -1,15 +1,16 @@
 /* Color Variables */
+/* Color Variables */
 :root {
   --button_color: #2b4257;
   --outline: black;
-  --text: #091876;
-  --main_background: 	;
+  --text: white;
+  --main_background: #2b4257	;
   --white: whitesmoke;
 }
 
 /* "Getting Started" title */
 h1 {
-    color: var(--button_color);
+    color: var(--text);
     padding-top: 5%;
     text-align: center;
 }
@@ -45,20 +46,24 @@ h1 {
 .loadContainer {
   grid-area: loadContainer;
   border-style: solid;
-  border-color: var(--button_color);
+  border-color: orange;
   height: 430px;
   width: 70%;
   justify-self: center;
   margin: 0;
-  background-color: var(--main_background); 
+  background-color:var(--main_background) ; 
   border-radius: 4px;
+}
+.load,.export
+{
+  padding-left: 60px;
 }
 
 /* "Export" container */
 .exportContainer {
   grid-area: exportContainer;
   border-style: solid;
-  border-color: var(--button_color);
+  border-color: orange;
   height: 430px;
   width: 70%;
   justify-self: center;
@@ -70,12 +75,11 @@ h1 {
 .templateFile {
   grid-area: templateFile;
   border-style: solid;
-  border-color: var(--button_color);
+  border-color: orange;
   height: 350px;
   width: 70%;
-  left:1000px;
   justify-self: center;
-  margin-left: 20%;
+  margin-left: 15%;
   background-color: var(--main_background); 
   border-radius: 4px;
 }
@@ -83,13 +87,13 @@ h1 {
 /* Positioning for "Load" and "Export" titles */
 .shared-style {
   text-align: left;
-  color: var(--button_color);
+  color: var(--text);
   max-width: 100%;
   margin: 0;
   height: 10%;
   padding-top: 30px;
-  padding-left: 60px;
   padding-bottom: 20px;
+  text-align:center;
 }
 
 /* "Load" and "Export" titles */
@@ -97,6 +101,10 @@ h4 {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
+}
+button
+{
+  border-color:white;
 }
 
 /* Welcome block text */
@@ -190,4 +198,12 @@ h4 {
   background-color: var(--white);
   color: var(--button_color);
   text-decoration: none;
+}
+
+h2{
+  color:white;
+}
+h2 a
+{
+  color:orange;
 }
