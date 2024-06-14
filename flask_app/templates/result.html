@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function(){
         let myList=[];
         for (var i = 0; i < dataFactorTitle.length; i++) 
         {
+
             myList.push({data:{id:String(i),label:dataFactorTitle[i]}})
         }
         $.get('/confusionList', function(x) 
@@ -53,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function(){
             console.log(edgeList)   
             for (var i = 0; i < edgeInfo.length; i+=2) 
             {
+
             edgeList.push({ data: { source: String(edgeInfo[i]), target: String(edgeInfo[i+1]) }})
             }
             console.log(edgeList)   
@@ -89,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function(){
                                     'line-color': '#9dbaea',
                                     'target-arrow-color': '#9dbaea',
                                     'curve-style': 'bezier'
+                                    
                                 }
                             }
                         ],
