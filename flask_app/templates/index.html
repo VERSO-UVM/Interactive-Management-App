@@ -105,17 +105,22 @@
           formData.append('data_type', dataType); // Include the data type in the FormData
   
           fetch('/upload_csv', {
-              method: 'POST',
-              body: formData
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log(data);
-              // Handle success or redirect
-          })
-          .catch(error => {
-              console.error('Error:', error);
-          });
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.success) {
+            alert('Upload successful!');
+          } else {
+            alert('Upload failed: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Upload failed. Please try again.');
+        });
       }
   }
   </script>
