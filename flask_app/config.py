@@ -34,6 +34,13 @@ def configure_flask_application() -> _Flask:
     app = _Flask(__name__)
     app.config['APPLICATION_ROOT'] = os.path.dirname(os.path.abspath(__file__))
     app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
+    app.config['MAIL_PORT'] = 587
+    app.config['MAIL_USE_TLS'] = True
+    app.config['MAIL_USE_SSL'] = False
+    app.config['MAIL_USERNAME'] = 'ismrecoverydeveloper@outlook.com'
+    app.config['MAIL_PASSWORD'] = '@Ism.Email.123'
+    app.config['MAIL_DEFAULT_SENDER'] = 'ismrecoverydeveloper@outlook.com'
     __app_csrf_init(app)
     _Bootstrap(app)
 

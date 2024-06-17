@@ -182,11 +182,11 @@ def insert_participant(f_name: str,
     Inserts a participant into the database with provided details.
 
     Args:
-        id (str): Unique identifier for the participant.
         f_name (str): First name of the participant.
         l_name (str): Last name of the participant.
         email (str): Email address of the participant.
         telephone (str): Telephone number of the participant.
+        user_id (int) Id of the user.
 
     Returns:
         bool: True if insertion is successful, False otherwise.
@@ -235,10 +235,10 @@ def insert_rating(factor_leading: Factor, factor_following: Factor, rating: floa
     Inserts a rating into the database with provided details.
 
     Args:
-        id (float): Unique identifier for the rating.
         factor_leading (Factor): Factor leading in the comparison.
         factor_following (Factor): Factor following in the comparison.
         rating (float): Rating value.
+        user_id (int): Id of the user.
 
     Returns:
         bool: True if insertion is successful, False otherwise.
@@ -594,7 +594,7 @@ def factorsCount(user_id):
         return 0
 
 
-# Used for the acsending button
+# Returns list of factors for the user in ascending order (by frequency/votes)
 def ascendingOrder(user_id):
     try:
         factors = __DATABASE_CONNECTION.query(FactorTBL).filter_by(
@@ -606,6 +606,7 @@ def ascendingOrder(user_id):
         return []
 
 
+# Returns list of factors for the user in descending order (by frequency/votes)
 def descendingOrder(user_id):
     try:
         factors = __DATABASE_CONNECTION.query(FactorTBL).filter_by(
@@ -687,7 +688,7 @@ def get_factor_list(list1, user_id):
 
 
 ############ Rating functions#####################################
-# Gets specific rating based on id
+
 
 def get_all_ratings(user_id):
     """
@@ -720,22 +721,6 @@ def get_rating_by_id(user_id):
     ratings = __DATABASE_CONNECTION.query(RatingsTBL).filter_by(
         user_id=user_id).all()
     return ratings
-
-
-# Total count of rating
-def get_total_rating(user_id):
-    """
-    Retrieves total count of ratings stored in the database for a specific user.
-
-    Args:
-        user_id: Identifier of the user.
-
-    Returns:
-        int: Total count of ratings.
-    """
-    rating_count = __DATABASE_CONNECTION.query(
-        RatingsTBL).filter_by(user_id=user_id).count()
-    return rating_count
 
 
 # Get existing factor based on unique id
@@ -817,7 +802,7 @@ def delete_everything(user_id):
 
 
 # Deletes existing rating
-def delete_rating(user_id):
+def delete_ratings(user_id):
     """
     Deletes ratings associated with a specific participant by ID and user.
 
@@ -978,6 +963,7 @@ def get_results_voted(all_ratings, user_id, subsection):
     return confusion_matrix
 
 
+# Returns list of all factor titles used for results image
 def factorTitle(user_id):
     factors = __DATABASE_CONNECTION.query(FactorTBL.title).join(
         RatingsTBL,
