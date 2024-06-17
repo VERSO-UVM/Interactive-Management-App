@@ -13,107 +13,109 @@ Result Page
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
 <!-- Include Cytoscape.js library -->
-<script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
-<script src="https://unpkg.com/dagre@0.7.4/dist/dagre.js"></script>
-<script src="static/cytoscape-dagre.js"></script>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.js"></script>
+<script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.min.js"></script>
 
 <style>
-   
- #cy {
-       position: absolute;
-        left: 0;
-        top: 10%;
-        bottom: 0;
-        right: 0;
-        text-align: initial;
-        z-index: 999;
- }
- #imgg
- {
-        position: absolute;
-        z-index: 99999;
-        margin: 1em;
- }
+    
+ .clusters rect {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+  font-size: 14px;
+}
+
+.node rect {
+  stroke: #999;
+  fill: #fff;
+  stroke-width: 1.5px;
+}
+
+.edgePath path {
+  stroke: black;
+  stroke-width: 2px;
+}
 </style>
 <script>
     // After including Cytoscape.js and Cytoscape-Dagre layout extension
 document.addEventListener('DOMContentLoaded', function(){ 
-    $.get('/nameList', function(x) 
-    {
-        let dataFactorTitle = x;
-        let myList=[];
-        for (var i = 0; i < dataFactorTitle.length; i++) 
-        {
+   // Create the input graph
+var g = new dagreD3.graphlib.Graph({compound:true})
+  .setGraph({ rankdir: 'LR'})
+  .setDefaultEdgeLabel(function() { return {}; });
 
-            myList.push({data:{id:String(i),label:dataFactorTitle[i]}})
-        }
-        $.get('/confusionList', function(x) 
-        {
+  $.get('/nameList', function(x) 
+    {
+        listOfNames=x;
+       
+for(var i=0;i<listOfNames.length;i++)
+{
+    g.setNode(i, {label: String(listOfNames[i])});
+}
+
+$.get('/matrixInfo', function(x) 
+{
+    matrixInformation=x;
+   
+   
+
+
+for(keys in matrixInformation){
+    g.setNode((keys+'_groups'), {});
+    
+}
+
+for (key in matrixInformation){
+    for(var i=0;i<matrixInformation[key].length;i++)
+            g.setParent(matrixInformation[key][i], (key+'_groups'));
+            console.log(matrixInformation[key][i]);
+}
+
+
+
+// Set the parents to define which nodes belong to which cluster
+$.get('/confusionList', function(x) 
+{
             let edgeInfo = x;
-            let edgeList=[];
-            console.log(edgeList)   
             for (var i = 0; i < edgeInfo.length; i+=2) 
             {
-
-            edgeList.push({ data: { source: String(edgeInfo[i]), target: String(edgeInfo[i+1]) }})
+                // Set up edges, no special attributes.
+                g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
             }
-            console.log(edgeList)   
-            let cy = cytoscape({
-                        container: document.getElementById('cy'),
-                        boxSelectionEnabled: false,
-                        autounselectify: false,
-                        layout: { name: 'dagre',rankDir: 'LR'},
-                        style: 
-                        [
-                            {
-                                selector: 'node',
-                                style: {
-                                    'background-color': '#11479e',
-                                    'content': 'data(label)', 
-                                    'text-wrap':'wrap',
-                                    'text-max-width':'47%',
-                                    'font-size':'6px',
-                                    'text-halign':'center',
-                                    'text-valign':'center',
-                                    'padding': '20px'
-                                    
+   
 
-                                    
 
-                                    
-                                }
-                            },
-                            {
-                                selector: 'edge',
-                                style: {
-                                    'width': 1,
-                                    'target-arrow-shape': 'triangle',
-                                    'line-color': '#9dbaea',
-                                    'target-arrow-color': '#9dbaea',
-                                    'curve-style': 'bezier'
-                                    
-                                }
-                            }
-                        ],
-                        elements: 
-                        {
-                            nodes: myList,
-                            edges: edgeList
-                        }
-                    });
-                    document.querySelector('#imgg').addEventListener('click', function() {
-                    const base64URI = cy.png();
-                    var download = document.createElement('a');
-                    download.href = base64URI;
-                    download.download = 'Visual.png';
-                    download.click();
 
-                    
-                    
-                    });  
-            });
-        });   
-      
+g.nodes().forEach(function(v) {
+  var node = g.node(v);
+  // Round the corners of the nodes
+  node.rx = node.ry = 5;
+});
+
+
+// Create the renderer
+var render = new dagreD3.render();
+
+// Set up an SVG group so that we can translate the final graph.
+var svg = d3.select("svg"),
+    svgGroup = svg.append("g");
+
+// Run the renderer. This is what draws the final graph.
+render(d3.select("svg g"), g);
+
+// Center the graph
+var xCenterOffset = (svg.attr("width") - g.graph().width);
+svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+svg.attr("height", g.graph().height + 20);
+
+});
+});
+    });
     });
 
     
@@ -125,7 +127,8 @@ document.addEventListener('DOMContentLoaded', function(){
 {% block content %}
 <div class="grid-container">
     <div class="resultPage">
-        <div id="cy"></div>
+       <svg width="100%" ></svg>
+        
         <div id="buttons">
             <button id="imgg">Download Visual</button>
         </div>

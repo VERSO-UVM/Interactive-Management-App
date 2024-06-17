@@ -595,12 +595,10 @@ def resultInfo():
 
 @app.route('/nameList', methods=['POST', 'GET'])
 def nameList():
-    if current_user.is_authenticated:
         current_user_id = current_user.id
         list = database_access.factorTitle(current_user_id)
         return jsonify(list)
-    else:
-        return render_template("error.html")
+
 
 
 @app.route('/confusionList', methods=['POST', 'GET'])
@@ -626,11 +624,36 @@ def confusionList():
                 if (bigArray[i][j] == True):
                     listAnswers.append(i)
                     listAnswers.append(j)
+                    for value in stuff.values():
+                        if(i in value):
+                            if(j in value):
+                                listAnswers.pop()
+                                listAnswers.pop()
+        print(listAnswers)
+        print(stuff)                   
         return jsonify(listAnswers)
     else:
         return render_template("error.html")
 
 
+@app.route('/matrixInfo', methods=['POST', 'GET'])
+def matrixInfo():
+     if current_user.is_authenticated:
+        current_user_id = current_user.id
+
+        # Get all ratings
+        all_ratings = database_access.get_all_ratings(current_user_id)
+
+        # Get the number of factors (subsection)
+        global subsection
+
+        # Get the confusion matrix
+        matrix = database_access.get_results_voted(
+            all_ratings, current_user_id, subsection)
+
+        bigArray = np.array(matrix, dtype=bool)
+        stuff = structure_matrix(bigArray)
+        return stuff
 ##################################### Results##############################
 
 
