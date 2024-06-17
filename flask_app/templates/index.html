@@ -22,14 +22,14 @@
       <div class="gettingStarted">
         <h1 class="pt-5 pb-2">Welcome to the ISM App</h1>
         {# Heading for the page #}
-        <h2>To get started populate the existing tables. Either uploaded a filled csv file or manually enter the <a href="{{ url_for('participant') }}" type="button" class="Part">Participants</a>  and <a href="{{ url_for('factor',num=-1) }}" type="button" class="factor">Factors</a> information<h2>
+        <h2>To get started, either uploaded an existing csv file or manually enter the <a href="{{ url_for('participant') }}" type="button" class="Part">Participants</a>  and <a href="{{ url_for('factor',num=-1) }}" type="button" class="factor">Factors</a> information<h2>
       </div>
   <!-- Load section -->
 
   <div class="loadContainer">
     <div class="shared-style">
         <h4 id="together">Upload Data</h4>
-        <p class="helpExport">Upload CSV with information on the select tables to populate the tables<p>
+        <p class="helpExport">Upload existing CSV file in order to populate tables for factors, participants, or ratings <p>
         <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
        
         <div class="load">
@@ -50,7 +50,7 @@
   <div class="exportContainer">
     <div class="shared-style">
       <h4>Export</h4>
-      <p class="helpExport">Export CSV with information on the select tables<p></p>
+      <p class="helpExport">Download a CSV file containing the existing factors, participants, or ratings<p></p>
       <!-- TODO: add links to factors, participants,
         ratings, and results (clickable option) -->
         <form action="/export_data" method="post">
@@ -70,7 +70,7 @@
 <div class="templateFile">
   <div class="shared-style">
     <h4>Template File</h4>  
-    <p class="helpExport">Download pre-filled csv filler for the select tables<p> 
+    <p class="helpExport">Download editable template CSV file <p> 
         <div class="export">
           <a href="static/Factors Template.csv" download="Factors Template.CSV">
             <button  class="exportButton" type="button">Template Factor File</button>
