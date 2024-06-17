@@ -21,13 +21,13 @@ Result Page
     
  .clusters rect {
   fill: none;
-  stroke-width: 1.5px;
+  stroke-width: 2px;
 }
 
 text {
   font-weight: 300;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
-  font-size: 14px;
+  font-size: 20px;
 }
 
 .node rect {
@@ -39,7 +39,7 @@ text {
 
 .edgePath path {
   stroke: black;
-  stroke-width: 2px;
+  stroke-width: 4px;
 }
 </style>
 <script>
@@ -56,17 +56,31 @@ var g = new dagreD3.graphlib.Graph({compound:true})
        
 for(var i=0;i<listOfNames.length;i++)
 {
-    g.setNode(i, {label: String(listOfNames[i])});
+  var text=String(listOfNames[i]);
+  newText="";
+  if(text.length>45)
+  {
+    for(var j=0;j<text.length;j++)
+    {
+      if(j%45==0)
+      {
+        newText+="\n";
+      }
+      newText+=text.charAt(j);
+    }
+    g.setNode(i, {label: newText});
+  }
+  else{
+  g.setNode(i, {label: text});
+  }
 }
+  
+
 
 
 $.get('/matrixInfo', function(x) 
 {
     matrixInformation=x;
-   
-   
-
-
 for(keys in matrixInformation){
     g.setNode((keys+'_groups'), {});
     
@@ -99,6 +113,7 @@ g.nodes().forEach(function(v) {
   var node = g.node(v);
   // Round the corners of the nodes
   node.rx = node.ry = 5;
+  
 });
 
 
@@ -117,8 +132,9 @@ render(d3.select("svg g"), g);
 
 var xCenterOffset = (window.innerWidth- g.graph().width)/2;
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-var scaleRate=((g.graph().width*g.graph().height)/(window.innerWidth*window.innerHeight))-.1;
+var scaleRate=((g.graph().width*g.graph().height)/(window.innerWidth*window.innerHeight))-.2;
 svgGroup.attr("transform", "scale(" + scaleRate + ")");
+
 svg.attr("height", g.graph().height + 40);
 
 });
@@ -135,7 +151,7 @@ svg.attr("height", g.graph().height + 40);
 {% block content %}
 <div class="grid-container">
     <div class="resultPage">
-       <svg width="95%" height="100%"></svg>
+       <svg width="100%" height="100%"></svg>
         
         <div id="buttons">
             <button id="imgg">Download Visual</button>
