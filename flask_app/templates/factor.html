@@ -60,7 +60,7 @@ Factor Page
 <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
     <div class="load">
       <button onclick="triggerFileInput('factor')" class="loadButton">Upload Existing File</button>
-      <button type="Delete" onclick="DeleteData()">Delete All</button>
+      <button type="Delete" onclick="DeleteData()">Delete All Factors</button>
     </div>
 
 <div class = "addFact">
@@ -69,13 +69,14 @@ Factor Page
   <label for="f_title"></label>
   <input type="text" name="f_title" class = "inputText" placeholder="Factor Title"><br>
   <label for="f_description"></label>
-  <input type="text" name="f_description" class = "inputText" placeholder="Description"><br>
+  <input type="text" name="f_description" class = "inputText" placeholder="Optional Description"><br>
   <label for="f_votes"></label>
-  <input type="number" name="f_votes" class = "inputNumber" placeholder=0><br>
+  <input type="number" name="f_votes" class = "inputNumber" placeholder="Optional Frequency"><br>
 
   <button type="submit" class="save">Save</button>
 </form>
 </div>
+<h4>Click <a href="{{ url_for('pick_factors', num=-1) }}">here</a> to continue once you have added all factors.</h4>
 <script>
     function DeleteData()
     {

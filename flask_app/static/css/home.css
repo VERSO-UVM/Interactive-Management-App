@@ -1,0 +1,72 @@
+:root {
+  --button_color: #091876;
+  --outline: black;
+  --text: #091876;
+  --main_background: 	#F0F0F0;
+  --white: whitesmoke;
+}
+
+/* "Getting Started" title */
+h1 {
+    /* color: #3d5a80; */
+    color: #345e7d;
+    font-size: 300px;
+    padding-top: 15%;
+    text-align: center;
+    font-family: 'sans-serif';
+}
+h2
+{
+  color: #345e7d;
+  font-size: 28px;
+  text-align: center;
+}
+h3
+{
+font-size: 38px;
+font-family:'sans-serif';
+}
+.SecondPart {
+  position: relative;
+  display: inline-block;
+  top:-320px;
+}
+
+.SecondPart img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.secondText {
+  position: absolute;
+  top: 20%; 
+  color: #fff; 
+  font-size: 20px; 
+  text-align: center;
+
+}
+.secondText p
+{
+font-size: 30px; 
+color: #fff; 
+font-family: 'sans-serif';
+padding-left:10px;
+padding-right:10px;
+
+}
+.loginButon
+{
+position:relative;
+top:-250px;
+font-size:30px;
+}
+.loginButton
+{
+width:30%;
+border-bottom-left-radius:10px;
+border-bottom-right-radius:10px;
+border-top-left-radius:10px;
+border-top-right-radius:10px;
+}
+  

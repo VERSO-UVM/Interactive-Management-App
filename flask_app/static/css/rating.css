@@ -1,18 +1,25 @@
 /* Color Variables */
 :root {
-  --button_color: #091876;
+  --button_color: #2b4257;
   --outline: black;
-  --text: #091876;
+  --text: #2b4257;
   --main_background: 	#F0F0F0;
   --white: whitesmoke;
+  --orange:#F9943A;
 }
 
   /* "Factors" title */
   h1 {
-    color: var(--button_color);
+    color: var(--white);
     padding-top: 5%;
     text-align: center;
+    font-size:60px;
   }
+h3
+{
+
+  color: var(--white);
+}
   
   /* Setup the grid layout for .grid-container */
   .grid-container {
@@ -27,7 +34,7 @@
   .ratingPage {
     grid-column: 1 / -1; /* Span across all columns */
     color: var(--button_color);
-    text-align: center;
+    
     padding: 5%;
   }
   
@@ -36,13 +43,14 @@
     padding: 5%;
     padding-top: 2%;
     border-style: solid;
-    border-color: var(--button_color);
+    border-color: var(--orange);
     height: 95%;
     width: 90%;
     justify-self: center;
     margin: 0;
     background-color: var(--main_background);
     border-radius: 4px;
+    border-width: 7px;
   }
   
   .addRating input[type="text"] {
@@ -60,7 +68,7 @@
   .addRating input[type="text"]::placeholder {
     color: var(--button_color);
     font-size: 20px;
-    text-align: center;
+    text-align: lefy;
   }
   
 /* Styling for Submit Button */
@@ -165,21 +173,26 @@
   }
 
   /* Positioning box for flow diagram */
-  .box {
-    padding: 20px;
-    margin-top: 25px; /* Adding some space above inputs */
-    background-color: var(--white);
-    border: 2px solid var(--button_color);
+.box
+{
+   border-top: 2px solid var(--button_color);
     border-radius: 4px;
-    width: 95%;
-    height: 300px;
-    justify-self: center;
-  }
+}
+.box2 {
+  display: grid;
+  grid-template-areas:
+  
+    'fLeading Arrow fFollowing';
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1px;
+  font-family: 'sans-serif';
+  padding-bottom: 3%;
+}
   
   /* "Go To Participants" button */
   .goToResult {
     float: right;
-    background-color: var(--button_color);
+    background-color: var(--orange);
     color: var(--white);
     text-align: center;
     text-decoration: none;
@@ -188,33 +201,30 @@
     font-size: 20px;
     cursor: pointer;
     border-radius: 4px;
+    border-color:var(--orange)
   }  
-
-  .gTResults-Container-left {
-    float: left;
-  }
-
-  .gTResults-Container-right {
-    float: right;
-  }
-
-    
-  /* "Go To Participants" button */
-  .goToMenu {
-    background-color: var(--button_color);
-    color: var(--white);
-    text-align: left;
-    text-decoration: none;
-    justify-self: end;
-    font-size: 20px;
-    cursor: pointer;
-    border-radius: 4px;
-  }  
-
-  .Factorsss
-  {
-    display: inline;
-    font-size: 20px;
-   
-  }
+.guide
+{
+  text-align:center;
+  font-size:25px;
+}
+.fFollowing
+{
+  margin-top:20px;
+  font-size:30px;
+}
+.fLeading
+{
+  margin-top:20px;
+  font-size:30px;
+}
+#myform
+{
+  font-size:20px;
+}
+#Arrow
+{
+  margin-left:40%;
+  margin-top:56px;
+}
 

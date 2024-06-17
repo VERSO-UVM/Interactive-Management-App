@@ -3,14 +3,14 @@
 
 {% block styles %}
   {{ super() }}
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pick_factors.css') }}">
 {% endblock %}
 
 {% block title %}
-Factor Page  {# Sets the title of the page to "Factor Page" #}
+Pick Factors {# Sets the title of the page to "Factor Page" #}
 {% endblock %}
 
-<link rel="stylesheet" href="factor.css">
+<link rel="stylesheet" href="pick_factors.css">
 
 {% block content %}
 <div class="grid-container">
@@ -23,8 +23,8 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
       </h3>
   </div>
  
-    <div>
-      <a  href="{{ url_for('pick_factors',num=1) }}" type="button" class="SortButton">Ascending</a>
+    <div class="Sorting">
+      <p><a  href="{{ url_for('pick_factors',num=1) }}" type="button" class="SortButton">Ascending</a></p>
       </div>
       <div>
         <a  href="{{ url_for('pick_factors',num=2) }}" type="button" class="SortButton">Descending</a>
@@ -34,7 +34,7 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 <p>Pick 15 factors at most!</p>
 <form action="{{ url_for('pick_factors',num=2) }}" method="post" onsubmit="return limitCheckboxes()">
   
-  <div class="table">
+  <div class="tables">
     <table style="width: 100%">
       <tr>
         <th></th>  

@@ -1,0 +1,39 @@
+{% extends 'home_base.html' %}
+{# Extends the 'home_base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sponsors.css') }}">
+{% endblock %}
+
+{% block title %}
+  ISM Home
+  {# Sets the title of the page to "About Us" #}
+{% endblock %}
+
+
+{% block content %}
+  <div class="grid-container">
+      <div class="gettingStarted">
+        <h1 class="pt-5 pb-2">Sponsors</h1>
+       
+        {# Heading for the page #}
+       
+    
+        <div class="participantPage">
+            <p>The project, initiated in September 2023 and sponsored by Dr. John Meluso, involves partnerships with the University of Arizona, the University of Galway (Ireland), and the Open Source Collective Africa.
+            </p>
+            </div>
+      
+      </div>
+       
+          
+          
+            
+      </div>
+ 
+
+{% endblock %}

@@ -233,6 +233,19 @@ def load_user(user_id):
     # This function is called to load a user object based on the user ID stored in the session
     return query_user_by_id(user_id)
 
+@app.route("/", methods=['GET', 'POST'])
+def front():
+    return render_template("front.html")
+
+@app.route('/aboutUs', methods=['GET', 'POST'])
+def aboutUs():
+    # database_access.delete_everything()
+    return render_template('aboutUs.html')
+
+@app.route('/sponsors', methods=['GET', 'POST'])
+def sponsors():
+    # database_access.delete_everything()
+    return render_template('sponsors.html')
 
 # Define route for the index page
 @app.route('/home', methods=['GET', 'POST'])
@@ -244,7 +257,7 @@ def index():
         return render_template("error.html")
 
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -582,12 +595,10 @@ def resultInfo():
 
 @app.route('/nameList', methods=['POST', 'GET'])
 def nameList():
-    if current_user.is_authenticated:
         current_user_id = current_user.id
         list = database_access.factorTitle(current_user_id)
         return jsonify(list)
-    else:
-        return render_template("error.html")
+
 
 
 @app.route('/confusionList', methods=['POST', 'GET'])
@@ -613,11 +624,36 @@ def confusionList():
                 if (bigArray[i][j] == True):
                     listAnswers.append(i)
                     listAnswers.append(j)
+                    for value in stuff.values():
+                        if(i in value):
+                            if(j in value):
+                                listAnswers.pop()
+                                listAnswers.pop()
+        print(listAnswers)
+        print(stuff)                   
         return jsonify(listAnswers)
     else:
         return render_template("error.html")
 
 
+@app.route('/matrixInfo', methods=['POST', 'GET'])
+def matrixInfo():
+     if current_user.is_authenticated:
+        current_user_id = current_user.id
+
+        # Get all ratings
+        all_ratings = database_access.get_all_ratings(current_user_id)
+
+        # Get the number of factors (subsection)
+        global subsection
+
+        # Get the confusion matrix
+        matrix = database_access.get_results_voted(
+            all_ratings, current_user_id, subsection)
+
+        bigArray = np.array(matrix, dtype=bool)
+        stuff = structure_matrix(bigArray)
+        return stuff
 ##################################### Results##############################
 
 

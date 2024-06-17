@@ -1,0 +1,41 @@
+{% extends 'home_base.html' %}
+{# Extends the 'home_base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block title %}
+  ISM Home
+  {# Sets the title of the page to "ISM Home" #}
+{% endblock %}
+
+
+{% block content %}
+  <div class="grid-container">
+      <div class="gettingStarted">
+        {# Heading for the page #}
+        <img src="{{ url_for('static', filename='header.png')}}" alt="header" id="header" width=90% >
+
+        <div class="SecondPart">
+        <img src="{{ url_for('static', filename='transition.png')}}" alt="background picture" id="background" height=90%>
+        <div class="secondText">
+        <h3>At First Glance<h3>
+            <p> This Interactive Managment App is an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants to 
+                produce a visual that helps a group of people solve a collective problem. 
+                This app takes in a list of factors identified by research participants that affect a specific problem. 
+                It will then work with participants to figure out the relationships between factors (things that impact their ability to act). 
+                An algorithm will then determine which factors should be addressed first, second, and so on in order for the group to meet their goals.</p>
+            </div>
+       
+          
+          
+            
+      </div>
+  <!-- Load section -->
+
+{% endblock %}
