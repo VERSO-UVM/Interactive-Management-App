@@ -22,19 +22,19 @@ Ratings Page
     <div class="ratingContainer">
         <h4>Compare Factors</h4>
         <div class="box">
-          
-            <div id="part">
-              <p class="IDs">User ID:</p>
-              <p id="partID" class="IDs">{{ user_id }}</p>
-            </div>
+        
 
             <p class="guide">Does the left factor affect the right factor?</p>
-              <p id="fLeading" class="Factorsss"></p>
-              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
-              <p id="fFollowing" class="Factorsss"></p>
+            <div class="box2">
+              <p id="fLeading" class="fLeading"></p> <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
+             
+              <p id="fFollowing" class="fFollowing"></p>
+              <p id="finished" class="finished">Finished</p>
+              
               
             </div>
           
+          </div>
           </div>
 
             <form id="myform">
@@ -59,6 +59,7 @@ Ratings Page
 
 <script>
   window.onload = function() {
+    $("#finished").hide();
     var factors = JSON.parse('{{ factors | tojson | safe }}');
     var index = 0;
 
@@ -74,8 +75,9 @@ Ratings Page
           });
         });
       } else {
-        $("#fLeading").hide()
-        $("#fFollowing").html("Finished");
+        $("#finished").show();
+        $("#fLeading").hide();
+        $("#fFollowing").hide();
         $("#skip").hide();
         $("#submit").hide();
         $("#myform").hide();
@@ -87,7 +89,27 @@ Ratings Page
     var rating = document.querySelector('input[name="responseYN"]:checked').value;
     var factorLeading = factors[index].factor_id_leading;
     var factorFollowing = factors[index].factor_id_following;
-    $.get('/update_rating/' + factorLeading + '/' + factorFollowing + '/' + rating, function(x) {});
+    
+
+    $.get('/update_rating/' + factorLeading + '/' + factorFollowing + '/' + rating, function(x) 
+    {
+      if(rating==1)
+      {
+        console.log("heyyyy");
+        for(var i = 0; i < factors.length; i++)
+        {
+          if(factors[i].factor_id_leading==factorFollowing && factors[i].factor_id_following==factorLeading)
+          {
+            console.log('foundd');
+            factors.splice(i,1);
+            console.log(factors)
+            
+          }
+        }
+        $.get('/update_rating/' + factorFollowing + '/' + factorLeading + '/' + 0, function(x) {});
+     }
+     loadFactors();
+    });
 });
 
 
@@ -103,5 +125,6 @@ Ratings Page
 
     loadFactors();
   };
+
 </script>
 {% endblock %}

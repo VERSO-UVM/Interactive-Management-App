@@ -1,8 +1,13 @@
-{% extends 'base_no_links.html' %}
-{# Extends the 'base_no_links.html' template #}
+{% extends 'home_base.html' %}
+{# Extends the 'home_base.html' template #}
 
 {% import "bootstrap/wtf.html" as wtf %}
 {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
 
 {% block title %}Register{% endblock title %}
 

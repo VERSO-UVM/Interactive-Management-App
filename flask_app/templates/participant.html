@@ -55,7 +55,7 @@ Participant Page
     <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
     <div class="load">
       <button onclick="triggerFileInput('participant')" class="loadButton">Upload Existing File</button>
-      <button type="Delete" onclick="DeleteData()">Delete All</button>
+      <button type="Delete" onclick="DeleteData()">Delete All Participants</button>
     </div>
 
     <div class="addPart">
@@ -73,7 +73,7 @@ Participant Page
             </form>
         </div>
     </div>
-
+    <h4>Click <a href="{{ url_for('factor', num=-1) }}"> here</a> to continue once all participants have been added.</h4>
 </div>
 
 <script>

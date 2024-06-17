@@ -30,17 +30,15 @@
     {% block body %}
     {% block navbar %}
     <header>
+      
       <nav>
-        <img src="{{ url_for('static', filename='ISM.png')}}" alt="background picture" id="logoNav">
         <!-- navbar content -->
+        <img src="{{ url_for('static', filename='ISM.png')}}" alt="background picture" id="logoNav">
         <ul>
-          <li><a href="{{ url_for('index') }}"> Home</a></li>
-          <li><a href="{{ url_for('participant') }}"> Participants</a></li>
-          <li><a href="{{ url_for('factor', num=-1) }}"> Factors</a></li>
-          <li><a id="resultBar" href="{{ url_for('resultInfo') }}"> Results</a></li>
-          <li><a href="{{ url_for('about') }}"> About</a></li>
-          <li><a href="{{ url_for('help') }}"> Help</a></li>
-          <li><a href="{{ url_for('logout') }}"> Log Out</a></li>
+          <li><a href="{{ url_for('front') }}"> Home</a></li>
+          <li><a href="{{ url_for('aboutUs') }}"> About Us</a></li>
+          <li><a href="{{ url_for('sponsors') }}"> Sponsors</a></li>
+          <li><a href="{{ url_for('login') }}"> Login</a></li>
         </ul>
       </nav>
       {# Navigation links outside the main content block #}

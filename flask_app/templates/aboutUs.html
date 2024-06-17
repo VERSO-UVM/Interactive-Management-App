@@ -1,0 +1,53 @@
+{% extends 'home_base.html' %}
+{# Extends the 'home_base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aboutUs.css') }}">
+{% endblock %}
+
+{% block title %}
+  ISM Home
+  {# Sets the title of the page to "About Us" #}
+{% endblock %}
+
+
+{% block content %}
+  <div class="grid-container">
+      <div class="gettingStarted">
+        <h1 class="pt-5 pb-2">About Us</h1>
+       
+        {# Heading for the page #}
+       
+    
+        <div class="usingPage">
+            <h2> Purpose </h2>
+            <p>In essence, this initiative endeavors to holistically support African entrepreneurs in their pursuit of sustainable business growth, community enrichment, and technological proficiency. 
+              By nurturing entrepreneurial talent and fostering an ecosystem conducive to innovation and progress, we aspire to contribute meaningfully to the advancement and prosperity of African societies.</p>
+            </div>
+            <div class="participantPage">
+            <h2>Interpretive Structural Method Explained</h2>
+            <p>The Interpretive Structural Method (ISM) is like a tool you can use to figure out how all the different parts of the system are connected and which ones are the most important.
+              First, you start by listing out all the important things in the system, like teachers, students, classes, exams, and so on. These are called "elements."
+              Then, you compare each of these things to each other to see how they relate. For example, you might ask questions like, "Is having good teachers more important than having enough textbooks?" This helps you figure out which things affect each other the most.
+              Once you've done all these comparisons, you make a sort of map called a digraph. It's like a picture with circles for each thing in the system and arrows showing how they're connected. If something has a big influence on another thing, there's a strong arrow pointing to it.
+              Next, you organize all the things in the map into groups based on how they're connected. This helps you see which things are really important and which ones are more like details.
+              Finally, you look at the map and see what it tells you. You can see which parts of the system are most important, which ones might need fixing, and how everything fits together. </p>
+            </div>
+            <div class="participantPage">
+              <h2>Resources</h2>
+              <p>This application was built using Flask, SQLAlchemy, and CSS</p>
+              </div>
+      
+      </div>
+       
+          
+          
+            
+      </div>
+ 
+
+{% endblock %}

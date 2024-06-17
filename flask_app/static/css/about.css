@@ -2,21 +2,21 @@
 :root {
     --button_color: #091876;
     --outline: black;
-    --text: #091876;
+    --text:#2b4257;
     --main_background: 	#F0F0F0;
     --white: whitesmoke;
 }
 
 /* "About Page" title */
 h1 {
-    color: var(--button_color);
-    padding-top: 5%;
-    text-align: center;
-    font-family: 'sans-serif';
+  color: white;
+  font-size:60px;
+  padding-top: 5%;
+  text-align: center;
 }
 
 h2 {
-    color: var(--button_color);
+    color: #f9943b;
     text-align: center;
     font-family: 'sans-serif';
     text-align: left;
