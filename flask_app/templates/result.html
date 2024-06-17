@@ -36,6 +36,7 @@ text {
   stroke-width: 1.5px;
 }
 
+
 .edgePath path {
   stroke: black;
   stroke-width: 2px;
@@ -58,6 +59,7 @@ for(var i=0;i<listOfNames.length;i++)
     g.setNode(i, {label: String(listOfNames[i])});
 }
 
+
 $.get('/matrixInfo', function(x) 
 {
     matrixInformation=x;
@@ -71,9 +73,10 @@ for(keys in matrixInformation){
 }
 
 for (key in matrixInformation){
-    for(var i=0;i<matrixInformation[key].length;i++)
+    for(var i=0;i<matrixInformation[key].length;i++){
             g.setParent(matrixInformation[key][i], (key+'_groups'));
             console.log(matrixInformation[key][i]);
+    }
 }
 
 
@@ -87,6 +90,7 @@ $.get('/confusionList', function(x)
                 // Set up edges, no special attributes.
                 g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
             }
+    
    
 
 
@@ -108,10 +112,14 @@ var svg = d3.select("svg"),
 // Run the renderer. This is what draws the final graph.
 render(d3.select("svg g"), g);
 
-// Center the graph
-var xCenterOffset = (svg.attr("width") - g.graph().width);
+
+// Center the graph\
+
+var xCenterOffset = (window.innerWidth- g.graph().width)/2;
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-svg.attr("height", g.graph().height + 20);
+var scaleRate=((g.graph().width*g.graph().height)/(window.innerWidth*window.innerHeight))-.1;
+svgGroup.attr("transform", "scale(" + scaleRate + ")");
+svg.attr("height", g.graph().height + 40);
 
 });
 });
@@ -127,7 +135,7 @@ svg.attr("height", g.graph().height + 20);
 {% block content %}
 <div class="grid-container">
     <div class="resultPage">
-       <svg width="100%" ></svg>
+       <svg width="95%" height="100%"></svg>
         
         <div id="buttons">
             <button id="imgg">Download Visual</button>
