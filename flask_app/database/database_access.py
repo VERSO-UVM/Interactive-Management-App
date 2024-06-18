@@ -98,6 +98,17 @@ def insert_user(email: str, password: str) -> User:
     return False
 
 
+def delete_user(user_id):
+    user_to_delete = __DATABASE_CONNECTION.query(
+        User).filter_by(id=user_id).first()
+    if user_to_delete:
+        try:
+            __DATABASE_CONNECTION.delete(user_to_delete)
+            __DATABASE_CONNECTION.commit()
+        except Exception as e:
+            print(f"Could not delete user with ID {user_id}")
+
+
 def insert_passwordVerification(email: str,
                                 verificationCode: str,
                                 ) -> bool:
@@ -541,7 +552,7 @@ def edit_participant(id, fi_name, la_name, p_email, p_telephone, user_id):
 
 
 # Deletes existing participant and updates the id of the other participants
-def delete_participants(id, user_id):
+def delete_participant(id, user_id):
     """
     Deletes a participant from the database by ID for a specific user.
 

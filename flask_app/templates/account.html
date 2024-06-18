@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
+
+{% block title %}
+Account Settings
+{# Sets the title of the page to "Account Settings" #}
+{% endblock %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/participant.css') }}">
+  <style>
+    .confirmation-text {
+      font-size: 20px;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="grid-container">
+  <div class="addFactor">
+    <h1>Account Settings</h1>
+    <ul>
+        <h4><a href="{{ url_for('change_password') }}">Change Password</a></h4>
+        <h4><a href="#" onclick="confirmDeleteAccount()">Delete Account</a></h4>
+    </ul>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    function confirmDeleteAccount() {
+      if (confirm("Are you sure you want to delete your account?")) {
+        window.location.href = "{{ url_for('delete_user') }}";
+      }
+    }
+  </script>
+{% endblock %}
