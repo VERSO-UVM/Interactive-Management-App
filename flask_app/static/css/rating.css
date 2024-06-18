@@ -227,4 +227,10 @@ h3
   margin-left:40%;
   margin-top:56px;
 }
+#finished
+{
+  position:relative;
+  font-size:40px;
+  left:100%;
+}
 

@@ -58,11 +58,11 @@ for(var i=0;i<listOfNames.length;i++)
 {
   var text=String(listOfNames[i]);
   newText="";
-  if(text.length>45)
+  if(text.length>50)
   {
     for(var j=0;j<text.length;j++)
     {
-      if(j%45==0)
+      if(j%50==0)
       {
         newText+="\n";
       }
@@ -132,7 +132,9 @@ render(d3.select("svg g"), g);
 
 var xCenterOffset = (window.innerWidth- g.graph().width)/2;
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-var scaleRate=((g.graph().width*g.graph().height)/(window.innerWidth*window.innerHeight))-.2;
+
+var scaleRate=((window.innerWidth)/(g.graph().width)*.95);
+console.log(scaleRate)
 svgGroup.attr("transform", "scale(" + scaleRate + ")");
 
 svg.attr("height", g.graph().height + 40);
@@ -141,7 +143,10 @@ svg.attr("height", g.graph().height + 40);
 });
     });
     });
-
+    function saveImage() {
+    // Get the image URL from the src attribute of the img tag
+   
+}
     
     </script>
 
@@ -151,10 +156,10 @@ svg.attr("height", g.graph().height + 40);
 {% block content %}
 <div class="grid-container">
     <div class="resultPage">
-       <svg width="100%" height="100%"></svg>
+       <svg width="95%" height="100%" id="imggg"></svg>
         
         <div id="buttons">
-            <button id="imgg">Download Visual</button>
+            <button id="imgg" onclick="saveImage()">Download Visual</button>
         </div>
     </div>
 </div>

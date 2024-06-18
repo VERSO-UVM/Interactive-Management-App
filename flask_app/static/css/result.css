@@ -28,7 +28,7 @@
     grid-column: 1 / -1; /* Span across all columns */
     color: var(--button_color);
     text-align: center;
-    padding: 5%;
+    margin-top:10%;
   }
   
  /* Style the form within the .results container */
