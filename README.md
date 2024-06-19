@@ -2,7 +2,7 @@
 
 # Interactive Management App
 
-ORCA Project 2023-2024
+The Interactive Management App project will design and build an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants. The Interactive Management App will produce a flow diagram that helps a group of people solve a collective problem. The app will take in a list of factors identified by research participants that affect a specific problem. It will then work with participants to figure out the relationships between factors (things that impact their ability to act). An algorithm will then determine which factors should be addressed first, second, and so on in order for the group to meet their goals.
 
 ## Table of Contents
 - [Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
@@ -112,8 +112,7 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 
 
 ## Core Actions
-
-![Core Actions](https://github.com/VERSO-UVM/interactive-management-app/blob/main/ISM_Breakdown.png)
+\
 
 ### I want to load factors I have selected for exploration
 
