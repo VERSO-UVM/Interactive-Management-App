@@ -5,11 +5,11 @@
 ORCA Project 2023-2024
 
 ## Table of Contents
--[Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
--[Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
--[Research](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research)
--[Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
--[Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
+- [Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+- [Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
+- [Research](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research)
+- [Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+- [Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
 
 
 ## Background
@@ -42,9 +42,62 @@ Here are some of the limitations of ISM:
 - It can be time-consuming and labor-intensive to develop an ISM model.
 - It can be difficult to validate the results of an ISM model.
 
+## Install
+
+## Running locally
+
+These instructions are designed for MacOS & GNU/Linux users.  
+**Windows users:** [Using WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (Windows Subsystem for Linux) is recommended.
+
+### Requirements
+
+Install the following tools using their instructions:
+
+- [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation)- Python version manager
+- [nvm](https://github.com/nvm-sh/nvm) - Node version manager
+
+### Running locally
+
+**Setup pyenv & nvm**
+
+```sh
+# Python
+pyenv install # If the version already exists, no need to re-install
+# Node.js
+nvm install
+```
+
+**Install dependencies**
+
+```sh
+# Python
+pip install -r requirements.txt
+# Node.js
+corepack install # Sets up npm
+npm install
+```
+
+**Run the app**
+
+```sh
+python wsgi.py --port=5001 --host=localhost --debug
+```
+
+Then visit http://localhost:5001
+
+###Python Everywhere
+
 ## Research
 
+### Relevent Research
 Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
+
+### Existing Projects
+
+- [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
+- [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
+- [https://github.com/cran/ISM](https://github.com/cran/ISM)
+- [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
 
 
 
@@ -55,8 +108,6 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 3. Web user interface (supported on Chrome, Firefox, Edge)
 4. Use math from Warfield, or equivalent modern network ordering visualization algorithm
 5. Results can be saved to a local computer
-
-**How to run locally:** [CONTRIBUTING.md](/documentation/CONTRIBUTING.md#running-locally)
 
 
 
@@ -99,12 +150,8 @@ MVP: display a simple png with the factors and lines showing the relationship or
 After this is all done, we want to export all the datasets that have been created for analysis. This can be as simple as a set of CSVs with appropriate names. Ideally it would also include the PNG.
 MVP: Save all datasets as CSVs
 
-## other projects out there
 
-- [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
-- [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
-- [https://github.com/cran/ISM](https://github.com/cran/ISM)
-- [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
+
 
 ## Feature Requests
 
