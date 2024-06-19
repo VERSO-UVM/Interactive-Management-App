@@ -44,7 +44,7 @@ Here are some of the limitations of ISM:
 
 ## Install
 
-## Running locally
+### Running locally
 
 These instructions are designed for MacOS & GNU/Linux users.  
 **Windows users:** [Using WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (Windows Subsystem for Linux) is recommended.
@@ -56,7 +56,7 @@ Install the following tools using their instructions:
 - [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation)- Python version manager
 - [nvm](https://github.com/nvm-sh/nvm) - Node version manager
 
-### Running locally
+#### Running locally
 
 **Setup pyenv & nvm**
 
@@ -85,7 +85,7 @@ python wsgi.py --port=5001 --host=localhost --debug
 
 Then visit http://localhost:5001
 
-###Python Everywhere
+### Python Everywhere
 
 ## Research
 
