@@ -4,7 +4,15 @@
 
 ORCA Project 2023-2024
 
-## Summary
+## Table of Contents
+*[Background]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background}
+*[Install]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install}
+*[Research]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research}
+*[Requirements]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background}
+*[Core Action]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements}
+
+
+## Background
 
 The objective of this project is to design and build an open source browser-based tool for conducting Interpretive Structural Modeling (ISM) research with participants. It includes a series of questions about pairs of variables (called "factors") and whether or not those factors are related to one another. The software will produce a flow diagram of the relationships between factors as identified by the participant, and provide the researchers with one flow diagram that averages the data across all participants in a particular study. The flow diagram will suggest factors that are likely more effective to address first, and factors that are likely to follow or become easier to address as a result of addressing earlier factors.
 
@@ -38,16 +46,7 @@ Here are some of the limitations of ISM:
 
 Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
 
-## Fall 2023 Spring Sprint Schedule
 
-- Sprint 1 - Jan 22 - Feb 2
-- Sprint 2 - Feb 5 - Feb 16
-- Sprint 3 - Feb 19 - Mar 1
-- Sprint 4 - Mar 4 - Mar 15 (Spring Break March 11-15 is a Holiday)
-- Sprint 5 - Mar 18 - Mar 29
-- Sprint 6 - Apr 1 - Apr 12
-- Sprint 7 - Apr 15 - Apr 26
-- Presentaion - May 3
 
 ## Requirements
 
@@ -59,14 +58,7 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 
 **How to run locally:** [CONTRIBUTING.md](/documentation/CONTRIBUTING.md#running-locally)
 
-## Minimum Viable Product (MVP)
 
-- Take in an established of list of factors
-- User can select a subset of those factors for display
-- Display that list of factors so they can be paired with reasons to the user
-- The user needs to specify the relationship between those pairs
-- Program needs to mathematically determine relationship ordering
-- Visually display the factors in sequential order to the user
 
 ## Core Actions
 
