@@ -5,11 +5,11 @@
 ORCA Project 2023-2024
 
 ## Table of Contents
-[Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
-*[Install]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install}
-*[Research]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research}
-*[Requirements]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background}
-*[Core Action]{https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements}
+-[Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+-[Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
+-[Research](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research)
+-[Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+-[Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
 
 
 ## Background
