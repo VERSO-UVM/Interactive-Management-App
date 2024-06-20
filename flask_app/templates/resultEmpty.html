@@ -8,11 +8,14 @@
       h1 {
       /* color: #3d5a80; */
       color: #F9943A ;
-      font-size: 150px;
+      font-size: 100px;
       padding-top: 15%;
       text-align: center;
       font-family: 'sans-serif';
   }
+    a{
+      font-size: 20px;
+    }
   </style>
 
 
@@ -25,5 +28,6 @@ Result Page
 {% block content %}
 
 <h1>Please Rate before seeing result</h1>
+<a href="{{ url_for('factor', num=-1) }}">Back to Factors Page</a>
 
 {% endblock %}
