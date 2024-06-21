@@ -11,7 +11,7 @@ Result Page
 
 {% block styles %}
   {{ super() }}
-  link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.js"></script>
 <script src="https://dagrejs.github.io/project/dagre-d3/latest/dagre-d3.min.js"></script>
@@ -53,10 +53,10 @@ text {
 <div class="grid-container">
     <div class="resultPage">
       <div id="imageDIV">
-       <svg width="100%" height="100%" id="imggg"></svg>
+       <svg width="100%" height="100%" id="diagram"></svg>
        </div>    
         <div id="buttons">
-            <button id="imgg">Download Visual</button>
+            <button id="downloadButton">Download Visual</button>
         </div>
     </div>
 </div>
@@ -139,12 +139,23 @@ node.rx = node.ry = 5;
 var render = new dagreD3.render();
 
 // Set up an SVG group so that we can translate the final graph.
-var svg = d3.select("svg"),
-  svgGroup = svg.append("g");
+var svg = d3.select("svg#diagram"),
+              svgGroup = svg.append("g");
 
-// Run the renderer. This is what draws the final graph.
-render(d3.select("svg g"), g);
+          render(d3.select("svg#diagram g"), g);
 
+          var scaleRate = (window.innerWidth / g.graph().width) * 0.95;
+          var xCenterOffset = (window.innerWidth - g.graph().width * scaleRate) / 2;
+          var yCenterOffset = (window.innerHeight - g.graph().height * scaleRate) / 2;
+
+          svgGroup.attr("transform", "translate(" + xCenterOffset + ", " + yCenterOffset + ") scale(" + scaleRate + ")");
+
+          svg.call(d3.zoom().on("zoom", function() {
+            svgGroup.attr("transform", d3.event.transform);
+          }));
+
+          svg.attr("height", window.innerHeight);
+          svg.attr("width", window.innerWidth);
 
 // Center the graph\
 
@@ -178,8 +189,12 @@ svg.attr("height", g.graph().height + 40);
 });
 });
 });
+window.addEventListener('resize', function() {
+    d3.select("svg#diagram").attr("height", window.innerHeight).attr("width", window.innerWidth);
+  
+});
 //Logic for exporting rating visual
-document.querySelector('#imgg').addEventListener('click', function() {
+document.querySelector('#downloadButton').addEventListener('click', function() {
   
         html2canvas(document.querySelector("#imageDIV"), {
             letterRendering: 1,
