@@ -23,17 +23,15 @@ Pick Factors {# Sets the title of the page to "Factor Page" #}
       </h3>
   </div>
  
-    <div class="Sorting">
-      <p><a  href="{{ url_for('pick_factors',num=1) }}" type="button" class="SortButton">Ascending</a></p>
+  <div>
+    <a href="{{ url_for('pick_factors',num=1) }}" type="button" class="SortButton">Ascending</a>
+    </div>
+    <div>
+      <a  href="{{ url_for('pick_factors',num=2) }}" type="button" class="SortButton">Descending</a>
       </div>
-      <div>
-        <a  href="{{ url_for('pick_factors',num=2) }}" type="button" class="SortButton">Descending</a>
-        </div>
 
 
-<p>Pick 15 factors at most!</p>
-<form action="{{ url_for('pick_factors',num=2) }}" method="post" onsubmit="return limitCheckboxes()">
-  
+<form action="{{ url_for('pick_factors',num=-1) }}" method="post" onsubmit="return limitCheckboxes()">
   <div class="tables">
     <table style="width: 100%">
       <tr>
@@ -72,26 +70,26 @@ Pick Factors {# Sets the title of the page to "Factor Page" #}
 
 <script>
 
-document.getElementById("ascending").addEventListener("click", ascendingVotes);
-function ascendingVotes() 
-{
-  $.get('/factor/1',
-    function(x) 
-    {
+// document.getElementById("ascending").addEventListener("click", ascendingVotes);
+// function ascendingVotes() 
+// {
+//   $.get('/factor/1',
+//     function(x) 
+//     {
 
-    }
-  )
-}
-document.getElementById("desscending").addEventListener("click", descendingVotes);
-function desscendingVotes() 
-{
-  $.get('/factor/2',
-    function(x) 
-    {
+//     }
+//   )
+// }
+// document.getElementById("desscending").addEventListener("click", descendingVotes);
+// function desscendingVotes() 
+// {
+//   $.get('/factor/2',
+//     function(x) 
+//     {
 
-    }
-  )
-}
+//     }
+//   )
+// }
 function limitCheckboxes() 
 {
   var checkboxes = document.querySelectorAll('input[type="checkbox"]');
