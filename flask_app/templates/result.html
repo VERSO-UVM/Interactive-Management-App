@@ -18,7 +18,7 @@ Result Page
 <script src="static/html2canvas.js"></script>
 
 
-
+//Styling of the graph
 <style>
     
  .clusters rect {
@@ -44,9 +44,8 @@ text {
   stroke-width: 4px;
 }
 </style>
-
-
 {% endblock %}
+
 
 
 {% block content %}
@@ -66,67 +65,67 @@ text {
 document.addEventListener('DOMContentLoaded', function(){ 
 
 var g = new dagreD3.graphlib.Graph({compound:true})
+//Positions the graph horizontal 
 .setGraph({ rankdir: 'LR'})
 .setDefaultEdgeLabel(function() { return {}; });
-//Gets the list of factor name
+
+
 $.get('/nameList', function(x) 
   {
-      listOfNames=x;
-     
-for(var i=0;i<listOfNames.length;i++)
-{
-  
-  var text=String(listOfNames[i]);
-  newText="";
-  if(text.length>50)
-  {
-    for(var j=0;j<text.length;j++)
+    //Creates nodes
+    listOfNames=x;
+    for(var i=0;i<listOfNames.length;i++)
     {
-      if(j%50==0)
+  
+    var text=String(listOfNames[i]);
+    newText="";
+    //Ensures that long factor title go to the next line after certain amount of characters
+    if(text.length>50)
+    {
+      for(var j=0;j<text.length;j++)
       {
-        newText+="\n";
+        if(j%50==0)
+        {
+          newText+="\n";
+        }
+        newText+=text.charAt(j);
       }
-      newText+=text.charAt(j);
+      g.setNode(i, {label: newText});
     }
-    g.setNode(i, {label: newText});
+    else
+    {
+      g.setNode(i, {label: text});
+    }
   }
-  else
-  {
-    g.setNode(i, {label: text});
-  }
-}
 
 
 //Sets the factors on the correct layer
 $.get('/matrixInfo', function(x) 
 {
   matrixInformation=x;
-for(keys in matrixInformation){
-  g.setNode((keys+'_groups'), {});
-  
-}
-
-for (key in matrixInformation){
-  for(var i=0;i<matrixInformation[key].length;i++){
-          g.setParent(matrixInformation[key][i], (key+'_groups'));
-          console.log(matrixInformation[key][i]);
+  for(keys in matrixInformation){
+    g.setNode((keys+'_groups'), {});
+    
   }
-}
+
+  for (key in matrixInformation){
+    for(var i=0;i<matrixInformation[key].length;i++){
+            g.setParent(matrixInformation[key][i], (key+'_groups'));
+            console.log(matrixInformation[key][i]);
+    }
+  }
 
 
-//Creates the line between the factors
+
 $.get('/confusionList', function(x) 
 {
-          let edgeInfo = x;
-          for (var i = 0; i < edgeInfo.length; i+=2) 
-          {
-              // Set up edges, no special attributes.
-              g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
-          }
+  let edgeInfo = x;
+  for (var i = 0; i < edgeInfo.length; i+=2) 
+  {
+    //Creates the edges between nodes
+    g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
+  }
   
- 
-
-
 
 g.nodes().forEach(function(v) {
 var node = g.node(v);
@@ -157,7 +156,7 @@ var svg = d3.select("svg#diagram"),
           svg.attr("height", window.innerHeight);
           svg.attr("width", window.innerWidth);
 
-// Center the graph\
+// Center the graph
 
 var xCenterOffset = (window.innerWidth- g.graph().width)/2;
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
@@ -184,7 +183,6 @@ var scaleRateY=((window.innerHeight)/(g.graph().height));
 
 
 svg.attr("height", g.graph().height + 40);
-
 });
 });
 });
