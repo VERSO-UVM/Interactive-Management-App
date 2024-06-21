@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-
-{% import "bootstrap/wtf.html" as wtf %}
-{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
-
 {% block title %}
 Result Page
 {% endblock %}
@@ -124,19 +120,36 @@ $.get('/confusionList', function(x)
               g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
           }
   
- 
 
 
+    .clusters rect {
+      fill: none;
+      stroke-width: 2px;
+    }
 
+    text {
+      font-weight: 300;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 20px;
+    }
 g.nodes().forEach(function(v) {
 var node = g.node(v);
 node.rx = node.ry = 5;
 
 });
 
+    .edgePath path {
+      stroke: black;
+      stroke-width: 4px;
+    }
 
-// Create the renderer
-var render = new dagreD3.render();
+    .button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+  </style>
+{% endblock %}
 
 // Set up an SVG group so that we can translate the final graph.
 var svg = d3.select("svg#diagram"),
@@ -181,7 +194,9 @@ var scaleRateY=((window.innerHeight)/(g.graph().height));
     svgGroup.attr("transform", "scale(" + 1+" "+scaleRateY + ")");
 }
 
-
+          var scaleRate = (window.innerWidth / g.graph().width) * 0.95;
+          var xCenterOffset = (window.innerWidth - g.graph().width * scaleRate) / 2;
+          var yCenterOffset = (window.innerHeight - g.graph().height * scaleRate) / 2;
 
 svg.attr("height", g.graph().height + 40);
 
@@ -216,5 +231,11 @@ document.querySelector('#downloadButton').addEventListener('click', function() {
       });  
   </script>
 
+  window.addEventListener('resize', function() {
+    d3.select("svg#diagram").attr("height", window.innerHeight).attr("width", window.innerWidth);
+  });
 
+  function saveImage() {
+  }
+</script>
 {% endblock %}

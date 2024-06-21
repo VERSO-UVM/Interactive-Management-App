@@ -22,24 +22,18 @@ Ratings Page
     <div class="ratingContainer">
         <h4>Compare Factors</h4>
         <div class="box">
-        
-
             <p class="guide">Does the left factor affect the right factor?</p>
             <div class="box2">
-              <p id="fLeading" class="fLeading"></p> <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
-             
+              <p id="fLeading" class="fLeading"></p>
+              <img src="{{ url_for('static', filename='Arrow.png')}}" alt="Influence arrow" height="150" width="100" id="Arrow">
               <p id="fFollowing" class="fFollowing"></p>
-              <p id="finished" class="finished">Finished</p>
-              
-              
             </div>
-          
           </div>
           </div>
 
             <form id="myform">
-              <input type="radio" name="responseYN" value=1 >Yes</input>
-              <input type="radio" name="responseYN" value=0 >No</input>
+              <input type="radio" name="responseYN" value=1>Yes</input>
+              <input type="radio" name="responseYN" value=0>No</input>
             </form>
 
             <div class="buttons">
@@ -51,15 +45,10 @@ Ratings Page
         </div>
     </div>
   </div>
-
-  <div class="gTResults-Container-right"> <!-- Modified class name -->
-    <p><a href="{{ url_for('resultInfo') }}"><button class="goToResult">Go To Final Results</button></a></p>
-  </div>
 </div>
 
 <script>
   window.onload = function() {
-    $("#finished").hide();
     var factors = JSON.parse('{{ factors | tojson | safe }}');
     var index = 0;
 
@@ -75,56 +64,35 @@ Ratings Page
           });
         });
       } else {
-        $("#finished").show();
-        $("#fLeading").hide();
-        $("#fFollowing").hide();
-        $("#skip").hide();
-        $("#submit").hide();
-        $("#myform").hide();
-        $("#Arrow").hide();
+        window.location.href = "{{ url_for('resultInfo') }}";
       }
     }
 
     document.getElementById("submit").addEventListener("click", function() {
-    var rating = document.querySelector('input[name="responseYN"]:checked').value;
-    var factorLeading = factors[index].factor_id_leading;
-    var factorFollowing = factors[index].factor_id_following;
-    
-
-    $.get('/update_rating/' + factorLeading + '/' + factorFollowing + '/' + rating, function(x) 
-    {
-      if(rating==1)
-      {
-        console.log("heyyyy");
-        for(var i = 0; i < factors.length; i++)
-        {
-          if(factors[i].factor_id_leading==factorFollowing && factors[i].factor_id_following==factorLeading)
-          {
-            console.log('foundd');
-            factors.splice(i,1);
-            console.log(factors)
-            
+      var rating = document.querySelector('input[name="responseYN"]:checked').value;
+      var factorLeading = factors[index].factor_id_leading;
+      var factorFollowing = factors[index].factor_id_following;
+      
+      $.get('/update_rating/' + factorLeading + '/' + factorFollowing + '/' + rating, function(x) {
+        if(rating == 1) {
+          for(var i = 0; i < factors.length; i++) {
+            if(factors[i].factor_id_leading == factorFollowing && factors[i].factor_id_following == factorLeading) {
+              factors.splice(i, 1);
+            }
           }
+          $.get('/update_rating/' + factorFollowing + '/' + factorLeading + '/' + 0, function(x) {});
         }
-        $.get('/update_rating/' + factorFollowing + '/' + factorLeading + '/' + 0, function(x) {});
-     }
-     loadFactors();
+        index += 1;
+        loadFactors();
+      });
     });
-});
-
 
     document.getElementById("skip").addEventListener("click", function() {
       index += 1;
       loadFactors();
     });
 
-    document.getElementById("submit").addEventListener("click", function() {
-      index += 1;
-      loadFactors();
-    });
-
     loadFactors();
   };
-
 </script>
 {% endblock %}

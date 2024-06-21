@@ -1,12 +1,11 @@
 # Import necessary modules and classes
-from flask import Response, flash, get_flashed_messages, render_template, request, redirect, url_for, session, jsonify, request
+from re import U
+from flask import Response, flash, render_template, request, redirect, url_for, session, jsonify, request
 from flask_app.config import configure_flask_application
 import flask_app.database.database_access as database_access
 from flask_app.database.database_access import ResultsTBL, query_user_by_email, insert_user, query_user_by_id
 from flask_login import login_user, current_user, logout_user, login_required, LoginManager
 from flask_app.forms import LoginForm, RegistrationForm, ForgotPassword, VerificationCode, PasswordChangeForm
-import networkx as nx
-import datetime as dt
 import matplotlib
 import matplotlib.pyplot as plt
 import os
@@ -15,7 +14,6 @@ from flask_app.database.database_access import insert_factor, insert_participant
 from flask_app.database.Alchemy import FactorTBL, ParticipantTBL, RatingsTBL, ResultsTBL, User
 import csv
 import itertools
-import json
 import numpy as np
 import pandas as pd
 import networkk as nt
@@ -212,14 +210,7 @@ plots_dir = 'flask_app/static/plots'
 # Ensure the directory exists
 os.makedirs(plots_dir, exist_ok=True)
 
-
-app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'ismrecoverydeveloper@outlook.com'
-app.config['MAIL_PASSWORD'] = '@Ism.Email.123'
-app.config['MAIL_DEFAULT_SENDER'] = 'ismrecoverydeveloper@outlook.com'
+# For emails
 mail = Mail(app)
 
 
@@ -233,21 +224,26 @@ def load_user(user_id):
     # This function is called to load a user object based on the user ID stored in the session
     return query_user_by_id(user_id)
 
+
 @app.route("/", methods=['GET', 'POST'])
 def front():
     return render_template("front.html")
+
 
 @app.route('/aboutUs', methods=['GET', 'POST'])
 def aboutUs():
     # database_access.delete_everything()
     return render_template('aboutUs.html')
 
+
 @app.route('/sponsors', methods=['GET', 'POST'])
 def sponsors():
     # database_access.delete_everything()
     return render_template('sponsors.html')
 
-# Define route for the index page
+# Route for the home page
+
+
 @app.route('/home', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
@@ -275,6 +271,7 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
+# User registration
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
@@ -291,12 +288,45 @@ def register():
     return render_template('register.html', title='Register', register_form=form)
 
 
+@app.route('/account')
+def account():
+    if current_user.is_authenticated:
+        return render_template("account.html")
+    else:
+        return render_template("error.html")
+
+
+@app.route('/delete_user')
+def delete_user():
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
+        database_access.delete_everything(current_user_id)
+        database_access.delete_user(current_user_id)
+        return redirect(url_for('front'))
+
+    else:
+        return render_template("error.html")
+
+
+@app.route('/change_password', methods=['GET', 'POST'])
+def change_password():
+    if current_user.is_authenticated:
+        user = database_access.query_user_by_id(current_user.id)
+        form = PasswordChangeForm()
+        if form.validate_on_submit():
+            database_access.update_password(user.email, form.password.data)
+            return redirect(url_for('login'))
+        return render_template('changePassword.html', title='UpdatePassword', form=form)
+
+
+# User logout
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
+# User forgot password
 @app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
     form = ForgotPassword()
@@ -348,11 +378,10 @@ def updatePassword(email):
 
 ####################### Factor Functions##########################
 
+
 # Main Factor page
 # Contains logic for acsending and descending button
 # Uses factor.html
-
-
 @app.route('/factor/<num>', methods=['POST', 'GET'])
 def factor(num):
     if current_user.is_authenticated:
@@ -361,44 +390,52 @@ def factor(num):
         # Getting all the current factors
         if num == '-1':
             factor = database_access.get_all_factors(current_user_id)
+            return render_template('factor.html', factor=factor)
 
         elif num == '1':
             factor = database_access.ascendingOrder(current_user_id)
 
         elif num == '2':
             factor = database_access.descendingOrder(current_user_id)
+            return render_template('factor.html', factor=factor)
 
-        return render_template('factor.html', factor=factor)
+        else:
+            return render_template('error.html')
+
     else:
         return render_template('error.html')
+
 
 # Edits existing factors
 # utilizes: Edit Factors function from database access
 # Html: edit_factor.html
-
-
 @app.route('/edit_factor/<id>', methods=['GET', 'POST'])
 def edit_factor(id):
     if current_user.is_authenticated:
         current_user_id = current_user.id
+        user_factors = database_access.get_all_factors(current_user_id)
+        user_factor_ids = {factor.id for factor in user_factors}
+        if int(id) in user_factor_ids:
+            factors = database_access.search_specific_factor(
+                id, current_user_id)
+            if request.method == 'POST':
+                title = request.form["f_title"]
+                description = request.form["f_description"]
+                votes = request.form["f_votes"]
+                try:
 
-        factors = database_access.search_specific_factor(id, current_user_id)
-        if request.method == 'POST':
-            title = request.form["f_title"]
-            description = request.form["f_description"]
-            votes = request.form["f_votes"]
-            try:
+                    database_access.edit_factors(
+                        id, title, description, votes, current_user_id)
 
-                database_access.edit_factors(
-                    id, title, description, votes, current_user_id)
+                    return redirect(url_for("factor", num='-1'))
 
-                return redirect(url_for("factor", num='-1'))
+                except:
+                    return 'There was an issue updating the factors information'
 
-            except:
-                return 'There was an issue updating the factors information'
-
+            else:
+                return render_template('edit_factor.html', factors=factors)
         else:
-            return render_template('edit_factor.html', factors=factors)
+            return render_template("error.html")
     else:
         return render_template("error.html")
 
@@ -410,8 +447,13 @@ def edit_factor(id):
 def delete_factor(id):
     if current_user.is_authenticated:
         current_user_id = current_user.id
-        database_access.delete_factor(id, current_user_id)
-        return redirect(url_for('factor', num='-1'))
+        user_factors = database_access.get_all_factors(current_user_id)
+        user_factor_ids = {factor.id for factor in user_factors}
+        if int(id) in user_factor_ids:
+            database_access.delete_factor(id, current_user_id)
+            return redirect(url_for('factor', num='-1'))
+        else:
+            return render_template("error.html")
     else:
         return render_template("error.html")
 
@@ -459,7 +501,7 @@ def pick_factors(num):
             subsection = len(factor)
 
             # Deletes previous entries of rating table
-            database_access.delete_rating(current_user_id)
+            database_access.delete_ratings(current_user_id)
 
             # Inserts into rating table with default 0
             combinations = list(itertools.combinations(factor, 2))
@@ -476,41 +518,47 @@ def pick_factors(num):
             # Logic for ascending and descending button
             if num == '-1':
                 factor = database_access.get_all_factors(current_user_id)
+                return render_template("pick_factor.html", factor=factor)
 
             elif num == '1':
                 factor = database_access.ascendingOrder(current_user_id)
+                return render_template("pick_factor.html", factor=factor)
 
             elif num == '2':
                 factor = database_access.descendingOrder(current_user_id)
+                return render_template("pick_factor.html", factor=factor)
+            else:
+                return render_template("error.html")
 
-            return render_template("pick_factor.html", factor=factor)
     else:
         return render_template("error.html")
 
 ################################# Rating##################################################################
 
+
 # Updates Rating Based on the users response
 # Ultilizies update_rating function from database access
-
-
 @app.route('/update_rating/<leading>/<following>/<rating>')
 def update_rating(leading, following, rating):
     if current_user.is_authenticated:
         current_user_id = current_user.id
+        user_factors = database_access.get_all_factors(current_user_id)
+        user_factor_ids = {factor.id for factor in user_factors}
         factor_leading = int(leading)
         factor_following = int(following)
-        database_access.update_rating(rating=float(
-            rating), factor_leading=factor_leading, factor_following=factor_following, user_id=current_user_id)
-        return rating
+        if factor_leading in user_factor_ids and factor_following in user_factor_ids:
+            database_access.update_rating(rating=float(
+                rating), factor_leading=factor_leading, factor_following=factor_following, user_id=current_user_id)
+            return rating
+        else:
+            return render_template("error.html")
     else:
         return render_template("error.html")
 
 
 # Main rating page
 # Used for user rating voting
-# Get_rating_by_id and search_specific_participant used from databasee caess
-
-
+# Get_rating_by_id and search_specific_participant used from databasee cases
 @app.route('/insert_rating')
 def insert_rating():
     if current_user.is_authenticated:
@@ -552,7 +600,7 @@ def getInfoLeading(f_id):
 
 
 # Used to get factor information for displaying from table
-# Ultizies search specific factpr and specifc id factor from database acess
+# Ultizies search specific factor and specifc id factor from database acess
 @app.route('/getInfoFollowing/<f_id>', methods=['POST', 'GET'])
 def getInfoFollowing(f_id):
     if current_user.is_authenticated:
@@ -570,17 +618,7 @@ def getInfoFollowing(f_id):
         return render_template("error.html")
 
 
-@app.route('/emptyResult', methods=['POST', 'GET'])
-def emptyResult():
-    empty = database_access.get_total_rating()
-    if (len(empty) > 0):
-        return 1
-    else:
-        return 0
-
-# USED FOR testing
-
-
+# When user tries to access results
 @app.route('/resultInfo', methods=['POST', 'GET'])
 def resultInfo():
     if current_user.is_authenticated:
@@ -593,14 +631,15 @@ def resultInfo():
         return render_template("error.html")
 
 
+# Obtains all of the factor titles to be used in the results
 @app.route('/nameList', methods=['POST', 'GET'])
 def nameList():
-        current_user_id = current_user.id
-        list = database_access.factorTitle(current_user_id)
-        return jsonify(list)
+    current_user_id = current_user.id
+    list = database_access.factorTitle(current_user_id)
+    return jsonify(list)
 
 
-
+# Turns all of the ratings into an array
 @app.route('/confusionList', methods=['POST', 'GET'])
 def confusionList():
     if current_user.is_authenticated:
@@ -625,12 +664,12 @@ def confusionList():
                     listAnswers.append(i)
                     listAnswers.append(j)
                     for value in stuff.values():
-                        if(i in value):
-                            if(j in value):
+                        if (i in value):
+                            if (j in value):
                                 listAnswers.pop()
                                 listAnswers.pop()
         print(listAnswers)
-        print(stuff)                   
+        print(stuff)
         return jsonify(listAnswers)
     else:
         return render_template("error.html")
@@ -638,7 +677,7 @@ def confusionList():
 
 @app.route('/matrixInfo', methods=['POST', 'GET'])
 def matrixInfo():
-     if current_user.is_authenticated:
+    if current_user.is_authenticated:
         current_user_id = current_user.id
 
         # Get all ratings
@@ -657,47 +696,7 @@ def matrixInfo():
 ##################################### Results##############################
 
 
-@app.route('/result')
-def result():
-    if current_user.is_authenticated:
-        current_user_id = current_user.id
-
-        # Before rendering the template in your result route
-        # Idea: I need to get all the combinations that were rated with one
-        factorVoted = database_access.get_results_voted(current_user_id)
-
-        return render_template('result.html')
-    else:
-        return render_template("error.html")
-
-
-@app.route('/get_results')
-def get_results():
-    if current_user.is_authenticated:
-        dag_data = {
-            "nodes": [
-                {"name": "A"},
-                {"name": "B"},
-                {"name": "C"},
-                {"name": "D"},
-                {"name": "E"}
-            ],
-            "links": [
-                {"source": "A", "target": "B"},
-                {"source": "A", "target": "C"},
-                {"source": "B", "target": "D"},
-                {"source": "C", "target": "D"},
-                {"source": "D", "target": "E"}
-            ]
-        }
-
-        return jsonify(dag_data)
-    else:
-        return render_template("error.html")
-
-# Define route for the about page
-
-
+# Route for about page
 @app.route('/about')
 def about():
     if current_user.is_authenticated:
@@ -706,6 +705,7 @@ def about():
         return render_template('error.html')
 
 
+# Route for help page
 @app.route('/help')
 def help():
     if current_user.is_authenticated:
@@ -778,16 +778,17 @@ def ParticipantEdit(id):
 
 
 # Deletes existing participant
-@app.route('/delete_participants/<id>', methods=['POST', 'GET'])
-def delete_participants(id):
+@app.route('/delete_participant/<id>', methods=['POST', 'GET'])
+def delete_participant(id):
     if current_user.is_authenticated:
         current_user_id = current_user.id
-        database_access.delete_participants(id, current_user_id)
+        database_access.delete_participant(id, current_user_id)
         return redirect(url_for('participant'))
     else:
         return render_template("error.html")
 
 
+# For uploading existing csv files containing factor, participant, or rating information
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
     if current_user.is_authenticated:
@@ -812,6 +813,7 @@ def upload_csv():
                 valid_length = True
             elif data_type == 'rating' and len(lines[0].split(',')) == 6:
                 global subsection
+                # Find number of factors and store in subsection
                 valid_length = True
                 length = len(lines) - 1
                 discriminant = 1 + 4 * length
@@ -821,7 +823,7 @@ def upload_csv():
                     subsection = int(n)
                 else:
                     subsection = 0
-
+            # If number of columns is not compatible with the chosen data type
             if not valid_length:
                 return jsonify({'success': False, 'message': 'Invalid data format'})
 
@@ -870,7 +872,8 @@ def upload_csv():
                     return jsonify({'success': False, 'message': 'Invalid data format'})
 
                 else:
-                    database_access.delete_rating(current_user_id)
+                    # Delete existing ratings
+                    database_access.delete_ratings(current_user_id)
                     for line in lines[1:]:
                         data = line.split(',')
                         data = [x.strip() for x in data]
@@ -888,6 +891,7 @@ def upload_csv():
         return render_template("error.html")
 
 
+# Exporting data in csv files - factors, participants, or ratings
 @ app.route('/export_data', methods=['POST'])
 def export_data():
     if current_user.is_authenticated:
@@ -931,6 +935,7 @@ def export_data():
         return render_template('error.html')
 
 
+# Deletes all participants for the user
 @app.route('/deleteParticipantsButton', methods=['POST', 'GET'])
 def deleteParticipantsButton():
     if current_user.is_authenticated:
@@ -941,6 +946,7 @@ def deleteParticipantsButton():
         return render_template('error.html')
 
 
+# Deletes all factors for the user
 @app.route('/deleteFactorButton', methods=['POST', 'GET'])
 def deleteFactorButton():
     if current_user.is_authenticated:
