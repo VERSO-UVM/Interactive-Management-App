@@ -1,0 +1,276 @@
+/* Color Variables */
+:root {
+    --button_color: #2b4257;
+    --outline: black;
+    --text: #2b4257;
+    --main_background:	#F0F0F0 	;
+    --white: whitesmoke;
+     --orange:#F9943A;
+  }
+  
+  /* "Participants" title */
+  h1 {
+    color: white;
+    font-size:60px;
+    padding-top: 5%;
+    text-align: center;
+  }
+  
+  h3{
+    color: white;
+    padding-top: 5%;
+    text-align: center;
+  }
+  
+  h4
+  {
+    margin-top:5%;
+    color:white
+  }
+  h4 a
+  {
+    
+    color:orange
+  }
+  
+  /* Setup the grid layout for .grid-container */
+  .grid-container {
+    display: grid;
+    grid-template-rows: auto auto auto auto; /* auto for header and form, 1fr for table */
+    gap: 10px; /* Space between grid items */
+    padding-bottom: 3%;
+    font-family:  'sans-serif';
+  }
+  
+  /* "Factors" positioning (topmost box in grid) */
+  .factorPage {
+    grid-column: 1 / -1; /* Span across all columns */
+    color: var(--button_color);
+    text-align: center;
+    padding: 5%;
+  }
+  
+  /* Style for table */
+    /* Style the table */
+  .tables {
+    width: 75%;
+    border-collapse: collapse;
+    padding-bottom: 40px;
+    position:relative;
+    left:15%;
+    border-left-color:#F9943A;
+    border-top-color:#F9943A;
+  }
+    
+  .tables th {
+    border: 2px solid var(--outline);
+    padding: 8px;
+    text-align: center;
+    color: #f8fbfb;
+    background-color: #F9943A;
+    font-size: 18px;
+    font-weight: normal;
+  
+  
+  }
+    
+  .tables td {
+    border: 2px solid ;
+    padding: 8px;
+    background-color:#f8fbfb;
+   
+  }
+  
+  /* Style the form within the .addFactor container */
+  .addFactor {
+    padding: 5%;
+    padding-top: 2%;
+    border-style: solid;
+    border-color: #F9943A;
+    color: #F9943A;
+    height: 550px;
+    width: 70%;
+    justify-self: center;
+    margin: auto;
+    background-color:#F0F0F0 ;
+    border-radius: 7px;
+    border-width: 4px;
+  }
+  
+  .addFactor input[type="text"] {
+    padding: 20px;
+    margin-top: 25px; /* Adding some space above inputs */
+    background-color: #f8fbfb;
+    border: 2px solid #2b4257;
+    border-radius: 4px;
+    text-align: left;
+    width: 85%;
+    padding-right: 60px;
+    /*color: #6707A4;
+    height: 10%;
+    padding-left: 60px; */
+  }
+  
+  .addFactor input[type="text"]::placeholder {
+    color: var(--button_color);
+    font-size: 15px;
+  }
+  
+  .save {
+    font-size: 20px;
+    padding: 10px;
+    background-color: var(--button_color);
+    color: var(--white);
+    width: 15%;
+    border-radius: 4px;
+    margin-top: 40px; /* Adding some space above inputs */
+    text-align: center;
+  }
+  
+  .save:hover {
+    background-color: var(--white);
+    color: var(--button_color);
+    text-decoration: none;
+  }
+  
+  /* Style the form within the .addFactor container */
+  .addFact {
+    padding: 5%;
+    padding-top: 2%;
+    border-style: solid;
+    border-color: #F9943A;
+    color: #F9943A;
+    height: 550px;
+    width: 70%;
+    justify-self: center;
+    margin: auto;
+    /* background-color: #f8fbfb; */
+    background-color:#F0F0F0 ;
+    border-radius: 7px;
+    border-width: 4px;
+  }
+  
+  .gTP-Container {
+    justify-content: end;
+    padding-top: 3%;
+    margin-left: 40%;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  /* "Go To Participants" button */
+  .goToParticipant {
+    background-color: var(--button_color);
+    color: var(--white);
+    text-align: center;
+    text-decoration: none;
+    padding-top: 0.5%;
+    justify-self: end;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  /* "Go To Ratings" button */
+  .goToRating {
+    background-color: var(--button_color);
+    color: var(--white);
+    text-align: center;
+    text-decoration: none;
+    justify-self: end;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+  }  
+  
+  .goToRating:hover {
+    background-color: var(--white);
+    color: var(--button_color);
+    text-decoration: none;
+  }
+  
+  .open-button {
+    font-size: 20px;
+    padding: 10px;
+    background-color: var(--button_color);
+    color: var(--white);
+    width: 10%;
+    border-radius: 4px;
+    margin-top: 40px;
+    text-align: center;
+    justify-self: center;
+  }
+  
+  .inputText, .inputNumber {
+    font-size: 20px;
+    text-align: left;
+    color: var(--text);
+    padding: 20px;                  
+    margin-top: 25px;                 
+    background-color: var(--main_background); 
+    border: 2px solid var(--outline); 
+    border-radius: 4px;             
+    width: 85%;                     
+    box-sizing: border-box; 
+    padding-right: 60px; 
+  }
+  
+  .inputText::placeholder, .inputNumber::placeholder {
+    color: var(--text);     
+    font-size: 18px;           
+  }
+  
+  h5 {
+    color: var(--text);
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px; /* Space above the form */
+  
+  }
+  button
+  {
+    border-color:var(--orange);
+    border-bottom-right-radius:10px;
+    border-top-right-radius:10px;
+    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;
+    color:#2b4257;
+  }
+  .save
+  {
+    border-color:#2b4257;
+  }
+  
+  .SortButton
+  {
+   font-size:20px;
+    color:white;
+     background-color: var(--orange); 
+    border: 2px solid var(--orange); 
+    border-width:4px;
+    border-radius: 110px;             
+  }
+  form
+  {
+    position:relative;
+    top:-20%;
+  }
+.goToRating
+{
+  background-color: var(--orange); 
+  border: 2px solid var(--orange);
+  color:white;
+  position:relative;
+  top:5px;
+  
+}
+.editPicked
+{
+  background-color: var(--orange); 
+  border: 2px solid var(--orange);
+  color:white;
+  position:relative;
+  bottom:5px;
+}
+  
