@@ -18,7 +18,7 @@ Result Page
 <script src="static/html2canvas.js"></script>
 
 
-//Styling of the graph
+<!--Styling of the graph -->
 <style>
     
  .clusters rect {
@@ -179,9 +179,6 @@ var scaleRateY=((window.innerHeight)/(g.graph().height));
     console.log(scaleRateY);
     svgGroup.attr("transform", "scale(" + 1+" "+scaleRateY + ")");
 }
-
-
-
 svg.attr("height", g.graph().height + 40);
 });
 });

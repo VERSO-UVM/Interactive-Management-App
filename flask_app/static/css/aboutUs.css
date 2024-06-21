@@ -2,7 +2,8 @@ h1
 {
     font-size:100px;
     margin-top:8%;
-    color:#fff6ee
+    color:#fff6ee;
+    font-family: 'sans-serif';
 }
 p
 {
@@ -10,10 +11,12 @@ p
     font-size:30px;
     margin-left:10%;
     margin-right:10%;
+    font-family: 'sans-serif';
 }
 h2
 {
     font-size:50px;
     color:#f9943b;
     margin-top:10%;
+    font-family: 'sans-serif';
 }

@@ -18,8 +18,9 @@ h1 {
 h2
 {
   color: #345e7d;
-  font-size: 28px;
+  font-size: 50px;
   text-align: center;
+  font-family:'sans-serif';
 }
 h3
 {
@@ -40,7 +41,7 @@ font-family:'sans-serif';
 
 .secondText {
   position: absolute;
-  top: 20%; 
+  top: 15%; 
   color: #fff; 
   font-size: 20px; 
   text-align: center;
