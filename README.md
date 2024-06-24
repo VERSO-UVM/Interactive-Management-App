@@ -60,6 +60,9 @@ Install the following tools using their instructions:
 
 #### Running locally
 
+**Email Recovery**
+For email recovery please create an email account and fill out the required fields on the .env file 
+
 **Setup pyenv & nvm**
 
 ```sh
@@ -151,32 +154,3 @@ After this is all done, we want to export all the datasets that have been create
 MVP: Save all datasets as CSVs
 
 
-
-
-## Feature Requests
-
-1. Record a reason for each factor relationship selection (the reason why you think A impacts B). (From Mike Hogan: “As part of a stigmergic approach to collective intelligence design, it is valuable to record these arguments, as it allows subsequent reflection, revision of arguments and system models”)
-2. Tracks Workshop Info - Includes text fields for Trigger Questions, Context Statement, Title, Date, Host Organization, Location and Objectives Workshop Info
-3. Can Add Participants - Adding and editing Participants includes fields for First and Last name, Job Title, Address, State, City, Zip, Country, Type (drop down: Participant, Observer and Facilitator), Telephone and buttons to add new and save. Additionally you can search current participants, remove search and filter by type. At the bottom right is a delete button for participants Participants
-4. Add and Edit Ideas - Ideas include open test field for Idea and Clarification and a small text field for Label. Category is a dropdown populated from elsewhere Add/Edit Ideas
-5. Voting - Voting displays participants, Ideas with vote counts and Structuring Sets area with filtering dropdown and an add, edit and delete button Voting
-6. Structuring - Structuring has a variety of UX elements for building relational structures between ideas. There is a Select Structured Set dropdown, Keyword and Context Statement text field, left and right text field and a drop down for orientation. On the lower half there are toggles for fullscreen, clarifications, exporting the graph, viewing the graph and settings along with a Yes and No button Structuring
-7. Tools - In the top bar menu there is a Tools section that allows one to import or export both ideas and participant lists (unsure of specs for those files) Tools
-8. Linked ISM with Rationale (a desktop argument mapping software).
-
-- As such, if you recorded the dialogue during an ISM structuring session, you could then go and document the argument structure that lead a group to a ‘yes’ or ‘no’ decision (i.e., in response to the question, Does X influence Y?) You’ll see the basic design in Figure 6 in the final attachment
-- Obviously, if we use a swarm approach to collective intelligence (i.e., which could involve a more independent and partially asynchronous deliberation and voting strategy), then the deliberation process would be different, it would be recorded differently, and it would not be facilitated in the same way we do when working face-to-face with a group.
-- However, the feature could be adapted and used to record large group deliberation linked to structures generated using ISM.
-
-9. Remote participant functionality
-10. Save to the cloud/a remote server
-11. Shareable as survey to users
-12. Results of multiple ISM sessions can be aggregated
-13. Permissions for Admin and Survey Participant
-14. Likert scale relationship specification functionality
-
-- Replace the ‘yes’ and ‘no’ relationship method with a rating (i.e., weighting of the strength of relationships on a scale of 1 to 5).
-- This could be useful for groups as they reflect on the paths of influence or action in models, and it would be particularly useful in action structures (e.g., Does Action A support Action B?) as groups work to identify pathways of action to leverage for collective design/implementation that emerge from ISM modelling work.
-- understood how underlying the matrix structure and the systems models groups are generating is an argument structure
-
-15. Every path and link in the model derives from an argument that emerges at the group level during facilitation
