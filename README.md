@@ -114,7 +114,6 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 
 
 ## Core Actions
-\
 
 ### I want to load factors I have selected for exploration
 
