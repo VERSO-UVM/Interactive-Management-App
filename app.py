@@ -340,7 +340,7 @@ def forgotPassword():
             verificationSecret = secrets.token_hex(3)
             msg = Message('Email Recovery',
                           recipients=[f"{form.email.data}"],
-                          body=f"{verificationSecret}")
+                          body=f"{verificationSecret}\n This email is not monitored. Please do not respond")
             mail.send(msg)
 
             codeSaved = database_access.find_password(form.email.data)
