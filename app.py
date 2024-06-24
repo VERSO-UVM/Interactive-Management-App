@@ -340,7 +340,7 @@ def forgotPassword():
             verificationSecret = secrets.token_hex(3)
             msg = Message('Email Recovery',
                           recipients=[f"{form.email.data}"],
-                          body=f"{verificationSecret}")
+                          body=f"You recently requested a password reset for ISM. Your verification code is below.\n\n{verificationSecret}\n\n This account is not monitored, please do not reply to this email.")
             mail.send(msg)
 
             codeSaved = database_access.find_password(form.email.data)
