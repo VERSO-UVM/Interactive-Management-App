@@ -31,16 +31,18 @@ def configure_flask_application() -> _Flask:
     SECRET_KEY is the WTForms security key. It is unique to each user.
     APPLICATION_ROOT is where Flask looks for static/template/etc...S
     """
+    a = os.getenv('MAIL_SERVER')
+    print(a)
     app = _Flask(__name__)
     app.config['APPLICATION_ROOT'] = os.path.dirname(os.path.abspath(__file__))
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
+    app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
     app.config['MAIL_PORT'] = 587
     app.config['MAIL_USE_TLS'] = True
     app.config['MAIL_USE_SSL'] = False
-    app.config['MAIL_USERNAME'] = 'ismrecoverydeveloper@outlook.com'
-    app.config['MAIL_PASSWORD'] = '@Ism.Email.123'
-    app.config['MAIL_DEFAULT_SENDER'] = 'ismrecoverydeveloper@outlook.com'
+    app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+    app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+    app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
     __app_csrf_init(app)
     _Bootstrap(app)
 

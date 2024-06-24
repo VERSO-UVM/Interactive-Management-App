@@ -1,0 +1,15 @@
+{% extends "base_no_links.html" %}
+
+{% block title %}Unauthorized{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1 style="color: white;">401 - Unauthorized</h1>
+      <p style="color: orange;">Sorry, you are not authorized to access this page.</p>
+      <a href="{{ url_for('login') }}" class="btn btn-primary">Return to Login</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}
