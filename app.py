@@ -255,7 +255,7 @@ def index():
         # database_access.delete_everything()
         return render_template('index.html')
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -298,7 +298,7 @@ def account():
     if current_user.is_authenticated:
         return render_template("account.html")
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 @app.route('/delete_user')
@@ -310,7 +310,7 @@ def delete_user():
         return redirect(url_for('front'))
 
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 @app.route('/change_password', methods=['GET', 'POST'])
@@ -405,10 +405,10 @@ def factor(num):
             return render_template('factor.html', factor=factor)
 
         else:
-            return render_template('401.html')
+            return page_not_found("error")
 
     else:
-        return render_template('401.html')
+        return unauthorized("error")
 
 
 # Edits existing factors
@@ -440,9 +440,9 @@ def edit_factor(id):
             else:
                 return render_template('edit_factor.html', factors=factors)
         else:
-            return render_template("401.html")
+            return page_not_found("error")
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Deletes existing factor
@@ -458,9 +458,9 @@ def delete_factor(id):
             database_access.delete_factor(id, current_user_id)
             return redirect(url_for('factor', num='-1'))
         else:
-            return render_template("401.html")
+            return page_not_found("error")
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Inserting new factors into factors table
@@ -485,7 +485,7 @@ def insert_factor():
         else:
             return render_template("insert_factor.html")
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Subsection of factors picked by the users
@@ -533,10 +533,10 @@ def pick_factors(num):
                 factor = database_access.descendingOrder(current_user_id)
                 return render_template("pick_factor.html", factor=factor)
             else:
-                return render_template("401.html")
+                return page_not_found("error")
 
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 ################################# Rating##################################################################
 
@@ -556,9 +556,9 @@ def update_rating(leading, following, rating):
                 rating), factor_leading=factor_leading, factor_following=factor_following, user_id=current_user_id)
             return rating
         else:
-            return render_template("401.html")
+            return page_not_found("error")
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Main rating page
@@ -582,7 +582,7 @@ def insert_rating():
 
         return render_template('rating.html', factors=factors_list, user_id=current_user_id)
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Used to get factor information for displaying from table
@@ -601,7 +601,7 @@ def getInfoLeading(f_id):
         except:
             return "-1"
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Used to get factor information for displaying from table
@@ -620,7 +620,7 @@ def getInfoFollowing(f_id):
         except:
             return "-1"
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # When user tries to access results
@@ -633,7 +633,7 @@ def resultInfo():
         else:
             return render_template('resultEmpty.html')
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Obtains all of the factor titles to be used in the results
@@ -677,7 +677,7 @@ def confusionList():
         print(stuff)
         return jsonify(listAnswers)
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 @app.route('/matrixInfo', methods=['POST', 'GET'])
@@ -707,7 +707,7 @@ def about():
     if current_user.is_authenticated:
         return render_template('about.html')
     else:
-        return render_template('401.html')
+        return unauthorized("error")
 
 
 # Route for help page
@@ -716,7 +716,7 @@ def help():
     if current_user.is_authenticated:
         return render_template('help.html')
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 ################## Participants#############################################
@@ -746,7 +746,7 @@ def participant():
             part = database_access.all_participants(current_user_id)
             return render_template("participant.html", part=part)
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Edits existing participant
@@ -779,7 +779,7 @@ def ParticipantEdit(id):
         else:
             return render_template('edit_participant.html', person=person)
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Deletes existing participant
@@ -790,7 +790,7 @@ def delete_participant(id):
         database_access.delete_participant(id, current_user_id)
         return redirect(url_for('participant'))
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # For uploading existing csv files containing factor, participant, or rating information
@@ -893,7 +893,7 @@ def upload_csv():
         else:
             return jsonify({'success': False, 'message': 'File upload failed'})
     else:
-        return render_template("401.html")
+        return unauthorized("error")
 
 
 # Exporting data in csv files - factors, participants, or ratings
@@ -937,7 +937,7 @@ def export_data():
         else:
             return "Invalid data type", 400
     else:
-        return render_template('401.html')
+        return unauthorized("error")
 
 
 # Deletes all participants for the user
@@ -948,7 +948,7 @@ def deleteParticipantsButton():
         database_access.delete_all_participants(current_user_id)
         return redirect(url_for('participant'))
     else:
-        return render_template('401.html')
+        return unauthorized("error")
 
 
 # Deletes all factors for the user
@@ -959,7 +959,7 @@ def deleteFactorButton():
         database_access.delete_all_factors(current_user_id)
         return redirect(url_for("factor", num='-1'))
     else:
-        return render_template('401.html')
+        return unauthorized("error")
 
 
 # Run the Flask app if the script is executed directly
