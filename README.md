@@ -2,9 +2,19 @@
 
 # Interactive Management App
 
-ORCA Project 2023-2024
+The Interactive Management App project will design and build an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants
 
-## Summary
+
+
+## Table of Contents
+- [Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+- [Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
+- [Research](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research)
+- [Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+- [Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
+
+
+## Background
 
 The objective of this project is to design and build an open source browser-based tool for conducting Interpretive Structural Modeling (ISM) research with participants. It includes a series of questions about pairs of variables (called "factors") and whether or not those factors are related to one another. The software will produce a flow diagram of the relationships between factors as identified by the participant, and provide the researchers with one flow diagram that averages the data across all participants in a particular study. The flow diagram will suggest factors that are likely more effective to address first, and factors that are likely to follow or become easier to address as a result of addressing earlier factors.
 
@@ -34,20 +44,64 @@ Here are some of the limitations of ISM:
 - It can be time-consuming and labor-intensive to develop an ISM model.
 - It can be difficult to validate the results of an ISM model.
 
+## Install
+
+### Running locally
+
+These instructions are designed for MacOS & GNU/Linux users.  
+**Windows users:** [Using WSL](https://learn.microsoft.com/en-us/windows/wsl/install) (Windows Subsystem for Linux) is recommended.
+
+### Requirements
+
+Install the following tools using their instructions:
+
+- [pyenv](https://github.com/pyenv/pyenv?tab=readme-ov-file#installation)- Python version manager
+- [nvm](https://github.com/nvm-sh/nvm) - Node version manager
+
+#### Running locally
+
+**Setup pyenv & nvm**
+
+```sh
+# Python
+pyenv install # If the version already exists, no need to re-install
+# Node.js
+nvm install
+```
+
+**Install dependencies**
+
+```sh
+# Python
+pip install -r requirements.txt
+# Node.js
+corepack install # Sets up npm
+npm install
+```
+
+**Run the app**
+
+```sh
+python wsgi.py --port=5001 --host=localhost --debug
+```
+
+Then visit http://localhost:5001
+
+### Python Everywhere
+
 ## Research
 
+### Relevent Research
 Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
 
-## Fall 2023 Spring Sprint Schedule
+### Existing Projects
 
-- Sprint 1 - Jan 22 - Feb 2
-- Sprint 2 - Feb 5 - Feb 16
-- Sprint 3 - Feb 19 - Mar 1
-- Sprint 4 - Mar 4 - Mar 15 (Spring Break March 11-15 is a Holiday)
-- Sprint 5 - Mar 18 - Mar 29
-- Sprint 6 - Apr 1 - Apr 12
-- Sprint 7 - Apr 15 - Apr 26
-- Presentaion - May 3
+- [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
+- [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
+- [https://github.com/cran/ISM](https://github.com/cran/ISM)
+- [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
+
+
 
 ## Requirements
 
@@ -57,20 +111,10 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 4. Use math from Warfield, or equivalent modern network ordering visualization algorithm
 5. Results can be saved to a local computer
 
-**How to run locally:** [CONTRIBUTING.md](/documentation/CONTRIBUTING.md#running-locally)
 
-## Minimum Viable Product (MVP)
-
-- Take in an established of list of factors
-- User can select a subset of those factors for display
-- Display that list of factors so they can be paired with reasons to the user
-- The user needs to specify the relationship between those pairs
-- Program needs to mathematically determine relationship ordering
-- Visually display the factors in sequential order to the user
 
 ## Core Actions
-
-![Core Actions](https://github.com/VERSO-UVM/interactive-management-app/blob/main/ISM_Breakdown.png)
+\
 
 ### I want to load factors I have selected for exploration
 
@@ -107,12 +151,8 @@ MVP: display a simple png with the factors and lines showing the relationship or
 After this is all done, we want to export all the datasets that have been created for analysis. This can be as simple as a set of CSVs with appropriate names. Ideally it would also include the PNG.
 MVP: Save all datasets as CSVs
 
-## other projects out there
 
-- [https://github.com/jjs0sbw/bsmp](https://github.com/jjs0sbw/bsmp)
-- [https://github.com/varchasvshri/ISM_Analysis](https://github.com/varchasvshri/ISM_Analysis)
-- [https://github.com/cran/ISM](https://github.com/cran/ISM)
-- [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
+
 
 ## Feature Requests
 
