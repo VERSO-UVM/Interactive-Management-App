@@ -9,8 +9,8 @@ The Interactive Management App project will design and build an open source tool
 - [Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
 - [Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
 - [Research](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research)
-- [Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
-- [Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
+- [Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
+- [Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#core-actions)
 
 ## Background
 
