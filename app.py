@@ -22,6 +22,96 @@ import secrets
 import math
 
 
+
+##Global counter for factor subset
+subsection = 0
+# Configure Flask application
+app = configure_flask_application()
+login_manager = LoginManager()
+login_manager.init_app(app)
+plt.ioff()
+matplotlib.use('Agg')
+plots_dir = 'flask_app/static/plots'
+
+# Ensure the directory exists
+os.makedirs(plots_dir, exist_ok=True)
+
+# For emails
+mail = Mail(app)
+
+
+@app.errorhandler(401)
+def unauthorized(error):
+    return render_template('401.html'), 401
+
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    # This function is called to load a user object based on the user ID stored in the session
+    return query_user_by_id(user_id)
+
+
+############################################Pre-login pages ############################################
+##Home Page
+@app.route("/", methods=['GET', 'POST'])
+def front():
+    return render_template("front.html")
+
+
+@app.route('/aboutUs', methods=['GET', 'POST'])
+def aboutUs():
+    return render_template('aboutUs.html')
+
+
+@app.route('/sponsors', methods=['GET', 'POST'])
+def sponsors():
+    return render_template('sponsors.html')
+
+
+##Login page: with user verification
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = query_user_by_email(form.email.data)
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=True)
+            return redirect(url_for('index'))
+
+        else:
+            flash(
+                'Login Unsuccessful. Please check email and password and try again.', 'danger')
+
+    return render_template('login.html', title='Login', form=form)
+
+
+# User registration
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        existing_user = query_user_by_email(form.email.data)
+        if existing_user:
+            flash('Email address already exists. Please use a different email.', 'danger')
+
+        else:
+            new_user = insert_user(form.email.data, form.password.data)
+            login_user(new_user, remember=True)
+            flash('Congratulations, you are now a registered user!', 'success')
+            return redirect(url_for('index'))
+    return render_template('register.html', title='Register', register_form=form)
+
+##################################################Post Login pages#################################
+
+
+##############################Logic for confusion matrix####################
 def structure_matrix(A):
     """
     This function that takes a square boolean numpy array as input and returns
@@ -197,102 +287,15 @@ def get_matrix_sets(df):
     # Return dictionaries
     return ind2reach, ind2antec, intx
 
+###################END##############
 
-subsection = 0
-# Configure Flask application
-app = configure_flask_application()
-login_manager = LoginManager()
-login_manager.init_app(app)
-plt.ioff()
-matplotlib.use('Agg')
-plots_dir = 'flask_app/static/plots'
-
-# Ensure the directory exists
-os.makedirs(plots_dir, exist_ok=True)
-
-# For emails
-mail = Mail(app)
-
-
-@app.errorhandler(401)
-def unauthorized(error):
-    return render_template('401.html'), 401
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('404.html'), 404
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    # This function is called to load a user object based on the user ID stored in the session
-    return query_user_by_id(user_id)
-
-
-@app.route("/", methods=['GET', 'POST'])
-def front():
-    return render_template("front.html")
-
-
-@app.route('/aboutUs', methods=['GET', 'POST'])
-def aboutUs():
-    # database_access.delete_everything()
-    return render_template('aboutUs.html')
-
-
-@app.route('/sponsors', methods=['GET', 'POST'])
-def sponsors():
-    # database_access.delete_everything()
-    return render_template('sponsors.html')
-
-# Route for the home page
-
-
+##Home page after login
 @app.route('/home', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        # database_access.delete_everything()
         return render_template('index.html')
     else:
         return unauthorized("error")
-
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = query_user_by_email(form.email.data)
-        if user and user.check_password(form.password.data):
-            login_user(user, remember=True)
-            return redirect(url_for('index'))
-
-        else:
-            flash(
-                'Login Unsuccessful. Please check email and password and try again.', 'danger')
-
-    return render_template('login.html', title='Login', form=form)
-
-
-# User registration
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        existing_user = query_user_by_email(form.email.data)
-        if existing_user:
-            flash('Email address already exists. Please use a different email.', 'danger')
-
-        else:
-            new_user = insert_user(form.email.data, form.password.data)
-            login_user(new_user, remember=True)
-            flash('Congratulations, you are now a registered user!', 'success')
-            return redirect(url_for('index'))
-    return render_template('register.html', title='Register', register_form=form)
-
-
 @app.route('/account')
 def account():
     if current_user.is_authenticated:
@@ -301,6 +304,7 @@ def account():
         return unauthorized("error")
 
 
+##Delete Account option
 @app.route('/delete_user')
 def delete_user():
     if current_user.is_authenticated:
@@ -312,7 +316,7 @@ def delete_user():
     else:
         return unauthorized("error")
 
-
+##Change Password
 @app.route('/change_password', methods=['GET', 'POST'])
 def change_password():
     if current_user.is_authenticated:
@@ -335,6 +339,7 @@ def logout():
 @app.route('/forgotPassword', methods=['GET', 'POST'])
 def forgotPassword():
     form = ForgotPassword()
+    ##Email being sent
     if form.validate_on_submit():
         if (query_user_by_email(form.email.data)):
             verificationSecret = secrets.token_hex(3)
@@ -344,6 +349,7 @@ def forgotPassword():
             mail.send(msg)
 
             codeSaved = database_access.find_password(form.email.data)
+            ##Updates verification code saved each time user request a new one
             if (codeSaved):
                 database_access.update_code(
                     form.email.data, verificationSecret)
@@ -357,11 +363,13 @@ def forgotPassword():
     return render_template("forgotPassword.html", title='Password Recovery', form=form)
 
 
+###Password Recovery Logic
 @app.route('/recoveryVerification/<email>', methods=['GET', 'POST'])
 def recoveryVerification(email):
     form = VerificationCode()
     codeSaved = database_access.find_password(email)
 
+    ##Ensures verification code matches the one sent via email
     if form.validate_on_submit():
         codeCheck = form.codeVerification.data
         if (codeSaved == codeCheck):
@@ -379,6 +387,90 @@ def updatePassword(email):
         database_access.update_password(email, form.password.data)
         return redirect(url_for('login'))
     return render_template('updatePassword.html', title='UpdatePassword', form=form)
+
+################## Participants#############################################
+
+# Main Participant page
+# Also works as the insert participant page
+# Uses participant_id_setter and insert_participant from database acess
+# USes participant.hhml
+@app.route("/participant", methods=['POST', 'GET'])
+def participant():
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
+
+        if request.method == 'POST':
+
+            # ##Get from the form
+            f_name = request.form["f_name"]
+            l_name = request.form["l_name"]
+            # flake8: noqa
+            email = request.form["email"]
+            telephone = request.form["telephone"]
+
+            database_access.insert_participant(
+                f_name=f_name, l_name=l_name, email=email, telephone=telephone, user_id=current_user_id)
+            return redirect(url_for('participant'))
+        else:
+            part = database_access.all_participants(current_user_id)
+            return render_template("participant.html", part=part)
+    else:
+        return unauthorized("error")
+
+
+# Edits existing participant
+# Uses search_specific_participant and edit_participant from databasee acess
+@app.route("/ParticipantEdit/<id>", methods=['POST', 'GET'])
+def ParticipantEdit(id):
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
+        # Search for participant
+        person = database_access.search_specific_participant(
+            id, current_user_id)
+
+        # Gets the info from the selected student
+        if request.method == 'POST':
+            f_name = request.form["f_name"]
+            l_name = request.form["l_name"]
+            email = request.form["email"]
+            telephone = request.form["telephone"]
+
+            try:
+
+                database_access.edit_participant(
+                    id, f_name, l_name, email, telephone, current_user_id)
+
+                return redirect(url_for("participant"))
+
+            except:
+                return 'There was an issue updating the participant information'
+
+        else:
+            return render_template('edit_participant.html', person=person)
+    else:
+        return unauthorized("error")
+
+
+# Deletes selected participant
+@app.route('/delete_participant/<id>', methods=['POST', 'GET'])
+def delete_participant(id):
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
+        database_access.delete_participant(id, current_user_id)
+        return redirect(url_for('participant'))
+    else:
+        return unauthorized("error")
+
+
+# Deletes ALL participants for the user
+@app.route('/deleteParticipantsButton', methods=['POST', 'GET'])
+def deleteParticipantsButton():
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
+        database_access.delete_all_participants(current_user_id)
+        return redirect(url_for('participant'))
+    else:
+        return unauthorized("error")
 
 
 ####################### Factor Functions##########################
@@ -538,6 +630,17 @@ def pick_factors(num):
     else:
         return unauthorized("error")
 
+
+# Deletes ALL factors for the user
+@app.route('/deleteFactorButton', methods=['POST', 'GET'])
+def deleteFactorButton():
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
+        database_access.delete_all_factors(current_user_id)
+        return redirect(url_for("factor", num='-1'))
+    else:
+        return unauthorized("error")
+
 ################################# Rating##################################################################
 
 
@@ -622,6 +725,7 @@ def getInfoFollowing(f_id):
     else:
         return unauthorized("error")
 
+##################################### Results##############################
 
 # When user tries to access results
 @app.route('/resultInfo', methods=['POST', 'GET'])
@@ -680,6 +784,7 @@ def confusionList():
         return unauthorized("error")
 
 
+##Used for formatting diagram
 @app.route('/matrixInfo', methods=['POST', 'GET'])
 def matrixInfo():
     if current_user.is_authenticated:
@@ -698,7 +803,7 @@ def matrixInfo():
         bigArray = np.array(matrix, dtype=bool)
         stuff = structure_matrix(bigArray)
         return stuff
-##################################### Results##############################
+
 
 
 # Route for about page
@@ -719,78 +824,6 @@ def help():
         return unauthorized("error")
 
 
-################## Participants#############################################
-
-# Main Participant page
-# Also works as the insert participant page
-# Uses participant_id_setter and insert_participant from database acess
-# USes participant.html
-@app.route("/participant", methods=['POST', 'GET'])
-def participant():
-    if current_user.is_authenticated:
-        current_user_id = current_user.id
-
-        if request.method == 'POST':
-
-            # ##Get from the form
-            f_name = request.form["f_name"]
-            l_name = request.form["l_name"]
-            # flake8: noqa
-            email = request.form["email"]
-            telephone = request.form["telephone"]
-
-            database_access.insert_participant(
-                f_name=f_name, l_name=l_name, email=email, telephone=telephone, user_id=current_user_id)
-            return redirect(url_for('participant'))
-        else:
-            part = database_access.all_participants(current_user_id)
-            return render_template("participant.html", part=part)
-    else:
-        return unauthorized("error")
-
-
-# Edits existing participant
-# Uses search_specific_participant and edit_participant from databasee acess
-@app.route("/ParticipantEdit/<id>", methods=['POST', 'GET'])
-def ParticipantEdit(id):
-    if current_user.is_authenticated:
-        current_user_id = current_user.id
-        # Search for participant
-        person = database_access.search_specific_participant(
-            id, current_user_id)
-
-        # Gets the info from the selected student
-        if request.method == 'POST':
-            f_name = request.form["f_name"]
-            l_name = request.form["l_name"]
-            email = request.form["email"]
-            telephone = request.form["telephone"]
-
-            try:
-
-                database_access.edit_participant(
-                    id, f_name, l_name, email, telephone, current_user_id)
-
-                return redirect(url_for("participant"))
-
-            except:
-                return 'There was an issue updating the participant information'
-
-        else:
-            return render_template('edit_participant.html', person=person)
-    else:
-        return unauthorized("error")
-
-
-# Deletes existing participant
-@app.route('/delete_participant/<id>', methods=['POST', 'GET'])
-def delete_participant(id):
-    if current_user.is_authenticated:
-        current_user_id = current_user.id
-        database_access.delete_participant(id, current_user_id)
-        return redirect(url_for('participant'))
-    else:
-        return unauthorized("error")
 
 
 # For uploading existing csv files containing factor, participant, or rating information
@@ -940,26 +973,9 @@ def export_data():
         return unauthorized("error")
 
 
-# Deletes all participants for the user
-@app.route('/deleteParticipantsButton', methods=['POST', 'GET'])
-def deleteParticipantsButton():
-    if current_user.is_authenticated:
-        current_user_id = current_user.id
-        database_access.delete_all_participants(current_user_id)
-        return redirect(url_for('participant'))
-    else:
-        return unauthorized("error")
 
 
-# Deletes all factors for the user
-@app.route('/deleteFactorButton', methods=['POST', 'GET'])
-def deleteFactorButton():
-    if current_user.is_authenticated:
-        current_user_id = current_user.id
-        database_access.delete_all_factors(current_user_id)
-        return redirect(url_for("factor", num='-1'))
-    else:
-        return unauthorized("error")
+
 
 
 # Run the Flask app if the script is executed directly
