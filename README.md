@@ -92,6 +92,15 @@ Then visit http://localhost:5001
 
 To access this app from the web, visit [https://interactivemanagement.pythonanywhere.com/](https://interactivemanagement.pythonanywhere.com/)
 
+#### Future documentation/updating the app on pythonyanywhere:
+  - Ensure the main branch on the repo has the latest changes that you want.
+  - Go to the Consoles tab and start a new bash console. Navigate to the "Interactive-Management-App" directory.
+  - run "git pull origin main"
+  - Update .env file with password email credentials if needed.
+  - Exit the bash console and go to the Web tab. Click the green reload button at the top.
+  - Good to go!
+
+
 ## Research
 
 ### Relevent Research
