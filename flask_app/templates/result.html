@@ -18,7 +18,7 @@ Result Page
 <script src="static/html2canvas.js"></script>
 
 
-
+<!--Styling for D3 JS-->
 <style>
     
  .clusters rect {
@@ -73,11 +73,11 @@ document.addEventListener('DOMContentLoaded', function(){
 var g = new dagreD3.graphlib.Graph({compound:true})
 .setGraph({ rankdir: 'LR'})
 .setDefaultEdgeLabel(function() { return {}; });
-//Gets the list of factor name
+//Calls python fuction in app.py to get list with names of factors
 $.get('/nameList', function(x) 
   {
       listOfNames=x;
-     
+//Manual text wrap for long factor title
 for(var i=0;i<listOfNames.length;i++)
 {
   
@@ -93,6 +93,7 @@ for(var i=0;i<listOfNames.length;i++)
       }
       newText+=text.charAt(j);
     }
+    //Node creation
     g.setNode(i, {label: newText});
   }
   else
@@ -102,7 +103,7 @@ for(var i=0;i<listOfNames.length;i++)
 }
 
 
-//Sets the factors on the correct layer
+//Calls python function on app.py for specific factor layer
 $.get('/matrixInfo', function(x) 
 {
   matrixInformation=x;
@@ -119,13 +120,13 @@ for (key in matrixInformation){
 }
 
 
-//Creates the line between the factors
+//Calls python function on app.py for edge information
 $.get('/confusionList', function(x) 
 {
           let edgeInfo = x;
           for (var i = 0; i < edgeInfo.length; i+=2) 
           {
-              // Set up edges, no special attributes.
+              // Set up edges
               g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
           }
   
@@ -163,7 +164,6 @@ var svg = d3.select("svg#diagram"),
           svg.attr("width", window.innerWidth);
 
 // Center the graph
-
 var xCenterOffset = (window.innerWidth- g.graph().width)/2;
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 
@@ -196,7 +196,7 @@ window.addEventListener('resize', function() {
 });
 //Logic for exporting rating visual
 document.querySelector('#downloadButton').addEventListener('click', function() {
-  
+        //JS library that screenshot div
         html2canvas(document.querySelector("#imageDIV"), {
             letterRendering: 1,
             allowTaint: true,
