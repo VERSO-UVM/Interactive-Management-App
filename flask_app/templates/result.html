@@ -169,25 +169,6 @@ var svg = d3.select("svg#diagram"),
 var xCenterOffset = (window.innerWidth- g.graph().width)/2;
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 
-if((g.graph().width)>(window.innerWidth))
-{
-var scaleRateX=((window.innerWidth)/g.graph().width)*.95;
-  if((g.graph().height)>(window.innerHeight))
-  {
-    var scaleRateY=((window.innerHeight)/g.graph().height);
-    console.log(scaleRateY)
-    console.log(scaleRateX)
-    svgGroup.attr("transform", "scale(" + scaleRateX+" "+scaleRateY + ")");
-  }
-  else {svgGroup.attr("transform", "scale(" + scaleRateX+" "+1 + ")");}
-}
-else if((g.graph().height)>(window.innerHeight))
-{
-var scaleRateY=((window.innerHeight)/(g.graph().height));
-    console.log(scaleRateY);
-    svgGroup.attr("transform", "scale(" + 1+" "+scaleRateY + ")");
-}
-svg.attr("height", g.graph().height + 40);
 });
 });
 });
