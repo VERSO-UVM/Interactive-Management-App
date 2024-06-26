@@ -41,10 +41,6 @@ def configure_flask_application() -> _Flask:
     _Bootstrap(app)
     app.config['WTF_CSRF_ENABLED'] = False
 
-    # Debugging
-    print(f"GMAIL_USERNAME: {app.config['MAIL_USERNAME']}")
-    print(f"MAIL_DEFAULT_SENDER: {app.config['MAIL_DEFAULT_SENDER']}")
-
     return app
 
 

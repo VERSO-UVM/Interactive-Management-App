@@ -1,90 +1,104 @@
 /* Color Variables */
-/* Color Variables */
 :root {
   --button_color: #2b4257;
   --outline: black;
   --text: white;
-  --main_background: #2b4257	;
+  --main_background: #2b4257;
   --white: whitesmoke;
 }
 
-/* "Getting Started" title */
+/* General Styles */
 h1 {
     color: var(--text);
     padding-top: 5%;
     text-align: center;
 }
 
-#together
-{
+h2 {
+  color: white;
+}
+
+h2 a {
+  color: orange;
+}
+
+#together {
   display: inline;
   font-size: 20px;
- 
 }
-/* Positioning for grid layout */
+
+/* Grid Layout */
 .grid-container {
   display: grid;
   grid-template-areas:
     'gettingStarted gettingStarted'
     'loadContainer exportContainer'
-    'templateFile templateFile';
+    'templateContainer exampleContainer';
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   font-family: 'sans-serif';
   padding-bottom: 3%;
 }
 
-/* "Getting Started" positioning (topmost box in grid) */
+/* Getting Started */
 .gettingStarted {
   grid-area: gettingStarted;
-  grid-column: 1 / -1; /* Span across all columns */
   text-align: center;
   padding: 5%;
 }
 
-/* "Load" container */
+/* Load Container */
 .loadContainer {
   grid-area: loadContainer;
   border-style: solid;
   border-color: orange;
   height: 430px;
-  width: 70%;
-  justify-self: center;
-  margin: 0;
-  background-color:var(--main_background) ; 
-  border-radius: 4px;
-}
-.load,.export
-{
-  padding-left: 60px;
-}
-
-/* "Export" container */
-.exportContainer {
-  grid-area: exportContainer;
-  border-style: solid;
-  border-color: orange;
-  height: 430px;
-  width: 70%;
+  width: 90%;
   justify-self: center;
   margin: 0;
   background-color: var(--main_background);
   border-radius: 4px;
 }
 
-.templateFile {
-  grid-area: templateFile;
+/* Export Container */
+.exportContainer {
+  grid-area: exportContainer;
   border-style: solid;
   border-color: orange;
-  height: 350px;
-  width: 70%;
+  height: 430px;
+  width: 90%;
   justify-self: center;
-  margin-left: 15%;
-  background-color: var(--main_background); 
+  margin: 0;
+  background-color: var(--main_background);
   border-radius: 4px;
 }
 
-/* Positioning for "Load" and "Export" titles */
+/* Template Container */
+.templateContainer {
+  grid-area: templateContainer;
+  border-style: solid;
+  border-color: orange;
+  height: 350px;
+  width: 90%;
+  justify-self: center;
+  margin: 0;
+  background-color: var(--main_background);
+  border-radius: 4px;
+}
+
+/* Example Container */
+.exampleContainer {
+  grid-area: exampleContainer;
+  border-style: solid;
+  border-color: orange;
+  height: 350px;
+  width: 90%;
+  justify-self: center;
+  margin: 0;
+  background-color: var(--main_background);
+  border-radius: 4px;
+}
+
 .shared-style {
   text-align: left;
   color: var(--text);
@@ -93,63 +107,24 @@ h1 {
   height: 10%;
   padding-top: 30px;
   padding-bottom: 20px;
-  text-align:center;
+  text-align: center;
 }
 
-/* "Load" and "Export" titles */
 h4 {
   margin: 0;
   font-size: 24px;
   font-weight: bold;
 }
-button
-{
-  border-color:white;
+
+button {
+  border-color: white;
 }
 
-/* Welcome block text */
-.welcome {
-  text-align: center;
-  font-size: 18px;
+.load, .export {
+  padding-left: 60px;
 }
 
-.selectRegister {
-  text-align: center;
-  font-size: 20px;
-}
-
-/* container to position "Go To Factor" button */
-.gTF-Container {
-  grid-area: gTF-Container;
-  justify-self: end;
-  padding-top: 5%;
-  margin-right: 15%;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-/* "Go To About" button */
-.goToAbout {
-  background-color: var(--button_color);
-  color: var(--white);
-  text-align: center;
-  text-decoration: none;
-  padding-top: 0.3%;
-  justify-self: end;
-  font-size: 20px;
-  cursor: pointer;
-  margin: 5px;
-  border-radius: 4px;
-}
-
-/* Positioning for "loadButton" */
-.load {
-  width: 100%;
-  padding-right: 60px;
-}
-
-/* Styling */
-.loadButton {
+.loadButton, .exportButton {
   background-color: var(--button_color);
   color: var(--white);
   font-size: 18px;
@@ -164,46 +139,8 @@ button
   border-radius: 4px;
 }
 
-/* Hover styling for "Load" buttons */
-.load :hover {
+.load :hover, .export :hover {
   background-color: var(--white);
   color: var(--button_color);
   text-decoration: none;
-}
-
-/* Positioning for "exportButton" */
-.export {
-  width: 100%;
-  padding-right: 60px;
-}
-
-/* Styling */
-.exportButton {
-  background-color: var(--button_color);
-  color: var(--white);
-  font-size: 18px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  justify-self: center;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-/* Hover styling for "Export" buttons */
-.export :hover {
-  background-color: var(--white);
-  color: var(--button_color);
-  text-decoration: none;
-}
-
-h2{
-  color:white;
-}
-h2 a
-{
-  color:orange;
 }

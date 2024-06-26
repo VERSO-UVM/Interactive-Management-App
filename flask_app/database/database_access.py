@@ -325,6 +325,7 @@ def insert_rating_by_id(factor_leading: int, factor_following: int, rating: floa
             print("is the database file missing?")
             print(f"{e.with_traceback()}")
             return False
+    print("NO!")
 
     return False
 
@@ -575,7 +576,21 @@ def delete_participant(id, user_id):
 ############################# Factor Functions ###################
 
 
-# USed to get a list of all the factors
+def get_factor_by_title(title, user_id):
+    """
+    Retreives a factor based on title.
+    """
+    try:
+        factors = __DATABASE_CONNECTION.query(
+            FactorTBL).filter_by(user_id=user_id, title=title).all()
+        return factors[0]
+    except Exception as e:
+        print(f"Error getting all factors for user {user_id}: {e}")
+        return []
+
+# Used to get a list of all the factors
+
+
 def get_all_factors(user_id):
     """
     Retrieves all factors stored in the database for a specific user.
