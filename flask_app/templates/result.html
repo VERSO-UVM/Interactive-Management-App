@@ -129,7 +129,7 @@ $.get('/confusionList', function(x)
           for (var i = 0; i < edgeInfo.length; i+=2) 
           {
               // Set up edges
-              g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
+              g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]),{curve: d3.curveBasis });
           }
   
  
