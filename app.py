@@ -249,7 +249,6 @@ def sponsors():
 @app.route('/home', methods=['GET', 'POST'])
 def index():
     if current_user.is_authenticated:
-        # database_access.delete_everything()
         return render_template('index.html')
     else:
         return unauthorized("error")
@@ -345,9 +344,6 @@ def forgotPassword():
 This account is not monitored, please do not reply to this email."""
 
             msg = Message(subject, recipients=recipients, body=body)
-
-            # Debugging: Print email details
-            print(f"Sending email to {recipients} with subject '{subject}'")
 
             mail.send(msg)
 
@@ -683,8 +679,6 @@ def confusionList():
                             if (j in value):
                                 listAnswers.pop()
                                 listAnswers.pop()
-        print(listAnswers)
-        print(stuff)
         return jsonify(listAnswers)
     else:
         return unauthorized("error")
@@ -826,7 +820,7 @@ def upload_csv():
                 valid_length = True
             elif data_type == 'participant' and len(lines[0].split(',')) == 5:
                 valid_length = True
-            elif data_type == 'rating' and len(lines[0].split(',')) == 6:
+            elif data_type == 'results' and len(lines[0].split(',')) == 6:
                 global subsection
                 # Find number of factors and store in subsection
                 valid_length = True
@@ -838,6 +832,7 @@ def upload_csv():
                     subsection = int(n)
                 else:
                     subsection = 0
+
             # If number of columns is not compatible with the chosen data type
             if not valid_length:
                 return jsonify({'success': False, 'message': 'Invalid data format'})
@@ -848,7 +843,8 @@ def upload_csv():
             # Fetch all factors associated with the user
             user_factors = database_access.get_all_factors(current_user_id)
             user_factor_ids = {factor.id for factor in user_factors}
-            print("user factor ids:", user_factor_ids)
+            user_factor_titles = {
+                factor.title: factor.id for factor in user_factors}
 
             for line in lines[1:]:
                 data = line.split(',')
@@ -861,14 +857,29 @@ def upload_csv():
                 elif data_type == 'participant':
                     database_access.insert_participant(
                         f_name=data[1], l_name=data[2], email=data[3], telephone=data[4], user_id=current_user_id)
-                elif data_type == 'rating':
-                    factor_leading_id = int(data[1])
-                    factor_following_id = int(data[3])
+                elif data_type == 'results':
+                    factor_leading_title = data[2]
+                    factor_following_title = data[4]
 
-                    # Check if factor IDs are associated with the current user
-                    if factor_leading_id not in user_factor_ids or factor_following_id not in user_factor_ids:
-                        subsection = 0
-                        return jsonify({'success': False, 'message': 'Some factors are not associated with the user'})
+                    # Check if factor titles are associated with the current user
+                    if factor_leading_title not in user_factor_titles:
+                        database_access.insert_factor(
+                            title=factor_leading_title, description=None, votes=1, user_id=current_user_id)
+                        new_factor = database_access.get_factor_by_title(
+                            factor_leading_title, current_user_id)
+                        user_factor_ids.add(new_factor.id)
+                        user_factor_titles[factor_leading_title] = new_factor.id
+
+                    if factor_following_title not in user_factor_titles:
+                        database_access.insert_factor(
+                            title=factor_following_title, description=None, votes=1, user_id=current_user_id)
+                        new_factor = database_access.get_factor_by_title(
+                            factor_following_title, current_user_id)
+                        user_factor_ids.add(new_factor.id)
+                        user_factor_titles[factor_following_title] = new_factor.id
+
+                    factor_leading_id = user_factor_titles[factor_leading_title]
+                    factor_following_id = user_factor_titles[factor_following_title]
 
                     # Update unique factors and combinations
                     unique_factors.update(
@@ -878,7 +889,7 @@ def upload_csv():
                     combinations_set.add(
                         (factor_following_id, factor_leading_id))
 
-            if data_type == 'rating':
+            if data_type == 'results':
                 # Validate the number of unique factors and combinations
                 expected_combinations = set(
                     itertools.permutations(unique_factors, 2))
@@ -892,12 +903,11 @@ def upload_csv():
                     for line in lines[1:]:
                         data = line.split(',')
                         data = [x.strip() for x in data]
-                        if data_type == 'rating':
-                            factor_leading_id = data[1]
-                            factor_following_id = data[3]
-                            rating = data[5]
-                            database_access.insert_rating_by_id(
-                                factor_leading=factor_leading_id, factor_following=factor_following_id, rating=rating, user_id=current_user_id)
+                        factor_leading_id = user_factor_titles[data[2]]
+                        factor_following_id = user_factor_titles[data[4]]
+                        rating = data[5]
+                        database_access.insert_rating_by_id(
+                            factor_leading=factor_leading_id, factor_following=factor_following_id, rating=rating, user_id=current_user_id)
 
             return jsonify({'success': True})
         else:
@@ -917,14 +927,14 @@ def export_data():
         headers = {
             "factors": ["ID", "Title", "Description", "Votes"],
             "participants": ["ID", "First Name", "Last Name", "Email", "Telephone"],
-            "ratings": ["User", "Factor Leading ID", "Factor Leading", "Factor Following ID", "Factor Following", "Rating"],
+            "results": ["User", "Factor Leading ID", "Factor Leading", "Factor Following ID", "Factor Following", "Rating"],
         }
 
         # Map data_type to the corresponding database table
         table_map = {
             "factors": FactorTBL,
             "participants": ParticipantTBL,
-            "ratings": RatingsTBL,
+            "results": RatingsTBL,
         }
 
         if data_type in table_map:
