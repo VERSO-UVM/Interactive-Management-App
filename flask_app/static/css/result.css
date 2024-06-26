@@ -168,6 +168,11 @@
   margin-left:100%;
  
 }
-#imageDIV{
+
+#imageDIV
+{
+ 
+   border: 3px solid black;
   background-color:white;
+  
 }
