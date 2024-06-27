@@ -121,7 +121,9 @@ button {
 }
 
 .load, .export {
-  padding-left: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
+  
 }
 
 .loadButton, .exportButton {
