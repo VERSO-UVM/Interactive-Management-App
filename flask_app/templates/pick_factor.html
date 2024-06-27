@@ -1,5 +1,5 @@
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{% extends 'base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block styles %}
   {{ super() }}
@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block title %}
-Pick Factors {# Sets the title of the page to "Factor Page" #}
+Pick Factors
 {% endblock %}
 
 <link rel="stylesheet" href="pick_factors.css">
@@ -15,81 +15,51 @@ Pick Factors {# Sets the title of the page to "Factor Page" #}
 {% block content %}
 <div class="grid-container">
   <div class="factorPage">
-      <h1 class="pt-5 pb-2">Factors</h1>  {# Heading for the factor page #}
+      <h1 class="pt-5 pb-2">Factors</h1>
       <h3>
         Here is where the user needs to slim down a long list of factors. Select a minimum of three factors to continue, or a maximum of 15.
-        The Ascending/Descending buttons help with organizing the frequency of the votes. Hit save when all factors are picked!
-
+        The Ascending/Descending buttons help with organizing the frequency of the votes. Click save when all factors that you want to use are selected!
       </h3>
   </div>
  
   <div>
     <a href="{{ url_for('pick_factors',num=1) }}" type="button" class="SortButton">Ascending</a>
-    </div>
-    <div>
-      <a  href="{{ url_for('pick_factors',num=2) }}" type="button" class="SortButton">Descending</a>
-      </div>
-
-
-<form action="{{ url_for('pick_factors',num=-1) }}" method="post" onsubmit="return limitCheckboxes()">
-  <div class="tables">
-    <table style="width: 100%">
-      <tr>
-        <th></th>  
-        <th>Factor</th>  
-        <th>Frquency</th>  
-        <th>Description</th>    
-        
-      </tr>
-     
-      {% for i in factor %}
-      
-        <tr>
-          <td class="f_box">
-        <input type="checkbox" id="{{i.id}}" name="factors" value="{{i.id}}">
-        <label for="{{i.id}}">
-        </td>
-        <td class="f_box">{{ i.title }}</td>
-        <td class="f_box">{{ i.votes }}</td>
-        <td class="f_box">{{ i.description }}</td>
-       </tr> 
-    </label>
-
-
-    <br>
-      {% endfor %} 
-   </select>
-  </table>
-
-      <button type="submit">Save</button>
-  </form>
   </div>
-        
+  <div>
+    <a href="{{ url_for('pick_factors',num=2) }}" type="button" class="SortButton">Descending</a>
+  </div>
 
-
+  <form action="{{ url_for('pick_factors',num=-1) }}" method="post" onsubmit="return limitCheckboxes()">
+    <div class="tables">
+      <table style="width: 100%">
+        <tr>
+          <th></th>  
+          <th>Factor</th>  
+          <th>Frequency</th>  
+          <th>Description</th>    
+        </tr>
+       
+        {% for i in factor %}
+          <tr>
+            <td class="f_box">
+              <input type="checkbox" id="{{i.id}}" name="factors" value="{{i.id}}">
+              <label for="{{i.id}}"></label>
+            </td>
+            <td class="f_box">{{ i.title }}</td>
+            <td class="f_box">{{ i.votes }}</td>
+            <td class="f_box">{{ i.description }}</td>
+          </tr> 
+        {% endfor %} 
+      </table>
+    </div>
+    <div class="button-container">
+      <button type="submit" class="save-button">Save</button>
+    </div>
+  </form>
+</div>
 
 <script>
-
-// document.getElementById("ascending").addEventListener("click", ascendingVotes);
-// function ascendingVotes() 
-// {
-//   $.get('/factor/1',
-//     function(x) 
-//     {
-
-//     }
-//   )
-// }
-// document.getElementById("desscending").addEventListener("click", descendingVotes);
-// function desscendingVotes() 
-// {
-//   $.get('/factor/2',
-//     function(x) 
-//     {
-
-//     }
-//   )
-// }
+//Ensures that the users picks between 2 and 15 factors
 function limitCheckboxes() 
 {
   var checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -107,12 +77,11 @@ function limitCheckboxes()
     alert("You can only pick up to 15 factors.");
     return false;
   }
-  if (checkedCount <=1) 
+  if (checkedCount <= 1) 
   {
     alert("You must pick at least 2 factors.");
     return false;
   }
-  
 }
 </script>
 {% endblock %}

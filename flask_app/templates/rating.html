@@ -52,6 +52,7 @@ Ratings Page
     var factors = JSON.parse('{{ factors | tojson | safe }}');
     var index = 0;
 
+    // Logic for displaying factor title on the page
     function loadFactors() {
       if (index < factors.length) {
         var factorLeading = factors[index].factor_id_leading;
@@ -67,7 +68,7 @@ Ratings Page
         window.location.href = "{{ url_for('resultInfo') }}";
       }
     }
-
+    // Inserts rating of the factor
     document.getElementById("submit").addEventListener("click", function() {
       var rating = document.querySelector('input[name="responseYN"]:checked').value;
       var factorLeading = factors[index].factor_id_leading;

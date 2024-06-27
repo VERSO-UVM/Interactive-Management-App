@@ -5,7 +5,6 @@
 The Interactive Management App project will design and build an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants
 
 
-
 ## Table of Contents
 - [Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
 - [Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
@@ -63,6 +62,7 @@ Install the following tools using their instructions:
 **Email Recovery**
 For email recovery please create an email account and fill out the required fields on the .env file 
 
+
 **Setup pyenv & nvm**
 
 ```sh
@@ -90,11 +90,23 @@ python wsgi.py --port=5001 --host=localhost --debug
 
 Then visit http://localhost:5001
 
-### Python Everywhere
+### Python Anywhere
+
+To access this app from the web, visit [https://interactivemanagement.pythonanywhere.com/](https://interactivemanagement.pythonanywhere.com/)
+
+#### Future documentation/updating the app on pythonyanywhere:
+
+- Ensure the main branch on the repo has the latest changes that you want.
+- Go to the Consoles tab on pythonanywhere and start a new bash console. Navigate to the "Interactive-Management-App" directory.
+- run "git pull origin main"
+- Update .env file with password email credentials if needed. Gmail account must have 2 factor authentication enabled and an app specific password.
+- Exit the bash console and go to the Web tab. Click the green reload button at the top.
+- Good to go!
 
 ## Research
 
 ### Relevent Research
+
 Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. M. (2023). Interactive Management Research in Organizational Communication. Management Communication Quarterly, 0(0). [https://doi.org/10.1177/08933189231159386](https://doi.org/10.1177/08933189231159386)
 
 ### Existing Projects
@@ -113,7 +125,6 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 3. Web user interface (supported on Chrome, Firefox, Edge)
 4. Use math from Warfield, or equivalent modern network ordering visualization algorithm
 5. Results can be saved to a local computer
-
 
 
 ## Core Actions
@@ -152,5 +163,3 @@ MVP: display a simple png with the factors and lines showing the relationship or
 
 After this is all done, we want to export all the datasets that have been created for analysis. This can be as simple as a set of CSVs with appropriate names. Ideally it would also include the PNG.
 MVP: Save all datasets as CSVs
-
-

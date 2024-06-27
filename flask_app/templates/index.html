@@ -1,18 +1,13 @@
 {% extends 'base.html' %}
-{# Extends the 'base.html' template #}
-
 {% import "bootstrap/wtf.html" as wtf %}
-{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
 
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-
 {% endblock %}
 
 {% block title %}
   ISM Home
-  {# Sets the title of the page to "ISM Home" #}
 {% endblock %}
 
 <link rel="stylesheet" href="index.css">
@@ -21,144 +16,125 @@
   <div class="grid-container">
       <div class="gettingStarted">
         <h1 class="pt-5 pb-2">Welcome to the ISM App</h1>
-        {# Heading for the page #}
-        <h2>To get started, either uploaded an existing csv file or manually enter the <a href="{{ url_for('participant') }}" type="button" class="Part">Participants</a>  and <a href="{{ url_for('factor',num=-1) }}" type="button" class="factor">Factors</a> information<h2>
+        <h2>To get started, either uploaded an existing csv file or manually enter the <a href="{{ url_for('participant') }}" type="button" class="Part">Participants</a> and <a href="{{ url_for('factor',num=-1) }}" type="button" class="factor">Factors</a> information</h2>
       </div>
-  <!-- Load section -->
 
-  <div class="loadContainer">
-    <div class="shared-style">
-        <h4 id="together">Upload Data</h4>
-        <p class="helpExport">Upload existing CSV file in order to populate tables for factors, participants, or ratings <p>
-        <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
-       
-        <div class="load">
-          <button onclick="triggerFileInput('factor')" class="loadButton">Upload Factors</button>
-        </div>
-
-        <div class="load">
-          <button onclick="triggerFileInput('participant')" class="loadButton">Upload Participants</button>
-        </div>
-
-        <div class="load">
-          <button onclick="triggerFileInput('rating')" class="loadButton">Upload Ratings</button>
-        </div>
-
+      <!-- Load section -->
+      <div class="loadContainer">
+        <div class="shared-style">
+            <h4 id="together">Upload Data</h4>
+            <p class="helpExport">Upload existing CSV file in order to populate tables for factors, participants, or results</p>
+            <input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
+            <div class="load">
+              <button onclick="triggerFileInput('factor')" class="loadButton">Upload Factors</button>
+            </div>
+            <div class="load">
+              <button onclick="triggerFileInput('participant')" class="loadButton">Upload Participants</button>
+            </div>
+            <div class="load">
+              <button onclick="triggerFileInput('results')" class="loadButton">Upload Results</button>
+            </div>
+          </div>
       </div>
-</div>
-  <!-- Export section-->
-  <div class="exportContainer">
-    <div class="shared-style">
-      <h4>Export</h4>
-      <p class="helpExport">Download a CSV file containing the existing factors, participants, or ratings<p></p>
-      <!-- TODO: add links to factors, participants,
-        ratings, and results (clickable option) -->
-        <form action="/export_data" method="post">
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="factors">Export Factors</button>
-          </div>
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="participants">Export Participants</button>
-          </div>
-          <div class="export">
-            <button class="exportButton" type="submit" name="data_type" value="ratings">Export Ratings</button>
-          </div>
-        </form>
-    </div>
-  </div>
-</div>
-<div class="templateFile">
-  <div class="shared-style">
-    <h4>Template File</h4>  
-    <p class="helpExport">Download editable template CSV file <p> 
-        <div class="export">
-          <a href="static/Factors Template.csv" download="Factors Template.CSV">
-            <button  class="exportButton" type="button">Template Factor File</button>
-        </a>
+
+      <!-- Export section-->
+      <div class="exportContainer">
+        <div class="shared-style">
+          <h4>Export</h4>
+          <p class="helpExport">Download a CSV file containing the existing factors, participants, or results</p>
+          <form action="/export_data" method="post">
+            <div class="export">
+              <button class="exportButton" type="submit" name="data_type" value="factors">Export Factors</button>
+            </div>
+            <div class="export">
+              <button class="exportButton" type="submit" name="data_type" value="participants">Export Participants</button>
+            </div>
+            <div class="export">
+              <button class="exportButton" type="submit" name="data_type" value="results">Export Results</button>
+            </div>
+          </form>
         </div>
-        <div class="export">
-          <a href="static/Participant Template.csv" download="Participant Template.CSV">
-            <button  class="exportButton" type="button">Template Participant File</button>
-        </a>
+      </div>
+
+      <!-- Template File section -->
+      <div class="templateContainer">
+        <div class="shared-style">
+          <h4>Template File</h4>  
+          <p class="helpExport">Download editable template CSV file</p> 
+          <div class="export">
+            <a href="static/Factors Template.csv" download="Factors Template.CSV">
+              <button class="exportButton" type="button">Template Factor File</button>
+            </a>
+          </div>
+          <div class="export">
+            <a href="static/Participant Template.csv" download="Participant Template.CSV">
+              <button class="exportButton" type="button">Template Participant File</button>
+            </a>
+          </div>
+          <div class="export">
+            <a href="static/Results Template.csv" download="Results Template.CSV">
+              <button class="exportButton" type="button">Template Results File</button>
+            </a>
+          </div>
         </div>
-        <div class="export">
-        <a href="static/Rating Template.csv" download="Rating Template.CSV">
-          <button  class="exportButton" type="button">Template Rating File</button>
-      </a>
+      </div>
+      
+      <!-- Example File section -->
+      <div class="exampleContainer">
+        <div class="shared-style">
+          <h4>Example File</h4>  
+          <p class="helpExport">Download editable example CSV file</p> 
+          <div class="export">
+            <a href="static/Factors Template.csv" download="Factors Template.CSV">
+              <button class="exportButton" type="button">Example Factor File</button>
+            </a>
+          </div>
+          <div class="export">
+            <a href="static/Participant Template.csv" download="Participant Template.CSV">
+              <button class="exportButton" type="button">Example Participant File</button>
+            </a>
+          </div>
+          <div class="export">
+            <a href="static/Rating Template.csv" download="Results Template.CSV">
+              <button class="exportButton" type="button">Example Results File</button>
+            </a>
+          </div>
+        </div>
+      </div>
   </div>
-</div>
-</div>
 
+  <script>
+    function triggerFileInput(type) {
+        var fileInput = document.getElementById('fileInput');
+        fileInput.setAttribute('data-type', type);
+        fileInput.click();
+    }
 
-<script>
-  function triggerFileInput(type) {
-      var fileInput = document.getElementById('fileInput');
-      fileInput.setAttribute('data-type', type); // Set the type of data to upload
-      fileInput.click();
-  }
-  
-  function uploadFile(dataType) {
-      var fileInput = document.getElementById('fileInput');
-      if(fileInput.files.length > 0) {
-          var formData = new FormData();
-          formData.append('csv_upload', fileInput.files[0]);
-          formData.append('data_type', dataType); // Include the data type in the FormData
-  
-          fetch('/upload_csv', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          if (data.success) {
-            alert('Upload successful!');
-          } else {
-            alert('Upload failed: ' + data.message);
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Upload failed. Please try again.');
-        });
-      }
-  }
-  </script>
+    function uploadFile(dataType) {
+        var fileInput = document.getElementById('fileInput');
+        if(fileInput.files.length > 0) {
+            var formData = new FormData();
+            formData.append('csv_upload', fileInput.files[0]);
+            formData.append('data_type', dataType);
 
-  <!-- /**
- * Triggers the file input element to open the file selection dialog.
- * @param {string} type - The type of data to upload.
- */
-function triggerFileInput(type) {
-    var fileInput = document.getElementById('fileInput');
-    fileInput.setAttribute('data-type', type); // Set the type of data to upload
-    fileInput.click();
-}
-
-/**
- * Uploads the selected file to the server.
- * @param {string} dataType - The type of data being uploaded.
- */
-function uploadFile(dataType) {
-    var fileInput = document.getElementById('fileInput');
-    if (fileInput.files.length > 0) {
-        var formData = new FormData();
-        formData.append('csv_upload', fileInput.files[0]);
-        formData.append('data_type', dataType); // Include the data type in the FormData
-
-        fetch('/upload_csv', {
+            fetch('/upload_csv', {
             method: 'POST',
             body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
+          })
+          .then(response => response.json())
+          .then(data => {
             console.log(data);
-            // Handle success or redirect
-        })
-        .catch(error => {
+            if (data.success) {
+              alert('Upload successful!');
+            } else {
+              alert('Upload failed: ' + data.message);
+            }
+          })
+          .catch(error => {
             console.error('Error:', error);
-        });
+            alert('Upload failed. Please try again.');
+          });
+        }
     }
-} -->
-</script>
+  </script>
 {% endblock %}
