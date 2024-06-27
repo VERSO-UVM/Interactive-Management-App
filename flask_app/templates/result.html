@@ -62,7 +62,7 @@ text {
       <div id="buttons">
         <button id="downloadButton">Download Visual</button>
     </div>
-      <div id="imageDIV">
+      <div id="imageDIV" >
        <svg width="100%" height="100%" id="diagram"></svg>
        </div>    
        
@@ -78,53 +78,53 @@ var g = new dagreD3.graphlib.Graph({compound:true})
 .setDefaultEdgeLabel(function() { return {}; });
 //Calls python fuction in app.py to get list with names of factors
 $.get('/nameList', function(x) 
-  {
-      listOfNames=x;
-//Manual text wrap for long factor title
-for(var i=0;i<listOfNames.length;i++)
 {
-  
-  var text=String(listOfNames[i]);
-  newText="";
-  if(text.length>50)
+      listOfNames=x;
+  //Manual text wrap for long factor title
+  for(var i=0;i<listOfNames.length;i++)
   {
-    for(var j=0;j<text.length;j++)
+    
+    var text=String(listOfNames[i]);
+    newText="";
+    if(text.length>50)
     {
-      if(j%49==0)
+      for(var j=0;j<text.length;j++)
       {
-        newText+="\n";
-        if(text.charAt(j)==" ")
+        if(j%49==0)
         {
-          newText+="-";
+          newText+="\n";
+          if(text.charAt(j)==" ")
+          {
+            newText+="-";
+          }
         }
+        newText+=text.charAt(j);
       }
-      newText+=text.charAt(j);
+      //Node creation
+      g.setNode(i, {label: newText});
     }
-    //Node creation
-    g.setNode(i, {label: newText});
+    else
+    {
+      g.setNode(i, {label: text});
+    }
   }
-  else
-  {
-    g.setNode(i, {label: text});
-  }
-}
 
 
 //Calls python function on app.py for specific factor layer
 $.get('/matrixInfo', function(x) 
 {
-  matrixInformation=x;
-for(keys in matrixInformation){
-  g.setNode((keys+'_groups'), {});
-  
-}
+      matrixInformation=x;
+    for(keys in matrixInformation){
+      g.setNode((keys+'_groups'), {});
+      
+    }
 
-for (key in matrixInformation){
-  for(var i=0;i<matrixInformation[key].length;i++){
-          g.setParent(matrixInformation[key][i], (key+'_groups'));
-          console.log(matrixInformation[key][i]);
-  }
-}
+    for (key in matrixInformation){
+      for(var i=0;i<matrixInformation[key].length;i++){
+              g.setParent(matrixInformation[key][i], (key+'_groups'));
+              console.log(matrixInformation[key][i]);
+      }
+    }
 
 
 //Calls python function on app.py for edge information
@@ -136,21 +136,25 @@ $.get('/confusionList', function(x)
               // Set up edges, no special attributes.
               g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]),{curve: d3.curveBasis });
 
+          }
+
   
  
 
 
-g.nodes().forEach(function(v) {
-var node = g.node(v);
-node.rx = node.ry = 5;
+    g.nodes().forEach(function(v) {
+    var node = g.node(v);
+    node.rx = node.ry = 5;
 
-});
+    });
 
 
 // Create the renderer
 var render = new dagreD3.render();
 
 // Set up an SVG group so that we can translate the final graph.
+
+var imageDIV=d3.select('#imageDIV').attr("width", window.innerwidth*.70);
 var svg = d3.select("svg#diagram"),
               svgGroup = svg.append("g");
 
@@ -160,8 +164,8 @@ var svg = d3.select("svg#diagram"),
             svgGroup.attr("transform", d3.event.transform);
           }));
           
-          var scaleRate = (window.innerWidth / g.graph().width) ;
-          var xCenterOffset = (window.innerWidth - g.graph().width * scaleRate) / 2;
+          var scaleRate = (imageDIV.width / g.graph().width)*.87 ;
+          var xCenterOffset = (imageDIV.width - g.graph().width * scaleRate) / 2;
           var yCenterOffset = (window.innerHeight - g.graph().height) / 2;
          
 
@@ -177,12 +181,12 @@ var svg = d3.select("svg#diagram"),
 
 
 // Center the graph
-var xCenterOffset = (window.innerWidth- g.graph().width)/2;
+var xCenterOffset = (imageDIV.width- g.graph().width)/2;
 
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 
 
-}
+
 });
 });
 });
