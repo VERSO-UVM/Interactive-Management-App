@@ -63,7 +63,7 @@ text {
         <button id="downloadButton">Download Visual</button>
     </div>
       <div id="imageDIV">
-       <svg width="100%" height="100%" id="diagram"></svg>
+       <svg width="90%" height="100%" id="diagram"></svg>
        </div>    
        
     </div>
@@ -81,22 +81,34 @@ $.get('/nameList', function(x)
   {
       listOfNames=x;
 //Manual text wrap for long factor title
+var checker=-2;
 for(var i=0;i<listOfNames.length;i++)
 {
   
   var text=String(listOfNames[i]);
   newText="";
-  if(text.length>50)
+  if(text.length>35)
   {
     for(var j=0;j<text.length;j++)
     {
-      if(j%49==0)
+      if((j%35==0 && j!=0) || checker==j)
       {
-        newText+="\n";
-        if(text.charAt(j)==" ")
+        
+        if(text.charAt(j)==' '||checker==j)
         {
-          newText+="-";
+          
+          checker=-2;
+          newText+="\n";
+          
         }
+        else
+        {
+          stringChecker=text.substring(j);
+          checker=stringChecker.search(' ');
+          checker+=j;
+
+        }
+      
       }
       newText+=text.charAt(j);
     }
@@ -153,6 +165,8 @@ node.rx = node.ry = 5;
 var render = new dagreD3.render();
 
 // Set up an SVG group so that we can translate the final graph.
+var imageDIV=d3.select("#imageDIV").attr("width",window.innerWidth*.70);
+
 var svg = d3.select("svg#diagram"),
               svgGroup = svg.append("g");
 
@@ -162,8 +176,8 @@ var svg = d3.select("svg#diagram"),
             svgGroup.attr("transform", d3.event.transform);
           }));
           
-          var scaleRate = (window.innerWidth / g.graph().width) ;
-          var xCenterOffset = (window.innerWidth - g.graph().width * scaleRate) / 2;
+          var scaleRate = (imageDIV.width / g.graph().width)*.9 ;
+          var xCenterOffset = (imageDIV.width - g.graph().width * scaleRate) / 2;
           var yCenterOffset = (window.innerHeight - g.graph().height) / 2;
          
 
