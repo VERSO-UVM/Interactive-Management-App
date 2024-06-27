@@ -56,13 +56,15 @@ text {
 {% block content %}
 <div class="grid-container">
     <div class="resultPage">
+    
       <p class="instruction-text">Click to drag the image, or zoom to adjust the size.</p>
+      <div id="buttons">
+        <button id="downloadButton">Download Visual</button>
+    </div>
       <div id="imageDIV">
        <svg width="100%" height="100%" id="diagram"></svg>
        </div>    
-        <div id="buttons">
-            <button id="downloadButton">Download Visual</button>
-        </div>
+       
     </div>
 </div>
 
@@ -87,9 +89,13 @@ for(var i=0;i<listOfNames.length;i++)
   {
     for(var j=0;j<text.length;j++)
     {
-      if(j%50==0)
+      if(j%49==0)
       {
         newText+="\n";
+        if(text.charAt(j)==" ")
+        {
+          newText+="-";
+        }
       }
       newText+=text.charAt(j);
     }
@@ -126,7 +132,7 @@ $.get('/confusionList', function(x)
           for (var i = 0; i < edgeInfo.length; i+=2) 
           {
               // Set up edges, no special attributes.
-              g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]));
+              g.setEdge(String(edgeInfo[i]),String(edgeInfo[i+1]),{curve: d3.curveBasis });
           }
   
  
@@ -149,43 +155,33 @@ var svg = d3.select("svg#diagram"),
 
           render(d3.select("svg#diagram g"), g);
 
-          var scaleRate = (window.innerWidth / g.graph().width) * 0.95;
-          var xCenterOffset = (window.innerWidth - g.graph().width * scaleRate) / 2;
-          var yCenterOffset = (window.innerHeight - g.graph().height * scaleRate) / 2;
-
-          svgGroup.attr("transform", "translate(" + xCenterOffset + ", " + yCenterOffset + ") scale(" + scaleRate + ")");
-
           svg.call(d3.zoom().on("zoom", function() {
             svgGroup.attr("transform", d3.event.transform);
           }));
+          
+          var scaleRate = (window.innerWidth / g.graph().width) ;
+          var xCenterOffset = (window.innerWidth - g.graph().width * scaleRate) / 2;
+          var yCenterOffset = (window.innerHeight - g.graph().height) / 2;
+         
 
+         
+
+       
+
+          svgGroup.attr("transform", "translate(" + xCenterOffset + ", " + yCenterOffset + ") scale(" + scaleRate + ")");
           svg.attr("height", window.innerHeight);
           svg.attr("width", window.innerWidth);
+          svg.attr("transform", "translate("+zoomWidth+","+zoomHeight+") scale("+scaleRate+")")
+          
+
 
 // Center the graph
 
 var xCenterOffset = (window.innerWidth- g.graph().width)/2;
+
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 
-if((g.graph().width)>(window.innerWidth))
-{
-var scaleRateX=((window.innerWidth)/g.graph().width)*.95;
-  if((g.graph().height)>(window.innerHeight))
-  {
-    var scaleRateY=((window.innerHeight)/g.graph().height);
-    console.log(scaleRateY)
-    console.log(scaleRateX)
-    svgGroup.attr("transform", "scale(" + scaleRateX+" "+scaleRateY + ")");
-  }
-  else {svgGroup.attr("transform", "scale(" + scaleRateX+" "+1 + ")");}
-}
-else if((g.graph().height)>(window.innerHeight))
-{
-var scaleRateY=((window.innerHeight)/(g.graph().height));
-    console.log(scaleRateY);
-    svgGroup.attr("transform", "scale(" + 1+" "+scaleRateY + ")");
-}
-svg.attr("height", g.graph().height + 40);
+
 });
 });
 });
