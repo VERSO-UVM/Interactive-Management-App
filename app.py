@@ -17,6 +17,7 @@ import pandas as pd
 import secrets
 import math
 from flask_mail import Mail, Message
+import csv
 
 
 def structure_matrix(A):
@@ -812,19 +813,21 @@ def upload_csv():
             return jsonify({'success': False, 'message': 'No selected file'})
 
         if file:
-            lines = file.read().decode('utf-8').splitlines()
-
+            content = file.read().decode('utf-8')
+            lines = content.splitlines()
+            csv_reader = csv.reader(lines)
+            rows = list(csv_reader)
             # Perform length check once at the beginning based on data type
             valid_length = False
-            if data_type == 'factor' and len(lines[0].split(',')) == 4:
+            if data_type == 'factor' and len(rows[0]) == 4:
                 valid_length = True
-            elif data_type == 'participant' and len(lines[0].split(',')) == 5:
+            elif data_type == 'participant' and len(rows[0]) == 5:
                 valid_length = True
-            elif data_type == 'results' and len(lines[0].split(',')) == 6:
+            elif data_type == 'results' and len(rows[0]) == 6:
                 global subsection
                 # Find number of factors and store in subsection
                 valid_length = True
-                length = len(lines) - 1
+                length = len(rows) - 1
                 discriminant = 1 + 4 * length
                 sqrt_discriminant = math.sqrt(discriminant)
                 n = (1 + sqrt_discriminant) / 2
@@ -835,6 +838,7 @@ def upload_csv():
 
             # If number of columns is not compatible with the chosen data type
             if not valid_length:
+                print("here")
                 return jsonify({'success': False, 'message': 'Invalid data format'})
 
             unique_factors = set()
@@ -846,9 +850,8 @@ def upload_csv():
             user_factor_titles = {
                 factor.title: factor.id for factor in user_factors}
 
-            for line in lines[1:]:
-                data = line.split(',')
-                data = [x.strip() for x in data]
+            for row in rows[1:]:
+                data = [x.strip() for x in row]
 
                 # Process each line based on data type
                 if data_type == 'factor':
@@ -900,9 +903,8 @@ def upload_csv():
                 else:
                     # Delete existing ratings
                     database_access.delete_ratings(current_user_id)
-                    for line in lines[1:]:
-                        data = line.split(',')
-                        data = [x.strip() for x in data]
+                    for row in rows[1:]:
+                        data = [x.strip() for x in row]
                         factor_leading_id = user_factor_titles[data[2]]
                         factor_following_id = user_factor_titles[data[4]]
                         rating = data[5]
