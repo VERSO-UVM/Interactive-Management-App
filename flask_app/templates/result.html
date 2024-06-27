@@ -63,7 +63,7 @@ text {
         <button id="downloadButton">Download Visual</button>
     </div>
       <div id="imageDIV">
-       <svg width="90%" height="100%" id="diagram"></svg>
+       <svg width="100%" height="100%" id="diagram"></svg>
        </div>    
        
     </div>
@@ -176,8 +176,8 @@ var svg = d3.select("svg#diagram"),
             svgGroup.attr("transform", d3.event.transform);
           }));
           
-          var scaleRate = (imageDIV.width / g.graph().width)*.9 ;
-          var xCenterOffset = (imageDIV.width - g.graph().width * scaleRate) / 2;
+          var scaleRate = ((window.innerWidth*.80) / g.graph().width)*.9 ;
+          var xCenterOffset = ((window.innerWidth*.80) - g.graph().width * scaleRate) / 2;
           var yCenterOffset = (window.innerHeight - g.graph().height) / 2;
          
 
@@ -187,13 +187,13 @@ var svg = d3.select("svg#diagram"),
 
           svgGroup.attr("transform", "translate(" + xCenterOffset + ", " + yCenterOffset + ") scale(" + scaleRate + ")");
           svg.attr("height", window.innerHeight);
-          svg.attr("width", window.innerWidth);
-          svg.attr("transform", "translate("+zoomWidth+","+zoomHeight+") scale("+scaleRate+")")
+          svg.attr("width", window.innerWidth*.80);
+          svg.attr("transform", "translate("+zoomWidth+","+zoomHeight+") scale("+scaleRate+")");
           
 
 
 // Center the graph
-var xCenterOffset = (window.innerWidth- g.graph().width)/2;
+var xCenterOffset = ((window.innerWidth*.80)- g.graph().width)/2;
 
 svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
 
@@ -231,3 +231,4 @@ document.querySelector('#downloadButton').addEventListener('click', function() {
 
 
 {% endblock %}
+
