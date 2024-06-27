@@ -4,13 +4,14 @@
 
 The Interactive Management App project will design and build an open source tool for conducting Interpretive Structural Modeling (ISM) research with participants
 
-## Table of Contents
 
+## Table of Contents
 - [Background](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
 - [Install](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Install)
 - [Research](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Research)
-- [Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
-- [Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#core-actions)
+- [Requirements](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Background)
+- [Core Action](https://github.com/VERSO-UVM/Interactive-Management-App/blob/main/README.md#Requirements)
+
 
 ## Background
 
@@ -59,7 +60,8 @@ Install the following tools using their instructions:
 #### Running locally
 
 **Email Recovery**
-For email recovery please create an email account and fill out the required fields on the .env file
+For email recovery please create an email account and fill out the required fields on the .env file 
+
 
 **Setup pyenv & nvm**
 
@@ -95,7 +97,7 @@ To access this app from the web, visit [https://interactivemanagement.pythonanyw
 #### Future documentation/updating the app on pythonyanywhere:
 
 - Ensure the main branch on the repo has the latest changes that you want.
-- Go to the Consoles tab and start a new bash console. Navigate to the "Interactive-Management-App" directory.
+- Go to the Consoles tab on pythonanywhere and start a new bash console. Navigate to the "Interactive-Management-App" directory.
 - run "git pull origin main"
 - Update .env file with password email credentials if needed. Gmail account must have 2 factor authentication enabled and an app specific password.
 - Exit the bash console and go to the Web tab. Click the green reload button at the top.
@@ -114,6 +116,8 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 - [https://github.com/cran/ISM](https://github.com/cran/ISM)
 - [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
 
+
+
 ## Requirements
 
 1. Tool must perform Steps 2-4 of the ISM process: (2) manual ranking by the researcher, (3) determining factor relationship, and (4) constructing the flowchart
@@ -121,6 +125,7 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 3. Web user interface (supported on Chrome, Firefox, Edge)
 4. Use math from Warfield, or equivalent modern network ordering visualization algorithm
 5. Results can be saved to a local computer
+
 
 ## Core Actions
 
