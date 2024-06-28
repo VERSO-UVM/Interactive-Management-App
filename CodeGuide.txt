@@ -1,4 +1,4 @@
-This website is made up on six sqlalchemy tables:
+This website is made up of six sqlalchemy tables:
 
 -User
  +Id
@@ -51,110 +51,127 @@ Note: Any changes to this table may require deleting the database cache for the 
 
 
 --------------------------------#Database_access.py#----------------------------------------
-All function related to querying from these table are created in the python file "database_access.py".
+All functions related to querying from these tables are located in the python file "database_access.py".
 This is done by creating a function which returns what you need
 
 Example Query:
  rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
 
 Example Function:
-def get_rating_by_id(id):
+def get_rating_by_id(user_id):
     """
-    Retrieves ratings associated with a specific participant by ID.
+    Retrieves ratings associated with a specific user.
 
     Args:
-        id: Identifier of the participant.
+        user_id: Identifier of the user.
 
     Returns:
-        List: List of ratings associated with the participant.
+        List: List of ratings associated with the user.
     """
-    ratings=__DATABASE_CONNECTION.query(RatingsTBL).filter(RatingsTBL.participant_id==id).all()
+    ratings = __DATABASE_CONNECTION.query(RatingsTBL).filter_by(
+        user_id=user_id).all()
     return ratings
 
 **Any function that modifies the database such as deleting any entreies need to have a __DATABASE_CONNECTION.commit()
 
 Example:
-def delete_factor(id):
-   """
-   Deletes a factor from the database by ID.
-
-    Args:
-        id: Identifier of the factor to delete.
-    """
-   factor=__DATABASE_CONNECTION.query(FactorTBL).filter(FactorTBL.id==id).first()
-   try:
-       __DATABASE_CONNECTION.delete(factor)
-       __DATABASE_CONNECTION.commit()
-   except:
-       print("Could not delete factor")
+# Deletes existing factor based on unique id
+def delete_factor(id, user_id):
+    try:
+        factor = __DATABASE_CONNECTION.query(
+            FactorTBL).filter_by(id=id, user_id=user_id).first()
+        if factor:
+            __DATABASE_CONNECTION.delete(factor)
+            __DATABASE_CONNECTION.commit()
+        else:
+            print(f"Factor with ID {id} not found for user {user_id}")
+    except Exception as e:
+        print(f"Could not delete factor for user {user_id}: {e}")
 
 
 
 
 -----------------------------------------#App.py#----------------------------
-This file contains all the routes for the website. A route is essentially the path the website takes for each task
+This file contains all the routes for the website. A route is essentially the path the website takes for each task.
 
 Example:
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    ##database_access.delete_everything()
-    return render_template('index.html')
+@app.route("/", methods=['GET', 'POST'])
+def front():
+    return render_template("front.html")
 
-@app.route('/factor/<num>',methods=['POST','GET'])
+@app.route('/factor/<num>', methods=['POST', 'GET'])
 def factor(num):
+    if current_user.is_authenticated:
+        current_user_id = current_user.id
 
-    ##Getting all the current factors
-    if num=='-1':
-        factor=database_access.get_all_factors()
-       
-    elif num=='1':
-        factor=database_access.ascendingOrder()
-       
-    elif num=='2':
-        factor=database_access.descendingOrder()
-    
-    return render_template('factor.html',factor=factor)
+        # Getting all the current factors
+        if num == '-1':
+            factor = database_access.get_all_factors(current_user_id)
+            return render_template('factor.html', factor=factor)
+
+        elif num == '1':
+            factor = database_access.ascendingOrder(current_user_id)
+
+        elif num == '2':
+            factor = database_access.descendingOrder(current_user_id)
+            return render_template('factor.html', factor=factor)
+
+        else:
+            return page_not_found("error")
+
+    else:
+        return unauthorized("error")
 
 
-Note: Python function that will act as a page require  @app.route('/') on top.
+Note: Python function that will act as a page requires  @app.route('/') on top.
 If a function located in database_acess is required to be used on App.py the format is  database_access.function name
 Function call from database_acess is returned as a 1D list
 
 ---------------------------------#templates#---------------------------------------------
-Any html file need to be in the template folder
+Any html file needs to be in the template folder
 
 
 Example HTML File
 
-{% extends 'base.html' %}  {# Extends the 'base.html' template #}
-{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+{{% extends 'base.html' %}
+{# Extends the 'base.html' template #}
+
+{% import "bootstrap/wtf.html" as wtf %}
+{# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+{% block title %}
+Factor Page
+{# Sets the title of the page to "Factor Page" #}
+{% endblock %}
 
 {% block styles %}
   {{ super() }}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
 {% endblock %}
 
-{% block title %}
-Factor Page  {# Sets the title of the page to "Factor Page" #}
-{% endblock %}
 
 <link rel="stylesheet" href="factor.css">
 
 {% block content %}
 <div class="grid-container">
   <div class="factorPage">
-      <h1 class="pt-5 pb-2">Factors picked</h1>  {# Heading for the factor page #}
-      <h3>Final factors! Click Edit to go back and reselect factors. Click go to ratings to proceed.</h3>
-<a  href="{{ url_for('pick_factors',p_id=p_id,num=-1)}}" type="button">Edit</a>
-
-
-<div class="table">
+      <h1 class="pt-5 pb-2">Factors</h1>
+      <h3>Here is where you add all of your factors/issues into the application. Some examples include "High Turnover Rate", or "Bad Management". 
+        Add a description, see how many votes there are, and input into the program. 
+        Select edit to go back and fix any errors, or delete to remove a factor. 
+        Add as many as you please! <h4>Click <a href="{{ url_for('pick_factors', num=-1) }}">here</a> to continue once you have added all factors.</h4>
+      </h3>
+      {# Heading for the factor page #}
+  </div>
+  <div class="table">
       <!-- Table of factors that include: ID, Order, Factor -->
       <table style="width: 100%">
         <!-- Table row for header-->
         <tr>
           <th>Factor</th>  
-          <th>Frquency</th>       
+          <th>Frequency</th>    
+          <th>Edit</th>
+          <th>Delete</th>    
         </tr>
        
         {% for i in factor %}
@@ -162,16 +179,86 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
           <td class="f_box">{{ i.title }}</td>
           <td class="f_box">{{ i.votes }}</td>
           <!-- Send to edit with id -->
+          <td class="f_box">
+          <br>
+          <a href="{{ url_for('edit_factor',id=i.id) }}">Edit</a>
+          </td>
+          <!-- Send to edit with id -->
+          <td class="f_box">
+          <br>
+          <a href="{{ url_for('delete_factor',id=i.id) }}">Delete</a>
+          </td>
       </tr>
       {% endfor %}
       </table>
-
-      <a  href="{{ url_for('insert_rating',p_id=p_id) }}" type="button">Go to Ratings</a>
-
-
 </div> 
+<input type="file" id="fileInput" style="display: none;" accept=".csv" onchange="uploadFile(this.getAttribute('data-type'))">
+    <div class="load">
+      <button onclick="triggerFileInput('factor')" class="loadButton">Upload Existing File</button>
+      <button type="Delete" onclick="DeleteData()">Delete All Factors</button>
+    </div>
+
+<div class = "addFact">
+<h5>Add New Factor</h5>
+<form action="{{ url_for('insert_factor') }}" method="post" onsubmit="return validateForm()">
+  <label for="f_title"></label>
+  <input type="text" name="f_title" class = "inputText" placeholder="Factor Title"><br>
+  <label for="f_description"></label>
+  <input type="text" name="f_description" class = "inputText" placeholder="Optional Description"><br>
+  <label for="f_votes"></label>
+  <input type="number" name="f_votes" class = "inputNumber" placeholder="Optional Frequency"><br>
+
+  <button type="submit" class="save">Save</button>
+</form>
+</div>
+<h4>Click <a href="{{ url_for('pick_factors', num=-1) }}">here</a> to continue once you have added all factors.</h4>
+<script>
+    function DeleteData()
+    {
+      let confirmDelete=confirm("Are you sure you want to delete ALL the factors; This is not reversible");
+      if(confirmDelete)
+      {
+        window.location.href = "/deleteFactorButton";
+      }
+      
+    }
+    function triggerFileInput(type) {
+      var fileInput = document.getElementById('fileInput');
+      fileInput.setAttribute('data-type', type); // Set the type of data to upload
+      fileInput.click();
+  }
+  
+  function uploadFile(dataType) {
+      var fileInput = document.getElementById('fileInput');
+      if(fileInput.files.length > 0) {
+          var formData = new FormData();
+          formData.append('csv_upload', fileInput.files[0]);
+          formData.append('data_type', dataType); // Include the data type in the FormData
+  
+          fetch('/upload_csv', {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              if (data.success) {
+                    window.location.reload();
+                } else {
+                  alert('Upload failed: ' + data.message);
+                }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+      }
+  }
+</script>
 
 {% endblock %}
+
+
+
 
 
 -----Base templates---------
