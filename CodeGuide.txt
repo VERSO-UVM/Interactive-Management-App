@@ -1,37 +1,58 @@
-Code Guide:
+This website is made up on six sqlalchemy tables:
 
-This website is made up on three sqlalchemy tables:
+-User
+ +Id
+ +email
+ +password_hash
+ +factors
+ +ratings
+ +results
+
+-PasswordRecovery
+ +email
+ +verificationCode
 
 -Participant
   +Id
-  +First Name
-  +Last Name
-  +Email
-  +Telephone
+  +f_name: First Name
+  +l_name: Last Name
+  +email
+  +telephone
+  +user_id
+  +user
+
 -Factors
   +Id
-  +Title
-  +Description
-  +Votes
+  +title
+  +description
+  +votes
+  +user_id
+  +user
+
 -Rating
     +Id
-    +Leading Factor
-    +Following Factor
-    +Rating
-    +Participant Id
+    +factor_leading: Leading Factor
+    +factor_following:Following Factor
+    +rating
+    +user_id
+    +user
+
 -Result
     +ID
-    +Leading Factor
-    +Factor Following
-    +Rating
+    +factor_leading:Leading Factor
+    +factor_following: Factor Following
+    +rating
+    +user_id
+    +user
 
-Note: These tables have been created on Alchemy.py. Any changes to this table require deleting the database cache for the database to be updated. The cache is called "data.sqlite3"
-
+Note: These tables have been created on Alchemy.py. 
+Note: Any changes to this table may require deleting the database cache for the database to be updated. The cache is called "data.sqlite3"
 
 
 
 --------------------------------#Database_access.py#----------------------------------------
-All function related to querying from these table are created in the python file "database_access.py". This is done by creating a function which returns what you need
+All function related to querying from these table are created in the python file "database_access.py".
+This is done by creating a function which returns what you need
 
 Example Query:
  rating_count=__DATABASE_CONNECTION.query(RatingsTBL).all()
@@ -95,15 +116,12 @@ def factor(num):
     return render_template('factor.html',factor=factor)
 
 
-*While essentially python functions they need to contain @app.route('/') on top. 
-If functions from database_access need to be utilized the format is database_access.function name
-Any function call from data_access is returned as 1d list.
-
+Note: Python function that will act as a page require  @app.route('/') on top.
+If a function located in database_acess is required to be used on App.py the format is  database_access.function name
+Function call from database_acess is returned as a 1D list
 
 ---------------------------------#templates#---------------------------------------------
 Any html file need to be in the template folder
-
-
 
 
 Example HTML File
@@ -154,3 +172,31 @@ Factor Page  {# Sets the title of the page to "Factor Page" #}
 </div> 
 
 {% endblock %}
+
+
+-----Base templates---------
+For html file that contains the same flow/design extending a base html file might be helpful
+ex.
+ {% extends 'base.html' %}  {# Extends the 'base.html' template #}
+{% import "bootstrap/wtf.html" as wtf %}  {# Imports 'wtf.html' from the 'bootstrap' directory with an alias 'wtf' #}
+
+This allows for an easier integration of the same design aspect among multiple files
+
+
+----CSS--------
+CSS Filed are located in the static folder and needs to be linked with the html page
+
+ex.
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/factor.css') }}">
+
+
+ ---------------------------------#Flow#---------------------------------------------
+ This website contains a pre and post login view
+
+ Pre Login
+ Users are greeted with a website that contains general information about ISM including sponsors.
+ Pre login in view also contains a login page which allows users to register, login, and recover forgotten passwords
+
+ Post Login:
+ After login users are given access to the a part of the website that follows the ISM process
+ Here users are able to upload factors, participants and rate relationship between factors. After Rating users can also access a visualization of the rating between factors
