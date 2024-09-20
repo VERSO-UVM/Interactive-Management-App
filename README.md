@@ -15,7 +15,7 @@ The Interactive Management App project will design and build an open source tool
 
 ## Background
 
-The objective of this project is to design and build an open source browser-based tool for conducting Interpretive Structural Modeling (ISM) research with participants. It includes a series of questions about pairs of variables (called "factors") and whether or not those factors are related to one another. The software will produce a flow diagram of the relationships between factors as identified by the participant, and provide the researchers with one flow diagram that averages the data across all participants in a particular study. The flow diagram will suggest factors that are likely more effective to address first, and factors that are likely to follow or become easier to address as a result of addressing earlier factors.
+This is an [Open Community Research Accelerator (ORCA)](https://verso.w3.uvm.edu/orca/) project at the University of Vermont. The objective of this project is to design and build an open source browser-based tool for conducting Interpretive Structural Modeling (ISM) research with participants. It includes a series of questions about pairs of variables (called "factors") and whether or not those factors are related to one another. The software will produce a flow diagram of the relationships between factors as identified by the participant, and provide the researchers with one flow diagram that averages the data across all participants in a particular study. The flow diagram will suggest factors that are likely more effective to address first, and factors that are likely to follow or become easier to address as a result of addressing earlier factors.
 
 ISM is one of a number of core methodologies that groups and teams can benefit from when working to address complex problems. The hope is that a web-based version can increase accessibility for communities and organizations to use ISM in fostering collective intelligence for informing social transformation.
 
@@ -118,12 +118,17 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 - [https://github.com/cran/ISM](https://github.com/cran/ISM)
 - [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
 
+## Contributors
+
+* Alyssa Maguire (Team Lead)
+* Fernanda De Oliveira Girelli (Team Lead)
+* Tushar Asthana (Team Lead)
+* Grace Kinney
+* James Catanzaro
+* Sebastian Thomas
+* Adrien Monks
+* James Catanzaro
+* Jason Lobell
+* John Meluso
 
 
-## Requirements
-
-1. Tool must perform Steps 2-4 of the ISM process: (2) manual ranking by the researcher, (3) determining factor relationship, and (4) constructing the flowchart
-2. Ability to add factors
-3. Web user interface (supported on Chrome, Firefox, Edge)
-4. Use math from Warfield, or equivalent modern network ordering visualization algorithm
-5. Results can be saved to a local computer
