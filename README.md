@@ -119,16 +119,26 @@ Razzante, R. J., Hogan, M., Broome, B., Tracy, S. J., Chawla, D., & Skurzak, D. 
 - [https://github.com/Dr-Eti/ISMiR-ISM_in_R](https://github.com/Dr-Eti/ISMiR-ISM_in_R)
 
 ## Contributors
+John Meluso, project sponsor. Funded in part by the Alfred P. Sloan Foundation
 
+### Fall 2023
 * Alyssa Maguire (Team Lead)
-* Fernanda De Oliveira Girelli (Team Lead)
+* Fernanda De Oliveira Girelli
+* Grace Kinney
+* James Catanzaro
+* Tushar Asthana
+
+### Spring 2024
 * Tushar Asthana (Team Lead)
+* Fernanda De Oliveira Girelli
 * Grace Kinney
 * James Catanzaro
 * Sebastian Thomas
+* Jason Lobell
+
+### Summer 2024
+* Fernanda De Oliveira Girelli (Team Lead)
 * Adrien Monks
 * James Catanzaro
-* Jason Lobell
-* John Meluso
 
 
